@@ -24,11 +24,21 @@ public class RomanTimeFragment extends Fragment
 
     protected TextView text_sunrise, text_sunset;
 
+    protected SuntimesInfo info;
+    public void setSuntimesInfo(SuntimesInfo value) {
+        info = value;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_romantime, container, false);
         initViews(view);
+
+        Context context = getActivity();
+        if (info == null && context != null) {
+            info = SuntimesInfo.queryInfo(context);
+        }
 
         data = initData(getActivity());
         updateViews(getActivity(), data);
@@ -47,18 +57,19 @@ public class RomanTimeFragment extends Fragment
         if (data != null)
         {
             long[] romanHours = data.getRomanHours();
+            boolean is24 = info.getOptions(context).time_is24;
 
             CharSequence[] dayHours = new String[12];
-            StringBuilder debugDisplay0 = new StringBuilder();
+            StringBuilder debugDisplay0 = new StringBuilder("Day");
             for (int i=0; i<dayHours.length; i++) {
-                dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], TimeZone.getDefault().getID(), true);
+                dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], TimeZone.getDefault().getID(), is24);
                 debugDisplay0.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
             }
 
             CharSequence[] nightHours = new String[12];
-            StringBuilder debugDisplay1 = new StringBuilder();
+            StringBuilder debugDisplay1 = new StringBuilder("Night");
             for (int i=0; i<nightHours.length; i++) {
-                nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], TimeZone.getDefault().getID(), true);
+                nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], TimeZone.getDefault().getID(), is24);
                 debugDisplay1.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
             }
 

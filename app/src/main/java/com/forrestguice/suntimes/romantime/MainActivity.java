@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.romantime;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,7 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.romantime.ui.AboutDialog;
 import com.forrestguice.suntimes.romantime.ui.HelpDialog;
+import com.forrestguice.suntimes.romantime.ui.RomanTimeFragment;
 
 import java.lang.reflect.Method;
 
@@ -70,6 +72,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.setSuntimesInfo(suntimesInfo);
+        }
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
@@ -94,6 +102,13 @@ public class MainActivity extends AppCompatActivity
         String appTheme = SuntimesInfo.queryAppTheme(getContentResolver());
         if (appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
             recreate();
+
+        } else {
+            FragmentManager fragments = getSupportFragmentManager();
+            RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+            if (fragment != null) {
+                fragment.setSuntimesInfo(suntimesInfo);
+            }
         }
     }
 

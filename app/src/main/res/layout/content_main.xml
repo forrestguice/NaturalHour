@@ -6,7 +6,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <fragment
-        android:id="@+id/first_fragment"
+        android:id="@+id/romantime_fragment"
         android:name="com.forrestguice.suntimes.romantime.ui.RomanTimeFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -14,4 +14,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
