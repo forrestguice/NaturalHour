@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="?attr/dialogBackground">
+    <LinearLayout android:background="?attr/dialogBackground"
+        android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+        android:layout_marginTop="@dimen/dialog_margin" android:layout_marginLeft="@dimen/dialog_margin" android:layout_marginRight="@dimen/dialog_margin">
+
+        <TextView
+            android:id="@+id/help_content"
+            android:layout_height="wrap_content" android:layout_width="wrap_content"
+            android:layout_marginTop="10dp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginBottom="5dp"
+            tools:text="help content goes here" />
+
+    </LinearLayout>
+</ScrollView>

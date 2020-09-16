@@ -18,6 +18,12 @@
     <string name="units_meters">meters</string>
     <string name="units_meters_short">m</string>
 
+    <string-array name="help_topics">      <!-- in order of appearance -->
+        <item>one</item>
+        <item>two</item>
+        <item>TODO</item>
+    </string-array>
+
     <string name="app_name">Roman Time</string>
     <string name="app_desc">A "roman time" addon for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>

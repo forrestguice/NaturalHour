@@ -16,11 +16,13 @@ import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.romantime.ui.AboutDialog;
+import com.forrestguice.suntimes.romantime.ui.HelpDialog;
 
 import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
     private SuntimesInfo suntimesInfo = null;
@@ -141,8 +143,7 @@ public class MainActivity extends AppCompatActivity
 
     protected void showHelp()
     {
-        // TODO
-        /*HelpDialog dialog = new HelpDialog();
+        HelpDialog dialog = new HelpDialog();
         dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
 
         String[] help = getResources().getStringArray(R.array.help_topics);
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity
             helpContent = getString(R.string.format_help, helpContent, help[i]);
         }
         dialog.setContent(helpContent + "<br/>");
-        dialog.show(getSupportFragmentManager(), DIALOG_HELP);*/
+        dialog.show(getSupportFragmentManager(), DIALOG_HELP);
     }
 
     protected void showAbout()
