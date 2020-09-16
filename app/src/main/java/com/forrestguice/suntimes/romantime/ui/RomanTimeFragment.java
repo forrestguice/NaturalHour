@@ -1,8 +1,37 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+/*
+    Copyright (C) 2020 Forrest Guice
+    This file is part of RomanTime.
+
+    RomanTime is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    RomanTime is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with RomanTime.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.forrestguice.suntimes.romantime.ui;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +39,31 @@ import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.romantime.R;
 import com.forrestguice.suntimes.romantime.data.RomanTimeCalculator;
 import com.forrestguice.suntimes.romantime.data.RomanTimeData;
 
+import java.lang.ref.WeakReference;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 public class RomanTimeFragment extends Fragment
 {
-    protected RomanTimeData data = null;
-
-    protected TextView text_sunrise, text_sunset;
+    protected RecyclerView cardView;
+    protected LinearLayoutManager cardLayout;
+    protected RomanTimeCardAdapter cardAdapter;
 
     protected SuntimesInfo info;
     public void setSuntimesInfo(SuntimesInfo value) {
         info = value;
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -40,67 +77,341 @@ public class RomanTimeFragment extends Fragment
             info = SuntimesInfo.queryInfo(context);
         }
 
-        data = initData(getActivity());
-        updateViews(getActivity(), data);
-
+        initData(getActivity());
+        cardView.scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
         return view;
     }
 
     protected void initViews(View content)
     {
-        text_sunrise = (TextView)content.findViewById(R.id.text_sunrise);
-        text_sunset = (TextView)content.findViewById(R.id.text_sunset);
+        cardView = (RecyclerView) content.findViewById(R.id.cardView);
+        cardView.setHasFixedSize(true);
+        cardView.setLayoutManager(cardLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        cardView.addItemDecoration(cardDecoration);
+        //cardView.setOnScrollListener(onCardScrollChanged);
+
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(cardView);
     }
 
-    protected void updateViews(Context context, RomanTimeData data)
+    private RecyclerView.ItemDecoration cardDecoration = new RecyclerView.ItemDecoration()
     {
-        if (data != null)
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state)
         {
-            long[] romanHours = data.getRomanHours();
-            boolean is24 = info.getOptions(context).time_is24;
-
-            CharSequence[] dayHours = new String[12];
-            StringBuilder debugDisplay0 = new StringBuilder("Day");
-            for (int i=0; i<dayHours.length; i++) {
-                dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], TimeZone.getDefault().getID(), is24);
-                debugDisplay0.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
-            }
-
-            CharSequence[] nightHours = new String[12];
-            StringBuilder debugDisplay1 = new StringBuilder("Night");
-            for (int i=0; i<nightHours.length; i++) {
-                nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], TimeZone.getDefault().getID(), is24);
-                debugDisplay1.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
-            }
-
-            text_sunrise.setText(debugDisplay0.toString());
-            text_sunset.setText(debugDisplay1.toString());
-
-        } else {
-            text_sunrise.setText("");
-            text_sunset.setText("");
+            super.getItemOffsets(outRect, view, parent, state);
+            Resources r = getResources();
+            outRect.top = (int)r.getDimension(R.dimen.card_margin_top);
+            outRect.bottom = (int)r.getDimension(R.dimen.card_margin_bottom);
+            outRect.left = (int)r.getDimension(R.dimen.card_margin_left);
+            outRect.right = (int)r.getDimension(R.dimen.card_margin_right);
         }
-    }
+    };
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    protected RomanTimeData initData(Context context)
+    protected void initData(Context context)
     {
         if (context != null)
         {
-            ContentResolver resolver = context.getContentResolver();
             SuntimesInfo config = SuntimesInfo.queryInfo(context);
             double latitude = Double.parseDouble(config.location[1]);
             double longitude = Double.parseDouble(config.location[2]);
             double altitude = Double.parseDouble(config.location[3]);
-            long date = System.currentTimeMillis();
 
-            RomanTimeData data = new RomanTimeData(date, latitude, longitude, altitude);
-            RomanTimeCalculator calculator = new RomanTimeCalculator();
-            calculator.calculateData(resolver, data);
-            return data;
-        } else return null;
+            cardAdapter = new RomanTimeCardAdapter(getActivity(), latitude, longitude, altitude, info.timezone, new RomanTimeAdapterOptions(info.getOptions(getActivity())));
+            cardAdapter.setCardAdapterListener(cardListener);
+            cardAdapter.initData();
+            cardView.setAdapter(cardAdapter);
+        }
     }
+
+    private RomanTimeAdapterListener cardListener = new RomanTimeAdapterListener()
+    {
+        public void onDateClick(int position) {
+            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
+            // TODO
+        }
+        public void onCardClick(int position) {
+            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
+            // TODO
+        }
+        public boolean onCardLongClick(int position) {
+            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * RecyclerView.ViewHolder
+     */
+    public static class RomanTimeViewHolder extends RecyclerView.ViewHolder
+    {
+        public TextView text_date;
+        public TextView text_sunrise, text_sunset;
+
+        public RomanTimeViewHolder(@NonNull View itemView, RomanTimeAdapterOptions options)
+        {
+            super(itemView);
+            text_date = (TextView) itemView.findViewById(R.id.text_date);
+            text_sunrise = (TextView) itemView.findViewById(R.id.text_sunrise);
+            text_sunset = (TextView)  itemView.findViewById(R.id.text_sunset);
+        }
+
+        public void onBindViewHolder(@NonNull Context context, int position, RomanTimeData data, RomanTimeAdapterOptions options)
+        {
+            if (data != null)
+            {
+                long[] romanHours = data.getRomanHours();
+                boolean is24 = options.suntimes_options.time_is24;
+
+                CharSequence[] dayHours = new String[12];
+                StringBuilder debugDisplay0 = new StringBuilder("Day");
+                for (int i=0; i<dayHours.length; i++) {
+                    dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], TimeZone.getDefault().getID(), is24);
+                    debugDisplay0.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
+                }
+
+                CharSequence[] nightHours = new String[12];
+                StringBuilder debugDisplay1 = new StringBuilder("Night");
+                for (int i=0; i<nightHours.length; i++) {
+                    nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], TimeZone.getDefault().getID(), is24);
+                    debugDisplay1.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
+                }
+
+                text_date.setText(DisplayStrings.formatDate(context, data.getDateMillis()));
+                text_sunrise.setText(debugDisplay0.toString());
+                text_sunset.setText(debugDisplay1.toString());
+
+
+            } else {
+                text_date.setText("");
+                text_sunrise.setText("");
+                text_sunset.setText("");
+            }
+        }
+    }
+
+    /**
+     * AdapterOptions
+     */
+    public static class RomanTimeAdapterOptions
+    {
+        public SuntimesInfo.SuntimesOptions suntimes_options;
+        public RomanTimeAdapterOptions(@NonNull Context context) {
+            suntimes_options = new SuntimesInfo.SuntimesOptions(context);
+        }
+        public RomanTimeAdapterOptions(SuntimesInfo.SuntimesOptions options) {
+            suntimes_options = options;
+        }
+    }
+
+    /**
+     * RecyclerView.Adapter
+     */
+    public class RomanTimeCardAdapter extends RecyclerView.Adapter<RomanTimeViewHolder>
+    {
+        public static final int MAX_POSITIONS = 2000;
+        public static final int TODAY_POSITION = (MAX_POSITIONS / 2);
+
+        protected WeakReference<Context> contextRef;
+
+        private double latitude;
+        private double longitude;
+        private double altitude;
+        private String timezone;
+
+        public RomanTimeCardAdapter(Context context, double latitude, double longitude, double altitude, String timezone, RomanTimeAdapterOptions options)
+        {
+            contextRef = new WeakReference<>(context);
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.altitude = altitude;
+            this.timezone = timezone;
+            this.options = options;
+        }
+
+        @NonNull
+        @Override
+        public RomanTimeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+        {
+            LayoutInflater layout = LayoutInflater.from(viewGroup.getContext());
+            View view = layout.inflate(R.layout.card_romantime, viewGroup, false);
+            return new RomanTimeViewHolder(view, options);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RomanTimeViewHolder holder, int position)
+        {
+            Context context = contextRef.get();
+            if (context != null)
+            {
+                holder.onBindViewHolder(context, position, initData(position), options);
+                attachClickListeners(holder, position);
+            }
+        }
+
+        @Override
+        public void onViewRecycled(@NonNull RomanTimeViewHolder holder) {
+            detachClickListeners(holder);
+        }
+
+        private RomanTimeAdapterOptions options;
+        public void setCardOptions(RomanTimeAdapterOptions options) {
+            this.options = options;
+        }
+        public RomanTimeAdapterOptions getOptions() {
+            return options;
+        }
+
+        @Override
+        public int getItemCount() {
+            return MAX_POSITIONS;
+        }
+
+        @SuppressLint("UseSparseArrays")
+        protected HashMap<Integer, RomanTimeData> data = new HashMap<>();
+        public HashMap<Integer, RomanTimeData> getData() {
+            return data;
+        }
+
+        public RomanTimeData initData()
+        {
+            RomanTimeData d;
+            data.clear();
+            invalidated = false;
+
+            initData(TODAY_POSITION - 1);
+            d = initData(TODAY_POSITION);
+            initData(TODAY_POSITION + 1);
+            initData(TODAY_POSITION + 2);
+            notifyDataSetChanged();
+            return d;
+        }
+
+        public RomanTimeData initData(int position)
+        {
+            RomanTimeData d = data.get(position);
+            if (d == null && !invalidated) {
+                data.put(position, d = createData(position));   // data gets removed in onViewRecycled
+                //Log.d("DEBUG", "add data " + position);
+            }
+            return d;
+        }
+
+        protected RomanTimeData createData(int position)
+        {
+            Calendar date = Calendar.getInstance();
+            date.setTimeZone(TimeZone.getTimeZone(timezone));
+            date.add(Calendar.DATE, position - TODAY_POSITION);
+            date.set(Calendar.HOUR_OF_DAY, 12);
+            date.set(Calendar.MINUTE, 0);
+            date.set(Calendar.SECOND, 0);
+            return calculateData(new RomanTimeData(date.getTimeInMillis(), latitude, longitude, altitude));
+        }
+
+        private RomanTimeData calculateData(RomanTimeData romanTimeData)
+        {
+            Context context = contextRef.get();
+            if (context != null)
+            {
+                ContentResolver resolver = context.getContentResolver();
+                if (resolver != null) {
+                    RomanTimeCalculator calculator = new RomanTimeCalculator();
+                    calculator.calculateData(resolver, romanTimeData);
+                } else {
+                    Log.e(getClass().getSimpleName(), "createData: null contentResolver!");
+                }
+            } else {
+                Log.e(getClass().getSimpleName(), "createData: null context!");
+            }
+            return romanTimeData;
+        }
+
+        private boolean invalidated = false;
+        public void invalidateData()
+        {
+            invalidated = true;
+            data.clear();
+            notifyDataSetChanged();
+        }
+
+        private void attachClickListeners(@NonNull final RomanTimeViewHolder holder, int position)
+        {
+            holder.text_date.setOnClickListener(onDateClick(position));
+            //holder.layout_front.setOnClickListener(onCardClick(holder));
+            //holder.layout_front.setOnLongClickListener(onCardLongClick(holder));
+        }
+
+        private void detachClickListeners(@NonNull RomanTimeViewHolder holder)
+        {
+            holder.text_date.setOnClickListener(null);
+            //holder.layout_front.setOnClickListener(null);
+            //holder.layout_front.setOnLongClickListener(null);
+        }
+
+        public void setCardAdapterListener( @NonNull RomanTimeAdapterListener listener ) {
+            adapterListener = listener;
+        }
+        private RomanTimeAdapterListener adapterListener = new RomanTimeAdapterListener();
+
+        private View.OnClickListener onDateClick(final int position) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapterListener.onDateClick(position);
+                }
+            };
+        }
+        private View.OnClickListener onCardClick(@NonNull final RomanTimeViewHolder holder) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapterListener.onCardClick(holder.getAdapterPosition());
+                }
+            };
+        }
+        private View.OnLongClickListener onCardLongClick(@NonNull final RomanTimeViewHolder holder) {
+            return new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //holder.text_debug.setVisibility( holder.text_debug.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                    return adapterListener.onCardLongClick(holder.getAdapterPosition());
+                }
+            };
+        }
+    }
+
+    /**
+     * AdapterListener
+     */
+    public static class RomanTimeAdapterListener
+    {
+        public void onDateClick(int position) {}
+        public void onCardClick(int position) {}
+        public boolean onCardLongClick(int position) { return false; }
+    }
+
+    /**
+     * CardViewScroller
+     */
+    public static class CardScroller extends LinearSmoothScroller
+    {
+        private static final float MILLISECONDS_PER_INCH = 125f;
+
+        public CardScroller(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+            return MILLISECONDS_PER_INCH / displayMetrics.densityDpi;
+        }
+
+        @Override protected int getVerticalSnapPreference() {
+            return LinearSmoothScroller.SNAP_TO_START;
+        }
+    }
+
 }
