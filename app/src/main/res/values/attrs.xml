@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="icHelp" format="reference" />
+    <attr name="icAbout" format="reference" />
+
+    <attr name="colorDate" format="reference" />
+    <attr name="colorLabel" format="reference" />
+    <attr name="colorTime" format="reference" />
+    <attr name="colorValue" format="reference" />
+
+</resources>

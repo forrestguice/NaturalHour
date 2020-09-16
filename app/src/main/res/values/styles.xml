@@ -1,0 +1,65 @@
+<resources>
+
+    <style name="AppTheme" parent="RomanTimeAppTheme.Dark" />
+
+    <!-- Light theme -->
+    <style name="RomanTimeAppTheme.Light" parent="SuntimesAddonTheme.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary_light</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
+        <item name="colorAccent">@color/colorAccent_light</item>
+        <item name="colorAction">@color/colorAction_light</item>
+        <item name="colorDisabled">@color/colorDisabled_light</item>
+
+        <item name="icHelp">@drawable/ic_help_light</item>
+        <item name="icAbout">@drawable/ic_about_light</item>
+
+        <item name="cardViewStyle">@style/RomanTimeCardView.Light</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+
+        <item name="colorDate">@color/colorDate_light</item>
+        <item name="colorLabel">@color/colorLabel_light</item>
+        <item name="colorTime">@color/colorTime_light</item>
+        <item name="colorValue">@color/colorValue_light</item>
+    </style>
+
+    <!-- Dark theme -->
+    <style name="RomanTimeAppTheme.Dark" parent="SuntimesAddonTheme.Dark">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
+        <item name="colorAccent">@color/colorAccent_dark</item>
+        <item name="colorAction">@color/colorAction_dark</item>
+        <item name="colorDisabled">@color/colorDisabled_dark</item>
+
+        <item name="icHelp">@drawable/ic_help</item>
+        <item name="icAbout">@drawable/ic_about</item>
+
+        <item name="cardViewStyle">@style/RomanTimeCardView.Dark</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+
+        <item name="colorDate">@color/colorDate_dark</item>
+        <item name="colorLabel">@color/colorLabel_dark</item>
+        <item name="colorTime">@color/colorTime_dark</item>
+        <item name="colorValue">@color/colorValue_dark</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="RomanTimeCardView" parent="Base.CardView" />
+    <style name="RomanTimeCardView.Dark">
+        <item name="cardBackgroundColor">@color/card_background_dark</item>
+    </style>
+    <style name="RomanTimeCardView.Light">
+        <item name="cardBackgroundColor">@color/card_background_light</item>
+    </style>
+
+
+</resources>

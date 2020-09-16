@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- light theme colors -->
+
+    <color name="colorPrimary_light">@color/grey_100</color>
+    <color name="colorPrimaryDark_light">@color/grey_600</color>
+    <color name="colorAccent_light">@color/deep_teal_500</color>
+    <color name="colorAction_light">@color/sun_setting_light</color>
+    <color name="colorDisabled_light">#aaaaaa</color>
+
+    <color name="card_light">@color/grey_50</color>
+    <color name="card_light_selected">@android:color/white</color>
+    <color name="fab_background_light">@color/colorAction_light</color>
+    <color name="fab_ripple_light">#971000</color>
+
+    <color name="colorDate_light">#000000</color>
+    <color name="colorLabel_light">#000000</color>
+    <color name="colorTime_light">#FF4081</color>
+    <color name="colorValue_light">#3F51B5</color>
+
+
+    <!-- dark theme colors -->
+
+    <color name="colorPrimary_dark">@color/grey_900</color>
+    <color name="colorPrimaryDark_dark">@android:color/black</color>
+    <color name="colorAccent_dark">@color/deep_teal_200</color>
+    <color name="colorAction_dark">@color/sun_setting_dark</color>
+    <color name="colorDisabled_dark">#aaaaaa</color>
+
+    <color name="card_dark">@color/grey_900</color>
+    <color name="card_dark_selected">@color/grey_800</color>
+    <color name="fab_background_dark">@color/colorAction_dark</color>
+    <color name="fab_ripple_dark">#c66a00</color>
+
+    <color name="colorDate_dark">#FFFFFF</color>
+    <color name="colorLabel_dark">#FFFFFF</color>
+    <color name="colorTime_dark">#FFFFFF</color>
+    <color name="colorValue_dark">#3F51B5</color>
+
+
+</resources>
