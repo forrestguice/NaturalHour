@@ -15,11 +15,14 @@ import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.romantime.ui.AboutDialog;
 
 import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String DIALOG_ABOUT = "aboutDialog";
+
     private SuntimesInfo suntimesInfo = null;
 
     @Override
@@ -153,11 +156,10 @@ public class MainActivity extends AppCompatActivity
 
     protected void showAbout()
     {
-        // TODO
-        /* AboutDialog dialog = new AboutDialog();
+        AboutDialog dialog = new AboutDialog();
         dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
         dialog.setVersion(suntimesInfo);
-        dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);*/
+        dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
     }
 
 }

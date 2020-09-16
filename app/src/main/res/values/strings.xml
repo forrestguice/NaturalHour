@@ -19,7 +19,7 @@
     <string name="units_meters_short">m</string>
 
     <string name="app_name">Roman Time</string>
-    <string name="app_desc">"Roman time" addon for Suntimes.</string>
+    <string name="app_desc">A "roman time" addon for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
 
