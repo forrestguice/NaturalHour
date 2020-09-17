@@ -60,6 +60,23 @@ public class DisplayStrings
         }
     }
 
+    /*
+     * @param context Context
+     * @param num [1-4]
+     * @return e.g. "Vigilia Prima"
+     */
+    public static CharSequence formatNightWatchLabel(@NonNull Context context, int num)
+    {
+        switch (num)
+        {
+            case 1: return context.getString(R.string.vigilia_prima);
+            case 2: return context.getString(R.string.vigilia_secunda);
+            case 3: return context.getString(R.string.vigilia_tertia);
+            case 4: return context.getString(R.string.vigilia_quarta);
+            default: return "";
+        }
+    }
+
     public static CharSequence formatDate(@NonNull Context context, long date)
     {
         Calendar calendar = Calendar.getInstance();

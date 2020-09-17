@@ -18,6 +18,11 @@
     <string name="units_meters">meters</string>
     <string name="units_meters_short">m</string>
 
+    <string name="vigilia_prima">vigilia prima</string>
+    <string name="vigilia_secunda">vigilia secunda</string>
+    <string name="vigilia_tertia">vigilia tertia</string>
+    <string name="vigilia_quarta">vigilia quarta</string>
+
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>one</item>
         <item>two</item>
