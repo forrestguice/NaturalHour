@@ -117,7 +117,7 @@ public class RomanTimeFragment extends Fragment
             double longitude = Double.parseDouble(config.location[2]);
             double altitude = Double.parseDouble(config.location[3]);
 
-            cardAdapter = new RomanTimeCardAdapter(getActivity(), latitude, longitude, altitude, info.timezone, new RomanTimeAdapterOptions(info.getOptions(getActivity())));
+            cardAdapter = new RomanTimeCardAdapter(getActivity(), latitude, longitude, altitude, info.timezone, new RomanTimeAdapterOptions(getActivity(), info));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -150,6 +150,7 @@ public class RomanTimeFragment extends Fragment
     {
         public TextView text_date;
         public TextView text_sunrise, text_sunset;
+        public RomanTimeClockView clockface;
 
         public RomanTimeViewHolder(@NonNull View itemView, RomanTimeAdapterOptions options)
         {
@@ -157,6 +158,7 @@ public class RomanTimeFragment extends Fragment
             text_date = (TextView) itemView.findViewById(R.id.text_date);
             text_sunrise = (TextView) itemView.findViewById(R.id.text_sunrise);
             text_sunset = (TextView)  itemView.findViewById(R.id.text_sunset);
+            clockface = (RomanTimeClockView) itemView.findViewById(R.id.clockface);
         }
 
         public void onBindViewHolder(@NonNull Context context, int position, RomanTimeData data, RomanTimeAdapterOptions options)
@@ -169,21 +171,22 @@ public class RomanTimeFragment extends Fragment
                 CharSequence[] dayHours = new String[12];
                 StringBuilder debugDisplay0 = new StringBuilder("Day");
                 for (int i=0; i<dayHours.length; i++) {
-                    dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], TimeZone.getDefault().getID(), is24);
+                    dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], options.suntimes_info.timezone, is24);
                     debugDisplay0.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                 }
 
                 CharSequence[] nightHours = new String[12];
                 StringBuilder debugDisplay1 = new StringBuilder("Night");
                 for (int i=0; i<nightHours.length; i++) {
-                    nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], TimeZone.getDefault().getID(), is24);
+                    nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], options.suntimes_info.timezone, is24);
                     debugDisplay1.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                 }
 
                 text_date.setText(DisplayStrings.formatDate(context, data.getDateMillis()));
                 text_sunrise.setText(debugDisplay0.toString());
                 text_sunset.setText(debugDisplay1.toString());
-
+                clockface.setTimeZone(getTimeZone(options.suntimes_info.timezone));
+                clockface.setData(data);
 
             } else {
                 text_date.setText("");
@@ -193,17 +196,21 @@ public class RomanTimeFragment extends Fragment
         }
     }
 
+    public static TimeZone getTimeZone(String tzID) {
+        return TimeZone.getTimeZone(tzID);  // TODO: support solar time
+    }
+
     /**
      * AdapterOptions
      */
     public static class RomanTimeAdapterOptions
     {
+        public SuntimesInfo suntimes_info;
         public SuntimesInfo.SuntimesOptions suntimes_options;
-        public RomanTimeAdapterOptions(@NonNull Context context) {
-            suntimes_options = new SuntimesInfo.SuntimesOptions(context);
-        }
-        public RomanTimeAdapterOptions(SuntimesInfo.SuntimesOptions options) {
-            suntimes_options = options;
+
+        public RomanTimeAdapterOptions(Context context, SuntimesInfo info) {
+            suntimes_info = info;
+            suntimes_options = info.getOptions(context);
         }
     }
 
