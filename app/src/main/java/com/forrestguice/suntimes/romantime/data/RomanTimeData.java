@@ -24,6 +24,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public class RomanTimeData implements Parcelable
 {
     public static final String KEY_DATE = "date";
@@ -159,6 +162,50 @@ public class RomanTimeData implements Parcelable
             case KEY_DATE:
             default: return date;
         }
+    }
+
+    public double getDayHourLength() {
+        return dayHourLength;
+    }
+    public double getDayHourAngle()
+    {
+        Calendar t0 = Calendar.getInstance();
+        Calendar t1 = Calendar.getInstance();
+        t0.setTimeInMillis(romanHours[0]);
+        t1.setTimeInMillis(romanHours[1]);
+        double a0 = getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
+        double a1 = getAngle( t1.get(Calendar.HOUR_OF_DAY), t1.get(Calendar.MINUTE), t1.get(Calendar.SECOND));
+        return a1 - a0;
+    }
+
+    public double getNightHourLength() {
+        return nightHourLength;
+    }
+    public double getNightHourAngle()
+    {
+        Calendar t0 = Calendar.getInstance();
+        Calendar t1 = Calendar.getInstance();
+        t0.setTimeInMillis(romanHours[12]);
+        t1.setTimeInMillis(romanHours[13]);
+        double a0 = getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
+        double a1 = getAngle( t1.get(Calendar.HOUR_OF_DAY), t1.get(Calendar.MINUTE), t1.get(Calendar.SECOND));
+        return a1 - a0;
+    }
+
+    public static double getAngle( long timeMillis, TimeZone timezone )
+    {
+        Calendar t0 = Calendar.getInstance(timezone);
+        t0.setTimeInMillis(timeMillis);
+        return RomanTimeData.getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
+    }
+
+    public static double getAngle(int hour, int minute, int second)
+    {
+        double twoPI = 2 * Math.PI;
+        return (-Math.PI / 2d) +
+                ((hour / 24d) * twoPI) +
+                ((minute / (60d * 24d)) * twoPI) +
+                ((second / (60d * 60d * 24d)) * twoPI);
     }
 
     public long[] getRomanHours() {
