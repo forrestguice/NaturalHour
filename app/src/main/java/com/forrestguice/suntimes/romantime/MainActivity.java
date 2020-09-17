@@ -30,12 +30,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.romantime.ui.AboutDialog;
+import com.forrestguice.suntimes.romantime.ui.DisplayStrings;
 import com.forrestguice.suntimes.romantime.ui.HelpDialog;
 import com.forrestguice.suntimes.romantime.ui.RomanTimeFragment;
 
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity
             recreate();
 
         } else {
+            updateViews();
+
             FragmentManager fragments = getSupportFragmentManager();
             RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
             if (fragment != null) {
@@ -111,6 +115,16 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+    protected void updateViews()
+    {
+        ActionBar toolbar = getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.setTitle(suntimesInfo.location[0]);
+            toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
+        }
+    }
+
 
     @SuppressWarnings("RestrictedApi")
     @Override
