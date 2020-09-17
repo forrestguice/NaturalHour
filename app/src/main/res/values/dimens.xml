@@ -4,4 +4,17 @@
     <dimen name="card_margin_top">3dp</dimen>
     <dimen name="card_margin_left">7dp</dimen>
     <dimen name="card_margin_right">7dp</dimen>
+
+    <dimen name="clockface_center_width">8dp</dimen>
+
+    <dimen name="clockface_tick_major_width">2dp</dimen>
+    <dimen name="clockface_tick_minor_width">1.5dp</dimen>
+
+    <dimen name="clockface_stroke_width">1.5dp</dimen>
+    <dimen name="clockface_hand_width">1.5dp</dimen>
+    <dimen name="clockface_arc_width">20dp</dimen>
+    <dimen name="clockface_arc_stroke_width">0dp</dimen>
+    <dimen name="clockface_text_small">10dp</dimen>
+    <dimen name="clockface_text_medium">14dp</dimen>
+    <dimen name="clockface_text_large">16dp</dimen>
 </resources>
