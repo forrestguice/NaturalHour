@@ -10,15 +10,15 @@
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
-        android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"
+        android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clockface">
 
-        <TextView
-            android:id="@+id/text_date" android:gravity="right|end"
+        <TextView  android:layout_margin="16dp"
+            android:id="@+id/text_date" style="@style/TableHeadDateView" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="date" android:layout_margin="8dp" />
+            tools:text="Today\nApril 1, 2016" />
 
         <TextView
             android:id="@+id/text_sunrise" android:gravity="right|end"
