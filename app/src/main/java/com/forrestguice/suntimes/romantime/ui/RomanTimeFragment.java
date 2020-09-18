@@ -458,8 +458,8 @@ public class RomanTimeFragment extends Fragment
 
     public static TimeZone getTimeZone(SuntimesInfo info)
     {
-        if (info.timezoneMode.equals("CURRENT_TIMEZONE")) {
-            return TimeZone.getDefault();
+        if (info.timezoneMode == null || info.timezoneMode.equals("CUSTOM_TIMEZONE")) {
+            return TimeZone.getTimeZone(info.timezone);
 
         } else if (info.timezoneMode.equals("SOLAR_TIME")) {
             if (info.solartimeMode.equals("LOCAL_MEAN_TIME")) {
@@ -469,8 +469,11 @@ public class RomanTimeFragment extends Fragment
             }
 
         } else {
-            return TimeZone.getTimeZone(info.timezone);
+            return TimeZone.getDefault();
         }
     }
+
+
+
 
 }

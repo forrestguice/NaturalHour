@@ -72,6 +72,11 @@ public class RomanTimeClockView extends View
         showNightBackground = value;
     }
 
+    protected boolean showTimeZone = true;
+    public void setShowTimeZone(boolean value) {
+        showTimeZone = value;
+    }
+
     protected boolean showVigilia = true;
     public void setShowVigilia(boolean value) {
         showVigilia = value;
@@ -149,6 +154,7 @@ public class RomanTimeClockView extends View
     private int colorCenter = Color.WHITE;
     private int colorHand = Color.MAGENTA;
     private int colorLabel = Color.WHITE;
+    private int colorLabel1 = Color.LTGRAY;
 
     private int arcStrokeWidth;
     private int arcWidth;
@@ -160,7 +166,7 @@ public class RomanTimeClockView extends View
     private int textMedium;
     private int textSmall;
 
-    private Paint paint, paintHand, paintTickMajor, paintTickMinor, paintArcFillDay, paintArcFillNight, paintArcBorder, paintFillNight, paintCenter, paintBackground;
+    private Paint paint, paintLabel, paintHand, paintTickMajor, paintTickMinor, paintArcFillDay, paintArcFillNight, paintArcBorder, paintFillNight, paintCenter, paintBackground;
 
     private void initPaint(Context context)
     {
@@ -181,6 +187,14 @@ public class RomanTimeClockView extends View
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(textSmall);
         paint.setTypeface(Typeface.create(paint.getTypeface(), Typeface.BOLD));
+
+        paintLabel = new Paint();
+        paintLabel.setColor(colorLabel);
+        paintLabel.setStyle(Paint.Style.FILL);
+        paintLabel.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_stroke_width));
+        paintLabel.setAntiAlias(true);
+        paintLabel.setTextAlign(Paint.Align.CENTER);
+        paintLabel.setTextSize(textSmall);
 
         paintHand = new Paint();
         paintHand.setColor(colorHand);
@@ -376,7 +390,6 @@ public class RomanTimeClockView extends View
         }
     }
 
-
     protected void drawTickLabels(Canvas canvas, float cX, float cY, boolean is24)
     {
         float r0 = radiusInner(cX);
@@ -391,7 +404,7 @@ public class RomanTimeClockView extends View
             double cosA = Math.cos(a);
             double sinA = Math.sin(a);
 
-            double lw = i % 3 == 0 ? arcWidth : arcWidth * 0.5f;
+            double lw = i % 3 == 0 ? arcWidth * 0.5f : arcWidth * 0.5f;
             double lx = cX + (r - lw) * cosA;
             double ly = cY + (r - lw) * sinA;
 
@@ -422,6 +435,18 @@ public class RomanTimeClockView extends View
             long[] romanHours = data.getRomanHours();
             double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
             drawPie(canvas, cX, cY, radiusInner(cX), a, paintFillNight);
+        }
+
+        if (showTimeZone)
+        {
+            float r = (radiusInner(cX) - (2.5f * arcWidth));
+            final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
+
+            Path path = new Path();
+            path.addArc(circle, (float) Math.toDegrees(-Math.PI), (float) Math.toDegrees(-Math.PI));
+            paint.setColor(colorLabel);
+            paint.setTextSize(textSmall);
+            canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
         }
     }
 
