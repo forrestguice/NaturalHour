@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.romantime.R;
 import com.forrestguice.suntimes.romantime.data.RomanTimeCalculator;
 import com.forrestguice.suntimes.romantime.data.RomanTimeData;
@@ -117,7 +118,7 @@ public class RomanTimeFragment extends Fragment
             double longitude = Double.parseDouble(config.location[2]);
             double altitude = Double.parseDouble(config.location[3]);
 
-            cardAdapter = new RomanTimeCardAdapter(getActivity(), latitude, longitude, altitude, info.timezone, new RomanTimeAdapterOptions(getActivity(), info));
+            cardAdapter = new RomanTimeCardAdapter(getActivity(), latitude, longitude, altitude, getTimeZone(info), new RomanTimeAdapterOptions(getActivity(), info));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -171,21 +172,21 @@ public class RomanTimeFragment extends Fragment
                 CharSequence[] dayHours = new String[12];
                 StringBuilder debugDisplay0 = new StringBuilder("Day");
                 for (int i=0; i<dayHours.length; i++) {
-                    dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], options.suntimes_info.timezone, is24);
+                    dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], getTimeZone(options.suntimes_info), is24);
                     debugDisplay0.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                 }
 
                 CharSequence[] nightHours = new String[12];
                 StringBuilder debugDisplay1 = new StringBuilder("Night");
                 for (int i=0; i<nightHours.length; i++) {
-                    nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], options.suntimes_info.timezone, is24);
+                    nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], getTimeZone(options.suntimes_info), is24);
                     debugDisplay1.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                 }
 
                 text_date.setText(DisplayStrings.formatDate(context, data.getDateMillis()));
                 text_sunrise.setText(debugDisplay0.toString());
                 text_sunset.setText(debugDisplay1.toString());
-                clockface.setTimeZone(getTimeZone(options.suntimes_info.timezone));
+                clockface.setTimeZone(getTimeZone(options.suntimes_info));
                 clockface.setData(data);
 
             } else {
@@ -194,10 +195,6 @@ public class RomanTimeFragment extends Fragment
                 text_sunset.setText("");
             }
         }
-    }
-
-    public static TimeZone getTimeZone(String tzID) {
-        return TimeZone.getTimeZone(tzID);  // TODO: support solar time
     }
 
     /**
@@ -227,9 +224,9 @@ public class RomanTimeFragment extends Fragment
         private double latitude;
         private double longitude;
         private double altitude;
-        private String timezone;
+        private TimeZone timezone;
 
-        public RomanTimeCardAdapter(Context context, double latitude, double longitude, double altitude, String timezone, RomanTimeAdapterOptions options)
+        public RomanTimeCardAdapter(Context context, double latitude, double longitude, double altitude, TimeZone timezone, RomanTimeAdapterOptions options)
         {
             contextRef = new WeakReference<>(context);
             this.latitude = latitude;
@@ -310,7 +307,7 @@ public class RomanTimeFragment extends Fragment
         protected RomanTimeData createData(int position)
         {
             Calendar date = Calendar.getInstance();
-            date.setTimeZone(TimeZone.getTimeZone(timezone));
+            date.setTimeZone(getTimeZone(info));
             date.add(Calendar.DATE, position - TODAY_POSITION);
             date.set(Calendar.HOUR_OF_DAY, 12);
             date.set(Calendar.MINUTE, 0);
@@ -418,6 +415,23 @@ public class RomanTimeFragment extends Fragment
 
         @Override protected int getVerticalSnapPreference() {
             return LinearSmoothScroller.SNAP_TO_START;
+        }
+    }
+
+    public static TimeZone getTimeZone(SuntimesInfo info)
+    {
+        if (info.timezoneMode.equals("CURRENT_TIMEZONE")) {
+            return TimeZone.getDefault();
+
+        } else if (info.timezoneMode.equals("SOLAR_TIME")) {
+            if (info.solartimeMode.equals("LOCAL_MEAN_TIME")) {
+                return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(info.location[2]),  "Local Mean Time");
+            } else {
+                return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(info.location[2]),  "Apparent Solar Time");
+            }
+
+        } else {
+            return TimeZone.getTimeZone(info.timezone);
         }
     }
 

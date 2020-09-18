@@ -95,13 +95,13 @@ public class DisplayStrings
         return dateFormat.format(date.getTime());
     }
 
-    public static CharSequence formatTime(@NonNull Context context, long dateTime, String timezone, boolean is24Hr)
+    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dateTime);
         String format = (is24Hr ? context.getString(R.string.format_time24) : context.getString(R.string.format_time12));
         SimpleDateFormat timeFormat = new SimpleDateFormat(format, Locale.getDefault());
-        timeFormat.setTimeZone(TimeZone.getTimeZone(timezone));
+        timeFormat.setTimeZone(timezone);
         return timeFormat.format(calendar.getTime());
     }
 
