@@ -187,6 +187,11 @@ public class RomanTimeFragment extends Fragment
                 text_sunrise.setText(debugDisplay0.toString());
                 text_sunset.setText(debugDisplay1.toString());
                 clockface.setTimeZone(getTimeZone(options.suntimes_info));
+                clockface.setShowVigilia(true);
+                clockface.setShowTime(true);
+                clockface.setStartAngle(RomanTimeClockView.START_BOTTOM);
+                clockface.set24HourMode(options.suntimes_options.time_is24);
+                clockface.setShowNightBackground(false);
                 clockface.setData(data);
 
             } else {
