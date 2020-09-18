@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="icToday" format="reference" />
     <attr name="icHelp" format="reference" />
     <attr name="icAbout" format="reference" />
 

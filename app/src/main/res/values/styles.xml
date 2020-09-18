@@ -11,6 +11,7 @@
         <item name="colorAction">@color/colorAction_light</item>
         <item name="colorDisabled">@color/colorDisabled_light</item>
 
+        <item name="icToday">@drawable/ic_today_light</item>
         <item name="icHelp">@drawable/ic_help_light</item>
         <item name="icAbout">@drawable/ic_about_light</item>
 
@@ -32,6 +33,7 @@
         <item name="colorAction">@color/colorAction_dark</item>
         <item name="colorDisabled">@color/colorDisabled_dark</item>
 
+        <item name="icToday">@drawable/ic_today</item>
         <item name="icHelp">@drawable/ic_help</item>
         <item name="icAbout">@drawable/ic_about</item>
 
