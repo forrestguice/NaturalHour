@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.forrestguice.suntimes.romantime.MainActivity">
+
+    <item
+        android:id="@+id/action_today"
+        android:orderInCategory="100"
+        android:icon="?attr/icToday"
+        android:title="@string/action_today"
+        app:showAsAction="ifRoom" />
+
+</menu>

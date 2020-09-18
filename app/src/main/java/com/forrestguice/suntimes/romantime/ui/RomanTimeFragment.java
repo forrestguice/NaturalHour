@@ -33,6 +33,9 @@ import android.support.v7.widget.SnapHelper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -61,6 +64,10 @@ public class RomanTimeFragment extends Fragment
     protected SuntimesInfo info;
     public void setSuntimesInfo(SuntimesInfo value) {
         info = value;
+    }
+
+    public RomanTimeFragment() {
+        setHasOptionsMenu(true);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -141,6 +148,31 @@ public class RomanTimeFragment extends Fragment
         }
     };
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_roman, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        switch (id)
+        {
+            case R.id.action_today:
+                showToday();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void showToday() {
+        cardView.smoothScrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -192,6 +224,7 @@ public class RomanTimeFragment extends Fragment
                 clockface.setStartAngle(RomanTimeClockView.START_BOTTOM);
                 clockface.set24HourMode(options.suntimes_options.time_is24);
                 clockface.setShowNightBackground(false);
+                clockface.setShowTimeZone(true);
                 clockface.setData(data);
 
             } else {
