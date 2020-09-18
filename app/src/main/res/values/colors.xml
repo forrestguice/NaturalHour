@@ -29,7 +29,7 @@
     <color name="colorDisabled_dark">#aaaaaa</color>
 
     <color name="card_dark">@color/grey_900</color>
-    <color name="card_dark_selected">@color/grey_800</color>
+    <color name="card_dark_selected">@color/grey_900</color>
     <color name="fab_background_dark">@color/colorAction_dark</color>
     <color name="fab_ripple_dark">#c66a00</color>
 
