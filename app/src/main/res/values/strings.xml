@@ -32,31 +32,31 @@
 
     <string-array name="hour_phrase">
         <item>0</item>
-        <item>first hour of the day</item>
-        <item>second hour of the day</item>
-        <item>third hour of the day</item>
-        <item>fourth hour of the day</item>
-        <item>fifth hour of the day</item>
-        <item>sixth hour of the day</item>
-        <item>seventh hour of the day</item>
-        <item>eighth hour of the day</item>
-        <item>ninth hour of the day</item>
-        <item>tenth hour of the day</item>
-        <item>eleventh hour of the day</item>
-        <item>twelfth hour of the day</item>
+        <item>first hour\nof the day</item>
+        <item>second hour\nof the day</item>
+        <item>third hour\nof the day</item>
+        <item>fourth hour\nof the day</item>
+        <item>fifth hour\nof the day</item>
+        <item>sixth hour\nof the day</item>
+        <item>seventh hour\nof the day</item>
+        <item>eighth hour\nof the day</item>
+        <item>ninth hour\nof the day</item>
+        <item>tenth hour\nof the day</item>
+        <item>eleventh hour\nof the day</item>
+        <item>twelfth hour\nof the day</item>
 
-        <item>first hour of the night</item>
-        <item>second hour of the night</item>
-        <item>third hour of the night</item>
-        <item>fourth hour of the night</item>
-        <item>fifth hour of the night</item>
-        <item>sixth hour of the night</item>
-        <item>seventh hour of the night</item>
-        <item>eighth hour of the night</item>
-        <item>ninth hour of the night</item>
-        <item>tenth hour of the night</item>
-        <item>eleventh hour of the night</item>
-        <item>twelfth hour of the night</item>
+        <item>first hour\nof the night</item>
+        <item>second hour\nof the night</item>
+        <item>third hour\nof the night</item>
+        <item>fourth hour\nof the night</item>
+        <item>fifth hour\nof the night</item>
+        <item>sixth hour\nof the night</item>
+        <item>seventh hour\nof the night</item>
+        <item>eighth hour\nof the night</item>
+        <item>ninth hour\nof the night</item>
+        <item>tenth hour\nof the night</item>
+        <item>eleventh hour\nof the night</item>
+        <item>twelfth hour\nof the night</item>
     </string-array>
 
     <string-array name="help_topics">      <!-- in order of appearance -->
