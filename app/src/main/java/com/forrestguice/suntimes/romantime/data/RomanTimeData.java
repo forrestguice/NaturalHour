@@ -208,6 +208,24 @@ public class RomanTimeData implements Parcelable
                 ((second / (60d * 60d * 24d)) * twoPI);
     }
 
+    public static int findRomanHour(Calendar now, RomanTimeData data)
+    {
+        double dayAngle =  data.getDayHourAngle();
+        double nightAngle = data.getNightHourAngle();
+        double timeAngle = RomanTimeData.getAngle(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+        TimeZone timezone = now.getTimeZone();
+
+        for (int i=0; i<data.romanHours.length; i++)
+        {
+            double a0 = RomanTimeData.getAngle(data.romanHours[i], timezone);
+            double a1 = a0 + (i < 12 ? dayAngle : nightAngle);
+            if (timeAngle >= a0 && timeAngle < a1) {
+                return (i + 1);
+            }
+        }
+        return 0;
+    }
+
     public long[] getRomanHours() {
         return romanHours;
     }

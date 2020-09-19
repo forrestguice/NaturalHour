@@ -3,34 +3,37 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".ui.RomanTimeFragment">
 
+    <TextView  android:layout_margin="8dp"
+        android:id="@+id/text_date" style="@style/TableHeadDateView" android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Today\nApril 1, 2016" />
+
     <com.forrestguice.suntimes.romantime.ui.RomanTimeClockView
         android:id="@+id/clockface"
-        android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp" android:layout_marginRight="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/text_date"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clockface">
+        android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/clockface"
+        app:layout_constraintStart_toStartOf="@+id/clockface"
+        app:layout_constraintEnd_toEndOf="@+id/clockface"
+        android:layout_margin="8dp">
 
-        <TextView  android:layout_margin="16dp"
-            android:id="@+id/text_date" style="@style/TableHeadDateView" android:layout_gravity="center_horizontal"
+        <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/text_time_romanhour0" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="Today\nApril 1, 2016" />
+            tools:text="XI" />
 
-        <TextView
-            android:id="@+id/text_sunrise" android:gravity="right|end"
+        <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/text_time_romanhour1" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="sunrise" android:layout_margin="8dp" />
-
-        <TextView
-            android:id="@+id/text_sunset" android:gravity="right|end"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="sunset" android:layout_margin="8dp" />
+            tools:text="11th hour of the day" />
 
     </LinearLayout>
-
 
 </android.support.constraint.ConstraintLayout>
