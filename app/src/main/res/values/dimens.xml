@@ -9,6 +9,7 @@
 
     <dimen name="clockface_tick_major_width">2dp</dimen>
     <dimen name="clockface_tick_minor_width">1.5dp</dimen>
+    <dimen name="clockface_tick_tiny_width">1dp</dimen>
 
     <dimen name="clockface_stroke_width">1.5dp</dimen>
     <dimen name="clockface_hand_width">1.5dp</dimen>

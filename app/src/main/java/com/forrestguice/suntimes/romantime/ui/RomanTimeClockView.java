@@ -166,7 +166,7 @@ public class RomanTimeClockView extends View
     private int textMedium;
     private int textSmall;
 
-    private Paint paint, paintLabel, paintHand, paintTickMajor, paintTickMinor, paintArcFillDay, paintArcFillNight, paintArcBorder, paintFillNight, paintCenter, paintBackground;
+    private Paint paint, paintLabel, paintHand, paintTickMajor, paintTickMinor, paintTickTiny, paintArcFillDay, paintArcFillNight, paintArcBorder, paintFillNight, paintCenter, paintBackground;
 
     private void initPaint(Context context)
     {
@@ -227,6 +227,13 @@ public class RomanTimeClockView extends View
         paintTickMinor.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_minor_width));
         paintTickMinor.setAntiAlias(true);
         paintTickMinor.setTextAlign(Paint.Align.CENTER);
+
+        paintTickTiny = new Paint();
+        paintTickTiny.setColor(colorFrame);
+        paintTickTiny.setStyle(Paint.Style.STROKE);
+        paintTickTiny.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_tiny_width));
+        paintTickTiny.setAntiAlias(true);
+        paintTickTiny.setTextAlign(Paint.Align.CENTER);
 
         paintArcBorder = new Paint();
         paintArcBorder.setStyle(Paint.Style.STROKE);
@@ -372,21 +379,21 @@ public class RomanTimeClockView extends View
         float rMajorTick = r0 - tickLength;
         float rMediumTick = r0 - tickLength / 2f;
         float rMinorTick = r0 - (tickLength / 3f);
+        float rTinyTick = r0 - (tickLength / 4f);
         double a = startAngle;
+        double oneHourRad = Math.PI / 12d;
+
         for (int i=1; i<=24; i++)
         {
-            a += ((2 * Math.PI) / 24f);
+            a += ((2 * Math.PI) / 24f);              // +0
+            double a1 = a + (oneHourRad / 4d);       // +15m
+            double a2 = a + (2 * oneHourRad / 4d);   // +30m
+            double a3 = a + (3 * oneHourRad / 4d);   // +45m
             float r = (i % 3 == 0) ? (i % 6 == 0) ? rMajorTick : rMediumTick : rMinorTick;
-            double cosA = Math.cos(a);
-            double sinA = Math.sin(a);
-
-            double x0 = cX + r * cosA;
-            double y0 = cY + r * sinA;
-
-            double x1 = cX + r0 * cosA;
-            double y1 = cY + r0 * sinA;
-
-            canvas.drawLine((float)x0, (float)y0, (float)x1, (float)y1, (i % 6 == 0 ? paintTickMajor : paintTickMinor));
+            drawRay(canvas, cX, cY, a, r0, r, (i % 6 == 0 ? paintTickMajor : paintTickMinor));
+            drawRay(canvas, cX, cY, a1, r0, rTinyTick, paintTickTiny);
+            drawRay(canvas, cX, cY, a2, r0, rTinyTick, paintTickTiny);
+            drawRay(canvas, cX, cY, a3, r0, rTinyTick, paintTickTiny);
         }
     }
 
