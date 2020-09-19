@@ -90,6 +90,13 @@ public class RomanTimeFragment extends Fragment
         return view;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        cardAdapter.notifyDataSetChanged();
+    }
+
     protected void initViews(View content)
     {
         cardView = (RecyclerView) content.findViewById(R.id.cardView);
@@ -226,8 +233,9 @@ public class RomanTimeFragment extends Fragment
                 text_hour_long.setText(phrase[currentHour]);
 
                 clockface.setTimeZone(getTimeZone(options.suntimes_info));
-                clockface.setShowVigilia(true);
+                clockface.setShowVigilia(false);
                 clockface.setShowTime(true);
+                clockface.setStartAngle(RomanTimeClockView.START_BOTTOM);
                 clockface.set24HourMode(options.suntimes_options.time_is24);
                 clockface.setShowNightBackground(false);
                 clockface.setShowTimeZone(true);
