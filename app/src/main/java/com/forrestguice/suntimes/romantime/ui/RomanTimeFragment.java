@@ -135,8 +135,7 @@ public class RomanTimeFragment extends Fragment
     private RomanTimeAdapterListener cardListener = new RomanTimeAdapterListener()
     {
         public void onDateClick(int position) {
-            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
-            // TODO
+            showToday();
         }
         public void onCardClick(int position) {
             Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
