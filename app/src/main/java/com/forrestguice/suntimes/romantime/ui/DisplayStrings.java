@@ -88,6 +88,21 @@ public class DisplayStrings
         return dateFormat.format(date.getTime());
     }
 
+    public static CharSequence formatDateHeader(Context context, int dayDelta, CharSequence formattedDate)
+    {
+        if (dayDelta == 0) {
+            return context.getString(R.string.format_date_today, formattedDate);
+        } else if (dayDelta == -1) {
+            return context.getString(R.string.format_date_yesterday, ""+Math.abs(dayDelta), formattedDate);
+        } else if (dayDelta == 1) {
+            return context.getString(R.string.format_date_tomorrow, ""+Math.abs(dayDelta), formattedDate);
+        } else if (dayDelta > 1) {
+            return context.getString(R.string.format_date_future, ""+Math.abs(dayDelta), formattedDate);
+        } else {
+            return context.getString(R.string.format_date_past, ""+Math.abs(dayDelta), formattedDate);
+        }
+    }
+
     public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
     {
         Calendar calendar = Calendar.getInstance();

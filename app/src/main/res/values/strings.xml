@@ -5,8 +5,8 @@
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
 
-    <string name="format_date">EEEE\nMMMM d</string>              <!-- Thursday, February 27 -->
-    <string name="format_date_long">EEEE\nMMMM d, yyyy</string>   <!-- Thursday, February 27, 2020 -->
+    <string name="format_date">MMMM d\nEEEE</string>              <!-- Thursday, February 27 -->
+    <string name="format_date_long">MMMM d, yyyy\nEEEE</string>   <!-- Thursday, February 27, 2020 -->
     <string name="format_location">%s, %s</string>                <!-- lat, lon -->
     <string name="format_location_long">%s, %s %s</string>        <!-- lat, lon [alt] -->
     <string name="format_location_altitude">%1$s%2$s</string>     <!-- altitude, e.g. 1600m -->
@@ -18,6 +18,12 @@
     <string name="units_feet_short">ft</string>
     <string name="units_meters">meters</string>
     <string name="units_meters_short">m</string>
+
+    <string name="format_date_past">Past (-%1$s)\n%2$s</string>         <!-- e.g. "Past [-1] \n [format_date] " -->
+    <string name="format_date_yesterday">Yesterday\n%2$s</string>      <!-- e.g. "Yesterday \n [format_date] " -->
+    <string name="format_date_today">Today\n%1$s</string>              <!-- e.g. "Today \n [format_date] " -->
+    <string name="format_date_tomorrow">Tomorrow\n%2$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
+    <string name="format_date_future">Future (+%1$s)\n%2$s</string>     <!-- e.g. "Future [+1] \n [format_date] " -->
 
     <string name="vigilia_prima">vigilia prima</string>
     <string name="vigilia_secunda">vigilia secunda</string>
