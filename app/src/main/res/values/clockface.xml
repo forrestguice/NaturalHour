@@ -2,6 +2,7 @@
     <!-- flags -->
     <bool name="clockface_start_at_top">false</bool>
     <bool name="clockface_show_timezone">true</bool>
+    <bool name="clockface_show_date">true</bool>
     <bool name="clockface_show_vigilia">true</bool>
     <bool name="clockface_show_hand_simple">false</bool>
     <bool name="clockface_show_ticks_5m">true</bool>
@@ -37,7 +38,8 @@
     <color name="clockColorNightBorder_light">#3F51B5</color>
     <color name="clockColorNight_light">#002171</color>
     <color name="clockColorNightLabel_light">@color/sun_rising_dark</color>
-    <color name="clockColorBackground_light">@color/grey_800</color>
+    <color name="clockColorFace_light">@color/grey_900</color>
+    <color name="clockColorPlate_light">@color/grey_600</color>
     <color name="clockColorBorder_light">#FFFFFF</color>
     <color name="clockColorFrame_light">#FFFFFF</color>
     <color name="clockColorCenter_light">#FFFFFF</color>
@@ -54,7 +56,8 @@
     <color name="clockColorNightBorder_dark">@color/grey_600</color>
     <color name="clockColorNight_dark">#0D47A1</color>
     <color name="clockColorNightLabel_dark">#FFFFFF</color>
-    <color name="clockColorBackground_dark">@color/grey_900</color>
+    <color name="clockColorFace_dark">@color/grey_900</color>
+    <color name="clockColorPlate_dark">@color/grey_900</color>
     <color name="clockColorFrame_dark">@color/grey_200</color>
     <color name="clockColorCenter_dark">@color/deep_teal_200</color>
     <color name="clockColorHand_dark">@color/deep_teal_200</color>

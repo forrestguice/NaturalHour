@@ -23,8 +23,8 @@
         <item name="colorTime">@color/colorTime_light</item>
         <item name="colorValue">@color/colorValue_light</item>
 
-        <item name="clockColorBackground">@color/clockColorBackground_light</item>
-        <item name="clockColorFrame">@color/clockColorFrame_light</item>
+        <item name="clockColorFace">@color/clockColorFace_light</item>
+        <item name="clockColorPlate">@color/clockColorPlate_light</item>
         <item name="clockColorCenter">@color/clockColorCenter_light</item>
         <item name="clockColorHand">@color/clockColorHand_light</item>
         <item name="clockColorLabel1">@color/clockColorLabel1_light</item>
@@ -58,7 +58,8 @@
         <item name="colorTime">@color/colorTime_dark</item>
         <item name="colorValue">@color/colorValue_dark</item>
 
-        <item name="clockColorBackground">@color/clockColorBackground_dark</item>
+        <item name="clockColorFace">@color/clockColorFace_dark</item>
+        <item name="clockColorPlate">@color/clockColorPlate_dark</item>
         <item name="clockColorFrame">@color/clockColorFrame_dark</item>
         <item name="clockColorCenter">@color/clockColorCenter_dark</item>
         <item name="clockColorHand">@color/clockColorHand_dark</item>

@@ -203,7 +203,8 @@ public class RomanTimeClockView extends View
         protected int colorNight = Color.BLUE;
         protected int colorNight1 = ColorUtils.setAlphaComponent(colorNight, 128);
         protected int colorNightLabel = Color.YELLOW;
-        protected int colorBackground = Color.DKGRAY;
+        protected int colorFace = Color.DKGRAY;
+        protected int colorPlate = Color.BLACK;
         protected int colorArcDayBorder = Color.WHITE;
         protected int colorArcNightBorder = Color.DKGRAY;
         protected int colorFrame = Color.WHITE;
@@ -218,30 +219,32 @@ public class RomanTimeClockView extends View
         public ClockColorValues(Context context)
         {
             int[] attrs = new int[] {
-                    R.attr.clockColorBackground, R.attr.clockColorFrame, R.attr.clockColorCenter, R.attr.clockColorHand,
+                    R.attr.clockColorPlate, R.attr.clockColorFace, R.attr.clockColorFrame,
+                    R.attr.clockColorCenter, R.attr.clockColorHand,
                     R.attr.clockColorLabel1, R.attr.clockColorLabel2,
                     R.attr.clockColorDayFill, R.attr.clockColorDayText, R.attr.clockColorDayBorder,
                     R.attr.clockColorNightFill, R.attr.clockColorNightText, R.attr.clockColorNightBorder
             };
             TypedArray a = context.obtainStyledAttributes(attrs);
 
-            colorBackground = ContextCompat.getColor(context, a.getResourceId(0, R.color.clockColorBackground_dark));
-            colorFrame = ContextCompat.getColor(context, a.getResourceId(1, R.color.clockColorFrame_dark));
-            colorCenter = ContextCompat.getColor(context, a.getResourceId(2, R.color.clockColorCenter_dark));
-            colorHand = ContextCompat.getColor(context, a.getResourceId(3, R.color.clockColorHand_dark));
-            colorLabel = ContextCompat.getColor(context, a.getResourceId(4, R.color.clockColorLabel1_dark));
-            colorLabel1 = ContextCompat.getColor(context, a.getResourceId(5, R.color.clockColorLabel2_dark));
+            colorPlate = ContextCompat.getColor(context, a.getResourceId(0, R.color.clockColorPlate_dark));
+            colorFace = ContextCompat.getColor(context, a.getResourceId(1, R.color.clockColorFace_dark));
+            colorFrame = ContextCompat.getColor(context, a.getResourceId(2, R.color.clockColorFrame_dark));
+            colorCenter = ContextCompat.getColor(context, a.getResourceId(3, R.color.clockColorCenter_dark));
+            colorHand = ContextCompat.getColor(context, a.getResourceId(4, R.color.clockColorHand_dark));
+            colorLabel = ContextCompat.getColor(context, a.getResourceId(5, R.color.clockColorLabel1_dark));
+            colorLabel1 = ContextCompat.getColor(context, a.getResourceId(6, R.color.clockColorLabel2_dark));
 
-            colorDay = ContextCompat.getColor(context, a.getResourceId(6, R.color.clockColorDay_dark));
-            colorDayLabel = ContextCompat.getColor(context, a.getResourceId(7, R.color.clockColorDayLabel_dark));
-            colorArcDayBorder = ContextCompat.getColor(context, a.getResourceId(8, R.color.clockColorDayBorder_dark));
+            colorDay = ContextCompat.getColor(context, a.getResourceId(7, R.color.clockColorDay_dark));
+            colorDayLabel = ContextCompat.getColor(context, a.getResourceId(8, R.color.clockColorDayLabel_dark));
+            colorArcDayBorder = ContextCompat.getColor(context, a.getResourceId(9, R.color.clockColorDayBorder_dark));
             colorDay1 = ColorUtils.setAlphaComponent(colorDay, 128);
             colorDay1AM = ContextCompat.getColor(context, R.color.clockColorAM_dark);
             colorDay1PM = ContextCompat.getColor(context, R.color.clockColorPM_dark);
 
-            colorNight = ContextCompat.getColor(context, a.getResourceId(9, R.color.clockColorNight_dark));
-            colorNightLabel = ContextCompat.getColor(context, a.getResourceId(10, R.color.clockColorNightLabel_dark));
-            colorArcNightBorder = ContextCompat.getColor(context, a.getResourceId(11, R.color.clockColorNightBorder_dark));
+            colorNight = ContextCompat.getColor(context, a.getResourceId(10, R.color.clockColorNight_dark));
+            colorNightLabel = ContextCompat.getColor(context, a.getResourceId(11, R.color.clockColorNightLabel_dark));
+            colorArcNightBorder = ContextCompat.getColor(context, a.getResourceId(12, R.color.clockColorNightBorder_dark));
             colorNight1 = ColorUtils.setAlphaComponent(colorNight, 128);
 
             a.recycle();
@@ -298,7 +301,7 @@ public class RomanTimeClockView extends View
 
         paintBackground = new Paint();
         paintBackground.setStyle(Paint.Style.FILL);
-        paintBackground.setColor(colors.colorBackground);
+        paintBackground.setColor(colors.colorFace);
         paintBackground.setStrokeWidth(centerRadius);
         paintBackground.setAntiAlias(true);
 
@@ -557,8 +560,12 @@ public class RomanTimeClockView extends View
 
     protected void drawBackground(Canvas canvas, float cX, float cY)
     {
-        canvas.drawCircle(cX, cY, cX - arcWidth, paintBackground);
-        //canvas.drawCircle(cX, cY, cX, paintBackground);
+        paintBackground.setColor(colors.colorPlate);
+        canvas.drawCircle(cX, cY, radiusOuter1(cX), paintBackground);
+
+        paintBackground.setColor(colors.colorFace);
+        canvas.drawCircle(cX, cY, radiusOuter(cX), paintBackground);
+
 
         if (data != null && data.isCalculated())
         {
