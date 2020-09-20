@@ -19,7 +19,6 @@
 
 package com.forrestguice.suntimes.romantime.ui;
 
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -432,7 +431,7 @@ public class RomanTimeClockView extends View
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
 
                     paint.setTextSize(textSmall);
-                    CharSequence label = DisplayStrings.formatNightWatchLabel(getContext(), c);
+                    CharSequence label = DisplayStrings.formatNightWatchLabel(getContext(), c, true);
                     labelPath.reset();
 
                     if (startAngle < 0) {

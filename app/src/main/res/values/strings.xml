@@ -25,10 +25,20 @@
     <string name="format_date_tomorrow">Tomorrow\n%2$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
     <string name="format_date_future">Future (+%1$s)\n%2$s</string>     <!-- e.g. "Future [+1] \n [format_date] " -->
 
-    <string name="vigilia_prima">vigilia prima</string>
-    <string name="vigilia_secunda">vigilia secunda</string>
-    <string name="vigilia_tertia">vigilia tertia</string>
-    <string name="vigilia_quarta">vigilia quarta</string>
+    <string-array name="vigilia_phrase_latin" translatable="false">
+        <item>0</item>
+        <item>vigilia prima</item>
+        <item>vigilia secunda</item>
+        <item>vigilia tertia</item>
+        <item>vigilia quarta</item>
+    </string-array>
+    <string-array name="vigilia_phrase">
+        <item>0</item>
+        <item>first watch</item>
+        <item>second watch</item>
+        <item>third watch</item>
+        <item>fourth watch</item>
+    </string-array>
 
     <string-array name="hour_phrase">
         <item>0</item>
