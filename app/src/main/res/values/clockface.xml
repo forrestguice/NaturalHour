@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- light color theme -->
+    <color name="clockColorAM_light">@color/sun_rising_light</color>
+    <color name="clockColorPM_light">@color/sun_setting_light</color>
+    <color name="clockColorDayBorder_light">#FFFFFF</color>
+    <color name="clockColorDay_light">@color/grey_800</color>
+    <color name="clockColorDayLabel_light">#FFFFFF</color>
+    <color name="clockColorNightBorder_light">#3F51B5</color>
+    <color name="clockColorNight_light">#002171</color>
+    <color name="clockColorNightLabel_light">@color/sun_rising_dark</color>
+    <color name="clockColorBackground_light">@color/grey_800</color>
+    <color name="clockColorBorder_light">#FFFFFF</color>
+    <color name="clockColorFrame_light">#FFFFFF</color>
+    <color name="clockColorCenter_light">#FFFFFF</color>
+    <color name="clockColorHand_light">@color/colorAccent_dark</color>
+    <color name="clockColorLabel1_light">#FFFFFF</color>
+    <color name="clockColorLabel2_light">@color/grey_400</color>
+
+    <!-- dark color theme -->
+    <color name="clockColorAM_dark">@color/grey_800</color> <!-- aaffd500 -->
+    <color name="clockColorPM_dark">@color/grey_850</color> <!-- #aaff9900 -->
+    <color name="clockColorDayBorder_dark">#FFFFFF</color>
+    <color name="clockColorDay_dark">@color/grey_800</color>
+    <color name="clockColorDayLabel_dark">#FFFFFF</color>
+    <color name="clockColorNightBorder_dark">@color/grey_600</color>
+    <color name="clockColorNight_dark">#0D47A1</color>
+    <color name="clockColorNightLabel_dark">#FFFFFF</color>
+    <color name="clockColorBackground_dark">@color/grey_900</color>
+    <color name="clockColorFrame_dark">@color/grey_200</color>
+    <color name="clockColorCenter_dark">@color/deep_teal_200</color>
+    <color name="clockColorHand_dark">@color/deep_teal_200</color>
+    <color name="clockColorLabel1_dark">#FFFFFF</color>
+    <color name="clockColorLabel2_dark">@color/grey_300</color>
+
+</resources>

@@ -10,4 +10,17 @@
     <attr name="colorTime" format="reference" />
     <attr name="colorValue" format="reference" />
 
+    <attr name="clockColorBackground" format="reference" />
+    <attr name="clockColorFrame" format="reference" />
+    <attr name="clockColorCenter" format="reference" />
+    <attr name="clockColorHand" format="reference" />
+    <attr name="clockColorDayBorder" format="reference" />
+    <attr name="clockColorDayFill" format="reference" />
+    <attr name="clockColorDayText" format="reference" />
+    <attr name="clockColorNightBorder" format="reference" />
+    <attr name="clockColorNightFill" format="reference" />
+    <attr name="clockColorNightText" format="reference" />
+    <attr name="clockColorLabel1" format="reference" />
+    <attr name="clockColorLabel2" format="reference" />
+
 </resources>

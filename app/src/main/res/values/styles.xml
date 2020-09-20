@@ -22,6 +22,19 @@
         <item name="colorLabel">@color/colorLabel_light</item>
         <item name="colorTime">@color/colorTime_light</item>
         <item name="colorValue">@color/colorValue_light</item>
+
+        <item name="clockColorBackground">@color/clockColorBackground_light</item>
+        <item name="clockColorFrame">@color/clockColorFrame_light</item>
+        <item name="clockColorCenter">@color/clockColorCenter_light</item>
+        <item name="clockColorHand">@color/clockColorHand_light</item>
+        <item name="clockColorLabel1">@color/clockColorLabel1_light</item>
+        <item name="clockColorLabel2">@color/clockColorLabel2_light</item>
+        <item name="clockColorDayBorder">@color/clockColorDayBorder_light</item>
+        <item name="clockColorDayFill">@color/clockColorDay_light</item>
+        <item name="clockColorDayText">@color/clockColorDayLabel_light</item>
+        <item name="clockColorNightBorder">@color/clockColorNightBorder_light</item>
+        <item name="clockColorNightFill">@color/clockColorNight_light</item>
+        <item name="clockColorNightText">@color/clockColorNightLabel_light</item>
     </style>
 
     <!-- Dark theme -->
@@ -44,6 +57,20 @@
         <item name="colorLabel">@color/colorLabel_dark</item>
         <item name="colorTime">@color/colorTime_dark</item>
         <item name="colorValue">@color/colorValue_dark</item>
+
+        <item name="clockColorBackground">@color/clockColorBackground_dark</item>
+        <item name="clockColorFrame">@color/clockColorFrame_dark</item>
+        <item name="clockColorCenter">@color/clockColorCenter_dark</item>
+        <item name="clockColorHand">@color/clockColorHand_dark</item>
+        <item name="clockColorLabel1">@color/clockColorLabel1_dark</item>
+        <item name="clockColorLabel2">@color/clockColorLabel2_dark</item>
+        <item name="clockColorDayBorder">@color/clockColorDayBorder_dark</item>
+        <item name="clockColorDayFill">@color/clockColorDay_dark</item>
+        <item name="clockColorDayText">@color/clockColorDayLabel_dark</item>
+        <item name="clockColorNightBorder">@color/clockColorNightBorder_dark</item>
+        <item name="clockColorNightFill">@color/clockColorNight_dark</item>
+        <item name="clockColorNightText">@color/clockColorNightLabel_dark</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">

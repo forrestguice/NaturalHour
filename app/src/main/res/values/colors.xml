@@ -19,7 +19,6 @@
     <color name="colorTime_light">#FF4081</color>
     <color name="colorValue_light">#3F51B5</color>
 
-
     <!-- dark theme colors -->
 
     <color name="colorPrimary_dark">@color/grey_900</color>
@@ -37,6 +36,5 @@
     <color name="colorLabel_dark">#FFFFFF</color>
     <color name="colorTime_dark">#FFFFFF</color>
     <color name="colorValue_dark">#3F51B5</color>
-
 
 </resources>
