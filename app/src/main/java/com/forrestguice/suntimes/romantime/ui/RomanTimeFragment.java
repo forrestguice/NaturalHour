@@ -66,6 +66,7 @@ public class RomanTimeFragment extends Fragment
     protected SuntimesInfo info;
     public void setSuntimesInfo(SuntimesInfo value) {
         info = value;
+        cardAdapter.setCardOptions(new RomanTimeAdapterOptions(getActivity(), info));
     }
 
     public RomanTimeFragment() {
@@ -100,16 +101,17 @@ public class RomanTimeFragment extends Fragment
     }
 
     protected void startClockRunnable() {
-        //Log.d("DEBUG", "clockRunnable: starting..");
+        Log.d("DEBUG", "clockRunnable: starting..");
         cardView.post(clockUpdateRunnable);
     }
     protected void stopClockRunnable() {
-        //Log.d("DEBUG", "clockRunnable: stopping..");
+        Log.d("DEBUG", "clockRunnable: stopping..");
         cardView.removeCallbacks(clockUpdateRunnable);
     }
     private Runnable clockUpdateRunnable = new Runnable() {
         @Override
         public void run() {
+            Log.d("DEBUG", "clockRunnable: update clock");
             cardAdapter.notifyDataSetChanged();
             cardView.postDelayed(clockUpdateRunnable, CLOCK_UPDATE_INTERVAL);
         }
@@ -121,6 +123,10 @@ public class RomanTimeFragment extends Fragment
     {
         stopClockRunnable();
         super.onStop();
+    }
+
+    public void updateViews() {
+        cardAdapter.notifyDataSetChanged();
     }
 
     protected void initViews(View content)
@@ -154,12 +160,7 @@ public class RomanTimeFragment extends Fragment
     {
         if (context != null)
         {
-            SuntimesInfo config = SuntimesInfo.queryInfo(context);
-            double latitude = Double.parseDouble(config.location[1]);
-            double longitude = Double.parseDouble(config.location[2]);
-            double altitude = Double.parseDouble(config.location[3]);
-
-            cardAdapter = new RomanTimeCardAdapter(getActivity(), latitude, longitude, altitude, getTimeZone(info), new RomanTimeAdapterOptions(getActivity(), info));
+            cardAdapter = new RomanTimeCardAdapter(getActivity(), new RomanTimeAdapterOptions(getActivity(), info));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -305,18 +306,9 @@ public class RomanTimeFragment extends Fragment
 
         protected WeakReference<Context> contextRef;
 
-        private double latitude;
-        private double longitude;
-        private double altitude;
-        private TimeZone timezone;
-
-        public RomanTimeCardAdapter(Context context, double latitude, double longitude, double altitude, TimeZone timezone, RomanTimeAdapterOptions options)
+        public RomanTimeCardAdapter(Context context, RomanTimeAdapterOptions options)
         {
             contextRef = new WeakReference<>(context);
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.altitude = altitude;
-            this.timezone = timezone;
             this.options = options;
         }
 
@@ -347,7 +339,10 @@ public class RomanTimeFragment extends Fragment
 
         private RomanTimeAdapterOptions options;
         public void setCardOptions(RomanTimeAdapterOptions options) {
+            Log.d("DEBUG", "setCardOptions");
             this.options = options;
+            cardAdapter.invalidateData();
+            cardAdapter.initData();
         }
         public RomanTimeAdapterOptions getOptions() {
             return options;
@@ -396,7 +391,7 @@ public class RomanTimeFragment extends Fragment
             date.set(Calendar.HOUR_OF_DAY, 12);
             date.set(Calendar.MINUTE, 0);
             date.set(Calendar.SECOND, 0);
-            return calculateData(new RomanTimeData(date.getTimeInMillis(), latitude, longitude, altitude));
+            return calculateData(new RomanTimeData(date.getTimeInMillis(), info.location[1], info.location[2], info.location[3]));
         }
 
         private RomanTimeData calculateData(RomanTimeData romanTimeData)

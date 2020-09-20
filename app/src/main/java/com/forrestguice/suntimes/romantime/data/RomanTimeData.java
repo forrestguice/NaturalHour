@@ -58,6 +58,14 @@ public class RomanTimeData implements Parcelable
         this.altitude = altitude;
     }
 
+    public RomanTimeData(long date, String latitude, String longitude, String altitude) {
+        this.calculated = false;
+        this.date = date;
+        this.latitude = Double.parseDouble(latitude);
+        this.longitude = Double.parseDouble(longitude);
+        this.altitude = Double.parseDouble(altitude);
+    }
+
     public RomanTimeData(ContentValues values) {
         initFromContentValues(values);
     }

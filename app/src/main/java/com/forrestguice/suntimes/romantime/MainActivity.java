@@ -101,18 +101,25 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
+        Log.d("DEBUG", "onResume");
         String appTheme = SuntimesInfo.queryAppTheme(getContentResolver());
         if (appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
             recreate();
-
         } else {
+            suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
             updateViews();
+        }
+    }
 
-            FragmentManager fragments = getSupportFragmentManager();
-            RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-            if (fragment != null) {
-                fragment.setSuntimesInfo(suntimesInfo);
-            }
+    @Override
+    protected void onResumeFragments()
+    {
+        super.onResumeFragments();
+        Log.d("DEBUG", "onResumeFragments");
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.setSuntimesInfo(suntimesInfo);
         }
     }
 
