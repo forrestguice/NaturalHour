@@ -627,14 +627,21 @@ public class RomanTimeClockView extends View
         {
             float r = radiusOuter1(cX) - arcWidth/2f;
             final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
-            double a0 = simplifyAngle(dayAngle + dayHourAngle * 6);
-            boolean onBottom = a0 > 0 && a0 < Math.PI;
+            boolean alongBottom = alongBottom(dayAngle + dayHourAngle * 6);
 
             Path path = new Path();
-            path.addArc(circle, (float) Math.toDegrees(onBottom ? nightAngle : dayAngle), (float) Math.toDegrees((onBottom ? -1 : 1) * dayHourAngle * 12));
+            double arcAngle = (alongBottom ? nightAngle : dayAngle);
+            double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
+            path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
             paint.setTextSize(textMedium);
             canvas.drawTextOnPath(formatDate(getContext(), data.getDateMillis()).toString(),  path, 0, textMedium/3f, paint);
         }
+    }
+
+    private boolean alongBottom(double radians)
+    {
+        double angle = simplifyAngle(radians);
+        return angle > 0 && angle < Math.PI;
     }
 
     public double simplifyAngle(double radians)
