@@ -23,8 +23,10 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.LinearSnapHelper;
@@ -87,6 +89,7 @@ public class RomanTimeFragment extends Fragment
 
         initData(getActivity());
         cardView.scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+
         return view;
     }
 
@@ -122,6 +125,7 @@ public class RomanTimeFragment extends Fragment
 
     protected void initViews(View content)
     {
+
         cardView = (RecyclerView) content.findViewById(R.id.cardView);
         cardView.setHasFixedSize(true);
         cardView.setLayoutManager(cardLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -256,12 +260,16 @@ public class RomanTimeFragment extends Fragment
                 text_hour_long.setText(phrase[currentHour]);
 
                 clockface.setTimeZone(getTimeZone(options.suntimes_info));
-                clockface.setShowVigilia(false);
+                //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_VIGILIA, true);
+                //clockface.setShow5mTicks(true);
+                //clockface.setShow15mTicks(true);
                 clockface.setShowTime(true);
-                clockface.setStartAngle(RomanTimeClockView.START_BOTTOM);
+                //clockface.setStartAngle(RomanTimeClockView.START_BOTTOM);
                 clockface.set24HourMode(options.suntimes_options.time_is24);
-                clockface.setShowNightBackground(false);
-                clockface.setShowTimeZone(true);
+                //clockface.setShowNightBackground(false);
+                //clockface.setShowDayBackground(true);
+                //clockface.setShowSimpleHourHand(true);
+                //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_TIMEZONE, true);
                 clockface.setData(data);
 
             } else {

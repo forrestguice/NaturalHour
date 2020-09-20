@@ -19,7 +19,10 @@
 
 package com.forrestguice.suntimes.romantime.ui;
 
+import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,6 +30,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -41,6 +45,18 @@ public class RomanTimeClockView extends View
 {
     public static final double START_TOP = -Math.PI / 2d;
     public static final double START_BOTTOM = Math.PI / 2d;
+
+    public static final String FLAG_START_AT_TOP = "startAtTop";
+    public static final String FLAG_SHOW_VIGILIA = "showVigilia";
+    public static final String FLAG_SHOW_TIMEZONE = "showTimeZone";
+    public static final String FLAG_SHOW_HAND_SIMPLE = "showHandSimple";
+    public static final String FLAG_SHOW_BACKGROUND_DAY = "showBackgroundDay";
+    public static final String FLAG_SHOW_BACKGROUND_NIGHT = "showBackgroundNight";
+    public static final String FLAG_SHOW_BACKGROUND_AMPM = "showBackgroundAmPm";
+    public static final String FLAG_SHOW_TICKS_15M = "showTick15m";
+    public static final String FLAG_SHOW_TICKS_5M = "showTick5m";
+
+    protected ContentValues flags = new ContentValues();
 
     protected RomanTimeData data;
     public void setData(RomanTimeData data) {
@@ -57,7 +73,7 @@ public class RomanTimeClockView extends View
         is24 = value;
     }
 
-    protected double startAngle = START_BOTTOM;
+    protected Double startAngle = null;
     public void setStartAngle(double radianValue) {
         startAngle = radianValue;
     }
@@ -67,36 +83,50 @@ public class RomanTimeClockView extends View
         showMinorTickLabels = value;
     }
 
-    protected boolean showNightBackground = true;
-    public void setShowNightBackground(boolean value) {
-        showNightBackground = value;
-    }
-
-    protected boolean showTimeZone = true;
-    public void setShowTimeZone(boolean value) {
-        showTimeZone = value;
-    }
-
-    protected boolean showVigilia = true;
-    public void setShowVigilia(boolean value) {
-        showVigilia = value;
-    }
-
     protected boolean showTime = true;
     public void setShowTime(boolean value) {
         showTime = value;
     }
 
+    private void initFlags(Context context)
+    {
+        setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
+        setFlagIfUnset(FLAG_SHOW_VIGILIA, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
+        setFlagIfUnset(FLAG_SHOW_HAND_SIMPLE, context.getResources().getBoolean(R.bool.clockface_show_hand_simple));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
+        setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
+        setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
+
+        setFlagIfUnset(FLAG_START_AT_TOP, context.getResources().getBoolean(R.bool.clockface_start_at_top));
+        startAngle = startAngle != null ? startAngle : (flags.getAsBoolean(FLAG_START_AT_TOP) ? START_TOP : START_BOTTOM);
+    }
+
+
+    protected void setFlag(String flag, boolean value) {
+        flags.put(flag, value);
+    }
+
+    protected void setFlagIfUnset(String flag, boolean value) {
+        if (!flags.containsKey(flag)) {
+            flags.put(flag, value);
+        }
+    }
+
     public RomanTimeClockView(Context context) {
         super(context);
+        initFlags(context);
     }
 
     public RomanTimeClockView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initFlags(context);
     }
 
     public RomanTimeClockView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initFlags(context);
     }
 
     @Override
@@ -134,42 +164,97 @@ public class RomanTimeClockView extends View
         drawTimeArcs(canvas, cX, cY);
         drawTicks(canvas, cX, cY, is24);
         drawTickLabels(canvas, cX, cY, is24);
-        drawFrame(canvas, cX, cY);
+        canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
 
         if (showTime) {
             drawHourHand(Calendar.getInstance(timezone), canvas, cX, cY, radiusInner(cX));
         }
     }
 
-    private int colorDay = Color.DKGRAY;
-    private int colorDayLabel = Color.WHITE;
+    private ClockColorValues colors = new ClockColorValues();
 
-    private int colorNight = Color.BLUE;
-    private int colorNight1 = ColorUtils.setAlphaComponent(colorNight, 128);
-    private int colorNightLabel = Color.YELLOW;
+    private float arcStrokeWidth;
+    private float arcWidth;
+    private float centerRadius;
+    protected float handWidth;
 
-    private int colorBackground = Color.DKGRAY;
-    private int colorArcBorder = Color.WHITE;
-    private int colorFrame = Color.WHITE;
-    private int colorCenter = Color.WHITE;
-    private int colorHand = Color.MAGENTA;
-    private int colorLabel = Color.WHITE;
-    private int colorLabel1 = Color.LTGRAY;
-
-    private int arcStrokeWidth;
-    private int arcWidth;
-    private int centerRadius;
-
-    private int tickLength;
+    private float tickLength_huge;
+    private float tickLength_large;
+    private float tickLength_medium;
+    private float tickLength_small;
+    private float tickLength_tiny;
 
     private int textLarge;
     private int textMedium;
     private int textSmall;
 
-    private Paint paint, paintLabel, paintHand, paintTickMajor, paintTickMinor, paintTickTiny, paintArcFillDay, paintArcFillNight, paintArcBorder, paintFillNight, paintCenter, paintBackground;
+    private Paint paint, paintLabel, paintHand,
+            paintTickHuge, paintTickLarge, paintTickMedium, paintTickSmall, paintTickTiny,
+            paintArcDayFill, paintArcDayBorder, paintFillDay,
+            paintArcNightFill, paintArcNightBorder, paintFillNight,
+            paintCenter, paintBackground;
+
+    public static class ClockColorValues
+    {
+        protected int colorDay = Color.DKGRAY;
+        protected int colorDay1 = ColorUtils.setAlphaComponent(colorDay, 128);
+        protected int colorDay1AM = Color.LTGRAY;
+        protected int colorDay1PM = Color.DKGRAY;
+        protected int colorDayLabel = Color.WHITE;
+        protected int colorNight = Color.BLUE;
+        protected int colorNight1 = ColorUtils.setAlphaComponent(colorNight, 128);
+        protected int colorNightLabel = Color.YELLOW;
+        protected int colorBackground = Color.DKGRAY;
+        protected int colorArcDayBorder = Color.WHITE;
+        protected int colorArcNightBorder = Color.DKGRAY;
+        protected int colorFrame = Color.WHITE;
+        protected int colorCenter = Color.WHITE;
+        protected int colorHand = Color.MAGENTA;
+        protected int colorLabel = Color.WHITE;
+        protected int colorLabel1 = Color.LTGRAY;
+
+        public ClockColorValues() {
+        }
+
+        public ClockColorValues(Context context)
+        {
+            int[] attrs = new int[] {
+                    R.attr.clockColorBackground, R.attr.clockColorFrame, R.attr.clockColorCenter, R.attr.clockColorHand,
+                    R.attr.clockColorLabel1, R.attr.clockColorLabel2,
+                    R.attr.clockColorDayFill, R.attr.clockColorDayText, R.attr.clockColorDayBorder,
+                    R.attr.clockColorNightFill, R.attr.clockColorNightText, R.attr.clockColorNightBorder
+            };
+            TypedArray a = context.obtainStyledAttributes(attrs);
+
+            colorBackground = ContextCompat.getColor(context, a.getResourceId(0, R.color.clockColorBackground_dark));
+            colorFrame = ContextCompat.getColor(context, a.getResourceId(1, R.color.clockColorFrame_dark));
+            colorCenter = ContextCompat.getColor(context, a.getResourceId(2, R.color.clockColorCenter_dark));
+            colorHand = ContextCompat.getColor(context, a.getResourceId(3, R.color.clockColorHand_dark));
+            colorLabel = ContextCompat.getColor(context, a.getResourceId(4, R.color.clockColorLabel1_dark));
+            colorLabel1 = ContextCompat.getColor(context, a.getResourceId(5, R.color.clockColorLabel2_dark));
+
+            colorDay = ContextCompat.getColor(context, a.getResourceId(6, R.color.clockColorDay_dark));
+            colorDayLabel = ContextCompat.getColor(context, a.getResourceId(7, R.color.clockColorDayLabel_dark));
+            colorArcDayBorder = ContextCompat.getColor(context, a.getResourceId(8, R.color.clockColorDayBorder_dark));
+            colorDay1 = ColorUtils.setAlphaComponent(colorDay, 128);
+            colorDay1AM = ContextCompat.getColor(context, R.color.clockColorAM_dark);
+            colorDay1PM = ContextCompat.getColor(context, R.color.clockColorPM_dark);
+
+            colorNight = ContextCompat.getColor(context, a.getResourceId(9, R.color.clockColorNight_dark));
+            colorNightLabel = ContextCompat.getColor(context, a.getResourceId(10, R.color.clockColorNightLabel_dark));
+            colorArcNightBorder = ContextCompat.getColor(context, a.getResourceId(11, R.color.clockColorNightBorder_dark));
+            colorNight1 = ColorUtils.setAlphaComponent(colorNight, 128);
+
+            a.recycle();
+        }
+    }
 
     private void initPaint(Context context)
     {
+        initFlags(context);
+        colors = new ClockColorValues(context);
+
+        handWidth = context.getResources().getDimension(R.dimen.clockface_hand_width);
         centerRadius = (int)(context.getResources().getDimension(R.dimen.clockface_center_width) / 2f);
         arcWidth = (int)context.getResources().getDimension(R.dimen.clockface_arc_width);
         arcStrokeWidth = (int)context.getResources().getDimension(R.dimen.clockface_arc_stroke_width);
@@ -177,10 +262,14 @@ public class RomanTimeClockView extends View
         textMedium = (int)context.getResources().getDimension(R.dimen.clockface_text_medium);
         textSmall = (int)context.getResources().getDimension(R.dimen.clockface_text_small);
 
-        tickLength = arcWidth;
+        tickLength_huge = arcWidth;
+        tickLength_large = 2 * arcWidth / 3f;
+        tickLength_medium = (arcWidth / 2f);
+        tickLength_small = (arcWidth / 4f);
+        tickLength_tiny = (arcWidth / 8f);
 
         paint = new Paint();
-        paint.setColor(colorLabel);
+        paint.setColor(colors.colorLabel);
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_stroke_width));
         paint.setAntiAlias(true);
@@ -189,7 +278,7 @@ public class RomanTimeClockView extends View
         paint.setTypeface(Typeface.create(paint.getTypeface(), Typeface.BOLD));
 
         paintLabel = new Paint();
-        paintLabel.setColor(colorLabel);
+        paintLabel.setColor(colors.colorLabel);
         paintLabel.setStyle(Paint.Style.FILL);
         paintLabel.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_stroke_width));
         paintLabel.setAntiAlias(true);
@@ -197,66 +286,75 @@ public class RomanTimeClockView extends View
         paintLabel.setTextSize(textSmall);
 
         paintHand = new Paint();
-        paintHand.setColor(colorHand);
+        paintHand.setColor(colors.colorHand);
         paintHand.setStyle(Paint.Style.FILL);
-        paintHand.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_hand_width));
+        paintHand.setStrokeWidth(handWidth);
         paintHand.setAntiAlias(true);
 
         paintCenter = new Paint();
         paintCenter.setStyle(Paint.Style.FILL);
-        paintCenter.setColor(colorCenter);
+        paintCenter.setColor(colors.colorCenter);
         paintCenter.setStrokeWidth(centerRadius);
         paintCenter.setAntiAlias(true);
 
         paintBackground = new Paint();
         paintBackground.setStyle(Paint.Style.FILL);
-        paintBackground.setColor(colorBackground);
+        paintBackground.setColor(colors.colorBackground);
         paintBackground.setStrokeWidth(centerRadius);
         paintBackground.setAntiAlias(true);
 
-        paintTickMajor = new Paint();
-        paintTickMajor.setColor(colorFrame);
-        paintTickMajor.setStyle(Paint.Style.STROKE);
-        paintTickMajor.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_major_width));
-        paintTickMajor.setAntiAlias(true);
-        paintTickMajor.setTextAlign(Paint.Align.CENTER);
+        paintTickHuge = new Paint();
+        paintTickHuge.setColor(colors.colorFrame);
+        paintTickHuge.setStyle(Paint.Style.STROKE);
+        paintTickHuge.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_huge_width));
+        paintTickHuge.setAntiAlias(true);
+        paintTickHuge.setTextAlign(Paint.Align.CENTER);
 
-        paintTickMinor = new Paint();
-        paintTickMinor.setColor(colorFrame);
-        paintTickMinor.setStyle(Paint.Style.STROKE);
-        paintTickMinor.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_minor_width));
-        paintTickMinor.setAntiAlias(true);
-        paintTickMinor.setTextAlign(Paint.Align.CENTER);
+        paintTickLarge = new Paint(paintTickHuge);
+        paintTickLarge.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_large_width));
 
-        paintTickTiny = new Paint();
-        paintTickTiny.setColor(colorFrame);
-        paintTickTiny.setStyle(Paint.Style.STROKE);
+        paintTickMedium = new Paint(paintTickHuge);
+        paintTickMedium.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_medium_width));
+
+        paintTickSmall = new Paint(paintTickHuge);
+        paintTickSmall.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_small_width));
+
+        paintTickTiny = new Paint(paintTickHuge);
         paintTickTiny.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_tick_tiny_width));
-        paintTickTiny.setAntiAlias(true);
-        paintTickTiny.setTextAlign(Paint.Align.CENTER);
 
-        paintArcBorder = new Paint();
-        paintArcBorder.setStyle(Paint.Style.STROKE);
-        paintArcBorder.setColor(colorArcBorder);
-        paintArcBorder.setStrokeWidth(arcWidth);
-        paintArcBorder.setAntiAlias(true);
+        paintArcDayBorder = new Paint();
+        paintArcDayBorder.setStyle(Paint.Style.STROKE);
+        paintArcDayBorder.setColor(colors.colorArcDayBorder);
+        paintArcDayBorder.setStrokeWidth(arcStrokeWidth);
+        paintArcDayBorder.setAntiAlias(true);
 
-        paintArcFillDay = new Paint();
-        paintArcFillDay.setStyle(Paint.Style.STROKE);
-        paintArcFillDay.setColor(colorDay);
-        paintArcFillDay.setStrokeWidth(arcWidth - arcStrokeWidth);
-        paintArcFillDay.setAntiAlias(true);
+        paintArcNightBorder = new Paint();
+        paintArcNightBorder.setStyle(Paint.Style.STROKE);
+        paintArcNightBorder.setColor(colors.colorArcNightBorder);
+        paintArcNightBorder.setStrokeWidth(arcStrokeWidth);
+        paintArcNightBorder.setAntiAlias(true);
 
-        paintArcFillNight = new Paint();
-        paintArcFillNight.setStyle(Paint.Style.STROKE);
-        paintArcFillNight.setColor(colorNight);
-        paintArcFillNight.setStrokeWidth(arcWidth - arcStrokeWidth);
-        paintArcFillNight.setAntiAlias(true);
+        paintArcDayFill = new Paint();
+        paintArcDayFill.setStyle(Paint.Style.STROKE);
+        paintArcDayFill.setColor(colors.colorDay);
+        paintArcDayFill.setStrokeWidth(arcWidth);
+        paintArcDayFill.setAntiAlias(true);
+
+        paintArcNightFill = new Paint();
+        paintArcNightFill.setStyle(Paint.Style.STROKE);
+        paintArcNightFill.setColor(colors.colorNight);
+        paintArcNightFill.setStrokeWidth(arcWidth);
+        paintArcNightFill.setAntiAlias(true);
 
         paintFillNight = new Paint();
         paintFillNight.setStyle(Paint.Style.FILL);
-        paintFillNight.setColor(colorNight1);
+        paintFillNight.setColor(colors.colorNight1);
         paintFillNight.setAntiAlias(true);
+
+        paintFillDay = new Paint();
+        paintFillDay.setStyle(Paint.Style.FILL);
+        paintFillDay.setColor(colors.colorDay1);
+        paintFillDay.setAntiAlias(true);
     }
 
     private float radiusInner(float r) {
@@ -282,17 +380,21 @@ public class RomanTimeClockView extends View
         final RectF circle_mid = new RectF(cX - r_mid, cY - r_mid, cX + r_mid, cY + r_mid);
 
         float r_outer = radiusOuter(cX);
+        final RectF circle_outer = new RectF(cX - r_outer, cY - r_outer, cX + r_outer, cY + r_outer);
+
         float r_mid1 = r_outer + (arcWidth / 2f);
         final RectF circle_mid1 = new RectF(cX - r_mid1, cY - r_mid1, cX + r_mid1, cY + r_mid1);
+
+        float r_outer1 = radiusOuter1(cX);
+        final RectF circle_outer1 = new RectF(cX - r_outer1, cY - r_outer1, cX + r_outer1, cY + r_outer1);
 
         if (data != null)
         {
             double dayAngle = data.getDayHourAngle();
             double nightAngle = data.getNightHourAngle();
             long[] romanHours = data.getRomanHours();
-
-            float r_outer1 = radiusOuter1(cX);
-            final RectF circle_outer1 = new RectF(cX - r_outer1, cY - r_outer1, cX + r_outer1, cY + r_outer1);
+            double sunriseAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
+            double sunsetAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
 
             for (int i=0; i<romanHours.length; i++)
             {
@@ -300,22 +402,24 @@ public class RomanTimeClockView extends View
                 double hourAngle = (isNight ? nightAngle : dayAngle);
 
                 double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[i], timezone));
-                canvas.drawArc(circle_mid, (float) Math.toDegrees(a), (float) Math.toDegrees(hourAngle), false, (isNight ? paintArcFillNight : paintArcFillDay));
-                drawRay(canvas, cX, cY, a, r_inner, r_outer, paintTickMinor);
+                canvas.drawArc(circle_mid, (float) Math.toDegrees(a), (float) Math.toDegrees(hourAngle), false, (isNight ? paintArcNightFill : paintArcDayFill));
+                drawRay(canvas, cX, cY, a, r_inner, r_outer, isNight ? paintArcNightBorder : paintArcDayBorder);
 
                 double a1 = a + (hourAngle / 2d);
                 double lw = arcWidth * 0.5f;
                 double lx = cX + (r_inner + lw) * Math.cos(a1);
                 double ly = cY + (r_inner + lw) * Math.sin(a1);
 
-                paint.setColor(isNight ? colorNightLabel : colorDayLabel);
+                paint.setColor(isNight ? colors.colorNightLabel : colors.colorDayLabel);
                 paint.setTextSize(textSmall);
                 CharSequence label = DisplayStrings.romanNumeral(getContext(), ((i % 12) + 1));
                 canvas.drawText(label.toString(), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
-            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone)), r_inner, r_outer, paintTickMinor);
+            canvas.drawArc(circle_outer, (float) Math.toDegrees(sunriseAngle), (float) Math.toDegrees(sunsetAngle-sunriseAngle), false, paintArcDayBorder);
+            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone)), r_inner, r_outer, paintArcNightBorder);
+            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone)), r_inner, r_outer, paintArcNightBorder);
 
-            if (showVigilia)
+            if (flags.getAsBoolean(FLAG_SHOW_VIGILIA))
             {
                 int c = 1;
                 Path labelPath = new Path();
@@ -323,14 +427,13 @@ public class RomanTimeClockView extends View
                 for (int i = 12; i<romanHours.length; i += 3)
                 {
                     double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[i], timezone));
-                    canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcFillNight);
-                    canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintTickMinor);
-                    drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintTickMinor);
+                    canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcNightFill);
+                    canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcNightBorder);
+                    drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
 
                     paint.setTextSize(textSmall);
                     CharSequence label = DisplayStrings.formatNightWatchLabel(getContext(), c);
                     labelPath.reset();
-
 
                     if (startAngle < 0) {
                         labelPath.addArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle));
@@ -338,16 +441,20 @@ public class RomanTimeClockView extends View
                         labelPath.addArc(circle_mid1, (float) Math.toDegrees(a + nightSweepAngle), (float) Math.toDegrees(-nightSweepAngle));
                     }
 
-                    paint.setColor(colorNightLabel);
+                    paint.setColor(colors.colorNightLabel);
                     canvas.drawTextOnPath(label.toString(), labelPath, 0, textSmall / 3f, paint);
                     c++;
                 }
 
                 double a0 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone) + (nightSweepAngle * 4));
-                drawRay(canvas, cX, cY, a0, r_outer, r_outer1, paintTickMinor);
+                drawRay(canvas, cX, cY, a0, r_outer, r_outer1, paintArcNightBorder);
             }
+            canvas.drawArc(circle_outer, (float) Math.toDegrees(sunsetAngle), (float) Math.toDegrees(2*Math.PI - (sunsetAngle-sunriseAngle)), false, paintArcNightBorder);
+
+
+        } else {
+            canvas.drawCircle(cX, cY, r_outer, paintTickMedium);
         }
-        canvas.drawCircle(cX, cY, r_outer, paintTickMinor);
     }
 
     protected void drawRay(Canvas canvas, double cX, double cY, double angle, double radius_inner, double radius_outer, Paint paint)
@@ -361,13 +468,13 @@ public class RomanTimeClockView extends View
         canvas.drawLine((float) x0, (float) y0, (float) x1, (float) y1, paint);
     }
 
-    protected void drawPie(Canvas canvas, double cX, double cY, double radius, double radians, Paint paint)
+    protected void drawPie(Canvas canvas, double cX, double cY, double radius, double startRadians, double angleRadians, Paint paint)
     {
         final RectF circle_inner = new RectF((float)(cX - radius), (float)(cY - radius), (float)(cX + radius), (float)(cY + radius));
         Path path = new Path();
         path.moveTo((float) cX, (float) cY);
-        path.lineTo((float) (cX + (radius * Math.cos(radians))), (float) (cY + (radius * Math.sin(radians))));
-        path.addArc(circle_inner, (float) Math.toDegrees(radians), (float) Math.toDegrees(data.getNightHourAngle() * 12));
+        path.lineTo((float) (cX + (radius * Math.cos(startRadians))), (float) (cY + (radius * Math.sin(startRadians))));
+        path.addArc(circle_inner, (float) Math.toDegrees(startRadians), (float) Math.toDegrees(angleRadians));
         path.lineTo((float) cX, (float) cY);
         path.close();
         canvas.drawPath(path, paint);
@@ -376,42 +483,59 @@ public class RomanTimeClockView extends View
     protected void drawTicks(Canvas canvas, float cX, float cY, boolean is24)
     {
         float r0 = radiusInner(cX);
-        float rMajorTick = r0 - tickLength;
-        float rMediumTick = r0 - tickLength / 2f;
-        float rMinorTick = r0 - (tickLength / 3f);
-        float rTinyTick = r0 - (tickLength / 4f);
-        double a = startAngle;
+        float rHugeTick = r0 - tickLength_huge;
+        float rLargeTick = r0 - tickLength_large;
+        float rMediumTick = r0 - tickLength_medium;
+        float rSmallTick = r0 - tickLength_small;
+        float rTinyTick = r0 - tickLength_tiny;
         double oneHourRad = Math.PI / 12d;
 
+        boolean showTick5m = flags.getAsBoolean(FLAG_SHOW_TICKS_5M);
+        boolean showTick15m = flags.getAsBoolean(FLAG_SHOW_TICKS_5M);
+
+        double a = startAngle;
         for (int i=1; i<=24; i++)
         {
-            a += ((2 * Math.PI) / 24f);              // +0
-            double a1 = a + (oneHourRad / 4d);       // +15m
-            double a2 = a + (2 * oneHourRad / 4d);   // +30m
-            double a3 = a + (3 * oneHourRad / 4d);   // +45m
-            float r = (i % 3 == 0) ? (i % 6 == 0) ? rMajorTick : rMediumTick : rMinorTick;
-            drawRay(canvas, cX, cY, a, r0, r, (i % 6 == 0 ? paintTickMajor : paintTickMinor));
-            drawRay(canvas, cX, cY, a1, r0, rTinyTick, paintTickTiny);
-            drawRay(canvas, cX, cY, a2, r0, rTinyTick, paintTickTiny);
-            drawRay(canvas, cX, cY, a3, r0, rTinyTick, paintTickTiny);
+            a += ((2 * Math.PI) / 24f);
+
+            if (showTick15m || showTick5m)
+            {
+                for (int j=0; j<4; j++)
+                {
+                    double a1 = a + ((j * oneHourRad) / 4d);
+                    if (showTick5m)
+                    {
+                        for (int k=0; k<4; k++)
+                        {
+                            double a2 = a1 + (k * (oneHourRad / 4d) / 3d);       // +5m
+                            drawRay(canvas, cX, cY, a2, r0, rTinyTick, paintTickTiny);
+                        }
+                    }
+                    if (showTick15m) {
+                        drawRay(canvas, cX, cY, a1, r0, rSmallTick, paintTickSmall);
+                    }
+                }
+            }
+            float r = (i % 3 == 0) ? (i % 6 == 0) ? rHugeTick : rLargeTick : rMediumTick;
+            drawRay(canvas, cX, cY, a, r0, r, (i % 6 == 0 ? paintTickHuge : paintTickLarge));
         }
     }
 
     protected void drawTickLabels(Canvas canvas, float cX, float cY, boolean is24)
     {
         float r0 = radiusInner(cX);
-        float rMajorTick = r0 - tickLength;
-        float rMediumTick = r0 - tickLength / 2f;
-        float rMinorTick = r0 - (tickLength / 3f);
+        float rHugeTick = r0 - tickLength_huge;
+        float rLargeTick = r0 - tickLength_large;
+        float rMediumTick = r0 - tickLength_medium;
         double a = startAngle;
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
-            float r = (i % 3 == 0) ? (i % 6 == 0) ? rMajorTick : rMediumTick : rMinorTick;
+            float r = (i % 3 == 0) ? (i % 6 == 0) ? rHugeTick : rLargeTick : rMediumTick;
             double cosA = Math.cos(a);
             double sinA = Math.sin(a);
 
-            double lw = i % 3 == 0 ? arcWidth * 0.5f : arcWidth * 0.5f;
+            double lw = i % 3 == 0 ? tickLength_large : tickLength_medium;
             double lx = cX + (r - lw) * cosA;
             double ly = cY + (r - lw) * sinA;
 
@@ -421,7 +545,7 @@ public class RomanTimeClockView extends View
             int textSize = isMajorTick ? textLarge :
                     i % 3 == 0 ? textMedium : textSmall;
             paint.setTextSize(textSize);
-            paint.setColor(colorLabel);
+            paint.setColor(colors.colorLabel);
 
             int j = is24 ? i : (i == 24 || i == 12 ? 12 : (i % 12));
             String label = is24 ? (i < 10 ? "0" + j : "" + j) : "" + j;
@@ -437,30 +561,53 @@ public class RomanTimeClockView extends View
         canvas.drawCircle(cX, cY, cX - arcWidth, paintBackground);
         //canvas.drawCircle(cX, cY, cX, paintBackground);
 
-        if (data != null && showNightBackground)
+        if (data != null)
         {
-            long[] romanHours = data.getRomanHours();
-            double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
-            drawPie(canvas, cX, cY, radiusInner(cX), a, paintFillNight);
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT))
+            {
+                long[] romanHours = data.getRomanHours();
+                double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
+                double span = data.getNightHourAngle() * 12;
+                drawPie(canvas, cX, cY, radiusInner(cX), a, span, paintFillNight);
+            }
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY))
+            {
+                long[] romanHours = data.getRomanHours();
+                double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
+                double span = data.getDayHourAngle() * 12;
+                paintFillDay.setColor(colors.colorDay1);
+                drawPie(canvas, cX, cY, radiusInner(cX), a, span, paintFillDay);
+            }
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_AMPM))
+            {
+                long[] romanHours = data.getRomanHours();
+                double a1 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
+                double span = data.getDayHourAngle() * 6;
+                paintFillDay.setColor(colors.colorDay1AM);
+                drawPie(canvas, cX, cY, radiusInner(cX), a1, span, paintFillDay);
+
+                double a2 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[6], timezone));
+                paintFillDay.setColor(colors.colorDay1PM);
+                drawPie(canvas, cX, cY, radiusInner(cX), a2, span, paintFillDay);
+            }
         }
 
-        if (showTimeZone)
+        if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE))
         {
             float r = (radiusInner(cX) - (2.5f * arcWidth));
             final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
 
             Path path = new Path();
             path.addArc(circle, (float) Math.toDegrees(-Math.PI), (float) Math.toDegrees(-Math.PI));
-            paint.setColor(colorLabel);
-            paint.setTextSize(textSmall);
+            paintLabel.setColor(colors.colorLabel1);
+            paintLabel.setTextSize(textSmall);
             canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
         }
     }
 
-    protected void drawFrame(Canvas canvas, float cX, float cY)
-    {
-        canvas.drawCircle(cX, cY, radiusInner(cX), paintTickMinor);
-    }
+
 
     protected void drawHourHand(Calendar now, Canvas canvas, float cX, float cY, float length)
     {
@@ -468,11 +615,34 @@ public class RomanTimeClockView extends View
         int minute = now.get(Calendar.MINUTE);
         int second = now.get(Calendar.SECOND);
 
-        double angle = getAdjustedAngle(startAngle, RomanTimeData.getAngle (hour, minute, second));
-        double x1 = cX + length * Math.cos(angle);
-        double y1 = cY + length * Math.sin(angle);
-        canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
-        canvas.drawCircle(cX, cY, centerRadius, paintCenter);
+        double a1 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(hour, minute, second));
+        double x1 = cX + length * Math.cos(a1);
+        double y1 = cY + length * Math.sin(a1);
+
+        if (flags.getAsBoolean(FLAG_SHOW_HAND_SIMPLE)) {
+            canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
+
+        } else {
+
+            double handRadius = handWidth / 2d;
+            double a0 = a1 - Math.PI/2;
+            double x0 = cX + handRadius * Math.cos(a0);
+            double y0 = cY + handRadius * Math.sin(a0);
+
+            double a2 = a1 + Math.PI/2;
+            double x2 = cX + handRadius * Math.cos(a2);
+            double y2 = cY + handRadius * Math.sin(a2);
+
+            Path path = new Path();
+            path.moveTo((float) x0, (float) y0);
+            path.lineTo((float) x1, (float) y1);
+            path.lineTo((float) x2, (float) y2);
+            path.close();
+            canvas.drawPath(path, paintHand);
+        }
+        if (centerRadius > 0) {
+            canvas.drawCircle(cX, cY, centerRadius, paintCenter);
+        }
     }
 
 }
