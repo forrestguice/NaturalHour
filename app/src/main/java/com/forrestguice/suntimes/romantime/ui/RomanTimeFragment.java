@@ -23,10 +23,8 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.LinearSnapHelper;
@@ -217,6 +215,7 @@ public class RomanTimeFragment extends Fragment
     {
         public TextView text_date;
         public TextView text_hour, text_hour_long;
+        public TextView text_debug;
         public RomanTimeClockView clockface;
 
         public RomanTimeViewHolder(@NonNull View itemView, RomanTimeAdapterOptions options)
@@ -226,6 +225,7 @@ public class RomanTimeFragment extends Fragment
             text_hour = (TextView) itemView.findViewById(R.id.text_time_romanhour0);
             text_hour_long = (TextView)  itemView.findViewById(R.id.text_time_romanhour1);
             clockface = (RomanTimeClockView) itemView.findViewById(R.id.clockface);
+            text_debug = (TextView) itemView.findViewById(R.id.text_time_debug);
         }
 
         public void onBindViewHolder(@NonNull Context context, int position, RomanTimeData data, RomanTimeAdapterOptions options)
@@ -237,20 +237,24 @@ public class RomanTimeFragment extends Fragment
                 int currentHour = RomanTimeData.findRomanHour(now, data);    // [1,24]
                 int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
 
-                /*long[] romanHours = data.getRomanHours();
-                CharSequence[] dayHours = new String[12];
-                StringBuilder debugDisplay0 = new StringBuilder("Day");
-                for (int i=0; i<dayHours.length; i++) {
-                    dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], getTimeZone(options.suntimes_info), is24);
-                    debugDisplay0.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
-                }
+                if (text_debug.getVisibility() == View.VISIBLE)
+                {
+                    long[] romanHours = data.getRomanHours();
+                    CharSequence[] dayHours = new String[12];
+                    StringBuilder debugDisplay0 = new StringBuilder("Day");
+                    for (int i=0; i<dayHours.length; i++) {
+                        dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], getTimeZone(options.suntimes_info), is24);
+                        debugDisplay0.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
+                    }
 
-                CharSequence[] nightHours = new String[12];
-                StringBuilder debugDisplay1 = new StringBuilder("Night");
-                for (int i=0; i<nightHours.length; i++) {
-                    nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], getTimeZone(options.suntimes_info), is24);
-                    debugDisplay1.append("\n").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
-                }*/
+                    CharSequence[] nightHours = new String[12];
+                    StringBuilder debugDisplay1 = new StringBuilder("Night");
+                    for (int i=0; i<nightHours.length; i++) {
+                        nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], getTimeZone(options.suntimes_info), is24);
+                        debugDisplay1.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
+                    }
+                    text_debug.setText(debugDisplay0 + "\n" + debugDisplay1);
+                } else text_debug.setText("");
 
                 CharSequence dateDisplay = DisplayStrings.formatDate(context, data.getDateMillis());
                 int dayDelta = position - RomanTimeCardAdapter.TODAY_POSITION;
@@ -261,16 +265,8 @@ public class RomanTimeFragment extends Fragment
                 text_hour_long.setText(phrase[currentHour]);
 
                 clockface.setTimeZone(getTimeZone(options.suntimes_info));
-                //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_VIGILIA, true);
-                //clockface.setShow5mTicks(true);
-                //clockface.setShow15mTicks(true);
                 clockface.setShowTime(true);
-                //clockface.setStartAngle(RomanTimeClockView.START_BOTTOM);
                 clockface.set24HourMode(options.suntimes_options.time_is24);
-                //clockface.setShowNightBackground(false);
-                //clockface.setShowDayBackground(true);
-                //clockface.setShowSimpleHourHand(true);
-                //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_TIMEZONE, true);
                 clockface.setData(data);
 
             } else {

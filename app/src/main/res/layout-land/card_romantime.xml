@@ -39,12 +39,7 @@
             tools:text="11th hour of the day" />
 
         <TextView android:visibility="gone"
-            android:id="@+id/text_sunrise" android:gravity="right|end"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="sunrise" android:layout_margin="8dp" />
-
-        <TextView android:visibility="gone"
-            android:id="@+id/text_sunset" android:gravity="right|end"
+            android:id="@+id/text_debug" android:gravity="right|end"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             tools:text="sunset" android:layout_margin="8dp" />
 
