@@ -21,8 +21,9 @@
             tools:text="Today\nApril 1, 2016" />
 
         <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:id="@+id/text_time_romanhour0" android:layout_gravity="center_horizontal"
+            android:id="@+id/text_time_romanhour0"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="@+id/text_date"
             app:layout_constraintBottom_toBottomOf="@+id/text_date"
             app:layout_constraintStart_toStartOf="@+id/clockface"

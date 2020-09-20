@@ -20,6 +20,7 @@
     <LinearLayout
         android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/clockface"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/clockface"
         app:layout_constraintEnd_toEndOf="@+id/clockface"
         android:layout_margin="8dp">
@@ -27,11 +28,13 @@
         <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:id="@+id/text_time_romanhour0" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textStyle="bold" android:textColor="?attr/colorAccent"
             tools:text="XI" />
 
         <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:id="@+id/text_time_romanhour1" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             tools:text="11th hour of the day" />
 
     </LinearLayout>
