@@ -388,7 +388,7 @@ public class RomanTimeClockView extends View
         float r_outer1 = radiusOuter1(cX);
         final RectF circle_outer1 = new RectF(cX - r_outer1, cY - r_outer1, cX + r_outer1, cY + r_outer1);
 
-        if (data != null)
+        if (data != null && data.isCalculated())
         {
             double dayAngle = data.getDayHourAngle();
             double nightAngle = data.getNightHourAngle();
@@ -561,7 +561,7 @@ public class RomanTimeClockView extends View
         canvas.drawCircle(cX, cY, cX - arcWidth, paintBackground);
         //canvas.drawCircle(cX, cY, cX, paintBackground);
 
-        if (data != null)
+        if (data != null && data.isCalculated())
         {
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT))
             {

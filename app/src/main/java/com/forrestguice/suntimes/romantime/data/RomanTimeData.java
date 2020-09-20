@@ -42,6 +42,8 @@ public class RomanTimeData implements Parcelable
 
     public static final String KEY_CALCULATED = "iscalculated";
 
+    public static final long DAY_MILLIS = 24 * 60 * 60 * 1000;
+
     protected long date;
     protected double latitude, longitude, altitude;
     protected long sunrise, sunset;
@@ -172,34 +174,35 @@ public class RomanTimeData implements Parcelable
         }
     }
 
+    /**
+     * @return millis
+     */
     public double getDayHourLength() {
         return dayHourLength;
     }
-    public double getDayHourAngle()
-    {
-        Calendar t0 = Calendar.getInstance();
-        Calendar t1 = Calendar.getInstance();
-        t0.setTimeInMillis(romanHours[0]);
-        t1.setTimeInMillis(romanHours[1]);
-        double a0 = getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
-        double a1 = getAngle( t1.get(Calendar.HOUR_OF_DAY), t1.get(Calendar.MINUTE), t1.get(Calendar.SECOND));
-        return a1 - a0;
+    public double getDayHourAngle() {
+        return (dayHourLength / (double) DAY_MILLIS) * (2 * Math.PI);
     }
 
+    /**
+     * @return millis
+     */
     public double getNightHourLength() {
         return nightHourLength;
     }
-    public double getNightHourAngle()
-    {
-        Calendar t0 = Calendar.getInstance();
-        Calendar t1 = Calendar.getInstance();
-        t0.setTimeInMillis(romanHours[12]);
-        t1.setTimeInMillis(romanHours[13]);
-        double a0 = getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
-        double a1 = getAngle( t1.get(Calendar.HOUR_OF_DAY), t1.get(Calendar.MINUTE), t1.get(Calendar.SECOND));
-        return a1 - a0;
+
+    /**
+     * @return radians
+     */
+    public double getNightHourAngle() {
+        return (nightHourLength / (double) DAY_MILLIS) * (2 * Math.PI);
     }
 
+    /**
+     * @param timeMillis
+     * @param timezone
+     * @return radians
+     */
     public static double getAngle( long timeMillis, TimeZone timezone )
     {
         Calendar t0 = Calendar.getInstance(timezone);
@@ -207,6 +210,12 @@ public class RomanTimeData implements Parcelable
         return RomanTimeData.getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
     }
 
+    /**
+     * @param hour HOUR_OF_DAY
+     * @param minute MINUTE
+     * @param second SECOND
+     * @return radians
+     */
     public static double getAngle(int hour, int minute, int second)
     {
         double twoPI = 2 * Math.PI;

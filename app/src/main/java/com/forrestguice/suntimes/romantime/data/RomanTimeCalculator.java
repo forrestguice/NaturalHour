@@ -56,6 +56,9 @@ public class RomanTimeCalculator
                 Log.e(getClass().getSimpleName(), "calculateData: sunrise or sunset does not occur on this day at this location");
                 data.calculated = false;
             }
+        } else {
+            Log.e(getClass().getSimpleName(), "calculateData: failed to query data");
+            data.calculated = false;
         }
         return data.calculated;
     }
