@@ -28,16 +28,20 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.forrestguice.suntimes.romantime.R;
 import com.forrestguice.suntimes.romantime.data.RomanTimeData;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class RomanTimeClockView extends View
@@ -48,6 +52,8 @@ public class RomanTimeClockView extends View
     public static final String FLAG_START_AT_TOP = "startAtTop";
     public static final String FLAG_SHOW_VIGILIA = "showVigilia";
     public static final String FLAG_SHOW_TIMEZONE = "showTimeZone";
+    public static final String FLAG_SHOW_DATE = "showDate";
+    public static final String FLAG_SHOW_DATEYEAR = "showDateYear";
     public static final String FLAG_SHOW_HAND_SIMPLE = "showHandSimple";
     public static final String FLAG_SHOW_BACKGROUND_DAY = "showBackgroundDay";
     public static final String FLAG_SHOW_BACKGROUND_NIGHT = "showBackgroundNight";
@@ -90,6 +96,8 @@ public class RomanTimeClockView extends View
     private void initFlags(Context context)
     {
         setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
+        setFlagIfUnset(FLAG_SHOW_DATE, context.getResources().getBoolean(R.bool.clockface_show_date));
+        setFlagIfUnset(FLAG_SHOW_DATEYEAR, false);
         setFlagIfUnset(FLAG_SHOW_VIGILIA, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
         setFlagIfUnset(FLAG_SHOW_HAND_SIMPLE, context.getResources().getBoolean(R.bool.clockface_show_hand_simple));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
@@ -566,29 +574,32 @@ public class RomanTimeClockView extends View
         paintBackground.setColor(colors.colorFace);
         canvas.drawCircle(cX, cY, radiusOuter(cX), paintBackground);
 
+        double dayAngle = Math.PI;
+        double nightAngle = 2 * Math.PI;
+        double dayHourAngle = Math.PI / 12;
 
         if (data != null && data.isCalculated())
         {
+            long[] romanHours = data.getRomanHours();
+            dayHourAngle = data.getDayHourAngle();
+            dayAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
+            nightAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
+
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT))
             {
-                long[] romanHours = data.getRomanHours();
-                double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
                 double span = data.getNightHourAngle() * 12;
-                drawPie(canvas, cX, cY, radiusInner(cX), a, span, paintFillNight);
+                drawPie(canvas, cX, cY, radiusInner(cX), nightAngle, span, paintFillNight);
             }
 
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY))
             {
-                long[] romanHours = data.getRomanHours();
-                double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
                 double span = data.getDayHourAngle() * 12;
                 paintFillDay.setColor(colors.colorDay1);
-                drawPie(canvas, cX, cY, radiusInner(cX), a, span, paintFillDay);
+                drawPie(canvas, cX, cY, radiusInner(cX), dayAngle, span, paintFillDay);
             }
 
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_AMPM))
             {
-                long[] romanHours = data.getRomanHours();
                 double a1 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
                 double span = data.getDayHourAngle() * 6;
                 paintFillDay.setColor(colors.colorDay1AM);
@@ -611,9 +622,33 @@ public class RomanTimeClockView extends View
             paintLabel.setTextSize(textSmall);
             canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
         }
+
+        if (flags.getAsBoolean(FLAG_SHOW_DATE))
+        {
+            float r = radiusOuter1(cX) - arcWidth/2f;
+            final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
+            double a0 = simplifyAngle(dayAngle + dayHourAngle * 6);
+            boolean onBottom = a0 > 0 && a0 < Math.PI;
+
+            Path path = new Path();
+            path.addArc(circle, (float) Math.toDegrees(onBottom ? nightAngle : dayAngle), (float) Math.toDegrees((onBottom ? -1 : 1) * dayHourAngle * 12));
+            paint.setTextSize(textMedium);
+            canvas.drawTextOnPath(formatDate(getContext(), data.getDateMillis()).toString(),  path, 0, textMedium/3f, paint);
+        }
     }
 
-
+    public double simplifyAngle(double radians)
+    {
+        double fullCircle = 2 * Math.PI;
+        double retValue = radians;
+        while (retValue < 0) {
+            retValue += fullCircle;
+        }
+        while (retValue > fullCircle) {
+            retValue -= fullCircle;
+        }
+        return retValue;
+    }
 
     protected void drawHourHand(Calendar now, Canvas canvas, float cX, float cY, float length)
     {
@@ -649,6 +684,18 @@ public class RomanTimeClockView extends View
         if (centerRadius > 0) {
             canvas.drawCircle(cX, cY, centerRadius, paintCenter);
         }
+    }
+
+    private CharSequence formatDate(@NonNull Context context, long dateMillis)
+    {
+        Calendar now = Calendar.getInstance(timezone);
+        Calendar then = Calendar.getInstance(timezone);
+        then.setTimeInMillis(dateMillis);
+        boolean isThisYear = now.get(Calendar.YEAR) == then.get(Calendar.YEAR);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString( !isThisYear || flags.getAsBoolean(FLAG_SHOW_DATEYEAR) ? R.string.format_date0_long : R.string.format_date0), Locale.getDefault());
+        dateFormat.setTimeZone(timezone);
+        return dateFormat.format(dateMillis);
     }
 
 }
