@@ -91,10 +91,33 @@ public class RomanTimeFragment extends Fragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        cardAdapter.notifyDataSetChanged();
+        startClockRunnable();
+    }
+
+    protected void startClockRunnable() {
+        //Log.d("DEBUG", "clockRunnable: starting..");
+        cardView.post(clockUpdateRunnable);
+    }
+    protected void stopClockRunnable() {
+        //Log.d("DEBUG", "clockRunnable: stopping..");
+        cardView.removeCallbacks(clockUpdateRunnable);
+    }
+    private Runnable clockUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            cardAdapter.notifyDataSetChanged();
+            cardView.postDelayed(clockUpdateRunnable, CLOCK_UPDATE_INTERVAL);
+        }
+    };
+    public static final long CLOCK_UPDATE_INTERVAL = 15 * 60 * 1000;
+
+    @Override
+    public void onStop()
+    {
+        stopClockRunnable();
+        super.onStop();
     }
 
     protected void initViews(View content)
