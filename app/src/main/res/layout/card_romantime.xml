@@ -11,13 +11,14 @@
         tools:text="Today\nApril 1, 2016" />
 
     <com.forrestguice.suntimes.romantime.ui.RomanTimeClockView
-        android:id="@+id/clockface"
+        android:id="@+id/clockface" android:background="?attr/selectableItemBackground"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginLeft="8dp" android:layout_marginRight="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/text_date"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <LinearLayout
+    <LinearLayout android:visibility="gone"
         android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/clockface"
         app:layout_constraintBottom_toBottomOf="parent"
