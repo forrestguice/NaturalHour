@@ -218,4 +218,50 @@ public class MainActivity extends AppCompatActivity
         dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
     }
 
+
+    protected void showToday()
+    {
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.showToday();
+        }
+    }
+
+    protected void showSpringEquinox()
+    {
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.showSpringEquinox();
+        }
+    }
+
+    protected void showSummerSolstice()
+    {
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.showSummerSolstice();
+        }
+    }
+
+    protected void showAutumnEquinox()
+    {
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.showAutumnEquinox();
+        }
+    }
+
+    protected void showWinterSolstice()
+    {
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.showWinterSolstice();
+        }
+    }
+
 }

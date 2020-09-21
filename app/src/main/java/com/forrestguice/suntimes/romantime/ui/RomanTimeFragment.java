@@ -129,7 +129,6 @@ public class RomanTimeFragment extends Fragment
 
     protected void initViews(View content)
     {
-
         cardView = (RecyclerView) content.findViewById(R.id.cardView);
         cardView.setHasFixedSize(true);
         cardView.setLayoutManager(cardLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -203,6 +202,40 @@ public class RomanTimeFragment extends Fragment
 
     public void showToday() {
         scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+    }
+
+    public void showSpringEquinox()
+    {
+        RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        Calendar date = Calendar.getInstance(getTimeZone(info));
+        date.setTimeInMillis(data.getEquinoxSolsticeDates()[0]);
+        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+    }
+
+    public void showSummerSolstice()
+    {
+        RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        Calendar date = Calendar.getInstance(getTimeZone(info));
+        date.setTimeInMillis(data.getEquinoxSolsticeDates()[1]);
+        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+    }
+
+    public void showAutumnEquinox()
+    {
+        RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        Calendar date = Calendar.getInstance(getTimeZone(info));
+        date.setTimeInMillis(data.getEquinoxSolsticeDates()[2]);
+        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+    }
+
+    public void showWinterSolstice()
+    {
+        RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        Calendar date = Calendar.getInstance(getTimeZone(info));
+        date.setTimeInMillis(data.getEquinoxSolsticeDates()[3]);
+        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+    }
+
     public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
     protected void scrollToPosition(int position)
     {
@@ -211,8 +244,9 @@ public class RomanTimeFragment extends Fragment
         if (Math.abs(position - current) < SMOOTHSCROLL_ITEMLIMIT) {
             cardView.smoothScrollToPosition(position);
         } else {
-            cardView.scrollToPosition(position < current ? position - SMOOTHSCROLL_ITEMLIMIT : position + SMOOTHSCROLL_ITEMLIMIT);
-            cardView.smoothScrollToPosition(position);
+            //cardView.scrollToPosition(position < current ? position + SMOOTHSCROLL_ITEMLIMIT : position - SMOOTHSCROLL_ITEMLIMIT);
+            //cardView.smoothScrollToPosition(position);
+            cardView.scrollToPosition(position);
         }
     }
 
@@ -393,8 +427,7 @@ public class RomanTimeFragment extends Fragment
 
         protected RomanTimeData createData(int position)
         {
-            Calendar date = Calendar.getInstance();
-            date.setTimeZone(getTimeZone(info));
+            Calendar date = Calendar.getInstance(getTimeZone(info));
             date.add(Calendar.DATE, position - TODAY_POSITION);
             date.set(Calendar.HOUR_OF_DAY, 12);
             date.set(Calendar.MINUTE, 0);
@@ -418,6 +451,13 @@ public class RomanTimeFragment extends Fragment
                 Log.e(getClass().getSimpleName(), "createData: null context!");
             }
             return romanTimeData;
+        }
+
+        public int positionForDate(long dateMillis)
+        {
+            RomanTimeData dataToday = data.get(TODAY_POSITION);
+            long todayMillis = dataToday.getDateMillis();
+            return TODAY_POSITION + (int)((dateMillis - todayMillis) / (24 * 60 * 60 * 1000));
         }
 
         private boolean invalidated = false;

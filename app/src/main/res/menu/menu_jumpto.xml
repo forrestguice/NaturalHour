@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.forrestguice.suntimes.romantime.MainActivity">
+
+    <item
+        android:id="@+id/action_today"
+        android:orderInCategory="100"
+        android:icon="?attr/icToday"
+        android:title="@string/action_today"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_date_equinox_spring"
+        android:orderInCategory="200"
+        android:icon="?attr/icToday"
+        android:title="@string/action_date_equinox_spring"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_date_solstice_summer"
+        android:orderInCategory="300"
+        android:icon="?attr/icToday"
+        android:title="@string/action_date_solstice_summer"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_date_equinox_autumnal"
+        android:orderInCategory="400"
+        android:icon="?attr/icToday"
+        android:title="@string/action_date_equinox_autumn"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_date_solstice_winter"
+        android:orderInCategory="500"
+        android:icon="?attr/icToday"
+        android:title="@string/action_date_solstice_winter"
+        app:showAsAction="ifRoom" />
+
+</menu>
