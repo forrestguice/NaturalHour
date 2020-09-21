@@ -195,6 +195,23 @@ public class RomanTimeFragment extends Fragment
                 showToday();
                 return true;
 
+            case R.id.action_date_equinox_spring:
+                showSpringEquinox();
+                return false;
+
+            case R.id.action_date_solstice_summer:
+                showSummerSolstice();
+                return false;
+
+            case R.id.action_date_equinox_autumnal:
+                showAutumnEquinox();
+                return false;
+
+            case R.id.action_date_solstice_winter:
+                showWinterSolstice();
+                return false;
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
