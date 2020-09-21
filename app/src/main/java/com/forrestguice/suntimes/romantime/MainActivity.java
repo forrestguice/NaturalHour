@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.romantime;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -27,10 +28,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
@@ -42,6 +47,7 @@ import com.forrestguice.suntimes.romantime.ui.HelpDialog;
 import com.forrestguice.suntimes.romantime.ui.RomanTimeFragment;
 
 import java.lang.reflect.Method;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -74,18 +80,17 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.setSuntimesInfo(suntimesInfo);
-        }
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_suntimes);
+        }
+
+        View bottomBarTitleLayout = findViewById(R.id.bottombar_title_layout);
+        if (bottomBarTitleLayout != null) {
+            bottomBarTitleLayout.setOnClickListener(onBottomBarTitleClick);
         }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -107,7 +112,6 @@ public class MainActivity extends AppCompatActivity
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
-            updateViews();
         }
     }
 
@@ -116,11 +120,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResumeFragments();
         Log.d("DEBUG", "onResumeFragments");
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.setSuntimesInfo(suntimesInfo);
-        }
+        updateViews();
     }
 
     protected void updateViews()
@@ -130,8 +130,25 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(suntimesInfo.location[0]);
             toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
         }
+
+        FragmentManager fragments = getSupportFragmentManager();
+        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        if (fragment != null) {
+            fragment.setSuntimesInfo(suntimesInfo, fromTimeZoneMode(getTimeZoneMode()));
+        }
+
+        TextView bottomBarTitle = (TextView) findViewById(R.id.bottombar_title);
+        if (bottomBarTitle != null && fragment != null) {
+            bottomBarTitle.setText( fragment.getTimeZone().getID() );
+        }
     }
 
+    private View.OnClickListener onBottomBarTitleClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showTimeZonePopup(v);
+        }
+    };
 
     @SuppressWarnings("RestrictedApi")
     @Override
@@ -161,7 +178,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,6 +212,79 @@ public class MainActivity extends AppCompatActivity
         AddonHelper.startSuntimesActivity(this);
     }
 
+    public void showTimeZonePopup(View v)
+    {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(onTimeZonePopupMenuItemSelected);
+
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_timezone, popup.getMenu());
+
+        Menu menu = popup.getMenu();
+        MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
+        if (itemSystem != null) {
+            itemSystem.setTitle(getString(R.string.action_timezone_system, TimeZone.getDefault().getID()));
+        }
+
+        MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
+        if (itemSuntimes != null) {
+            itemSuntimes.setTitle(getString(R.string.action_timezone_suntimes, RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo).getID()));
+        }
+
+        popup.show();
+    }
+    private PopupMenu.OnMenuItemClickListener onTimeZonePopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
+    {
+        @Override
+        public boolean onMenuItemClick(MenuItem item)
+        {
+
+            switch (item.getItemId())
+            {
+                case R.id.action_timezone_system:
+                case R.id.action_timezone_suntimes:
+                case R.id.action_timezone_localmean:
+                case R.id.action_timezone_apparentsolar:
+                    SharedPreferences.Editor prefs = getPreferences(Context.MODE_PRIVATE).edit();
+                    prefs.putInt(KEY_MODE_TIMEZONE, menuItemToTimeZoneMode(item));
+                    prefs.apply();
+                    updateViews();
+                    return true;
+            }
+            return false;
+        }
+    };
+    public static final String KEY_MODE_TIMEZONE = "timezoneMode";
+    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3;
+
+    public static int menuItemToTimeZoneMode(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_timezone_suntimes: return TZMODE_SUNTIMES;
+            case R.id.action_timezone_localmean: return TZMODE_LOCALMEAN;
+            case R.id.action_timezone_apparentsolar: return TZMODE_APPARENTSOLAR;
+            case R.id.action_timezone_system: default: return TZMODE_SYSTEM;
+        }
+    }
+
+    public TimeZone fromTimeZoneMode(int mode)
+    {
+        switch (mode)
+        {
+            case TZMODE_SUNTIMES: return RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo);
+            case TZMODE_LOCALMEAN: return RomanTimeFragment.getLocalMeanTZ(MainActivity.this, suntimesInfo.location[2]);
+            case TZMODE_APPARENTSOLAR: return RomanTimeFragment.getApparantSolarTZ(MainActivity.this, suntimesInfo.location[2]);
+            case TZMODE_SYSTEM: default: return TimeZone.getDefault();
+        }
+    }
+
+    public int getTimeZoneMode()
+    {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_SUNTIMES);
+    }
+
     protected void showHelp()
     {
         HelpDialog dialog = new HelpDialog();
@@ -217,51 +306,4 @@ public class MainActivity extends AppCompatActivity
         dialog.setVersion(suntimesInfo);
         dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
     }
-
-
-    protected void showToday()
-    {
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.showToday();
-        }
-    }
-
-    protected void showSpringEquinox()
-    {
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.showSpringEquinox();
-        }
-    }
-
-    protected void showSummerSolstice()
-    {
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.showSummerSolstice();
-        }
-    }
-
-    protected void showAutumnEquinox()
-    {
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.showAutumnEquinox();
-        }
-    }
-
-    protected void showWinterSolstice()
-    {
-        FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
-        if (fragment != null) {
-            fragment.showWinterSolstice();
-        }
-    }
-
 }

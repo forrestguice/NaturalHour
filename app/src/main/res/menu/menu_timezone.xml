@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.forrestguice.suntimes.romantime.MainActivity">
+
+    <item
+        android:id="@+id/action_timezone_system"
+        android:orderInCategory="100"
+        android:title="@string/action_timezone_system"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_timezone_suntimes"
+        android:orderInCategory="200"
+        android:title="@string/action_timezone_suntimes"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_timezone_localmean"
+        android:orderInCategory="300"
+        android:title="@string/action_timezone_localmean"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_timezone_apparentsolar"
+        android:orderInCategory="400"
+        android:title="@string/action_timezone_apparentsolar"
+        app:showAsAction="never" />
+
+</menu>

@@ -18,4 +18,31 @@
 
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/bottombar"
+        android:layout_width="match_parent" android:layout_height="32dp"
+        android:orientation="horizontal" android:background="?attr/colorPrimary"
+        android:layout_gravity="bottom" android:gravity="center_vertical|end">
+
+        <LinearLayout android:id="@+id/bottombar_title_layout"
+            android:layout_width="wrap_content" android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground">
+
+            <TextView android:id="@+id/bottombar_title" android:textStyle="bold" android:textSize="12sp"
+                android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                android:layout_marginRight="12dp" android:layout_marginLeft="12dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                tools:text="bottom bar title" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--<android.support.design.bottomappbar.BottomAppBar
+        android:id="@+id/bottombar"
+        android:layout_width="match_parent" android:layout_height="32dp"
+        android:layout_gravity="bottom"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:backgroundTint="@color/colorPrimary_dark" />-->
+
 </android.support.design.widget.CoordinatorLayout>

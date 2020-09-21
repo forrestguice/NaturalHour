@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.LinearSnapHelper;
@@ -62,9 +63,16 @@ public class RomanTimeFragment extends Fragment
     protected RomanTimeCardAdapter cardAdapter;
 
     protected SuntimesInfo info;
-    public void setSuntimesInfo(SuntimesInfo value) {
+    private TimeZone timezone = TimeZone.getDefault();
+
+    public void setSuntimesInfo(SuntimesInfo value, TimeZone tz)
+    {
         info = value;
-        cardAdapter.setCardOptions(new RomanTimeAdapterOptions(getActivity(), info));
+        timezone = tz;
+        cardAdapter.setCardOptions(new RomanTimeAdapterOptions(getActivity(), info, timezone));
+    }
+    public TimeZone getTimeZone() {
+        return timezone;
     }
 
     public RomanTimeFragment() {
@@ -157,7 +165,7 @@ public class RomanTimeFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new RomanTimeCardAdapter(getActivity(), new RomanTimeAdapterOptions(getActivity(), info));
+            cardAdapter = new RomanTimeCardAdapter(getActivity(), new RomanTimeAdapterOptions(getActivity(), info, timezone));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -166,6 +174,9 @@ public class RomanTimeFragment extends Fragment
 
     private RomanTimeAdapterListener cardListener = new RomanTimeAdapterListener()
     {
+        public void onClockClick(int position) {
+            announceRomanTime();
+        }
         public void onDateClick(int position) {
             showToday();
         }
@@ -217,6 +228,26 @@ public class RomanTimeFragment extends Fragment
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void announceRomanTime()
+    {
+        Context context = getActivity();
+        if (context != null)
+        {
+            int position = cardLayout.findFirstVisibleItemPosition();
+            RomanTimeData data = cardAdapter.initData(position);
+            int currentHour = RomanTimeData.findRomanHour(Calendar.getInstance(timezone), data);    // [1,24]
+            int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
+
+            String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
+            Snackbar snackbar = Snackbar.make(cardView, DisplayStrings.romanNumeral(context, currentHourOf) + "\n" + phrase[currentHour], Snackbar.LENGTH_LONG);
+            snackbar.setText(DisplayStrings.romanNumeral(context, currentHourOf) + ", " + phrase[currentHour]);
+            snackbar.show();
+        }
+    }
+
     public void showToday() {
         scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
     }
@@ -224,7 +255,7 @@ public class RomanTimeFragment extends Fragment
     public void showSpringEquinox()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(getTimeZone(info));
+        Calendar date = Calendar.getInstance(timezone);
         date.setTimeInMillis(data.getEquinoxSolsticeDates()[0]);
         scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
     }
@@ -232,7 +263,7 @@ public class RomanTimeFragment extends Fragment
     public void showSummerSolstice()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(getTimeZone(info));
+        Calendar date = Calendar.getInstance(timezone);
         date.setTimeInMillis(data.getEquinoxSolsticeDates()[1]);
         scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
     }
@@ -240,7 +271,7 @@ public class RomanTimeFragment extends Fragment
     public void showAutumnEquinox()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(getTimeZone(info));
+        Calendar date = Calendar.getInstance(timezone);
         date.setTimeInMillis(data.getEquinoxSolsticeDates()[2]);
         scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
     }
@@ -248,13 +279,13 @@ public class RomanTimeFragment extends Fragment
     public void showWinterSolstice()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(getTimeZone(info));
+        Calendar date = Calendar.getInstance(timezone);
         date.setTimeInMillis(data.getEquinoxSolsticeDates()[3]);
         scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
     }
 
     public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
-    protected void scrollToPosition(int position)
+    public void scrollToPosition(int position)
     {
         int current = cardLayout.findFirstVisibleItemPosition();
 
@@ -294,7 +325,7 @@ public class RomanTimeFragment extends Fragment
         {
             if (data != null)
             {
-                Calendar now = Calendar.getInstance(getTimeZone(options.suntimes_info));
+                Calendar now = Calendar.getInstance(options.timezone);
                 boolean is24 = options.suntimes_options.time_is24;
                 int currentHour = RomanTimeData.findRomanHour(now, data);    // [1,24]
                 int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
@@ -305,14 +336,14 @@ public class RomanTimeFragment extends Fragment
                     CharSequence[] dayHours = new String[12];
                     StringBuilder debugDisplay0 = new StringBuilder("Day");
                     for (int i=0; i<dayHours.length; i++) {
-                        dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], getTimeZone(options.suntimes_info), is24);
+                        dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], options.timezone, is24);
                         debugDisplay0.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                     }
 
                     CharSequence[] nightHours = new String[12];
                     StringBuilder debugDisplay1 = new StringBuilder("Night");
                     for (int i=0; i<nightHours.length; i++) {
-                        nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], getTimeZone(options.suntimes_info), is24);
+                        nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], options.timezone, is24);
                         debugDisplay1.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                     }
                     text_debug.setText(debugDisplay0 + "\n" + debugDisplay1);
@@ -326,7 +357,7 @@ public class RomanTimeFragment extends Fragment
                 text_hour.setText(DisplayStrings.romanNumeral(context, currentHourOf));
                 text_hour_long.setText(phrase[currentHour]);
 
-                clockface.setTimeZone(getTimeZone(options.suntimes_info));
+                clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
                 clockface.set24HourMode(options.suntimes_options.time_is24);
                 //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_DATEYEAR, true);
@@ -348,10 +379,12 @@ public class RomanTimeFragment extends Fragment
     {
         public SuntimesInfo suntimes_info;
         public SuntimesInfo.SuntimesOptions suntimes_options;
+        public TimeZone timezone = TimeZone.getDefault();
 
-        public RomanTimeAdapterOptions(Context context, SuntimesInfo info) {
+        public RomanTimeAdapterOptions(Context context, SuntimesInfo info, TimeZone tz) {
             suntimes_info = info;
             suntimes_options = info.getOptions(context);
+            timezone = tz;
         }
     }
 
@@ -420,6 +453,7 @@ public class RomanTimeFragment extends Fragment
 
         public RomanTimeData initData()
         {
+            calculator = new RomanTimeCalculator();
             RomanTimeData d;
             data.clear();
             invalidated = false;
@@ -444,7 +478,7 @@ public class RomanTimeFragment extends Fragment
 
         protected RomanTimeData createData(int position)
         {
-            Calendar date = Calendar.getInstance(getTimeZone(info));
+            Calendar date = Calendar.getInstance(options.timezone);
             date.add(Calendar.DATE, position - TODAY_POSITION);
             date.set(Calendar.HOUR_OF_DAY, 12);
             date.set(Calendar.MINUTE, 0);
@@ -452,6 +486,7 @@ public class RomanTimeFragment extends Fragment
             return calculateData(new RomanTimeData(date.getTimeInMillis(), info.location[1], info.location[2], info.location[3]));
         }
 
+        private RomanTimeCalculator calculator = new RomanTimeCalculator();
         private RomanTimeData calculateData(RomanTimeData romanTimeData)
         {
             Context context = contextRef.get();
@@ -459,7 +494,6 @@ public class RomanTimeFragment extends Fragment
             {
                 ContentResolver resolver = context.getContentResolver();
                 if (resolver != null) {
-                    RomanTimeCalculator calculator = new RomanTimeCalculator();
                     calculator.calculateData(resolver, romanTimeData);
                 } else {
                     Log.e(getClass().getSimpleName(), "createData: null contentResolver!");
@@ -488,6 +522,7 @@ public class RomanTimeFragment extends Fragment
         private void attachClickListeners(@NonNull final RomanTimeViewHolder holder, int position)
         {
             holder.text_date.setOnClickListener(onDateClick(position));
+            holder.clockface.setOnClickListener(onClockClick(position));
             //holder.layout_front.setOnClickListener(onCardClick(holder));
             //holder.layout_front.setOnLongClickListener(onCardLongClick(holder));
         }
@@ -495,6 +530,7 @@ public class RomanTimeFragment extends Fragment
         private void detachClickListeners(@NonNull RomanTimeViewHolder holder)
         {
             holder.text_date.setOnClickListener(null);
+            holder.clockface.setOnClickListener(null);
             //holder.layout_front.setOnClickListener(null);
             //holder.layout_front.setOnLongClickListener(null);
         }
@@ -504,6 +540,14 @@ public class RomanTimeFragment extends Fragment
         }
         private RomanTimeAdapterListener adapterListener = new RomanTimeAdapterListener();
 
+        private View.OnClickListener onClockClick(final int position) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapterListener.onClockClick(position);
+                }
+            };
+        }
         private View.OnClickListener onDateClick(final int position) {
             return new View.OnClickListener() {
                 @Override
@@ -536,6 +580,7 @@ public class RomanTimeFragment extends Fragment
      */
     public static class RomanTimeAdapterListener
     {
+        public void onClockClick(int position) {}
         public void onDateClick(int position) {}
         public void onCardClick(int position) {}
         public boolean onCardLongClick(int position) { return false; }
@@ -562,24 +607,26 @@ public class RomanTimeFragment extends Fragment
         }
     }
 
-    public static TimeZone getTimeZone(SuntimesInfo info)
+    public static TimeZone getTimeZone(Context context, SuntimesInfo info)
     {
         if (info.timezoneMode == null || info.timezoneMode.equals("CUSTOM_TIMEZONE")) {
             return TimeZone.getTimeZone(info.timezone);
 
         } else if (info.timezoneMode.equals("SOLAR_TIME")) {
-            if (info.solartimeMode.equals("LOCAL_MEAN_TIME")) {
-                return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(info.location[2]),  "Local Mean Time");
-            } else {
-                return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(info.location[2]),  "Apparent Solar Time");
-            }
+            if (info.solartimeMode.equals("LOCAL_MEAN_TIME"))
+                return getLocalMeanTZ(context, info.location[2]);
+            else return getApparantSolarTZ(context, info.location[2]);
 
         } else {
             return TimeZone.getDefault();
         }
     }
 
+    public static TimeZone getLocalMeanTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), context.getString(R.string.solartime_localmean));
+    }
 
-
-
+    public static TimeZone getApparantSolarTZ(Context context, String longitude) {
+        return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(longitude), context.getString(R.string.solartime_apparent));
+    }
 }
