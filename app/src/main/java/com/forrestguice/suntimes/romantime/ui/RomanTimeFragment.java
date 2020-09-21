@@ -474,7 +474,7 @@ public class RomanTimeFragment extends Fragment
         {
             RomanTimeData dataToday = data.get(TODAY_POSITION);
             long todayMillis = dataToday.getDateMillis();
-            return TODAY_POSITION + (int)((dateMillis - todayMillis) / (24 * 60 * 60 * 1000));
+            return TODAY_POSITION + (int)((dateMillis - todayMillis) / (24 * 60 * 60 * 1000)) + 1;
         }
 
         private boolean invalidated = false;
