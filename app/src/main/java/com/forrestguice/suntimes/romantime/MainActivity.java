@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -215,23 +216,32 @@ public class MainActivity extends AppCompatActivity
     public void showTimeZonePopup(View v)
     {
         PopupMenu popup = new PopupMenu(this, v);
-        popup.setOnMenuItemClickListener(onTimeZonePopupMenuItemSelected);
-
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_timezone, popup.getMenu());
-
-        Menu menu = popup.getMenu();
-        MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
-        if (itemSystem != null) {
-            itemSystem.setTitle(getString(R.string.action_timezone_system, TimeZone.getDefault().getID()));
-        }
-
-        MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
-        if (itemSuntimes != null) {
-            itemSuntimes.setTitle(getString(R.string.action_timezone_suntimes, RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo).getID()));
-        }
-
+        updateTimeZonePopupMenu(popup.getMenu());
+        popup.setOnMenuItemClickListener(onTimeZonePopupMenuItemSelected);
         popup.show();
+    }
+    private void updateTimeZonePopupMenu(Menu menu)
+    {
+        MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
+        MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
+        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar)};
+
+        if (itemSystem != null) {
+            String tzID = getString(R.string.action_timezone_system_format, TimeZone.getDefault().getID());
+            String tzString = getString(R.string.action_timezone_system, tzID);
+            itemSystem.setTitle(DisplayStrings.createRelativeSpan(null, tzString, tzID, 0.65f));
+        }
+
+        if (itemSuntimes != null) {
+            String tzID = getString(R.string.action_timezone_system_format, RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo).getID());
+            String tzString = getString(R.string.action_timezone_suntimes, tzID);
+            itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, tzString, tzID, 0.65f));
+            itemSuntimes.setChecked(true);
+        }
+
+        items[getTimeZoneMode()].setChecked(true);
     }
     private PopupMenu.OnMenuItemClickListener onTimeZonePopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
     {
@@ -245,6 +255,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.action_timezone_suntimes:
                 case R.id.action_timezone_localmean:
                 case R.id.action_timezone_apparentsolar:
+                    item.setChecked(true);
                     SharedPreferences.Editor prefs = getPreferences(Context.MODE_PRIVATE).edit();
                     prefs.putInt(KEY_MODE_TIMEZONE, menuItemToTimeZoneMode(item));
                     prefs.apply();
