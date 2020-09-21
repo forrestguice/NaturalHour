@@ -408,15 +408,15 @@ public class RomanTimeClockView extends View
             double dayAngle = data.getDayHourAngle();
             double nightAngle = data.getNightHourAngle();
             long[] romanHours = data.getRomanHours();
-            double sunriseAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
-            double sunsetAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
+            double sunriseAngle = getAdjustedAngle(startAngle, data.getAngle(romanHours[0], timezone));
+            double sunsetAngle = getAdjustedAngle(startAngle, data.getAngle(romanHours[12], timezone));
 
             for (int i=0; i<romanHours.length; i++)
             {
                 boolean isNight = (i >= 12);
                 double hourAngle = (isNight ? nightAngle : dayAngle);
 
-                double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[i], timezone));
+                double a = getAdjustedAngle(startAngle, data.getAngle(romanHours[i], timezone));
                 canvas.drawArc(circle_mid, (float) Math.toDegrees(a), (float) Math.toDegrees(hourAngle), false, (isNight ? paintArcNightFill : paintArcDayFill));
                 drawRay(canvas, cX, cY, a, r_inner, r_outer, isNight ? paintArcNightBorder : paintArcDayBorder);
 
@@ -431,8 +431,8 @@ public class RomanTimeClockView extends View
                 canvas.drawText(label.toString(), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunriseAngle), (float) Math.toDegrees(sunsetAngle-sunriseAngle), false, paintArcDayBorder);
-            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone)), r_inner, r_outer, paintArcNightBorder);
-            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone)), r_inner, r_outer, paintArcNightBorder);
+            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(romanHours[0], timezone)), r_inner, r_outer, paintArcNightBorder);
+            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(romanHours[12], timezone)), r_inner, r_outer, paintArcNightBorder);
 
             if (flags.getAsBoolean(FLAG_SHOW_VIGILIA))
             {
@@ -441,7 +441,7 @@ public class RomanTimeClockView extends View
                 double nightSweepAngle = nightAngle * 3;
                 for (int i = 12; i<romanHours.length; i += 3)
                 {
-                    double a = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[i], timezone));
+                    double a = getAdjustedAngle(startAngle, data.getAngle(romanHours[i], timezone));
                     canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcNightFill);
                     canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcNightBorder);
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
@@ -461,7 +461,7 @@ public class RomanTimeClockView extends View
                     c++;
                 }
 
-                double a0 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone) + (nightSweepAngle * 4));
+                double a0 = getAdjustedAngle(startAngle, data.getAngle(romanHours[12], timezone) + (nightSweepAngle * 4));
                 drawRay(canvas, cX, cY, a0, r_outer, r_outer1, paintArcNightBorder);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunsetAngle), (float) Math.toDegrees(2*Math.PI - (sunsetAngle-sunriseAngle)), false, paintArcNightBorder);
@@ -587,8 +587,8 @@ public class RomanTimeClockView extends View
         {
             long[] romanHours = data.getRomanHours();
             dayHourAngle = data.getDayHourAngle();
-            dayAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
-            nightAngle = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[12], timezone));
+            dayAngle = getAdjustedAngle(startAngle, data.getAngle(romanHours[0], timezone));
+            nightAngle = getAdjustedAngle(startAngle, data.getAngle(romanHours[12], timezone));
 
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT))
             {
@@ -605,12 +605,12 @@ public class RomanTimeClockView extends View
 
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_AMPM))
             {
-                double a1 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[0], timezone));
+                double a1 = getAdjustedAngle(startAngle, data.getAngle(romanHours[0], timezone));
                 double span = data.getDayHourAngle() * 6;
                 paintFillDay.setColor(colors.colorDay1AM);
                 drawPie(canvas, cX, cY, radiusInner(cX), a1, span, paintFillDay);
 
-                double a2 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(romanHours[6], timezone));
+                double a2 = getAdjustedAngle(startAngle, data.getAngle(romanHours[6], timezone));
                 paintFillDay.setColor(colors.colorDay1PM);
                 drawPie(canvas, cX, cY, radiusInner(cX), a2, span, paintFillDay);
             }

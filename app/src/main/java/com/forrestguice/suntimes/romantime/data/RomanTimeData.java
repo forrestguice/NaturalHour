@@ -213,13 +213,13 @@ public class RomanTimeData implements Parcelable
      * @param timezone
      * @return radians
      */
-    public static double getAngle( long timeMillis, TimeZone timezone )
+    public double getAngle( long timeMillis, TimeZone timezone )
     {
         calendar.setTimeZone(timezone);
         calendar.setTimeInMillis(timeMillis);
         return RomanTimeData.getAngle( calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
     }
-    private static Calendar calendar = Calendar.getInstance();
+    private Calendar calendar = Calendar.getInstance();
 
     /**
      * @param hour HOUR_OF_DAY
@@ -245,7 +245,7 @@ public class RomanTimeData implements Parcelable
 
         for (int i=0; i<data.romanHours.length; i++)
         {
-            double a0 = RomanTimeData.getAngle(data.romanHours[i], timezone);
+            double a0 = data.getAngle(data.romanHours[i], timezone);
             double a1 = a0 + (i < 12 ? dayAngle : nightAngle);
             if (timeAngle >= a0 && timeAngle < a1) {
                 return (i + 1);
