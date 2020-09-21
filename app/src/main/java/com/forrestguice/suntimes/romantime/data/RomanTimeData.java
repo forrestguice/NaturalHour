@@ -215,10 +215,11 @@ public class RomanTimeData implements Parcelable
      */
     public static double getAngle( long timeMillis, TimeZone timezone )
     {
-        Calendar t0 = Calendar.getInstance(timezone);
-        t0.setTimeInMillis(timeMillis);
-        return RomanTimeData.getAngle( t0.get(Calendar.HOUR_OF_DAY), t0.get(Calendar.MINUTE), t0.get(Calendar.SECOND));
+        calendar.setTimeZone(timezone);
+        calendar.setTimeInMillis(timeMillis);
+        return RomanTimeData.getAngle( calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
     }
+    private static Calendar calendar = Calendar.getInstance();
 
     /**
      * @param hour HOUR_OF_DAY
