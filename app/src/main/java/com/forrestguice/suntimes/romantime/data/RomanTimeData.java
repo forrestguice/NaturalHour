@@ -37,6 +37,7 @@ public class RomanTimeData implements Parcelable
     public static final String KEY_SUNRISE = "sunrise";
     public static final String KEY_SUNSET = "sunset";
     public static final String KEY_ROMAN_HOURS = "romanhours";
+    public static final String KEY_SOLSTICE_EQUINOX = "solsticeequinox";
     public static final String KEY_DAY_HOUR_LENGTH = "dayhourlength";
     public static final String KEY_NIGHT_HOUR_LENGTH = "nighthourlength";
 
@@ -48,7 +49,8 @@ public class RomanTimeData implements Parcelable
     protected double latitude, longitude, altitude;
     protected long sunrise, sunset;
     protected long dayHourLength, nightHourLength;
-    protected long[] romanHours = new long[24];    // 24 roman hours; 1 sunrise; 13 sunset
+    protected long[] romanHours = new long[24];      // 24 roman hours; 1 sunrise; 13 sunset
+    protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
     protected boolean calculated = false;
 
     public RomanTimeData(long date, double latitude, double longitude, double altitude)
@@ -90,6 +92,9 @@ public class RomanTimeData implements Parcelable
         for (int i=0; i<romanHours.length; i++) {
             romanHours[i] = values.getAsLong(KEY_ROMAN_HOURS + i);
         }
+        for (int i=0; i<solsticeEquinox.length; i++) {
+            solsticeEquinox[i] = values.getAsLong(KEY_SOLSTICE_EQUINOX + i);
+        }
     }
     public ContentValues asContentValues()
     {
@@ -106,6 +111,9 @@ public class RomanTimeData implements Parcelable
         for (int i=0; i<romanHours.length; i++) {
             values.put(KEY_ROMAN_HOURS + i, romanHours[i]);
         }
+        for (int i=0; i<solsticeEquinox.length; i++) {
+            values.put(KEY_SOLSTICE_EQUINOX + i, solsticeEquinox[i]);
+        }
         return values;
     }
 
@@ -121,6 +129,7 @@ public class RomanTimeData implements Parcelable
         dayHourLength = in.readLong();
         nightHourLength = in.readLong();
         in.readLongArray(romanHours);
+        in.readLongArray(solsticeEquinox);
     }
     @Override
     public void writeToParcel(Parcel out, int flags)
@@ -135,6 +144,7 @@ public class RomanTimeData implements Parcelable
         out.writeLong(dayHourLength);
         out.writeLong(nightHourLength);
         out.writeLongArray(romanHours);
+        out.writeLongArray(solsticeEquinox);
     }
 
     @Override
@@ -245,6 +255,10 @@ public class RomanTimeData implements Parcelable
 
     public long[] getRomanHours() {
         return romanHours;
+    }
+
+    public long[] getEquinoxSolsticeDates() {
+        return solsticeEquinox;
     }
 
     /**

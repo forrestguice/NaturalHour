@@ -27,6 +27,8 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 
+import java.util.Calendar;
+
 public class RomanTimeCalculator
 {
     /**
@@ -72,6 +74,7 @@ public class RomanTimeCalculator
         {
             try {
                 querySunriseSunset(resolver, data);
+                queryEquinoxSolsticeDates(resolver, data);
 
             } catch (SecurityException e) {
                 Log.e(getClass().getSimpleName(), "calculateData: Unable to access " + CalculatorProviderContract.AUTHORITY + "! " + e);
@@ -98,7 +101,36 @@ public class RomanTimeCalculator
         }
     }
 
+    private long[] solsticeEquinox = new long[] {-1, -1, -1, -1};
+    protected void queryEquinoxSolsticeDates(ContentResolver resolver, RomanTimeData data)
+    {
+        if (solsticeEquinox[0] <= 0)
+        {
+            long dateMillis = data.getDateMillis();
+            Calendar date = Calendar.getInstance();
+            date.setTimeInMillis(dateMillis);
+            int year = date.get(Calendar.YEAR);
 
-
+            String[] projection = new String[] { CalculatorProviderContract.COLUMN_SEASON_VERNAL, CalculatorProviderContract.COLUMN_SEASON_SUMMER,
+                                                 CalculatorProviderContract.COLUMN_SEASON_AUTUMN, CalculatorProviderContract.COLUMN_SEASON_WINTER };
+            Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SEASONS + "/" + (year - 1) + "-" + (year + 1));
+            Cursor cursor = resolver.query(uri, projection, null, null, null);
+            if (cursor != null)
+            {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast())
+                {
+                    for (int i=0; i<solsticeEquinox.length; i++) {
+                        long value = cursor.isNull(i) ? -1 : cursor.getLong(i);
+                        long dayDiff = (value - dateMillis) / (24L * 60L * 60L * 1000L);
+                        solsticeEquinox[i] = value > solsticeEquinox[i] && dayDiff < 365 ? value : solsticeEquinox[i];
+                    }
+                    cursor.moveToNext();
+                }
+                cursor.close();
+            }
+        }
+        data.solsticeEquinox = this.solsticeEquinox;
+    }
 
 }
