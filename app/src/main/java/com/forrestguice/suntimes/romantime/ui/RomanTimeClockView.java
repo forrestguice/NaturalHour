@@ -613,11 +613,14 @@ public class RomanTimeClockView extends View
 
         if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE))
         {
-            float r = (radiusInner(cX) - (2.5f * arcWidth));
+            float r = (radiusInner(cX) - (2.65f * arcWidth));
             final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
 
             Path path = new Path();
-            path.addArc(circle, (float) Math.toDegrees(-Math.PI), (float) Math.toDegrees(-Math.PI));
+            boolean alongBottom = alongBottom(startAngle);
+            double arcAngle = simplifyAngle(startAngle + (alongBottom ? Math.PI/2d : -Math.PI/2));
+            double sweepAngle = alongBottom ? -Math.PI : Math.PI;
+            path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
             paintLabel.setColor(colors.colorLabel1);
             paintLabel.setTextSize(textSmall);
             canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
@@ -641,7 +644,7 @@ public class RomanTimeClockView extends View
     private boolean alongBottom(double radians)
     {
         double angle = simplifyAngle(radians);
-        return angle > 0 && angle < Math.PI;
+        return angle >= 0 && angle <= Math.PI;
     }
 
     public double simplifyAngle(double radians)
