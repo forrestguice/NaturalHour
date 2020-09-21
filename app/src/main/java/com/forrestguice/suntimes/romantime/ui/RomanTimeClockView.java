@@ -259,10 +259,15 @@ public class RomanTimeClockView extends View
         }
     }
 
+    private SimpleDateFormat dateFormat_short = null, dateFormat_long = null;
+
     private void initPaint(Context context)
     {
         initFlags(context);
         colors = new ClockColorValues(context);
+
+        dateFormat_short = new SimpleDateFormat(context.getString(R.string.format_date0), Locale.getDefault());
+        dateFormat_long = new SimpleDateFormat(context.getString(R.string.format_date0_long), Locale.getDefault());
 
         handWidth = context.getResources().getDimension(R.dimen.clockface_hand_width);
         centerRadius = (int)(context.getResources().getDimension(R.dimen.clockface_center_width) / 2f);
@@ -703,9 +708,11 @@ public class RomanTimeClockView extends View
         then.setTimeInMillis(dateMillis);
         boolean isThisYear = now.get(Calendar.YEAR) == then.get(Calendar.YEAR);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString( !isThisYear || flags.getAsBoolean(FLAG_SHOW_DATEYEAR) ? R.string.format_date0_long : R.string.format_date0), Locale.getDefault());
+        SimpleDateFormat dateFormat = !isThisYear || flags.getAsBoolean(FLAG_SHOW_DATEYEAR) ? dateFormat_long : dateFormat_short;
         dateFormat.setTimeZone(timezone);
         return dateFormat.format(dateMillis);
     }
+
+
 
 }

@@ -75,14 +75,22 @@ public class DisplayStrings
 
     public static CharSequence formatDate(@NonNull Context context, Calendar date)
     {
-        Calendar now = Calendar.getInstance();
+        Calendar now = Calendar.getInstance(date.getTimeZone());
         boolean isThisYear = now.get(Calendar.YEAR) == date.get(Calendar.YEAR);
 
-        Locale locale = Locale.getDefault();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString( isThisYear ? R.string.format_date : R.string.format_date_long), locale);
+        if (dateFormat_short == null || dateFormat_long == null)
+        {
+            Locale locale = Locale.getDefault();
+            dateFormat_short = new SimpleDateFormat(context.getString( R.string.format_date ), locale);
+            dateFormat_long = new SimpleDateFormat(context.getString( R.string.format_date_long), locale);
+        }
+
+        SimpleDateFormat dateFormat = isThisYear ? dateFormat_short : dateFormat_long;
         dateFormat.setTimeZone(date.getTimeZone());
         return dateFormat.format(date.getTime());
     }
+
+    private static SimpleDateFormat dateFormat_short = null, dateFormat_long = null;
 
     public static CharSequence formatDateHeader(Context context, int dayDelta, CharSequence formattedDate)
     {
@@ -143,12 +151,11 @@ public class DisplayStrings
             value = meters;
             unitsString = (shortForm ? context.getString(R.string.units_meters_short) : context.getString(R.string.units_meters));
         }
-
-        NumberFormat formatter = NumberFormat.getInstance();
         formatter.setMinimumFractionDigits(0);
         formatter.setMaximumFractionDigits(places);
         return context.getString(R.string.format_location_altitude, formatter.format(value), unitsString);
     }
+    private static NumberFormat formatter = NumberFormat.getInstance();
 
     public static SpannableString createRelativeSpan(@Nullable SpannableString span, @NonNull String text, @NonNull String toRelative, float relativeSize)
     {
