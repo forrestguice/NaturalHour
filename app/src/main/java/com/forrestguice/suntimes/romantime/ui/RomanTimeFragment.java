@@ -202,7 +202,18 @@ public class RomanTimeFragment extends Fragment
     }
 
     public void showToday() {
-        cardView.smoothScrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+        scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+    public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
+    protected void scrollToPosition(int position)
+    {
+        int current = cardLayout.findFirstVisibleItemPosition();
+
+        if (Math.abs(position - current) < SMOOTHSCROLL_ITEMLIMIT) {
+            cardView.smoothScrollToPosition(position);
+        } else {
+            cardView.scrollToPosition(position < current ? position - SMOOTHSCROLL_ITEMLIMIT : position + SMOOTHSCROLL_ITEMLIMIT);
+            cardView.smoothScrollToPosition(position);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
