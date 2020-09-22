@@ -86,10 +86,18 @@
     </string-array>
 
     <string-array name="help_topics">      <!-- in order of appearance -->
-        <item>one</item>
-        <item>two</item>
-        <item>TODO</item>
+        <item>@string/help_configuration</item>
+        <item>@string/help_romantime</item>
     </string-array>
+    <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
+    <string name="help_romantime"><![CDATA[<h4>Roman Timekeeping</h4>
+    The day and night periods are each divided into 12 hours.
+    The first hour (I) <em>of the day</em> begins at sunrise. The first hour (I) <em>of the night</em> begins at sunset.
+    <br/><br/>
+    The length of these daytime and nighttime hours depends on latitude and varies with the seasons; e.g. winter daytime hours are shorter (and nighttime hours longer).
+    <br/><br/>
+    In addition, the night is divided into four watches (vigilia), each three hours long.
+    ]]></string>
 
     <string name="app_name">Roman Time</string>
     <string name="app_desc">A "roman time" addon for Suntimes.</string>
