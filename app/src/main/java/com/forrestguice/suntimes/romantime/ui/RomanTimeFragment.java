@@ -429,6 +429,10 @@ public class RomanTimeFragment extends Fragment
         {
             detachClickListeners(holder);
             holder.clockface.invalidate();
+            int position = holder.getAdapterPosition();
+            if (position >= 0) {
+                data.remove(position);
+            }
         }
 
         private RomanTimeAdapterOptions options;
