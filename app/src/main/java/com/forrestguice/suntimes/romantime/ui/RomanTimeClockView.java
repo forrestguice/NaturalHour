@@ -639,12 +639,11 @@ public class RomanTimeClockView extends View
                 path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
                 paint.setTextSize(textMedium);
 
-                Calendar date = Calendar.getInstance(timezone);
-                date.setTimeInMillis(data.getDateMillis());
-                String[] weekSymbols = getContext().getResources().getStringArray(R.array.week_symbols);
-                String weekSymbol = weekSymbols[date.get(Calendar.DAY_OF_WEEK)-1];
-
-                CharSequence dateString = weekSymbol + "   " + formatDate(getContext(), data.getDateMillis());
+                //Calendar date = Calendar.getInstance(timezone);
+                //date.setTimeInMillis(data.getDateMillis());
+                //String[] weekSymbols = getContext().getResources().getStringArray(R.array.week_symbols);
+                //String weekSymbol = weekSymbols[date.get(Calendar.DAY_OF_WEEK)-1];
+                CharSequence dateString = formatDate(getContext(), data.getDateMillis());
                 canvas.drawTextOnPath(dateString.toString(),  path, 0, textMedium/3f, paint);
             }
         }
