@@ -122,7 +122,7 @@ public class RomanTimeFragment extends Fragment
             cardView.postDelayed(clockUpdateRunnable, CLOCK_UPDATE_INTERVAL);
         }
     };
-    public static final long CLOCK_UPDATE_INTERVAL = 15 * 60 * 1000;
+    public static final long CLOCK_UPDATE_INTERVAL = 15 * 1000;
 
     @Override
     public void onStop()
