@@ -626,7 +626,14 @@ public class RomanTimeClockView extends View
                 double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
                 path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
                 paint.setTextSize(textMedium);
-                canvas.drawTextOnPath(formatDate(getContext(), data.getDateMillis()).toString(),  path, 0, textMedium/3f, paint);
+
+                Calendar date = Calendar.getInstance(timezone);
+                date.setTimeInMillis(data.getDateMillis());
+                String[] weekSymbols = getContext().getResources().getStringArray(R.array.week_symbols);
+                String weekSymbol = weekSymbols[date.get(Calendar.DAY_OF_WEEK)-1];
+
+                CharSequence dateString = weekSymbol + "   " + formatDate(getContext(), data.getDateMillis());
+                canvas.drawTextOnPath(dateString.toString(),  path, 0, textMedium/3f, paint);
             }
         }
 

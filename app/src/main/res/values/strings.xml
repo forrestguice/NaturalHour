@@ -56,6 +56,16 @@
         <item>fourth watch</item>
     </string-array>
 
+    <string-array name="week_symbols">
+        <item>☉</item>  <!-- sunday -->
+        <item>☾</item>
+        <item>♂</item>
+        <item>☿</item>
+        <item>♃</item>
+        <item>♀</item>
+        <item>♄</item> <!-- saturday -->
+    </string-array>
+
     <string-array name="hour_phrase">
         <item>0</item>
         <item>first hour\nof the day</item>
