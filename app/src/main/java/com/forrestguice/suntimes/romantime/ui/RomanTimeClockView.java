@@ -614,6 +614,20 @@ public class RomanTimeClockView extends View
                 paintFillDay.setColor(colors.colorDay1PM);
                 drawPie(canvas, cX, cY, radiusInner(cX), a2, span, paintFillDay);
             }
+
+            if (flags.getAsBoolean(FLAG_SHOW_DATE))
+            {
+                float r = radiusOuter1(cX) - arcWidth/2f;
+                final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
+                boolean alongBottom = alongBottom(dayAngle + dayHourAngle * 6);
+
+                Path path = new Path();
+                double arcAngle = (alongBottom ? nightAngle : dayAngle);
+                double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
+                path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
+                paint.setTextSize(textMedium);
+                canvas.drawTextOnPath(formatDate(getContext(), data.getDateMillis()).toString(),  path, 0, textMedium/3f, paint);
+            }
         }
 
         if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE))
@@ -629,20 +643,6 @@ public class RomanTimeClockView extends View
             paintLabel.setColor(colors.colorLabel1);
             paintLabel.setTextSize(textSmall);
             canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
-        }
-
-        if (flags.getAsBoolean(FLAG_SHOW_DATE))
-        {
-            float r = radiusOuter1(cX) - arcWidth/2f;
-            final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
-            boolean alongBottom = alongBottom(dayAngle + dayHourAngle * 6);
-
-            Path path = new Path();
-            double arcAngle = (alongBottom ? nightAngle : dayAngle);
-            double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
-            path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-            paint.setTextSize(textMedium);
-            canvas.drawTextOnPath(formatDate(getContext(), data.getDateMillis()).toString(),  path, 0, textMedium/3f, paint);
         }
     }
 
