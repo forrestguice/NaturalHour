@@ -425,8 +425,10 @@ public class RomanTimeFragment extends Fragment
         }
 
         @Override
-        public void onViewRecycled(@NonNull RomanTimeViewHolder holder) {
+        public void onViewRecycled(@NonNull RomanTimeViewHolder holder)
+        {
             detachClickListeners(holder);
+            holder.clockface.invalidate();
         }
 
         private RomanTimeAdapterOptions options;
