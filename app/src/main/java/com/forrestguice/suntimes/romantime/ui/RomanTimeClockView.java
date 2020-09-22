@@ -68,6 +68,11 @@ public class RomanTimeClockView extends View
         this.data = data;
         invalidate();
     }
+
+    protected long time = -1;
+    public void setTime(long millis) {
+        this.time = millis;
+        invalidate();
     }
 
     protected TimeZone timezone = TimeZone.getDefault();
@@ -181,7 +186,7 @@ public class RomanTimeClockView extends View
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
 
         if (showTime) {
-            drawHourHand(Calendar.getInstance(timezone), canvas, cX, cY, radiusInner(cX));
+            drawHourHand(time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
         }
     }
 
@@ -679,8 +684,11 @@ public class RomanTimeClockView extends View
         return retValue;
     }
 
-    protected void drawHourHand(Calendar now, Canvas canvas, float cX, float cY, float length)
+    protected void drawHourHand(long nowMillis, Canvas canvas, float cX, float cY, float length)
     {
+        Calendar now = Calendar.getInstance(timezone);
+        now.setTimeInMillis(nowMillis);
+
         int hour = now.get(Calendar.HOUR_OF_DAY);
         int minute = now.get(Calendar.MINUTE);
         int second = now.get(Calendar.SECOND);
