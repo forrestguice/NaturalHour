@@ -66,31 +66,38 @@ public class RomanTimeClockView extends View
     protected RomanTimeData data;
     public void setData(RomanTimeData data) {
         this.data = data;
+        invalidate();
+    }
     }
 
     protected TimeZone timezone = TimeZone.getDefault();
     public void setTimeZone( TimeZone timezone) {
         this.timezone = timezone;
+        invalidate();
     }
 
     protected boolean is24 = true;
     public void set24HourMode(boolean value) {
         is24 = value;
+        invalidate();
     }
 
     protected Double startAngle = null;
     public void setStartAngle(double radianValue) {
         startAngle = radianValue;
+        invalidate();
     }
 
     protected boolean showMinorTickLabels = true;
     public void setShowMinorTickLabels(boolean value) {
         showMinorTickLabels = value;
+        invalidate();
     }
 
     protected boolean showTime = true;
     public void setShowTime(boolean value) {
         showTime = value;
+        invalidate();
     }
 
     private void initFlags(Context context)
