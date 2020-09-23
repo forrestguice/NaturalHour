@@ -282,16 +282,21 @@ public class RomanTimeFragment extends Fragment
     }
 
     public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
-    public void scrollToPosition(int position)
+    public void scrollToPosition(int position) {
+        scrollToPosition(position, true);
+    }
+    public void scrollToPosition(int position, boolean skipAnimation)
     {
         int current = cardLayout.findFirstVisibleItemPosition();
-
-        if (Math.abs(position - current) < SMOOTHSCROLL_ITEMLIMIT) {
-            cardView.smoothScrollToPosition(position);
-        } else {
-            //cardView.scrollToPosition(position < current ? position + SMOOTHSCROLL_ITEMLIMIT : position - SMOOTHSCROLL_ITEMLIMIT);
-            //cardView.smoothScrollToPosition(position);
+        if (skipAnimation) {
             cardView.scrollToPosition(position);
+
+        } else if (Math.abs(position - current) >= SMOOTHSCROLL_ITEMLIMIT) {
+            cardView.scrollToPosition(position < current ? position + SMOOTHSCROLL_ITEMLIMIT : position - SMOOTHSCROLL_ITEMLIMIT);
+            cardView.smoothScrollToPosition(position);
+
+        } else {
+            cardView.smoothScrollToPosition(position);
         }
     }
 
