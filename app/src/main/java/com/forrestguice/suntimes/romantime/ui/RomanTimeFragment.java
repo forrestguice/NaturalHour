@@ -255,33 +255,25 @@ public class RomanTimeFragment extends Fragment
     public void showSpringEquinox()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(timezone);
-        date.setTimeInMillis(data.getEquinoxSolsticeDates()[0]);
-        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+        scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[0]));
     }
 
     public void showSummerSolstice()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(timezone);
-        date.setTimeInMillis(data.getEquinoxSolsticeDates()[1]);
-        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+        scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[1]));
     }
 
     public void showAutumnEquinox()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(timezone);
-        date.setTimeInMillis(data.getEquinoxSolsticeDates()[2]);
-        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+        scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[2]));
     }
 
     public void showWinterSolstice()
     {
         RomanTimeData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
-        Calendar date = Calendar.getInstance(timezone);
-        date.setTimeInMillis(data.getEquinoxSolsticeDates()[3]);
-        scrollToPosition(cardAdapter.positionForDate(date.getTimeInMillis()));
+        scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[3]));
     }
 
     public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
