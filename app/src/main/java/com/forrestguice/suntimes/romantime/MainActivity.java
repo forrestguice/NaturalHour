@@ -24,19 +24,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
@@ -89,9 +86,14 @@ public class MainActivity extends AppCompatActivity
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_suntimes);
         }
 
-        View bottomBarTitleLayout = findViewById(R.id.bottombar_title_layout);
-        if (bottomBarTitleLayout != null) {
-            bottomBarTitleLayout.setOnClickListener(onBottomBarTitleClick);
+        View timeformatButton = findViewById(R.id.bottombar_button_layout0);
+        if (timeformatButton != null) {
+            timeformatButton.setOnClickListener(onTimeFormatClick);
+        }
+
+        View timezoneButton = findViewById(R.id.bottombar_button_layout1);
+        if (timezoneButton != null) {
+            timezoneButton.setOnClickListener(onTimeZoneClick);
         }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -135,16 +137,28 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragments = getSupportFragmentManager();
         RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
         if (fragment != null) {
-            fragment.setSuntimesInfo(suntimesInfo, fromTimeZoneMode(getTimeZoneMode()));
+            fragment.setSuntimesInfo(suntimesInfo, fromTimeZoneMode(getTimeZoneMode()), fromTimeFormatMode(getTimeFormatMode()));
         }
 
-        TextView bottomBarTitle = (TextView) findViewById(R.id.bottombar_title);
-        if (bottomBarTitle != null && fragment != null) {
-            bottomBarTitle.setText( fragment.getTimeZone().getID() );
+        TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
+        if (timeformatText != null && fragment != null) {
+            timeformatText.setText( getString( fragment.is24() ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
+        }
+
+        TextView timezoneText = (TextView) findViewById(R.id.bottombar_button1);
+        if (timezoneText != null && fragment != null) {
+            timezoneText.setText( fragment.getTimeZone().getID() );
         }
     }
 
-    private View.OnClickListener onBottomBarTitleClick = new View.OnClickListener() {
+    private View.OnClickListener onTimeFormatClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showTimeFormatPopup(v);
+        }
+    };
+
+    private View.OnClickListener onTimeZoneClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             showTimeZonePopup(v);
@@ -213,6 +227,108 @@ public class MainActivity extends AppCompatActivity
         AddonHelper.startSuntimesActivity(this);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static final String KEY_MODE_TIMEFORMAT = "timeformatMode";
+    public static final int TIMEMODE_SYSTEM = 0, TIMEMODE_SUNTIMES = 1, TIMEMODE_12HR = 2, TIMEMODE_24HR = 3;
+
+    public void showTimeFormatPopup(View v)
+    {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_timeformat, popup.getMenu());
+        updateTimeFormatPopupMenu(popup.getMenu());
+        popup.setOnMenuItemClickListener(onTimeFormatPopupMenuItemSelected);
+        popup.show();
+    }
+    private void updateTimeFormatPopupMenu(Menu menu)
+    {
+        MenuItem itemSystem = menu.findItem(R.id.action_timeformat_system);
+        MenuItem itemSuntimes = menu.findItem(R.id.action_timeformat_suntimes);
+        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timeformat_12hr), menu.findItem(R.id.action_timeformat_24hr)};
+
+        if (itemSystem != null)
+        {
+            boolean is24 = fromTimeFormatMode(TIMEMODE_SYSTEM);
+            String timeFormat = getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+            String displayTag = getString(R.string.action_timeformat_system_format, timeFormat);
+            String displayString = getString(R.string.action_timeformat_system, displayTag);
+            itemSystem.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
+        }
+
+        if (itemSuntimes != null)
+        {
+            boolean is24 = fromTimeFormatMode(TIMEMODE_SUNTIMES);
+            String timeFormat = getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+            String displayTag = getString(R.string.action_timeformat_system_format, timeFormat);
+            String displayString = getString(R.string.action_timeformat_suntimes, displayTag);
+            itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
+        }
+
+        items[getTimeFormatMode()].setChecked(true);
+    }
+    private PopupMenu.OnMenuItemClickListener onTimeFormatPopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
+    {
+        @Override
+        public boolean onMenuItemClick(MenuItem item)
+        {
+
+            switch (item.getItemId())
+            {
+                case R.id.action_timeformat_system:
+                case R.id.action_timeformat_suntimes:
+                case R.id.action_timeformat_12hr:
+                case R.id.action_timeformat_24hr:
+                    item.setChecked(true);
+                    SharedPreferences.Editor prefs = getPreferences(Context.MODE_PRIVATE).edit();
+                    prefs.putInt(KEY_MODE_TIMEFORMAT, menuItemToTimeFormatMode(item));
+                    prefs.apply();
+                    updateViews();
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    public static int menuItemToTimeFormatMode(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_timeformat_suntimes: return TIMEMODE_SUNTIMES;
+            case R.id.action_timeformat_12hr: return TIMEMODE_12HR;
+            case R.id.action_timeformat_24hr: return TIMEMODE_24HR;
+            case R.id.action_timeformat_system: default: return TIMEMODE_SYSTEM;
+        }
+    }
+
+    /**
+     * @param mode TIMEMODE_12HR, TIMEMODE_24HR, TIMEMODE_SUNTIMES, TIMEMODE_SYSTEM
+     * @return true 24hr format, false 12hr format
+     */
+    public boolean fromTimeFormatMode(int mode)
+    {
+        switch (mode)
+        {
+            case TIMEMODE_12HR: return false;
+            case TIMEMODE_24HR: return true;
+            case TIMEMODE_SUNTIMES: return suntimesInfo.getOptions(MainActivity.this).time_is24;
+            case TIMEMODE_SYSTEM: default: return android.text.format.DateFormat.is24HourFormat(MainActivity.this);
+        }
+    }
+
+    public int getTimeFormatMode()
+    {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getInt(KEY_MODE_TIMEFORMAT, TIMEMODE_SUNTIMES);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static final String KEY_MODE_TIMEZONE = "timezoneMode";
+    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3;
+
     public void showTimeZonePopup(View v)
     {
         PopupMenu popup = new PopupMenu(this, v);
@@ -238,7 +354,6 @@ public class MainActivity extends AppCompatActivity
             String tzID = getString(R.string.action_timezone_system_format, RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo).getID());
             String tzString = getString(R.string.action_timezone_suntimes, tzID);
             itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, tzString, tzID, 0.65f));
-            itemSuntimes.setChecked(true);
         }
 
         items[getTimeZoneMode()].setChecked(true);
@@ -265,9 +380,6 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
     };
-    public static final String KEY_MODE_TIMEZONE = "timezoneMode";
-    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3;
-
     public static int menuItemToTimeZoneMode(MenuItem item)
     {
         switch (item.getItemId())
@@ -295,6 +407,9 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_SUNTIMES);
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     protected void showHelp()
     {

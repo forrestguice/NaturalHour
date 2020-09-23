@@ -63,16 +63,21 @@ public class RomanTimeFragment extends Fragment
     protected RomanTimeCardAdapter cardAdapter;
 
     protected SuntimesInfo info;
-    private TimeZone timezone = TimeZone.getDefault();
+    protected TimeZone timezone = TimeZone.getDefault();
+    protected boolean is24 = true;
 
-    public void setSuntimesInfo(SuntimesInfo value, TimeZone tz)
+    public void setSuntimesInfo(SuntimesInfo value, TimeZone tz, boolean is24)
     {
-        info = value;
-        timezone = tz;
-        cardAdapter.setCardOptions(new RomanTimeAdapterOptions(getActivity(), info, timezone));
+        this.info = value;
+        this.timezone = tz;
+        this.is24 = is24;
+        cardAdapter.setCardOptions(new RomanTimeAdapterOptions(getActivity(), info, timezone, is24));
     }
     public TimeZone getTimeZone() {
         return timezone;
+    }
+    public boolean is24() {
+        return is24;
     }
 
     public RomanTimeFragment() {
@@ -165,7 +170,7 @@ public class RomanTimeFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new RomanTimeCardAdapter(getActivity(), new RomanTimeAdapterOptions(getActivity(), info, timezone));
+            cardAdapter = new RomanTimeCardAdapter(getActivity(), new RomanTimeAdapterOptions(getActivity(), info, timezone, is24));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -318,7 +323,6 @@ public class RomanTimeFragment extends Fragment
             if (data != null)
             {
                 Calendar now = Calendar.getInstance(options.timezone);
-                boolean is24 = options.suntimes_options.time_is24;
                 int currentHour = RomanTimeData.findRomanHour(now, data);    // [1,24]
                 int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
 
@@ -328,14 +332,14 @@ public class RomanTimeFragment extends Fragment
                     CharSequence[] dayHours = new String[12];
                     StringBuilder debugDisplay0 = new StringBuilder("Day");
                     for (int i=0; i<dayHours.length; i++) {
-                        dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], options.timezone, is24);
+                        dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], options.timezone, options.is24);
                         debugDisplay0.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                     }
 
                     CharSequence[] nightHours = new String[12];
                     StringBuilder debugDisplay1 = new StringBuilder("Night");
                     for (int i=0; i<nightHours.length; i++) {
-                        nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], options.timezone, is24);
+                        nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], options.timezone, options.is24);
                         debugDisplay1.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                     }
                     text_debug.setText(debugDisplay0 + "\n" + debugDisplay1);
@@ -351,7 +355,7 @@ public class RomanTimeFragment extends Fragment
 
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
-                clockface.set24HourMode(options.suntimes_options.time_is24);
+                clockface.set24HourMode(options.is24);
                 //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_DATEYEAR, true);
                 clockface.setData(data);
 
@@ -371,12 +375,14 @@ public class RomanTimeFragment extends Fragment
     {
         public SuntimesInfo suntimes_info;
         public SuntimesInfo.SuntimesOptions suntimes_options;
-        public TimeZone timezone = TimeZone.getDefault();
+        public TimeZone timezone;
+        public boolean is24;
 
-        public RomanTimeAdapterOptions(Context context, SuntimesInfo info, TimeZone tz) {
-            suntimes_info = info;
-            suntimes_options = info.getOptions(context);
-            timezone = tz;
+        public RomanTimeAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, boolean is24) {
+            this.suntimes_info = info;
+            this.suntimes_options = info.getOptions(context);
+            this.timezone = tz;
+            this.is24 = is24;
         }
     }
 
