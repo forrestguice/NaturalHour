@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String KEY_MODE_TIMEFORMAT = "timeformatMode";
     public static final int TIMEMODE_SYSTEM = 0, TIMEMODE_SUNTIMES = 1, TIMEMODE_12HR = 2, TIMEMODE_24HR = 3;
+    public static final int TIMEMODE_DEFAULT = TIMEMODE_24HR;
 
     public void showTimeFormatPopup(View v)
     {
@@ -297,8 +298,8 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.action_timeformat_suntimes: return TIMEMODE_SUNTIMES;
             case R.id.action_timeformat_12hr: return TIMEMODE_12HR;
-            case R.id.action_timeformat_24hr: return TIMEMODE_24HR;
-            case R.id.action_timeformat_system: default: return TIMEMODE_SYSTEM;
+            case R.id.action_timeformat_system: return TIMEMODE_SYSTEM;
+            case R.id.action_timeformat_24hr: default: return TIMEMODE_24HR;
         }
     }
 
@@ -320,7 +321,7 @@ public class MainActivity extends AppCompatActivity
     public int getTimeFormatMode()
     {
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getInt(KEY_MODE_TIMEFORMAT, TIMEMODE_SUNTIMES);
+        return prefs.getInt(KEY_MODE_TIMEFORMAT, TIMEMODE_DEFAULT);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,6 +329,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String KEY_MODE_TIMEZONE = "timezoneMode";
     public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3;
+    public static final int TZMODE_DEFAULT = TZMODE_APPARENTSOLAR;
 
     public void showTimeZonePopup(View v)
     {
@@ -386,8 +388,8 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.action_timezone_suntimes: return TZMODE_SUNTIMES;
             case R.id.action_timezone_localmean: return TZMODE_LOCALMEAN;
-            case R.id.action_timezone_apparentsolar: return TZMODE_APPARENTSOLAR;
-            case R.id.action_timezone_system: default: return TZMODE_SYSTEM;
+            case R.id.action_timezone_system: return TZMODE_SYSTEM;
+            case R.id.action_timezone_apparentsolar: default: return TZMODE_APPARENTSOLAR;
         }
     }
 
@@ -405,7 +407,7 @@ public class MainActivity extends AppCompatActivity
     public int getTimeZoneMode()
     {
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_SUNTIMES);
+        return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_DEFAULT);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
