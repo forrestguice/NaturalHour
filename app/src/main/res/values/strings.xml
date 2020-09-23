@@ -48,9 +48,9 @@
     <string name="units_meters_short">m</string>
 
     <string name="format_date_past">Past (-%1$s)\n%2$s</string>         <!-- e.g. "Past [-1] \n [format_date] " -->
-    <string name="format_date_yesterday">Yesterday\n%1$s</string>      <!-- e.g. "Yesterday \n [format_date] " -->
+    <string name="format_date_yesterday">Yesterday\n%2$s</string>      <!-- e.g. "Yesterday \n [format_date] " -->
     <string name="format_date_today">Today\n%1$s</string>              <!-- e.g. "Today \n [format_date] " -->
-    <string name="format_date_tomorrow">Tomorrow\n%1$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
+    <string name="format_date_tomorrow">Tomorrow\n%2$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
     <string name="format_date_future">Future (+%1$s)\n%2$s</string>     <!-- e.g. "Future [+1] \n [format_date] " -->
 
     <string-array name="vigilia_phrase_latin" translatable="false">
