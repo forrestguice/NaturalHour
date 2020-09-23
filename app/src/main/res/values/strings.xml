@@ -26,6 +26,11 @@
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
 
+    <string name="format_announcement">%2$s\n%1$s</string>                <!-- clocktime \n romantime -->
+    <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
+    <string name="format_announcement_romantime">%1$s %2$s</string>       <!-- hour phrase; I first hour of the day -->
+    <string name="format_announcement_timezone">(%s)</string>             <!-- [US/Arizona]-->
+
     <string name="format_date0">MMMM d</string>                   <!-- February 27 -->
     <string name="format_date0_long">MMMM d, yyyy</string>        <!-- February 27, 2020 -->
     <string name="format_date">MMMM d\nEEEE</string>              <!-- Thursday, February 27 -->
@@ -43,9 +48,9 @@
     <string name="units_meters_short">m</string>
 
     <string name="format_date_past">Past (-%1$s)\n%2$s</string>         <!-- e.g. "Past [-1] \n [format_date] " -->
-    <string name="format_date_yesterday">Yesterday\n%2$s</string>      <!-- e.g. "Yesterday \n [format_date] " -->
+    <string name="format_date_yesterday">Yesterday\n%1$s</string>      <!-- e.g. "Yesterday \n [format_date] " -->
     <string name="format_date_today">Today\n%1$s</string>              <!-- e.g. "Today \n [format_date] " -->
-    <string name="format_date_tomorrow">Tomorrow\n%2$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
+    <string name="format_date_tomorrow">Tomorrow\n%1$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
     <string name="format_date_future">Future (+%1$s)\n%2$s</string>     <!-- e.g. "Future [+1] \n [format_date] " -->
 
     <string-array name="vigilia_phrase_latin" translatable="false">
@@ -75,31 +80,31 @@
 
     <string-array name="hour_phrase">
         <item>0</item>
-        <item>first hour\nof the day</item>
-        <item>second hour\nof the day</item>
-        <item>third hour\nof the day</item>
-        <item>fourth hour\nof the day</item>
-        <item>fifth hour\nof the day</item>
-        <item>sixth hour\nof the day</item>
-        <item>seventh hour\nof the day</item>
-        <item>eighth hour\nof the day</item>
-        <item>ninth hour\nof the day</item>
-        <item>tenth hour\nof the day</item>
-        <item>eleventh hour\nof the day</item>
-        <item>twelfth hour\nof the day</item>
+        <item>first&#160;hour of the day</item>
+        <item>second&#160;hour of the day</item>
+        <item>third&#160;hour of the day</item>
+        <item>fourth&#160;hour of the day</item>
+        <item>fifth&#160;hour of the day</item>
+        <item>sixth&#160;hour of the day</item>
+        <item>seventh&#160;hour of the day</item>
+        <item>eighth&#160;hour of the day</item>
+        <item>ninth&#160;hour of the day</item>
+        <item>tenth&#160;hour of the day</item>
+        <item>eleventh&#160;hour of the day</item>
+        <item>twelfth&#160;hour of the day</item>
 
-        <item>first hour\nof the night</item>
-        <item>second hour\nof the night</item>
-        <item>third hour\nof the night</item>
-        <item>fourth hour\nof the night</item>
-        <item>fifth hour\nof the night</item>
-        <item>sixth hour\nof the night</item>
-        <item>seventh hour\nof the night</item>
-        <item>eighth hour\nof the night</item>
-        <item>ninth hour\nof the night</item>
-        <item>tenth hour\nof the night</item>
-        <item>eleventh hour\nof the night</item>
-        <item>twelfth hour\nof the night</item>
+        <item>first&#160;hour of the night</item>
+        <item>second&#160;hour of the night</item>
+        <item>third&#160;hour of the night</item>
+        <item>fourth&#160;hour of the night</item>
+        <item>fifth&#160;hour of the night</item>
+        <item>sixth&#160;hour of the night</item>
+        <item>seventh&#160;hour of the night</item>
+        <item>eighth&#160;hour of the night</item>
+        <item>ninth&#160;hour of the night</item>
+        <item>tenth&#160;hour of the night</item>
+        <item>eleventh&#160;hour of the night</item>
+        <item>twelfth&#160;hour of the night</item>
     </string-array>
 
     <string-array name="help_topics">      <!-- in order of appearance -->

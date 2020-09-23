@@ -23,14 +23,18 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -180,17 +184,13 @@ public class RomanTimeFragment extends Fragment
     private RomanTimeAdapterListener cardListener = new RomanTimeAdapterListener()
     {
         public void onClockClick(int position) {
-            announceRomanTime();
+            announceTime();
         }
         public void onDateClick(int position) {
-            showToday();
+            showToday(false);
         }
-        public void onCardClick(int position) {
-            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
-            // TODO
-        }
+        public void onCardClick(int position) {}
         public boolean onCardLongClick(int position) {
-            Toast.makeText(getActivity(), "TODO", Toast.LENGTH_SHORT).show();
             return false;
         }
     };
@@ -208,7 +208,7 @@ public class RomanTimeFragment extends Fragment
         switch (id)
         {
             case R.id.action_today:
-                showToday();
+                showToday(true);
                 return true;
 
             case R.id.action_date_equinox_spring:
@@ -236,25 +236,52 @@ public class RomanTimeFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void announceRomanTime()
+    public void announceTime()
     {
         Context context = getActivity();
         if (context != null)
         {
             int position = cardLayout.findFirstVisibleItemPosition();
             RomanTimeData data = cardAdapter.initData(position);
-            int currentHour = RomanTimeData.findRomanHour(Calendar.getInstance(timezone), data);    // [1,24]
-            int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
 
+            Calendar now = Calendar.getInstance(timezone);
+            int currentHour = RomanTimeData.findRomanHour(now, data);    // [1,24]
+            int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
             String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
-            Snackbar snackbar = Snackbar.make(cardView, DisplayStrings.romanNumeral(context, currentHourOf) + "\n" + phrase[currentHour], Snackbar.LENGTH_LONG);
-            snackbar.setText(DisplayStrings.romanNumeral(context, currentHourOf) + ", " + phrase[currentHour]);
+
+            String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, is24).toString();
+            String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
+            String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
+            String romanNumeralString = DisplayStrings.romanNumeral(context, currentHourOf).toString();
+            String romanTimeString = context.getString(R.string.format_announcement_romantime, romanNumeralString, phrase[currentHour]);
+            String displayString = context.getString(R.string.format_announcement, clockTimeString, romanTimeString);
+
+            int[] attrs = new int[] {R.attr.colorAccent};
+            TypedArray a = context.obtainStyledAttributes(attrs);
+            int timeColor = ContextCompat.getColor(context, a.getResourceId(0, R.color.colorAccent_dark));
+            a.recycle();
+
+            SpannableString announcement = DisplayStrings.createRelativeSpan(null, displayString, timezoneString, 0.75f);
+            announcement = DisplayStrings.createRelativeSpan(announcement, displayString, romanNumeralString, 1.25f);
+            announcement = DisplayStrings.createColorSpan(announcement, displayString, romanNumeralString, timeColor);
+            announcement = DisplayStrings.createColorSpan(announcement, displayString, timeString, timeColor);
+            announcement = DisplayStrings.createRelativeSpan(announcement, displayString, timeString, 1.25f);
+
+            Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            if (textView != null) {
+                textView.setMaxLines(7);
+                textView.setText(announcement);
+            }
+            snackbar.setDuration(ANNOUNCEMENT_DURATION);
             snackbar.show();
         }
     }
+    private static final int ANNOUNCEMENT_DURATION = 8 * 1000;
 
-    public void showToday() {
-        scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+    public void showToday(boolean skipAnimate) {
+        scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION, skipAnimate);
     }
 
     public void showSpringEquinox()
