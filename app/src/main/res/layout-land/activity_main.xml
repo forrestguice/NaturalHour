@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:orientation="vertical" android:layout_weight="3">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:theme="?attr/toolbarTheme"
+                app:title="@string/app_name"
+                app:popupTheme="?attr/actionBarPopupTheme" />
+
+            <LinearLayout android:id="@+id/bottombar"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:orientation="horizontal" android:background="?attr/colorPrimary"
+                android:layout_gravity="bottom" android:gravity="bottom|start">
+
+                <LinearLayout android:id="@+id/bottombar_title_layout"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground">
+
+                    <TextView android:id="@+id/bottombar_title" android:textStyle="bold" android:textSize="12sp"
+                        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                        android:layout_marginRight="12dp" android:layout_marginLeft="12dp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        tools:text="bottom bar title" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="7">
+
+            <include layout="@layout/content_main" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
