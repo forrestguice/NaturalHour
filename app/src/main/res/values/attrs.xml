@@ -23,5 +23,7 @@
     <attr name="clockColorNightText" format="reference" />
     <attr name="clockColorLabel1" format="reference" />
     <attr name="clockColorLabel2" format="reference" />
+    <attr name="clockColorAM" format="reference" />
+    <attr name="clockColorPM" format="reference" />
 
 </resources>

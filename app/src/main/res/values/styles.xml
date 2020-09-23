@@ -25,6 +25,7 @@
 
         <item name="clockColorFace">@color/clockColorFace_light</item>
         <item name="clockColorPlate">@color/clockColorPlate_light</item>
+        <item name="clockColorFrame">@color/clockColorFrame_light</item>
         <item name="clockColorCenter">@color/clockColorCenter_light</item>
         <item name="clockColorHand">@color/clockColorHand_light</item>
         <item name="clockColorLabel1">@color/clockColorLabel1_light</item>
@@ -35,6 +36,8 @@
         <item name="clockColorNightBorder">@color/clockColorNightBorder_light</item>
         <item name="clockColorNightFill">@color/clockColorNight_light</item>
         <item name="clockColorNightText">@color/clockColorNightLabel_light</item>
+        <item name="clockColorAM">@color/clockColorAM_light</item>
+        <item name="clockColorPM">@color/clockColorPM_light</item>
     </style>
 
     <!-- Dark theme -->
@@ -71,6 +74,8 @@
         <item name="clockColorNightBorder">@color/clockColorNightBorder_dark</item>
         <item name="clockColorNightFill">@color/clockColorNight_dark</item>
         <item name="clockColorNightText">@color/clockColorNightLabel_dark</item>
+        <item name="clockColorAM">@color/clockColorAM_dark</item>
+        <item name="clockColorPM">@color/clockColorPM_dark</item>
 
     </style>
 
