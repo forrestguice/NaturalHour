@@ -51,6 +51,7 @@ import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
+import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.romantime.R;
 import com.forrestguice.suntimes.romantime.data.RomanTimeCalculator;
 import com.forrestguice.suntimes.romantime.data.RomanTimeData;
@@ -275,6 +276,7 @@ public class RomanTimeFragment extends Fragment
                 textView.setText(announcement);
             }
             snackbar.setDuration(ANNOUNCEMENT_DURATION);
+            Messages.themeSnackbar(context, snackbar, null);
             snackbar.show();
         }
     }
@@ -665,4 +667,5 @@ public class RomanTimeFragment extends Fragment
     public static TimeZone getApparantSolarTZ(Context context, String longitude) {
         return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(longitude), context.getString(R.string.solartime_apparent));
     }
+
 }
