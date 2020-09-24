@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
     Copyright (C) 2020 Forrest Guice
-    This file is part of RomanTime.
+    This file is part of Natural Hour.
 
-    RomanTime is free software: you can redistribute it and/or modify
+    Natural Hour is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    RomanTime is distributed in the hope that it will be useful,
+    Natural Hour is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with RomanTime.  If not, see <http://www.gnu.org/licenses/>.
+    along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.romantime.ui;
+package com.forrestguice.suntimes.naturalhour.ui;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,18 +33,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import com.forrestguice.suntimes.romantime.R;
-import com.forrestguice.suntimes.romantime.data.RomanTimeData;
+import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class RomanTimeClockView extends View
+public class NaturalHourClockView extends View
 {
     public static final double START_TOP = -Math.PI / 2d;
     public static final double START_BOTTOM = Math.PI / 2d;
@@ -63,8 +62,8 @@ public class RomanTimeClockView extends View
 
     protected ContentValues flags = new ContentValues();
 
-    protected RomanTimeData data;
-    public void setData(RomanTimeData data) {
+    protected NaturalHourData data;
+    public void setData(NaturalHourData data) {
         this.data = data;
         invalidate();
     }
@@ -133,17 +132,17 @@ public class RomanTimeClockView extends View
         }
     }
 
-    public RomanTimeClockView(Context context) {
+    public NaturalHourClockView(Context context) {
         super(context);
         initFlags(context);
     }
 
-    public RomanTimeClockView(Context context, @Nullable AttributeSet attrs) {
+    public NaturalHourClockView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initFlags(context);
     }
 
-    public RomanTimeClockView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public NaturalHourClockView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initFlags(context);
     }
@@ -694,7 +693,7 @@ public class RomanTimeClockView extends View
         int minute = now.get(Calendar.MINUTE);
         int second = now.get(Calendar.SECOND);
 
-        double a1 = getAdjustedAngle(startAngle, RomanTimeData.getAngle(hour, minute, second));
+        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(hour, minute, second));
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);
 

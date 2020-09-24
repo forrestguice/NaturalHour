@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
     Copyright (C) 2020 Forrest Guice
-    This file is part of RomanTime.
+    This file is part of Natural Hour.
 
-    RomanTime is free software: you can redistribute it and/or modify
+    Natural Hour is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    RomanTime is distributed in the hope that it will be useful,
+    Natural Hour is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with RomanTime.  If not, see <http://www.gnu.org/licenses/>.
+    along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.romantime.data;
+package com.forrestguice.suntimes.naturalhour.data;
 
 import android.content.ContentValues;
 import android.os.Parcel;
@@ -27,7 +27,7 @@ import android.support.annotation.Nullable;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class RomanTimeData implements Parcelable
+public class NaturalHourData implements Parcelable
 {
     public static final String KEY_DATE = "date";
     public static final String KEY_LATITUDE = "latitude";
@@ -53,7 +53,7 @@ public class RomanTimeData implements Parcelable
     protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
     protected boolean calculated = false;
 
-    public RomanTimeData(long date, double latitude, double longitude, double altitude)
+    public NaturalHourData(long date, double latitude, double longitude, double altitude)
     {
         this.calculated = false;
         this.date = date;
@@ -62,7 +62,7 @@ public class RomanTimeData implements Parcelable
         this.altitude = altitude;
     }
 
-    public RomanTimeData(long date, String latitude, String longitude, String altitude) {
+    public NaturalHourData(long date, String latitude, String longitude, String altitude) {
         this.calculated = false;
         this.date = date;
         this.latitude = Double.parseDouble(latitude);
@@ -70,11 +70,11 @@ public class RomanTimeData implements Parcelable
         this.altitude = Double.parseDouble(altitude);
     }
 
-    public RomanTimeData(ContentValues values) {
+    public NaturalHourData(ContentValues values) {
         initFromContentValues(values);
     }
 
-    private RomanTimeData(Parcel in) {
+    private NaturalHourData(Parcel in) {
         initFromParcel(in);
     }
 
@@ -152,13 +152,13 @@ public class RomanTimeData implements Parcelable
         return 0;
     }
 
-    public static final Parcelable.Creator<RomanTimeData> CREATOR = new Parcelable.Creator<RomanTimeData>()
+    public static final Parcelable.Creator<NaturalHourData> CREATOR = new Parcelable.Creator<NaturalHourData>()
     {
-        public RomanTimeData createFromParcel(Parcel in) {
-            return new RomanTimeData(in);
+        public NaturalHourData createFromParcel(Parcel in) {
+            return new NaturalHourData(in);
         }
-        public RomanTimeData[] newArray(int size) {
-            return new RomanTimeData[size];
+        public NaturalHourData[] newArray(int size) {
+            return new NaturalHourData[size];
         }
     };
 
@@ -190,6 +190,10 @@ public class RomanTimeData implements Parcelable
     public double getDayHourLength() {
         return dayHourLength;
     }
+
+    /**
+     * @return radians
+     */
     public double getDayHourAngle() {
         return (dayHourLength / (double) DAY_MILLIS) * (2 * Math.PI);
     }
@@ -209,6 +213,16 @@ public class RomanTimeData implements Parcelable
     }
 
     /**
+     * @return millis
+     */
+    public double getDayMomentLength() {
+        return getDayHourLength() / 40d;
+    }
+    public double getNightMomentLength() {
+        return getNightHourLength() / 40d;
+    }
+
+    /**
      * @param timeMillis
      * @param timezone
      * @return radians
@@ -217,7 +231,7 @@ public class RomanTimeData implements Parcelable
     {
         calendar.setTimeZone(timezone);
         calendar.setTimeInMillis(timeMillis);
-        return RomanTimeData.getAngle( calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+        return NaturalHourData.getAngle( calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
     }
     private Calendar calendar = Calendar.getInstance();
 
@@ -236,11 +250,11 @@ public class RomanTimeData implements Parcelable
                 ((second / (60d * 60d * 24d)) * twoPI);
     }
 
-    public static int findRomanHour(Calendar now, RomanTimeData data)
+    public static int findRomanHour(Calendar now, NaturalHourData data)
     {
         double dayAngle =  data.getDayHourAngle();
         double nightAngle = data.getNightHourAngle();
-        double timeAngle = RomanTimeData.getAngle(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+        double timeAngle = NaturalHourData.getAngle(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
         TimeZone timezone = now.getTimeZone();
 
         for (int i=0; i<data.romanHours.length; i++)

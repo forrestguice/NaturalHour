@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
     Copyright (C) 2020 Forrest Guice
-    This file is part of RomanTime.
+    This file is part of Natural Hour.
 
-    RomanTime is free software: you can redistribute it and/or modify
+    Natural Hour is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    RomanTime is distributed in the hope that it will be useful,
+    Natural Hour is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with RomanTime.  If not, see <http://www.gnu.org/licenses/>.
+    along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.romantime;
+package com.forrestguice.suntimes.naturalhour;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -39,10 +39,10 @@ import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
-import com.forrestguice.suntimes.romantime.ui.AboutDialog;
-import com.forrestguice.suntimes.romantime.ui.DisplayStrings;
-import com.forrestguice.suntimes.romantime.ui.HelpDialog;
-import com.forrestguice.suntimes.romantime.ui.RomanTimeFragment;
+import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
+import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 
 import java.lang.reflect.Method;
 import java.util.TimeZone;
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         FragmentManager fragments = getSupportFragmentManager();
-        RomanTimeFragment fragment = (RomanTimeFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.romantime_fragment);
         if (fragment != null) {
             fragment.setSuntimesInfo(suntimesInfo, fromTimeZoneMode(getTimeZoneMode()), fromTimeFormatMode(getTimeFormatMode()));
         }
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (itemSuntimes != null) {
-            String tzID = getString(R.string.action_timezone_system_format, RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo).getID());
+            String tzID = getString(R.string.action_timezone_system_format, NaturalHourFragment.getTimeZone(MainActivity.this, suntimesInfo).getID());
             String tzString = getString(R.string.action_timezone_suntimes, tzID);
             itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, tzString, tzID, 0.65f));
         }
@@ -397,9 +397,9 @@ public class MainActivity extends AppCompatActivity
     {
         switch (mode)
         {
-            case TZMODE_SUNTIMES: return RomanTimeFragment.getTimeZone(MainActivity.this, suntimesInfo);
-            case TZMODE_LOCALMEAN: return RomanTimeFragment.getLocalMeanTZ(MainActivity.this, suntimesInfo.location[2]);
-            case TZMODE_APPARENTSOLAR: return RomanTimeFragment.getApparantSolarTZ(MainActivity.this, suntimesInfo.location[2]);
+            case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(MainActivity.this, suntimesInfo);
+            case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(MainActivity.this, suntimesInfo.location[2]);
+            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(MainActivity.this, suntimesInfo.location[2]);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
         }
     }

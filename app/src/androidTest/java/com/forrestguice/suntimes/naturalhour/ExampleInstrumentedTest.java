@@ -1,4 +1,4 @@
-package com.forrestguice.suntimes.romantime;
+package com.forrestguice.suntimes.naturalhour;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

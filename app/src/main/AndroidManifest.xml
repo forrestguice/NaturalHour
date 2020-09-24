@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.forrestguice.suntimes.romantime">
+    package="com.forrestguice.suntimes.naturalhour">
 
     <uses-permission android:name="suntimes.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
 
@@ -14,7 +14,7 @@
         android:fullBackupContent="@xml/backup_descriptor">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.forrestguice.suntimes.naturalhour.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 

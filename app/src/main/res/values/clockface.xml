@@ -3,7 +3,7 @@
     <bool name="clockface_start_at_top">false</bool>
     <bool name="clockface_show_timezone">true</bool>
     <bool name="clockface_show_date">true</bool>
-    <bool name="clockface_show_vigilia">true</bool>
+    <bool name="clockface_show_vigilia">false</bool>
     <bool name="clockface_show_hand_simple">false</bool>
     <bool name="clockface_show_ticks_5m">true</bool>
     <bool name="clockface_show_ticks_15m">true</bool>

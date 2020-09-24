@@ -1,23 +1,23 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
     Copyright (C) 2020 Forrest Guice
-    This file is part of RomanTime.
+    This file is part of Natural Hour.
 
-    RomanTime is free software: you can redistribute it and/or modify
+    Natural Hour is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    RomanTime is distributed in the hope that it will be useful,
+    Natural Hour is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with RomanTime.  If not, see <http://www.gnu.org/licenses/>.
+    along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.romantime.data;
+package com.forrestguice.suntimes.naturalhour.data;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -29,12 +29,12 @@ import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 
 import java.util.Calendar;
 
-public class RomanTimeCalculator
+public class NaturalHourCalculator
 {
     /**
      * calculateData
      */
-    public boolean calculateData(ContentResolver resolver, @NonNull RomanTimeData data)
+    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data)
     {
         if (queryData(resolver, data))
         {
@@ -68,7 +68,7 @@ public class RomanTimeCalculator
     /**
      * queryData
      */
-    public boolean queryData(ContentResolver resolver, @NonNull RomanTimeData data)
+    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data)
     {
         if (resolver != null)
         {
@@ -87,7 +87,7 @@ public class RomanTimeCalculator
         return true;
     }
 
-    protected void querySunriseSunset(ContentResolver resolver, RomanTimeData data)
+    protected void querySunriseSunset(ContentResolver resolver, NaturalHourData data)
     {
         String[] projection = new String[] { CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE, CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET };
         Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + data.getDateMillis() );
@@ -102,7 +102,7 @@ public class RomanTimeCalculator
     }
 
     private long[] solsticeEquinox = new long[] {-1, -1, -1, -1};
-    protected void queryEquinoxSolsticeDates(ContentResolver resolver, RomanTimeData data)
+    protected void queryEquinoxSolsticeDates(ContentResolver resolver, NaturalHourData data)
     {
         if (solsticeEquinox[0] <= 0)
         {

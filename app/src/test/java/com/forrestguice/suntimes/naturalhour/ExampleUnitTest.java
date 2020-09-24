@@ -1,4 +1,4 @@
-package com.forrestguice.suntimes.romantime;
+package com.forrestguice.suntimes.naturalhour;
 
 import org.junit.Test;
 

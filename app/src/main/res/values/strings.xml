@@ -26,9 +26,9 @@
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
 
-    <string name="format_announcement">%2$s\n%1$s</string>                <!-- clocktime \n romantime -->
+    <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
-    <string name="format_announcement_romantime">%1$s %2$s</string>       <!-- hour phrase; I first hour of the day -->
+    <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->
     <string name="format_announcement_timezone">(%s)</string>             <!-- [US/Arizona]-->
 
     <string name="format_date0">MMMM d</string>                   <!-- February 27 -->
@@ -109,19 +109,19 @@
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
-        <item>@string/help_romantime</item>
+        <item>@string/help_general</item>
     </string-array>
     <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
-    <string name="help_romantime"><![CDATA[<h4>Roman Timekeeping</h4>
     The day and night periods are each divided into 12 hours.
     The first hour (I) <em>of the day</em> begins at sunrise. The first hour (I) <em>of the night</em> begins at sunset.
+    <string name="help_general"><![CDATA[<h4>Natural Hour</h4>
     <br/><br/>
     The length of these daytime and nighttime hours depends on latitude and varies with the seasons; e.g. winter daytime hours are shorter (and nighttime hours longer).
     <br/><br/>
     In addition, the night is divided into four watches (vigilia), each three hours long.
     ]]></string>
 
-    <string name="app_name">Roman Time</string>
+    <string name="app_name">Natural Hour</string>
     <string name="app_desc">A roman timekeeping addon for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
