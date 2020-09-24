@@ -112,17 +112,18 @@
         <item>@string/help_general</item>
     </string-array>
     <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
-    The day and night periods are each divided into 12 hours.
-    The first hour (I) <em>of the day</em> begins at sunrise. The first hour (I) <em>of the night</em> begins at sunset.
     <string name="help_general"><![CDATA[<h4>Natural Hour</h4>
+    Daytime, the period between sunrise and sunset, is divided evenly into 12 natural hours.
+    The first hour (I) <em>of the day</em> begins with sunrise, while the twelfth hour (XII) ends at sunset.
     <br/><br/>
-    The length of these daytime and nighttime hours depends on latitude and varies with the seasons; e.g. winter daytime hours are shorter (and nighttime hours longer).
+    Similarly, nighttime is also divided into 12 hours.
+    The first hour (I) <em>of the night</em> begins with sunset, and the twelfth hour (XII) ends at sunrise.
     <br/><br/>
-    In addition, the night is divided into four watches (vigilia), each three hours long.
+    These daytime and nighttime hours are not the same, with length depending on latitude and varying with the seasons. For example, in the winter the daytime hours are shorter (and nighttime hours longer), and vice versa in the summer.
     ]]></string>
 
     <string name="app_name">Natural Hour</string>
-    <string name="app_desc">A roman timekeeping addon for Suntimes.</string>
+    <string name="app_desc">A roman timekeeping add-on for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
 
