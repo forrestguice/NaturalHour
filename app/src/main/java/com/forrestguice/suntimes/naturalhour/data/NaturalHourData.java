@@ -36,7 +36,7 @@ public class NaturalHourData implements Parcelable
 
     public static final String KEY_SUNRISE = "sunrise";
     public static final String KEY_SUNSET = "sunset";
-    public static final String KEY_ROMAN_HOURS = "romanhours";
+    public static final String KEY_NATURAL_HOURS = "naturalhours";
     public static final String KEY_SOLSTICE_EQUINOX = "solsticeequinox";
     public static final String KEY_DAY_HOUR_LENGTH = "dayhourlength";
     public static final String KEY_NIGHT_HOUR_LENGTH = "nighthourlength";
@@ -49,7 +49,7 @@ public class NaturalHourData implements Parcelable
     protected double latitude, longitude, altitude;
     protected long sunrise, sunset;
     protected long dayHourLength, nightHourLength;
-    protected long[] romanHours = new long[24];      // 24 roman hours; 1 sunrise; 13 sunset
+    protected long[] naturalHours = new long[24];    // 24 natural hours; 1 sunrise; 13 sunset
     protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
     protected boolean calculated = false;
 
@@ -89,8 +89,8 @@ public class NaturalHourData implements Parcelable
         this.sunset = values.getAsLong(KEY_SUNSET);
         this.dayHourLength = values.getAsLong(KEY_DAY_HOUR_LENGTH);
         this.nightHourLength = values.getAsLong(KEY_NIGHT_HOUR_LENGTH);
-        for (int i=0; i<romanHours.length; i++) {
-            romanHours[i] = values.getAsLong(KEY_ROMAN_HOURS + i);
+        for (int i = 0; i< naturalHours.length; i++) {
+            naturalHours[i] = values.getAsLong(KEY_NATURAL_HOURS + i);
         }
         for (int i=0; i<solsticeEquinox.length; i++) {
             solsticeEquinox[i] = values.getAsLong(KEY_SOLSTICE_EQUINOX + i);
@@ -108,8 +108,8 @@ public class NaturalHourData implements Parcelable
         values.put(KEY_SUNSET, sunset);
         values.put(KEY_DAY_HOUR_LENGTH, dayHourLength);
         values.put(KEY_NIGHT_HOUR_LENGTH, nightHourLength);
-        for (int i=0; i<romanHours.length; i++) {
-            values.put(KEY_ROMAN_HOURS + i, romanHours[i]);
+        for (int i = 0; i< naturalHours.length; i++) {
+            values.put(KEY_NATURAL_HOURS + i, naturalHours[i]);
         }
         for (int i=0; i<solsticeEquinox.length; i++) {
             values.put(KEY_SOLSTICE_EQUINOX + i, solsticeEquinox[i]);
@@ -128,7 +128,7 @@ public class NaturalHourData implements Parcelable
         sunset = in.readLong();
         dayHourLength = in.readLong();
         nightHourLength = in.readLong();
-        in.readLongArray(romanHours);
+        in.readLongArray(naturalHours);
         in.readLongArray(solsticeEquinox);
     }
     @Override
@@ -143,7 +143,7 @@ public class NaturalHourData implements Parcelable
         out.writeLong(sunset);
         out.writeLong(dayHourLength);
         out.writeLong(nightHourLength);
-        out.writeLongArray(romanHours);
+        out.writeLongArray(naturalHours);
         out.writeLongArray(solsticeEquinox);
     }
 
@@ -271,10 +271,10 @@ public class NaturalHourData implements Parcelable
         double timeAngle = simplifyAngle(NaturalHourData.getAngle(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND)));
         TimeZone timezone = now.getTimeZone();
 
-        for (int i=0; i<data.romanHours.length; i++)
+        for (int i = 0; i<data.naturalHours.length; i++)
         {
             double hourAngle = i < 12 ? dayAngle : nightAngle;
-            double a0 = simplifyAngle(data.getAngle(data.romanHours[i], timezone));
+            double a0 = simplifyAngle(data.getAngle(data.naturalHours[i], timezone));
             double a1 = a0 + hourAngle;
             if (timeAngle >= a0 && timeAngle < a1) {
                 return (i + 1);
@@ -283,8 +283,8 @@ public class NaturalHourData implements Parcelable
         return 0;
     }
 
-    public long[] getRomanHours() {
-        return romanHours;
+    public long[] getNaturalHours() {
+        return naturalHours;
     }
 
     public long[] getEquinoxSolsticeDates() {

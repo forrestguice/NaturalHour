@@ -63,7 +63,7 @@ public class NaturalHourFragment extends Fragment
 {
     protected RecyclerView cardView;
     protected LinearLayoutManager cardLayout;
-    protected RomanTimeCardAdapter cardAdapter;
+    protected NaturalHourCardAdapter cardAdapter;
 
     protected SuntimesInfo info;
     protected TimeZone timezone = TimeZone.getDefault();
@@ -74,7 +74,7 @@ public class NaturalHourFragment extends Fragment
         this.info = value;
         this.timezone = tz;
         this.is24 = is24;
-        cardAdapter.setCardOptions(new RomanTimeAdapterOptions(getActivity(), info, timezone, is24));
+        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, is24));
     }
     public TimeZone getTimeZone() {
         return timezone;
@@ -103,7 +103,7 @@ public class NaturalHourFragment extends Fragment
         }
 
         initData(getActivity());
-        cardView.scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION);
+        cardView.scrollToPosition(NaturalHourCardAdapter.TODAY_POSITION);
 
         return view;
     }
@@ -173,14 +173,14 @@ public class NaturalHourFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new RomanTimeCardAdapter(getActivity(), new RomanTimeAdapterOptions(getActivity(), info, timezone, is24));
+            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, is24));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
         }
     }
 
-    private RomanTimeAdapterListener cardListener = new RomanTimeAdapterListener()
+    private NaturalHourAdapterListener cardListener = new NaturalHourAdapterListener()
     {
         public void onClockClick(int position) {
             announceTime();
@@ -252,8 +252,8 @@ public class NaturalHourFragment extends Fragment
             String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
             String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
             String romanNumeralString = DisplayStrings.romanNumeral(context, currentHourOf).toString();
-            String romanTimeString = context.getString(R.string.format_announcement_naturalhour, romanNumeralString, phrase[currentHour]);
-            String displayString = context.getString(R.string.format_announcement, clockTimeString, romanTimeString);
+            String naturalHourString = context.getString(R.string.format_announcement_naturalhour, romanNumeralString, phrase[currentHour]);
+            String displayString = context.getString(R.string.format_announcement, clockTimeString, naturalHourString);
 
             int[] attrs = new int[] {R.attr.colorAccent};
             TypedArray a = context.obtainStyledAttributes(attrs);
@@ -281,30 +281,30 @@ public class NaturalHourFragment extends Fragment
     private static final int ANNOUNCEMENT_DURATION = 8 * 1000;
 
     public void showToday(boolean skipAnimate) {
-        scrollToPosition(RomanTimeCardAdapter.TODAY_POSITION, skipAnimate);
+        scrollToPosition(NaturalHourCardAdapter.TODAY_POSITION, skipAnimate);
     }
 
     public void showSpringEquinox()
     {
-        NaturalHourData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        NaturalHourData data = cardAdapter.initData(NaturalHourCardAdapter.TODAY_POSITION);
         scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[0]));
     }
 
     public void showSummerSolstice()
     {
-        NaturalHourData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        NaturalHourData data = cardAdapter.initData(NaturalHourCardAdapter.TODAY_POSITION);
         scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[1]));
     }
 
     public void showAutumnEquinox()
     {
-        NaturalHourData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        NaturalHourData data = cardAdapter.initData(NaturalHourCardAdapter.TODAY_POSITION);
         scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[2]));
     }
 
     public void showWinterSolstice()
     {
-        NaturalHourData data = cardAdapter.initData(RomanTimeCardAdapter.TODAY_POSITION);
+        NaturalHourData data = cardAdapter.initData(NaturalHourCardAdapter.TODAY_POSITION);
         scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[3]));
     }
 
@@ -333,84 +333,79 @@ public class NaturalHourFragment extends Fragment
     /**
      * RecyclerView.ViewHolder
      */
-    public static class RomanTimeViewHolder extends RecyclerView.ViewHolder
+    public static class NaturalHourViewHolder extends RecyclerView.ViewHolder
     {
         public TextView text_date;
-        public TextView text_hour, text_hour_long;
         public TextView text_debug;
         public NaturalHourClockView clockface;
 
-        public RomanTimeViewHolder(@NonNull View itemView, RomanTimeAdapterOptions options)
+        public NaturalHourViewHolder(@NonNull View itemView, NaturalHourAdapterOptions options)
         {
             super(itemView);
             text_date = (TextView) itemView.findViewById(R.id.text_date);
-            text_hour = (TextView) itemView.findViewById(R.id.text_time_romanhour0);
-            text_hour_long = (TextView)  itemView.findViewById(R.id.text_time_romanhour1);
             clockface = (NaturalHourClockView) itemView.findViewById(R.id.clockface);
             text_debug = (TextView) itemView.findViewById(R.id.text_time_debug);
         }
 
-        public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, RomanTimeAdapterOptions options)
+        public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, NaturalHourAdapterOptions options)
         {
             if (data != null)
             {
-                Calendar now = Calendar.getInstance(options.timezone);
-                int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-                int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
-
                 if (text_debug != null && text_debug.getVisibility() == View.VISIBLE)
                 {
-                    long[] romanHours = data.getRomanHours();
+                    long[] naturalHours = data.getNaturalHours();
                     CharSequence[] dayHours = new String[12];
                     StringBuilder debugDisplay0 = new StringBuilder("Day");
                     for (int i=0; i<dayHours.length; i++) {
-                        dayHours[i] = DisplayStrings.formatTime(context, romanHours[i], options.timezone, options.is24);
+                        dayHours[i] = DisplayStrings.formatTime(context, naturalHours[i], options.timezone, options.is24);
                         debugDisplay0.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                     }
 
                     CharSequence[] nightHours = new String[12];
                     StringBuilder debugDisplay1 = new StringBuilder("Night");
                     for (int i=0; i<nightHours.length; i++) {
-                        nightHours[i] = DisplayStrings.formatTime(context, romanHours[12 + i], options.timezone, options.is24);
+                        nightHours[i] = DisplayStrings.formatTime(context, naturalHours[12 + i], options.timezone, options.is24);
                         debugDisplay1.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                     }
                     text_debug.setText(debugDisplay0 + "\n" + debugDisplay1);
                 }
 
                 CharSequence dateDisplay = DisplayStrings.formatDate(context, data.getDateMillis());
-                int dayDelta = position - RomanTimeCardAdapter.TODAY_POSITION;
+                int dayDelta = position - NaturalHourCardAdapter.TODAY_POSITION;
                 text_date.setText(DisplayStrings.formatDateHeader(context, dayDelta, dateDisplay));
 
-                String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
-                text_hour.setText(DisplayStrings.romanNumeral(context, currentHourOf));
-                text_hour_long.setText(phrase[currentHour]);
+                //Calendar now = Calendar.getInstance(options.timezone);
+                //int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
+                //int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
+                //String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
+                //text_hour.setText(DisplayStrings.romanNumeral(context, currentHourOf));
+                //text_hour_long.setText(phrase[currentHour]);
 
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
                 clockface.set24HourMode(options.is24);
                 //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_DATEYEAR, true);
-                clockface.setData(data);
 
             } else {
                 text_date.setText("");
-                text_hour.setText("");
-                text_hour_long.setText("");
+                //text_hour.setText("");
+                //text_hour_long.setText("");
             }
+            clockface.setData(data);
         }
     }
-
 
     /**
      * AdapterOptions
      */
-    public static class RomanTimeAdapterOptions
+    public static class NaturalHourAdapterOptions
     {
         public SuntimesInfo suntimes_info;
         public SuntimesInfo.SuntimesOptions suntimes_options;
         public TimeZone timezone;
         public boolean is24;
 
-        public RomanTimeAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, boolean is24) {
+        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, boolean is24) {
             this.suntimes_info = info;
             this.suntimes_options = info.getOptions(context);
             this.timezone = tz;
@@ -421,14 +416,14 @@ public class NaturalHourFragment extends Fragment
     /**
      * RecyclerView.Adapter
      */
-    public class RomanTimeCardAdapter extends RecyclerView.Adapter<RomanTimeViewHolder>
+    public class NaturalHourCardAdapter extends RecyclerView.Adapter<NaturalHourViewHolder>
     {
         public static final int MAX_POSITIONS = 2000;
         public static final int TODAY_POSITION = (MAX_POSITIONS / 2);
 
         protected WeakReference<Context> contextRef;
 
-        public RomanTimeCardAdapter(Context context, RomanTimeAdapterOptions options)
+        public NaturalHourCardAdapter(Context context, NaturalHourAdapterOptions options)
         {
             contextRef = new WeakReference<>(context);
             this.options = options;
@@ -436,15 +431,15 @@ public class NaturalHourFragment extends Fragment
 
         @NonNull
         @Override
-        public RomanTimeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+        public NaturalHourViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
         {
             LayoutInflater layout = LayoutInflater.from(viewGroup.getContext());
             View view = layout.inflate(R.layout.card_naturalhour, viewGroup, false);
-            return new RomanTimeViewHolder(view, options);
+            return new NaturalHourViewHolder(view, options);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RomanTimeViewHolder holder, int position)
+        public void onBindViewHolder(@NonNull NaturalHourViewHolder holder, int position)
         {
             Context context = contextRef.get();
             if (context != null)
@@ -455,7 +450,7 @@ public class NaturalHourFragment extends Fragment
         }
 
         @Override
-        public void onViewRecycled(@NonNull RomanTimeViewHolder holder)
+        public void onViewRecycled(@NonNull NaturalHourViewHolder holder)
         {
             detachClickListeners(holder);
             holder.clockface.invalidate();
@@ -465,14 +460,14 @@ public class NaturalHourFragment extends Fragment
             }
         }
 
-        private RomanTimeAdapterOptions options;
-        public void setCardOptions(RomanTimeAdapterOptions options) {
+        private NaturalHourAdapterOptions options;
+        public void setCardOptions(NaturalHourAdapterOptions options) {
             Log.d("DEBUG", "setCardOptions");
             this.options = options;
             cardAdapter.invalidateData();
             cardAdapter.initData();
         }
-        public RomanTimeAdapterOptions getOptions() {
+        public NaturalHourAdapterOptions getOptions() {
             return options;
         }
 
@@ -555,7 +550,7 @@ public class NaturalHourFragment extends Fragment
             notifyDataSetChanged();
         }
 
-        private void attachClickListeners(@NonNull final RomanTimeViewHolder holder, int position)
+        private void attachClickListeners(@NonNull final NaturalHourViewHolder holder, int position)
         {
             holder.text_date.setOnClickListener(onDateClick(position));
             holder.clockface.setOnClickListener(onClockClick(position));
@@ -563,7 +558,7 @@ public class NaturalHourFragment extends Fragment
             //holder.layout_front.setOnLongClickListener(onCardLongClick(holder));
         }
 
-        private void detachClickListeners(@NonNull RomanTimeViewHolder holder)
+        private void detachClickListeners(@NonNull NaturalHourViewHolder holder)
         {
             holder.text_date.setOnClickListener(null);
             holder.clockface.setOnClickListener(null);
@@ -571,10 +566,10 @@ public class NaturalHourFragment extends Fragment
             //holder.layout_front.setOnLongClickListener(null);
         }
 
-        public void setCardAdapterListener( @NonNull RomanTimeAdapterListener listener ) {
+        public void setCardAdapterListener( @NonNull NaturalHourAdapterListener listener ) {
             adapterListener = listener;
         }
-        private RomanTimeAdapterListener adapterListener = new RomanTimeAdapterListener();
+        private NaturalHourAdapterListener adapterListener = new NaturalHourAdapterListener();
 
         private View.OnClickListener onClockClick(final int position) {
             return new View.OnClickListener() {
@@ -592,7 +587,7 @@ public class NaturalHourFragment extends Fragment
                 }
             };
         }
-        private View.OnClickListener onCardClick(@NonNull final RomanTimeViewHolder holder) {
+        private View.OnClickListener onCardClick(@NonNull final NaturalHourViewHolder holder) {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -600,7 +595,7 @@ public class NaturalHourFragment extends Fragment
                 }
             };
         }
-        private View.OnLongClickListener onCardLongClick(@NonNull final RomanTimeViewHolder holder) {
+        private View.OnLongClickListener onCardLongClick(@NonNull final NaturalHourViewHolder holder) {
             return new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -614,7 +609,7 @@ public class NaturalHourFragment extends Fragment
     /**
      * AdapterListener
      */
-    public static class RomanTimeAdapterListener
+    public static class NaturalHourAdapterListener
     {
         public void onClockClick(int position) {}
         public void onDateClick(int position) {}

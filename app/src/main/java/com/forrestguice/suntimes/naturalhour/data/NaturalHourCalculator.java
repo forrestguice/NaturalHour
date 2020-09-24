@@ -43,13 +43,13 @@ public class NaturalHourCalculator
                 long dayLength = (data.sunset - data.sunrise);
                 data.dayHourLength = dayLength / 12L;
                 for (int i=0; i<12; i++) {
-                    data.romanHours[i] = data.sunrise + (data.dayHourLength * i);
+                    data.naturalHours[i] = data.sunrise + (data.dayHourLength * i);
                 }
 
                 long nightLength = (24 * 60 * 60 * 1000) - dayLength;
                 data.nightHourLength = nightLength / 12L;
                 for (int i=0; i<12; i++) {
-                    data.romanHours[12 + i] = data.sunset + (data.nightHourLength * i);
+                    data.naturalHours[12 + i] = data.sunset + (data.nightHourLength * i);
                 }
 
                 data.calculated = true;

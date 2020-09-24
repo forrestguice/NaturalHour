@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         FragmentManager fragments = getSupportFragmentManager();
-        NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.romantime_fragment);
+        NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
         if (fragment != null) {
             fragment.setSuntimesInfo(suntimesInfo, fromTimeZoneMode(getTimeZoneMode()), fromTimeFormatMode(getTimeFormatMode()));
         }

@@ -22,28 +22,10 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             tools:text="Today\nApril 1, 2016" />
 
-        <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:id="@+id/text_time_romanhour0" android:visibility="gone"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@+id/text_date"
-            app:layout_constraintBottom_toBottomOf="@+id/text_date"
-            app:layout_constraintStart_toStartOf="@+id/clockface"
-            app:layout_constraintEnd_toEndOf="@+id/clockface"
-            tools:text="XI" />
-
-        <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:id="@+id/text_time_romanhour1"  android:visibility="gone"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/clockface"
-            app:layout_constraintStart_toStartOf="@+id/clockface"
-            app:layout_constraintEnd_toEndOf="@+id/clockface"
-            tools:text="11th hour of the day" />
-
         <TextView android:visibility="gone"
             android:id="@+id/text_debug" android:gravity="right|end"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="sunset" android:layout_margin="8dp" />
+            tools:text="debug" android:layout_margin="8dp" />
 
     </LinearLayout>
 
