@@ -244,7 +244,7 @@ public class NaturalHourFragment extends Fragment
             NaturalHourData data = cardAdapter.initData(position);
 
             Calendar now = Calendar.getInstance(timezone);
-            int currentHour = NaturalHourData.findRomanHour(now, data);    // [1,24]
+            int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
             int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
             String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
 
@@ -355,7 +355,7 @@ public class NaturalHourFragment extends Fragment
             if (data != null)
             {
                 Calendar now = Calendar.getInstance(options.timezone);
-                int currentHour = NaturalHourData.findRomanHour(now, data);    // [1,24]
+                int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
                 int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
 
                 if (text_debug != null && text_debug.getVisibility() == View.VISIBLE)

@@ -250,17 +250,32 @@ public class NaturalHourData implements Parcelable
                 ((second / (60d * 60d * 24d)) * twoPI);
     }
 
-    public static int findRomanHour(Calendar now, NaturalHourData data)
+    public static double simplifyAngle(double radians)
+    {
+        double fullCircle = 2 * Math.PI;
+        double retValue = radians;
+        while (retValue < 0) {
+            retValue += fullCircle;
+        }
+        while (retValue > fullCircle) {
+            retValue -= fullCircle;
+        }
+        return retValue;
+    }
+
+
+    public static int findNaturalHour(Calendar now, NaturalHourData data)
     {
         double dayAngle =  data.getDayHourAngle();
         double nightAngle = data.getNightHourAngle();
-        double timeAngle = NaturalHourData.getAngle(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+        double timeAngle = simplifyAngle(NaturalHourData.getAngle(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND)));
         TimeZone timezone = now.getTimeZone();
 
         for (int i=0; i<data.romanHours.length; i++)
         {
-            double a0 = data.getAngle(data.romanHours[i], timezone);
-            double a1 = a0 + (i < 12 ? dayAngle : nightAngle);
+            double hourAngle = i < 12 ? dayAngle : nightAngle;
+            double a0 = simplifyAngle(data.getAngle(data.romanHours[i], timezone));
+            double a1 = a0 + hourAngle;
             if (timeAngle >= a0 && timeAngle < a1) {
                 return (i + 1);
             }

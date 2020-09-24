@@ -656,7 +656,7 @@ public class NaturalHourClockView extends View
 
             Path path = new Path();
             boolean alongBottom = alongBottom(startAngle);
-            double arcAngle = simplifyAngle(startAngle + (alongBottom ? Math.PI/2d : -Math.PI/2));
+            double arcAngle = NaturalHourData.simplifyAngle(startAngle + (alongBottom ? Math.PI/2d : -Math.PI/2));
             double sweepAngle = alongBottom ? -Math.PI : Math.PI;
             path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
             paintLabel.setColor(colors.colorLabel1);
@@ -667,21 +667,8 @@ public class NaturalHourClockView extends View
 
     private boolean alongBottom(double radians)
     {
-        double angle = simplifyAngle(radians);
+        double angle = NaturalHourData.simplifyAngle(radians);
         return angle >= 0 && angle <= Math.PI;
-    }
-
-    public double simplifyAngle(double radians)
-    {
-        double fullCircle = 2 * Math.PI;
-        double retValue = radians;
-        while (retValue < 0) {
-            retValue += fullCircle;
-        }
-        while (retValue > fullCircle) {
-            retValue -= fullCircle;
-        }
-        return retValue;
     }
 
     protected void drawHourHand(long nowMillis, Canvas canvas, float cX, float cY, float length)
