@@ -1,0 +1,6 @@
+A roman timekeeping add-on for Suntimes. TODO
+
+This is an add-on for Suntimes. It depends on <a href="https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/">Suntimes v0.10.3</a> or later.
+
+The following permissions are required:
+* <small><u>suntimes.permission.READ_CALCULATOR</u></small> is used to read data from the Suntimes provider.
