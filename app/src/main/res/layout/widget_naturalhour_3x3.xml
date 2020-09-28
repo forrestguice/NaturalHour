@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+             style="@style/WidgetFrame" android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/Widget" android:layout_height="match_parent"
+        android:id="@+id/widgetframe_inner">
+
+        <!--<TextView style="@style/WidgetTitleView"
+            android:id="@+id/text_title" android:visibility="gone"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="start" android:layout_gravity="center_vertical"
+            tools:text="title" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical" android:gravity="center" android:layout_gravity="center">
+
+            <ImageView android:id="@+id/clockface"
+                android:scaleType="centerInside"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

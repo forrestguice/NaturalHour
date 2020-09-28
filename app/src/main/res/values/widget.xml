@@ -1,0 +1,68 @@
+<resources>
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_padding_left">2dp</dimen>
+    <dimen name="widget_padding_right">4dp</dimen>
+    <dimen name="widget_padding_top">4dp</dimen>
+    <dimen name="widget_padding_bottom">4dp</dimen>
+
+    <integer name="widget_size_min_dp1x1">40</integer>
+    <dimen name="widget_size_min_1x1">40dp</dimen>
+
+    <integer name="widget_size_min_dp2x2">110</integer>
+    <dimen name="widget_size_min_2x2">110dp</dimen>
+
+    <integer name="widget_size_min_dp3x3">180</integer>
+    <dimen name="widget_size_min_3x3">180dp</dimen>
+
+    <integer name="widget_size_min_dp4x4">250</integer>
+    <dimen name="widget_size_min_4x4">250dp</dimen>
+
+    <style name="Widget">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/widget_padding_left</item>
+        <item name="android:paddingRight">@dimen/widget_padding_right</item>
+        <item name="android:paddingTop">@dimen/widget_padding_top</item>
+        <item name="android:paddingBottom">@dimen/widget_padding_bottom</item>
+    </style>
+    <style name="WidgetFrame">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/widget_margin</item>
+    </style>
+
+    <style name="WidgetTextViewBase" parent="android:TextAppearance.Small" />
+    <style name="WidgetTextView" parent="WidgetTextViewBase">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:antialias">true</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+    <style name="WidgetTitleView" parent="WidgetTextView">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:layout_gravity">bottom</item>
+    </style>
+    <style name="WidgetSuffixView" parent="WidgetTextView">
+        <item name="android:textSize">6sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+</resources>
