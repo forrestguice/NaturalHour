@@ -39,6 +39,8 @@ import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 
+import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
@@ -293,8 +295,9 @@ public class NaturalHourWidget extends AppWidgetProvider
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
 
-        boolean is24 = true;                        // TODO
-        TimeZone timezone = TimeZone.getDefault();  // TODO
+        SuntimesInfo suntimesInfo = SuntimesInfo.queryInfo(context);
+        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
+        TimeZone timezone = AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo);
         NaturalHourClockBitmap.ClockColorValues appearance = new NaturalHourClockBitmap.ClockColorValues();  // TODO
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
