@@ -1,9 +1,9 @@
 <resources>
 
-    <style name="AppTheme" parent="RomanTimeAppTheme.Dark" />
+    <style name="AppTheme" parent="NaturalHourAppTheme.Dark" />
 
     <!-- Light theme -->
-    <style name="RomanTimeAppTheme.Light" parent="SuntimesAddonTheme.Light">
+    <style name="NaturalHourAppTheme.Light" parent="SuntimesAddonTheme.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary_light</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
@@ -15,7 +15,7 @@
         <item name="icHelp">@drawable/ic_help_light</item>
         <item name="icAbout">@drawable/ic_about_light</item>
 
-        <item name="cardViewStyle">@style/RomanTimeCardView.Light</item>
+        <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
 
         <item name="colorDate">@color/colorDate_light</item>
@@ -41,7 +41,7 @@
     </style>
 
     <!-- Dark theme -->
-    <style name="RomanTimeAppTheme.Dark" parent="SuntimesAddonTheme.Dark">
+    <style name="NaturalHourAppTheme.Dark" parent="SuntimesAddonTheme.Dark">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary_dark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
@@ -53,7 +53,7 @@
         <item name="icHelp">@drawable/ic_help</item>
         <item name="icAbout">@drawable/ic_about</item>
 
-        <item name="cardViewStyle">@style/RomanTimeCardView.Dark</item>
+        <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 
         <item name="colorDate">@color/colorDate_dark</item>
@@ -88,11 +88,11 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-    <style name="RomanTimeCardView" parent="Base.CardView" />
-    <style name="RomanTimeCardView.Dark">
+    <style name="NaturalHourCardView" parent="Base.CardView" />
+    <style name="NaturalHourCardView.Dark">
         <item name="cardBackgroundColor">@color/card_background_dark</item>
     </style>
-    <style name="RomanTimeCardView.Light">
+    <style name="NaturalHourCardView.Light">
         <item name="cardBackgroundColor">@color/card_background_light</item>
     </style>
 

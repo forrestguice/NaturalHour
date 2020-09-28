@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private int getThemeResID(@NonNull String themeName) {
-        return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.RomanTimeAppTheme_Light : R.style.RomanTimeAppTheme_Dark;
+        return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.NaturalHourAppTheme_Light : R.style.NaturalHourAppTheme_Dark;
     }
 
     @Override

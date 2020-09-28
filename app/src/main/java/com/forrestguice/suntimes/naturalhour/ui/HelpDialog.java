@@ -40,7 +40,7 @@ public class HelpDialog extends BottomSheetDialogFragment
     public static final String KEY_HELPTEXT = "helpText";
     public static final String KEY_DIALOGTHEME = "themeResID";
 
-    private int themeResID = R.style.RomanTimeAppTheme_Dark;
+    private int themeResID = R.style.NaturalHourAppTheme_Dark;
     public void setTheme(int themeResID) {
         this.themeResID = themeResID;
     }

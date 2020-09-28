@@ -45,7 +45,7 @@ public class AboutDialog extends BottomSheetDialogFragment
     public static final String KEY_PROVIDERVERSION = "paramProviderVersion";
     public static final String KEY_PROVIDER_PERMISSIONDENIED = "paramProviderDenied";
 
-    private int themeResID = R.style.RomanTimeAppTheme_Dark;
+    private int themeResID = R.style.NaturalHourAppTheme_Dark;
     public void setTheme(int themeResID) {
         this.themeResID = themeResID;
     }

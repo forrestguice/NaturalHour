@@ -129,13 +129,13 @@
 
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
-        <a href="https://github.com/forrestguice/RomanTime/issues">issue tracker</a> to submit a request.
+        <a href="https://github.com/forrestguice/NaturalHour/issues">issue tracker</a> to submit a request.
     ]]></string>    <!-- formatted link -->
     <string name="app_source_url"><![CDATA[
-        <a href="https://github.com/forrestguice/SolunarPeriods/">github.com/forrestguice/RomanTime/</a>
+        <a href="https://github.com/forrestguice/NaturalHour/">github.com/forrestguice/NaturalHour/</a>
     ]]></string>    <!-- formatted link -->
-    <string name="app_changelog_url">https://github.com/forrestguice/RomanTime/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
-    <string name="app_commit_url">https://github.com/forrestguice/RomanTime/commit/</string>   <!-- url only (no formatting) -->
+    <string name="app_changelog_url">https://github.com/forrestguice/NaturalHour/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
+    <string name="app_commit_url">https://github.com/forrestguice/NaturalHour/commit/</string>   <!-- url only (no formatting) -->
 
     <string name="app_legal1"><![CDATA[
         <b>Source Code:</b><br />

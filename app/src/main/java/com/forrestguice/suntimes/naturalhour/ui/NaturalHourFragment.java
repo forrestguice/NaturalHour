@@ -384,7 +384,7 @@ public class NaturalHourFragment extends Fragment
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
                 clockface.set24HourMode(options.is24);
-                //clockface.setFlag(RomanTimeClockView.FLAG_SHOW_DATEYEAR, true);
+                //clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATEYEAR, true);
 
             } else {
                 text_date.setText("");
