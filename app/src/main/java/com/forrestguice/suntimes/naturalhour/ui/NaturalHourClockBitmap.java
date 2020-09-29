@@ -565,40 +565,36 @@ public class NaturalHourClockBitmap
         paintBackground.setColor(colors.colorFace);
         canvas.drawCircle(cX, cY, radiusOuter(cX), paintBackground);
 
-        double dayAngle = Math.PI;
-        double nightAngle = 2 * Math.PI;
-        double dayHourAngle = Math.PI / 12;
-
         if (data != null && data.isCalculated())
         {
+            long[] twilightHours = data.getTwilightTimes();
             long[] naturalHours = data.getNaturalHours();
-            dayHourAngle = data.getDayHourAngle();
-            dayAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone));
-            nightAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone));
+            double dayHourAngle = data.getDayHourAngle();
+            double dayAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone));
+            double nightAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[4], timezone));
 
-            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT))
-            {
-                double span = data.getNightHourAngle() * 12;
-                drawPie(canvas, cX, cY, radiusInner(cX), nightAngle, span, paintFillNight);
+            double daySpan = NaturalHourData.simplifyAngle(Math.max(nightAngle, dayAngle) - Math.min(nightAngle, dayAngle));
+            double nightSpan = 2 * Math.PI - daySpan;
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT)) {
+                drawPie(canvas, cX, cY, radiusInner(cX), nightAngle, nightSpan, paintFillNight);
             }
 
-            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY))
-            {
-                double span = data.getDayHourAngle() * 12;
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY)) {
                 paintFillDay.setColor(colors.colorDay1);
-                drawPie(canvas, cX, cY, radiusInner(cX), dayAngle, span, paintFillDay);
+                drawPie(canvas, cX, cY, radiusInner(cX), dayAngle, daySpan, paintFillDay);
             }
 
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_AMPM))
             {
-                double a1 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone));
-                double span = data.getDayHourAngle() * 6;
+                double middaySpan = daySpan / 2d;
+                double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone));
                 paintFillDay.setColor(colors.colorDay1AM);
-                drawPie(canvas, cX, cY, radiusInner(cX), a1, span, paintFillDay);
+                drawPie(canvas, cX, cY, radiusInner(cX), a1, middaySpan, paintFillDay);
 
                 double a2 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[6], timezone));
                 paintFillDay.setColor(colors.colorDay1PM);
-                drawPie(canvas, cX, cY, radiusInner(cX), a2, span, paintFillDay);
+                drawPie(canvas, cX, cY, radiusInner(cX), a2, middaySpan, paintFillDay);
             }
 
             if (flags.getAsBoolean(FLAG_SHOW_DATE))
