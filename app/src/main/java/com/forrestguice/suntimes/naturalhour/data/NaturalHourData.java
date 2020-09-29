@@ -34,12 +34,12 @@ public class NaturalHourData implements Parcelable
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_ALTITUDE = "altitude";
 
-    public static final String KEY_SUNRISE = "sunrise";
-    public static final String KEY_SUNSET = "sunset";
-    public static final String KEY_NATURAL_HOURS = "naturalhours";
-    public static final String KEY_SOLSTICE_EQUINOX = "solsticeequinox";
+    public static final String KEY_DAY_START = "daystart";
+    public static final String KEY_DAY_END = "dayend";
     public static final String KEY_DAY_HOUR_LENGTH = "dayhourlength";
     public static final String KEY_NIGHT_HOUR_LENGTH = "nighthourlength";
+    public static final String KEY_NATURAL_HOURS = "naturalhours";
+    public static final String KEY_SOLSTICE_EQUINOX = "solsticeequinox";
 
     public static final String KEY_CALCULATED = "iscalculated";
 
@@ -47,7 +47,7 @@ public class NaturalHourData implements Parcelable
 
     protected long date;
     protected double latitude, longitude, altitude;
-    protected long sunrise, sunset;
+    protected long dayStart, dayEnd;
     protected long dayHourLength, nightHourLength;
     protected long[] naturalHours = new long[24];    // 24 natural hours; 1 sunrise; 13 sunset
     protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
@@ -85,8 +85,8 @@ public class NaturalHourData implements Parcelable
         this.latitude = values.getAsDouble(KEY_LATITUDE);
         this.longitude = values.getAsDouble(KEY_LONGITUDE);
         this.altitude = values.getAsDouble(KEY_ALTITUDE);
-        this.sunrise = values.getAsLong(KEY_SUNRISE);
-        this.sunset = values.getAsLong(KEY_SUNSET);
+        this.dayStart = values.getAsLong(KEY_DAY_START);
+        this.dayEnd = values.getAsLong(KEY_DAY_END);
         this.dayHourLength = values.getAsLong(KEY_DAY_HOUR_LENGTH);
         this.nightHourLength = values.getAsLong(KEY_NIGHT_HOUR_LENGTH);
         for (int i = 0; i< naturalHours.length; i++) {
@@ -104,8 +104,8 @@ public class NaturalHourData implements Parcelable
         values.put(KEY_LATITUDE, latitude);
         values.put(KEY_LONGITUDE, longitude);
         values.put(KEY_ALTITUDE, altitude);
-        values.put(KEY_SUNRISE, sunrise);
-        values.put(KEY_SUNSET, sunset);
+        values.put(KEY_DAY_START, dayStart);
+        values.put(KEY_DAY_END, dayEnd);
         values.put(KEY_DAY_HOUR_LENGTH, dayHourLength);
         values.put(KEY_NIGHT_HOUR_LENGTH, nightHourLength);
         for (int i = 0; i< naturalHours.length; i++) {
@@ -124,8 +124,8 @@ public class NaturalHourData implements Parcelable
         latitude = in.readDouble();
         longitude = in.readDouble();
         altitude = in.readDouble();
-        sunrise = in.readLong();
-        sunset = in.readLong();
+        dayStart = in.readLong();
+        dayEnd = in.readLong();
         dayHourLength = in.readLong();
         nightHourLength = in.readLong();
         in.readLongArray(naturalHours);
@@ -139,8 +139,8 @@ public class NaturalHourData implements Parcelable
         out.writeDouble(latitude);
         out.writeDouble(longitude);
         out.writeDouble(altitude);
-        out.writeLong(sunrise);
-        out.writeLong(sunset);
+        out.writeLong(dayStart);
+        out.writeLong(dayEnd);
         out.writeLong(dayHourLength);
         out.writeLong(nightHourLength);
         out.writeLongArray(naturalHours);
@@ -166,6 +166,9 @@ public class NaturalHourData implements Parcelable
         return calculated;
     }
 
+    /**
+     * @return the date millis used to initialize data
+     */
     public long getDateMillis() {
         return date;
     }
@@ -176,37 +179,35 @@ public class NaturalHourData implements Parcelable
         }
         switch (key)
         {
-            case KEY_SUNRISE: return sunrise;
-            case KEY_SUNSET: return sunset;
-
-            case KEY_DATE:
-            default: return date;
+            case KEY_DAY_START: return dayStart;
+            case KEY_DAY_END: return dayEnd;
+            case KEY_DATE: default: return date;
         }
     }
 
     /**
-     * @return millis
+     * @return length of an hour (day) in millis
      */
     public double getDayHourLength() {
         return dayHourLength;
     }
 
     /**
-     * @return radians
+     * @return length of an hour (day) in radians
      */
     public double getDayHourAngle() {
         return (dayHourLength / (double) DAY_MILLIS) * (2 * Math.PI);
     }
 
     /**
-     * @return millis
+     * @return length of an hour (night) in millis
      */
     public double getNightHourLength() {
         return nightHourLength;
     }
 
     /**
-     * @return radians
+     * @return length of an hour (night) in radians
      */
     public double getNightHourAngle() {
         return (nightHourLength / (double) DAY_MILLIS) * (2 * Math.PI);
@@ -283,10 +284,16 @@ public class NaturalHourData implements Parcelable
         return 0;
     }
 
+    /**
+     * @return long[24] containing natural hours; daytime: [0-11], nighttime: [12-23]; dayStart: 0, dayEnd: 12, midday: 6, midnight: 23
+     */
     public long[] getNaturalHours() {
         return naturalHours;
     }
 
+    /**
+     * @return long[4]; spring, summer, fall, winter
+     */
     public long[] getEquinoxSolsticeDates() {
         return solsticeEquinox;
     }

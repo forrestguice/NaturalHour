@@ -29,27 +29,23 @@ import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 
 import java.util.Calendar;
 
-public class NaturalHourCalculator
-{
+public class NaturalHourCalculator {
     /**
      * calculateData
      */
-    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data)
-    {
-        if (queryData(resolver, data))
-        {
-            if (data.sunrise > 0 && data.sunset > 0)
-            {
-                long dayLength = (data.sunset - data.sunrise);
+    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data) {
+        if (queryData(resolver, data)) {
+            if (data.dayStart > 0 && data.dayEnd > 0) {
+                long dayLength = (data.dayEnd - data.dayStart);
                 data.dayHourLength = dayLength / 12L;
-                for (int i=0; i<12; i++) {
-                    data.naturalHours[i] = data.sunrise + (data.dayHourLength * i);
+                for (int i = 0; i < 12; i++) {
+                    data.naturalHours[i] = data.dayStart + (data.dayHourLength * i);
                 }
 
                 long nightLength = (24 * 60 * 60 * 1000) - dayLength;
                 data.nightHourLength = nightLength / 12L;
-                for (int i=0; i<12; i++) {
-                    data.naturalHours[12 + i] = data.sunset + (data.nightHourLength * i);
+                for (int i = 0; i < 12; i++) {
+                    data.naturalHours[12 + i] = data.dayEnd + (data.nightHourLength * i);
                 }
 
                 data.calculated = true;
@@ -68,13 +64,15 @@ public class NaturalHourCalculator
     /**
      * queryData
      */
-    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data)
-    {
-        if (resolver != null)
-        {
+    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data) {
+        if (resolver != null) {
             try {
-                querySunriseSunset(resolver, data);
-                queryEquinoxSolsticeDates(resolver, data);
+                long[] daylight = queryStartEndDay(resolver, data.getDateMillis());
+                data.dayStart = daylight[0];
+                data.dayEnd = daylight[1];
+
+                solsticeEquinox = queryEquinoxSolsticeDates(resolver, data.getDateMillis());
+                data.solsticeEquinox = solsticeEquinox;
 
             } catch (SecurityException e) {
                 Log.e(getClass().getSimpleName(), "calculateData: Unable to access " + CalculatorProviderContract.AUTHORITY + "! " + e);
@@ -87,26 +85,31 @@ public class NaturalHourCalculator
         return true;
     }
 
-    protected void querySunriseSunset(ContentResolver resolver, NaturalHourData data)
+    public long[] queryStartEndDay(ContentResolver resolver, long dateMillis) {
+        return querySunriseSunset(resolver, dateMillis);
+    }
+
+    public long[] querySunriseSunset(ContentResolver resolver, long dateMillis)
     {
+        long[] retValue = new long[] {-1, -1};
         String[] projection = new String[] { CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE, CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET };
-        Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + data.getDateMillis() );
+        Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + dateMillis );
         Cursor cursor = resolver.query(uri, projection, null, null, null);
         if (cursor != null)
         {
             cursor.moveToFirst();
-            data.sunrise = cursor.isNull(0) ? -1 : cursor.getLong(0);
-            data.sunset = cursor.isNull(1) ? -1 : cursor.getLong(1);
+            retValue[0] = cursor.isNull(0) ? -1 : cursor.getLong(0);
+            retValue[1] = cursor.isNull(1) ? -1 : cursor.getLong(1);
             cursor.close();
         }
+        return retValue;
     }
 
-    private long[] solsticeEquinox = new long[] {-1, -1, -1, -1};
-    protected void queryEquinoxSolsticeDates(ContentResolver resolver, NaturalHourData data)
+    protected long[] solsticeEquinox = new long[] {-1, -1, -1, -1};
+    public long[] queryEquinoxSolsticeDates(ContentResolver resolver, long dateMillis)
     {
         if (solsticeEquinox[0] <= 0)
         {
-            long dateMillis = data.getDateMillis();
             Calendar date = Calendar.getInstance();
             date.setTimeInMillis(dateMillis);
             int year = date.get(Calendar.YEAR);
@@ -130,7 +133,7 @@ public class NaturalHourCalculator
                 cursor.close();
             }
         }
-        data.solsticeEquinox = this.solsticeEquinox;
+        return solsticeEquinox;
     }
 
 }

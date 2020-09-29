@@ -52,6 +52,7 @@ import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 
 import java.lang.ref.WeakReference;
@@ -484,7 +485,7 @@ public class NaturalHourFragment extends Fragment
 
         public NaturalHourData initData()
         {
-            calculator = new NaturalHourCalculator();
+            calculator = initCalculator();
             NaturalHourData d;
             data.clear();
             invalidated = false;
@@ -517,7 +518,11 @@ public class NaturalHourFragment extends Fragment
             return calculateData(new NaturalHourData(date.getTimeInMillis(), info.location[1], info.location[2], info.location[3]));
         }
 
-        private NaturalHourCalculator calculator = new NaturalHourCalculator();
+        public NaturalHourCalculator initCalculator() {
+            return new NaturalHourCalculator1();
+        }
+
+        private NaturalHourCalculator calculator = initCalculator();
         private NaturalHourData calculateData(NaturalHourData naturalHourData)
         {
             Context context = contextRef.get();
