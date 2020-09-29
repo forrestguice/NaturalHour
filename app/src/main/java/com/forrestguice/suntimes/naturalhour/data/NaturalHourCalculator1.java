@@ -31,23 +31,16 @@ import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 public class NaturalHourCalculator1 extends NaturalHourCalculator
 {
     @Override
-    public long[] queryStartEndDay(ContentResolver resolver, long dateMillis) {
-        return queryCivilTwilight(resolver, dateMillis);
+    public long[] queryStartEndDay(ContentResolver resolver, long dateMillis, NaturalHourData data) {
+
+        if (data.twilightHours != null && data.twilightHours.length == 8
+                && data.twilightHours[2] > 0 && data.twilightHours[5] > 0)
+        {
+            return new long[] {data.twilightHours[2], data.twilightHours[5]};   // civil sunrise, civil sunset
+
+        } else {
+            return queryCivilTwilight(resolver, dateMillis);
+        }
     }
 
-    public long[] queryCivilTwilight(ContentResolver resolver, long date)
-    {
-        long[] retValue = new long[] {-1, -1};
-        String[] projection = new String[] { CalculatorProviderContract.COLUMN_SUN_CIVIL_RISE, CalculatorProviderContract.COLUMN_SUN_CIVIL_SET };
-        Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + date );
-        Cursor cursor = resolver.query(uri, projection, null, null, null);
-        if (cursor != null)
-        {
-            cursor.moveToFirst();
-            retValue[0] = cursor.isNull(0) ? -1 : cursor.getLong(0);
-            retValue[1] = cursor.isNull(1) ? -1 : cursor.getLong(1);
-            cursor.close();
-        }
-        return retValue;
-    }
 }

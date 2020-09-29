@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class NaturalHourCalculator {
@@ -67,11 +68,14 @@ public class NaturalHourCalculator {
     public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data) {
         if (resolver != null) {
             try {
-                long[] daylight = queryStartEndDay(resolver, data.getDateMillis());
+                long date = data.getDateMillis();
+                data.twilightHours = queryTwilights(resolver, date);
+
+                long[] daylight = queryStartEndDay(resolver, date, data);
                 data.dayStart = daylight[0];
                 data.dayEnd = daylight[1];
 
-                solsticeEquinox = queryEquinoxSolsticeDates(resolver, data.getDateMillis());
+                solsticeEquinox = queryEquinoxSolsticeDates(resolver, date);
                 data.solsticeEquinox = solsticeEquinox;
 
             } catch (SecurityException e) {
@@ -85,21 +89,62 @@ public class NaturalHourCalculator {
         return true;
     }
 
-    public long[] queryStartEndDay(ContentResolver resolver, long dateMillis) {
-        return querySunriseSunset(resolver, dateMillis);
+    public long[] queryTwilights(ContentResolver resolver, long date)
+    {
+        return queryTwilight(resolver, date, new String[] {
+                CalculatorProviderContract.COLUMN_SUN_ASTRO_RISE,     // 0
+                CalculatorProviderContract.COLUMN_SUN_NAUTICAL_RISE,  // 1
+                CalculatorProviderContract.COLUMN_SUN_CIVIL_RISE,     // 2
+                CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE,    // 3
+                CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET,     // 4
+                CalculatorProviderContract.COLUMN_SUN_CIVIL_SET,      // 5
+                CalculatorProviderContract.COLUMN_SUN_NAUTICAL_SET,   // 6
+                CalculatorProviderContract.COLUMN_SUN_ASTRO_SET }     // 7
+
+        );
     }
 
-    public long[] querySunriseSunset(ContentResolver resolver, long dateMillis)
+    public long[] queryStartEndDay(ContentResolver resolver, long dateMillis, NaturalHourData data)
     {
-        long[] retValue = new long[] {-1, -1};
-        String[] projection = new String[] { CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE, CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET };
-        Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + dateMillis );
+        if (data.twilightHours != null && data.twilightHours.length == 8
+                && data.twilightHours[3] > 0 && data.twilightHours[4] > 0)
+        {
+            return new long[] {data.twilightHours[3], data.twilightHours[4]};    // actual sunrise, actual sunset
+
+        } else {
+            return querySunriseSunset(resolver, dateMillis);
+        }
+    }
+
+    public long[] querySunriseSunset(ContentResolver resolver, long dateMillis) {
+        return queryTwilight(resolver, dateMillis, new String[] { CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE, CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET });
+    }
+
+    public long[] queryCivilTwilight(ContentResolver resolver, long date) {
+        return queryTwilight(resolver, date, new String[] { CalculatorProviderContract.COLUMN_SUN_CIVIL_RISE, CalculatorProviderContract.COLUMN_SUN_CIVIL_SET });
+    }
+
+    public long[] queryNauticalTwilight(ContentResolver resolver, long date) {
+        return queryTwilight(resolver, date, new String[] { CalculatorProviderContract.COLUMN_SUN_NAUTICAL_RISE, CalculatorProviderContract.COLUMN_SUN_NAUTICAL_SET });
+    }
+
+    public long[] queryAstroTwilight(ContentResolver resolver, long date) {
+        return queryTwilight(resolver, date, new String[] { CalculatorProviderContract.COLUMN_SUN_ASTRO_RISE, CalculatorProviderContract.COLUMN_SUN_ASTRO_SET });
+    }
+
+    public long[] queryTwilight(ContentResolver resolver, long date, String[] projection)
+    {
+        long[] retValue = new long[projection.length];
+        Arrays.fill(retValue, -1);
+
+        Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + date );
         Cursor cursor = resolver.query(uri, projection, null, null, null);
         if (cursor != null)
         {
             cursor.moveToFirst();
-            retValue[0] = cursor.isNull(0) ? -1 : cursor.getLong(0);
-            retValue[1] = cursor.isNull(1) ? -1 : cursor.getLong(1);
+            for (int i=0; i<projection.length; i++) {
+                retValue[i] = cursor.isNull(i) ? -1 : cursor.getLong(i);
+            }
             cursor.close();
         }
         return retValue;

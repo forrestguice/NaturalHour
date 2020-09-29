@@ -34,11 +34,14 @@ public class NaturalHourData implements Parcelable
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_ALTITUDE = "altitude";
 
+    public static final String KEY_TWILIGHT = "twilights";
     public static final String KEY_DAY_START = "daystart";
     public static final String KEY_DAY_END = "dayend";
+    public static final String KEY_NATURAL_HOURS = "naturalhours";
+
     public static final String KEY_DAY_HOUR_LENGTH = "dayhourlength";
     public static final String KEY_NIGHT_HOUR_LENGTH = "nighthourlength";
-    public static final String KEY_NATURAL_HOURS = "naturalhours";
+
     public static final String KEY_SOLSTICE_EQUINOX = "solsticeequinox";
 
     public static final String KEY_CALCULATED = "iscalculated";
@@ -49,6 +52,7 @@ public class NaturalHourData implements Parcelable
     protected double latitude, longitude, altitude;
     protected long dayStart, dayEnd;
     protected long dayHourLength, nightHourLength;
+    protected long[] twilightHours = new long[8];    // rising [0-3] (astro, nautical, civil, actual), setting [4-7] (actual, civil, nautical, astro)
     protected long[] naturalHours = new long[24];    // 24 natural hours; 1 sunrise; 13 sunset
     protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
     protected boolean calculated = false;
@@ -89,6 +93,9 @@ public class NaturalHourData implements Parcelable
         this.dayEnd = values.getAsLong(KEY_DAY_END);
         this.dayHourLength = values.getAsLong(KEY_DAY_HOUR_LENGTH);
         this.nightHourLength = values.getAsLong(KEY_NIGHT_HOUR_LENGTH);
+        for (int i = 0; i< twilightHours.length; i++) {
+            twilightHours[i] = values.getAsLong(KEY_TWILIGHT + i);
+        }
         for (int i = 0; i< naturalHours.length; i++) {
             naturalHours[i] = values.getAsLong(KEY_NATURAL_HOURS + i);
         }
@@ -108,6 +115,9 @@ public class NaturalHourData implements Parcelable
         values.put(KEY_DAY_END, dayEnd);
         values.put(KEY_DAY_HOUR_LENGTH, dayHourLength);
         values.put(KEY_NIGHT_HOUR_LENGTH, nightHourLength);
+        for (int i = 0; i< twilightHours.length; i++) {
+            values.put(KEY_TWILIGHT + i, twilightHours[i]);
+        }
         for (int i = 0; i< naturalHours.length; i++) {
             values.put(KEY_NATURAL_HOURS + i, naturalHours[i]);
         }
@@ -128,6 +138,7 @@ public class NaturalHourData implements Parcelable
         dayEnd = in.readLong();
         dayHourLength = in.readLong();
         nightHourLength = in.readLong();
+        in.readLongArray(twilightHours);
         in.readLongArray(naturalHours);
         in.readLongArray(solsticeEquinox);
     }
@@ -143,6 +154,7 @@ public class NaturalHourData implements Parcelable
         out.writeLong(dayEnd);
         out.writeLong(dayHourLength);
         out.writeLong(nightHourLength);
+        out.writeLongArray(twilightHours);
         out.writeLongArray(naturalHours);
         out.writeLongArray(solsticeEquinox);
     }
@@ -282,6 +294,13 @@ public class NaturalHourData implements Parcelable
             }
         }
         return 0;
+    }
+
+    /**
+     * @return long[8] containing twilight times in order of appearance; [0-3] rising (astro, nautical, civil, actual); [4-7] setting (actual, civil, nautical, astro)
+     */
+    public long[] getTwilightTimes() {
+        return twilightHours;
     }
 
     /**
