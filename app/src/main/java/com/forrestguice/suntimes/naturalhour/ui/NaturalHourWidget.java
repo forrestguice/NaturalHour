@@ -34,6 +34,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ActionProvider;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -63,13 +64,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     public static final String KEY_WIDGETCLASS = "widgetClass";
     public static final String KEY_THEME = "themeName";
 
-    public void initLocale(Context context)
-    {
-        // TODO
-        //AppSettings.initLocale(context);
-        //WidgetThemes.initThemes(context);
-        //SuntimesUtils.initDisplayStrings(context);
-        //WidgetSettings.TimeMode.initDisplayStrings(context);
+    public void initLocale(Context context) {
     }
 
     @Override
@@ -197,16 +192,6 @@ public class NaturalHourWidget extends AppWidgetProvider
     }
 
     @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        super.onDisabled(context);
-    }
-
-    @Override
     public void onDeleted(Context context, int[] appWidgetIds)
     {
         for (int appWidgetId : appWidgetIds)
@@ -265,14 +250,16 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
     {
         Calendar now = Calendar.getInstance();
-        boolean showTitle = false; // TODO: WidgetSettings.loadShowTitlePref(context, appWidgetId);
-        double latitude = 30;   // TODO
-        double longitude = -112;
-        double altitude = 0;
+        SuntimesInfo suntimesInfo = SuntimesInfo.queryInfo(context);
+        double latitude = Double.parseDouble(suntimesInfo.location[1]);
+        double longitude = Double.parseDouble(suntimesInfo.location[2]);
+        double altitude = Double.parseDouble(suntimesInfo.location[3]);
 
         RemoteViews views = getViews(context);
-        //views.setViewVisibility(R.id.text_title, showTitle ? View.VISIBLE : View.GONE);
         views.setOnClickPendingIntent(R.id.widgetframe_inner, getClickActionIntent(context, appWidgetId, getClass()));
+
+        //boolean showTitle = false; // TODO: WidgetSettings.loadShowTitlePref(context, appWidgetId);
+        //views.setViewVisibility(R.id.text_title, showTitle ? View.VISIBLE : View.GONE);
 
         ContentResolver resolver = context.getContentResolver();
         NaturalHourCalculator calculator = new NaturalHourCalculator();
@@ -281,7 +268,7 @@ public class NaturalHourWidget extends AppWidgetProvider
 
         prepareForUpdate(context, appWidgetId, data);
         themeViews(context, views, appWidgetId);
-        updateViews(context, appWidgetId, views, data);
+        updateViews(context, appWidgetId, views, data, suntimesInfo);
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
         Calendar nextUpdate = Calendar.getInstance();
@@ -291,21 +278,18 @@ public class NaturalHourWidget extends AppWidgetProvider
         saveNextSuggestedUpdate(context, appWidgetId, nextUpdate.getTimeInMillis());
     }
 
-    protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data)
+    private NaturalHourClockBitmap.ClockColorValues clockAppearance;
+    protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data, SuntimesInfo suntimesInfo)
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
-
-        SuntimesInfo suntimesInfo = SuntimesInfo.queryInfo(context);
         boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo);
-        NaturalHourClockBitmap.ClockColorValues appearance = new NaturalHourClockBitmap.ClockColorValues();  // TODO
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
         clockView.setTimeZone(timezone);
         clockView.set24HourMode(is24);
 
-        Bitmap bitmap = clockView.makeBitmap(context, data, appearance);
-        views.setImageViewBitmap(R.id.clockface, bitmap);
+        views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data, clockAppearance));
         if (Build.VERSION.SDK_INT >= 15)
         {
             String timeDescription = "TODO";            // TODO
@@ -333,20 +317,12 @@ public class NaturalHourWidget extends AppWidgetProvider
         if (windowManager != null) {
             windowManager.getDefaultDisplay().getSize(screenSizePx);
         }
-
-        if (screenSizePx.x < screenSizePx.y) {
-            Log.d("DEBUG", "constrained by width: " + screenSizePx.x);
-            clockSizePx = screenSizePx.x;
-
-        } else {
-            Log.d("DEBUG", "constrained by height: " + screenSizePx.y);
-            clockSizePx = screenSizePx.y;
-        }
+        clockSizePx = Math.min(screenSizePx.x, screenSizePx.y);
     }
 
     protected void themeViews(Context context, RemoteViews views, int appWidgetId)
     {
-        // TODO
+        clockAppearance = new NaturalHourClockBitmap.ClockColorValues(context);
     }
 
     @Override
@@ -489,7 +465,6 @@ public class NaturalHourWidget extends AppWidgetProvider
     public static final String PREFS_WIDGET = "com.forrestguice.suntimes.naturalhour";
     public static final String PREF_PREFIX_KEY = "appwidget_";
     public static final String PREF_KEY_NEXTUPDATE = "nextUpdate";
-    public static final long PREF_DEF_NEXTUPDATE = -1L;
 
     public static long getNextSuggestedUpdate(Context context, int appWidgetId)
     {
