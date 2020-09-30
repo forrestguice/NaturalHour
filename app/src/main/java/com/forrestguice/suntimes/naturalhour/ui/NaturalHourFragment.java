@@ -50,6 +50,7 @@ import android.widget.TextView;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
@@ -385,6 +386,13 @@ public class NaturalHourFragment extends Fragment
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
                 clockface.set24HourMode(options.is24);
+                clockface.setStartAngle(AppSettings.getClockValue(context, AppSettings.KEY_CLOCK_ORIENTATION) == AppSettings.ORIENTATION_TOP
+                        ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
+                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_TWILIGHTS, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_TWILIGHTS));
+                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_AMPM, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_AMPM));
+                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE));
+                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_VIGILIA, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_VIGILIA));
+                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATE, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_DATE));
                 //clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATEYEAR, true);
 
             } else {
@@ -519,7 +527,8 @@ public class NaturalHourFragment extends Fragment
         }
 
         public NaturalHourCalculator initCalculator() {
-            return new NaturalHourCalculator1();
+            return AppSettings.getClockValue(getContext(), AppSettings.KEY_CLOCK_HOURMODE) == AppSettings.HOURMODE_CIVIL
+                    ? new NaturalHourCalculator1() : new NaturalHourCalculator();
         }
 
         private NaturalHourCalculator calculator = initCalculator();

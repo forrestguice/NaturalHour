@@ -119,7 +119,15 @@ public class NaturalHourClockView extends View
         invalidate();
     }
 
-    protected void setFlag(String flag, boolean value) {
+    public void setFlag(String flag, boolean value) {
         bitmap.setFlag(flag, value);
+    }
+
+    public boolean getFlag(String flag) {
+        return bitmap.getFlag(flag);
+    }
+
+    public boolean getDefaultFlag(Context context, String flag) {
+        return bitmap.getDefaultFlag(context, flag);
     }
 }

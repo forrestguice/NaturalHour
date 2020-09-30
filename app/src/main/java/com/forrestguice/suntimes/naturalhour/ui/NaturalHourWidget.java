@@ -284,10 +284,18 @@ public class NaturalHourWidget extends AppWidgetProvider
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
         boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo);
+        double orientation = AppSettings.getClockValue(context, AppSettings.KEY_CLOCK_ORIENTATION) == AppSettings.ORIENTATION_TOP
+                ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM;
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
+        clockView.setStartAngle(orientation);
         clockView.setTimeZone(timezone);
         clockView.set24HourMode(is24);
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_TWILIGHTS, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_TWILIGHTS));
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_AMPM, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_AMPM));
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE));
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_VIGILIA, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_VIGILIA));
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATE, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_DATE));
 
         views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data, clockAppearance));
         if (Build.VERSION.SDK_INT >= 15)

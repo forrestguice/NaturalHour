@@ -24,19 +24,67 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 
 import java.util.TimeZone;
 
 public class AppSettings
 {
-    public static final String KEY_MODE_TIMEFORMAT = "timeformatMode";
+    public static final String KEY_CLOCK_ORIENTATION = "clockorientation";
+    public static final int ORIENTATION_TOP = 0;        // midnight on top
+    public static final int ORIENTATION_BOTTOM = 1;     // midnight on bottom
+    public static final int ORIENTATION_DEFAULT = ORIENTATION_BOTTOM;
+
+    public static final String KEY_CLOCK_HOURMODE = "clockhourmode";
+    public static final int HOURMODE_ACTUAL = 0;     // day is bounded by actual sunrise/sunset
+    public static final int HOURMODE_CIVIL = 1;      // day is bounded by civil twilight rise/set
+    public static final int HOURMODE_DEFAULT = HOURMODE_ACTUAL;
+
+    public static final String KEY_MODE_TIMEFORMAT = "timeformatmode";
     public static final int TIMEMODE_SYSTEM = 0, TIMEMODE_SUNTIMES = 1, TIMEMODE_12HR = 2, TIMEMODE_24HR = 3;
     public static final int TIMEMODE_DEFAULT = TIMEMODE_24HR;
 
-    public static final String KEY_MODE_TIMEZONE = "timezoneMode";
+    public static final String KEY_MODE_TIMEZONE = "timezonemode";
     public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3;
     public static final int TZMODE_DEFAULT = TZMODE_APPARENTSOLAR;
+
+    public static void setClockFlag(Context context, String key, boolean flag)
+    {
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        prefs.putBoolean(key, flag);
+        prefs.apply();
+    }
+    public static boolean getClockFlag(Context context, String key) {
+        return getClockFlag(context, key, NaturalHourClockBitmap.getDefaultFlag(context, key));
+    }
+    public static boolean getClockFlag(Context context, String key, boolean defaultValue) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(key, defaultValue);
+    }
+
+    public static void setClockValue(Context context, String key, int value) {
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        prefs.putInt(key, value);
+        prefs.apply();
+    }
+    public static int getClockValue(Context context, String key) {
+        return getClockValue(context, key, getClockDefaultValue(context, key));
+    }
+    public static int getClockValue(Context context, String key, int defaultValue) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(key, defaultValue);
+    }
+    public static int getClockDefaultValue(Context context, String key) {
+        switch (key)
+        {
+            case KEY_CLOCK_ORIENTATION: return ORIENTATION_DEFAULT;
+            case KEY_CLOCK_HOURMODE: return HOURMODE_DEFAULT;
+            case KEY_MODE_TIMEFORMAT: return TIMEMODE_DEFAULT;
+            case KEY_MODE_TIMEZONE: return TZMODE_DEFAULT;
+            default: return -1;
+        }
+    }
 
     public static void setTimeFormatMode(Context context, int mode)
     {
