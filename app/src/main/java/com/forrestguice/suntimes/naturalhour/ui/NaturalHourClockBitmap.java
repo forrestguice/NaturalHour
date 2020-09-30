@@ -57,6 +57,7 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_BACKGROUND_DAY = "showBackgroundDay";
     public static final String FLAG_SHOW_BACKGROUND_NIGHT = "showBackgroundNight";
     public static final String FLAG_SHOW_BACKGROUND_AMPM = "showBackgroundAmPm";
+    public static final String FLAG_SHOW_BACKGROUND_TWILIGHTS = "showBackgroundTwilights";
     public static final String FLAG_SHOW_TICKS_15M = "showTick15m";
     public static final String FLAG_SHOW_TICKS_5M = "showTick5m";
 
@@ -116,6 +117,7 @@ public class NaturalHourClockBitmap
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_TWILIGHTS, context.getResources().getBoolean(R.bool.clockface_show_background_twilights));
         setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
         setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
 
@@ -205,6 +207,10 @@ public class NaturalHourClockBitmap
         protected int colorLabel = Color.WHITE;
         protected int colorLabel1 = Color.LTGRAY;
 
+        protected int colorCivil = Color.CYAN;
+        protected int colorNautical = Color.BLUE;
+        protected int colorAstro = Color.BLACK;
+
         public ClockColorValues() {
         }
 
@@ -216,7 +222,8 @@ public class NaturalHourClockBitmap
                     R.attr.clockColorLabel1, R.attr.clockColorLabel2,
                     R.attr.clockColorDayFill, R.attr.clockColorDayText, R.attr.clockColorDayBorder,
                     R.attr.clockColorNightFill, R.attr.clockColorNightText, R.attr.clockColorNightBorder,
-                    R.attr.clockColorAM, R.attr.clockColorPM
+                    R.attr.clockColorAM, R.attr.clockColorPM,
+                    R.attr.clockColorAstro, R.attr.clockColorNautical, R.attr.clockColorCivil
             };
             TypedArray a = context.obtainStyledAttributes(attrs);
 
@@ -231,15 +238,18 @@ public class NaturalHourClockBitmap
             colorDay = ContextCompat.getColor(context, a.getResourceId(7, R.color.clockColorDay_dark));
             colorDayLabel = ContextCompat.getColor(context, a.getResourceId(8, R.color.clockColorDayLabel_dark));
             colorArcDayBorder = ContextCompat.getColor(context, a.getResourceId(9, R.color.clockColorDayBorder_dark));
-            colorDay1 = ColorUtils.setAlphaComponent(colorDay, 128);
+            colorDay1 = colorDay; // TODO
 
             colorNight = ContextCompat.getColor(context, a.getResourceId(10, R.color.clockColorNight_dark));
             colorNightLabel = ContextCompat.getColor(context, a.getResourceId(11, R.color.clockColorNightLabel_dark));
             colorArcNightBorder = ContextCompat.getColor(context, a.getResourceId(12, R.color.clockColorNightBorder_dark));
-            colorNight1 = ColorUtils.setAlphaComponent(colorNight, 128);
+            colorNight1 = colorNight;  // TODO
 
             colorDay1AM = ContextCompat.getColor(context, a.getResourceId(13, R.color.clockColorAM_dark));
             colorDay1PM = ContextCompat.getColor(context, a.getResourceId(14, R.color.clockColorPM_dark));
+            colorAstro = ContextCompat.getColor(context, a.getResourceId(15, R.color.clockColorAstro_dark));
+            colorNautical = ContextCompat.getColor(context, a.getResourceId(16, R.color.clockColorNautical_dark));
+            colorCivil = ContextCompat.getColor(context, a.getResourceId(17, R.color.clockColorCivil_dark));
 
             a.recycle();
         }
@@ -580,10 +590,28 @@ public class NaturalHourClockBitmap
                 drawPie(canvas, cX, cY, radiusInner(cX), nightAngle, nightSpan, paintFillNight);
             }
 
-            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY)) {
-                paintFillDay.setColor(colors.colorDay1);
-                drawPie(canvas, cX, cY, radiusInner(cX), dayAngle, daySpan, paintFillDay);
+            boolean showTwilights = flags.getAsBoolean(FLAG_SHOW_BACKGROUND_TWILIGHTS);
+            boolean showDay = flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY);
+            if (showTwilights || showDay)
+            {
+                double a0 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[0], timezone));
+                for (int i=1; i<twilightHours.length; i++)
+                {
+                    double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[i], timezone));
+                    if ((i == 4 && showDay) || i != 4 && showTwilights)
+                    {
+                        double span = a1 - a0;
+                        paintFillDay.setColor(getTwilightColor(i-1));
+                        drawPie(canvas, cX, cY, radiusInner(cX), a0, span, paintFillDay);
+                    }
+                    a0 = a1;
+                }
             }
+
+            //if (showDay) {
+                //paintFillDay.setColor(colors.colorDay1);
+                //drawPie(canvas, cX, cY, radiusInner(cX), dayAngle, daySpan, paintFillDay);
+            //}
 
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_AMPM))
             {
@@ -631,6 +659,18 @@ public class NaturalHourClockBitmap
             paintLabel.setColor(colors.colorLabel1);
             paintLabel.setTextSize(textSmall);
             canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
+        }
+    }
+
+    private int getTwilightColor(int i)
+    {
+        switch (i)
+        {
+            case 7: return colors.colorNight;
+            case 0: case 6: return colors.colorAstro;
+            case 1: case 5: return colors.colorNautical;
+            case 2: case 4: return colors.colorCivil;
+            case 3: default: return colors.colorDay;
         }
     }
 

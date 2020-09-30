@@ -38,6 +38,9 @@
         <item name="clockColorNightText">@color/clockColorNightLabel_light</item>
         <item name="clockColorAM">@color/clockColorAM_light</item>
         <item name="clockColorPM">@color/clockColorPM_light</item>
+        <item name="clockColorAstro">@color/clockColorAstro_light</item>
+        <item name="clockColorNautical">@color/clockColorNautical_light</item>
+        <item name="clockColorCivil">@color/clockColorCivil_light</item>
     </style>
 
     <!-- Dark theme -->
@@ -76,6 +79,9 @@
         <item name="clockColorNightText">@color/clockColorNightLabel_dark</item>
         <item name="clockColorAM">@color/clockColorAM_dark</item>
         <item name="clockColorPM">@color/clockColorPM_dark</item>
+        <item name="clockColorAstro">@color/clockColorAstro_dark</item>
+        <item name="clockColorNautical">@color/clockColorNautical_dark</item>
+        <item name="clockColorCivil">@color/clockColorCivil_dark</item>
 
     </style>
 

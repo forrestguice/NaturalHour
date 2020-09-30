@@ -8,8 +8,9 @@
     <bool name="clockface_show_ticks_5m">true</bool>
     <bool name="clockface_show_ticks_15m">true</bool>
     <bool name="clockface_show_background_day">false</bool>
-    <bool name="clockface_show_background_night">false</bool>
+    <bool name="clockface_show_background_night">true</bool>
     <bool name="clockface_show_background_ampm">true</bool>
+    <bool name="clockface_show_background_twilights">true</bool>
 
     <!-- dimensions -->
     <dimen name="clockface_center_width">0dp</dimen>
@@ -30,6 +31,9 @@
     <dimen name="clockface_text_large">14dp</dimen>
 
     <!-- light color theme -->
+    <color name="clockColorAstro_light">@color/grey_800</color>
+    <color name="clockColorNautical_light">@color/grey_600</color>
+    <color name="clockColorCivil_light">@color/grey_400</color>
     <color name="clockColorAM_light">@color/grey_100</color>
     <color name="clockColorPM_light">@color/grey_200</color>
     <color name="clockColorDayBorder_light">#FFFFFF</color>
@@ -47,13 +51,17 @@
     <color name="clockColorLabel2_light">@color/grey_600</color>
 
     <!-- dark color theme -->
-    <color name="clockColorAM_dark">@color/grey_800</color> <!-- aaffd500 -->
-    <color name="clockColorPM_dark">@color/grey_850</color> <!-- #aaff9900 -->
+
+    <color name="clockColorAstro_dark">#aa212121</color>
+    <color name="clockColorNautical_dark">#aa303030</color>
+    <color name="clockColorCivil_dark">#aa424242</color>
+    <color name="clockColorAM_dark">@color/grey_600</color> <!-- aaffd500 -->
+    <color name="clockColorPM_dark">@color/grey_700</color> <!-- #aaff9900 -->
     <color name="clockColorDayBorder_dark">#FFFFFF</color>
     <color name="clockColorDay_dark">@color/grey_800</color>
     <color name="clockColorDayLabel_dark">#FFFFFF</color>
     <color name="clockColorNightBorder_dark">@color/grey_600</color>
-    <color name="clockColorNight_dark">#0D47A1</color>
+    <color name="clockColorNight_dark">#000000</color>
     <color name="clockColorNightLabel_dark">#FFFFFF</color>
     <color name="clockColorFace_dark">@color/grey_900</color>
     <color name="clockColorPlate_dark">@color/grey_900</color>

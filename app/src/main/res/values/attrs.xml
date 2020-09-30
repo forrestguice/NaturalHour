@@ -23,7 +23,12 @@
     <attr name="clockColorNightText" format="reference" />
     <attr name="clockColorLabel1" format="reference" />
     <attr name="clockColorLabel2" format="reference" />
+
     <attr name="clockColorAM" format="reference" />
     <attr name="clockColorPM" format="reference" />
+    <attr name="clockColorAstro" format="reference" />
+    <attr name="clockColorNautical" format="reference" />
+    <attr name="clockColorCivil" format="reference" />
+
 
 </resources>
