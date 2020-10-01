@@ -27,7 +27,7 @@
     <string name="action_about">About</string>
 
     <string name="pref_category_clockface">Clock face</string>
-    <string name="pref_title_midnight_top">Midnight on top</string>
+    <string name="pref_title_midnight_top">Show midnight at top</string>
     <string name="pref_title_show_date">Show date</string>
     <string name="pref_title_show_timezone">Show time zone</string>
     <string name="pref_title_show_night">Show night period</string>

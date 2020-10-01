@@ -31,11 +31,6 @@ import java.util.TimeZone;
 
 public class AppSettings
 {
-    public static final String KEY_CLOCK_ORIENTATION = "clockorientation";
-    public static final int ORIENTATION_TOP = 0;        // midnight on top
-    public static final int ORIENTATION_BOTTOM = 1;     // midnight on bottom
-    public static final int ORIENTATION_DEFAULT = ORIENTATION_BOTTOM;
-
     public static final String KEY_CLOCK_HOURMODE = "clockhourmode";
     public static final int HOURMODE_ACTUAL = 0;     // day is bounded by actual sunrise/sunset
     public static final int HOURMODE_CIVIL = 1;      // day is bounded by civil twilight rise/set
@@ -78,7 +73,6 @@ public class AppSettings
     public static int getClockDefaultValue(Context context, String key) {
         switch (key)
         {
-            case KEY_CLOCK_ORIENTATION: return ORIENTATION_DEFAULT;
             case KEY_CLOCK_HOURMODE: return HOURMODE_DEFAULT;
             case KEY_MODE_TIMEFORMAT: return TIMEMODE_DEFAULT;
             case KEY_MODE_TIMEZONE: return TZMODE_DEFAULT;

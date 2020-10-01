@@ -386,8 +386,6 @@ public class NaturalHourFragment extends Fragment
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
                 clockface.set24HourMode(options.is24);
-                clockface.setStartAngle(AppSettings.getClockValue(context, AppSettings.KEY_CLOCK_ORIENTATION) == AppSettings.ORIENTATION_TOP
-                        ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
 
                 for (String flag : NaturalHourClockBitmap.FLAGS) {
                     clockface.setFlag(flag, AppSettings.getClockFlag(context, flag));

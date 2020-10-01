@@ -284,11 +284,8 @@ public class NaturalHourWidget extends AppWidgetProvider
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
         boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo);
-        double orientation = AppSettings.getClockValue(context, AppSettings.KEY_CLOCK_ORIENTATION) == AppSettings.ORIENTATION_TOP
-                ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM;
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
-        clockView.setStartAngle(orientation);
         clockView.setTimeZone(timezone);
         clockView.set24HourMode(is24);
 

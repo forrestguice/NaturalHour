@@ -4,7 +4,7 @@
         android:title="@string/pref_category_clockface">
 
         <CheckBoxPreference android:key="clockface_startAtTop"
-            android:title="@string/pref_title_midnight_top" android:defaultValue="true" />
+            android:title="@string/pref_title_midnight_top" android:defaultValue="false" />
 
         <CheckBoxPreference android:key="clockface_showDate"
             android:title="@string/pref_title_show_date" android:defaultValue="true" />

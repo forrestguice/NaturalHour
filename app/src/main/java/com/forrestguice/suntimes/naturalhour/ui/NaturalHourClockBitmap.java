@@ -67,6 +67,61 @@ public class NaturalHourClockBitmap
     };
 
     protected ContentValues flags = new ContentValues();
+    private void initFlags(Context context)
+    {
+        setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
+        setFlagIfUnset(FLAG_SHOW_DATE, context.getResources().getBoolean(R.bool.clockface_show_date));
+        setFlagIfUnset(FLAG_SHOW_DATEYEAR, false);
+        setFlagIfUnset(FLAG_SHOW_VIGILIA, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
+        setFlagIfUnset(FLAG_SHOW_HAND_SIMPLE, context.getResources().getBoolean(R.bool.clockface_show_hand_simple));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_TWILIGHTS, context.getResources().getBoolean(R.bool.clockface_show_background_twilights));
+        setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
+        setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
+
+        setFlagIfUnset(FLAG_START_AT_TOP, context.getResources().getBoolean(R.bool.clockface_start_at_top));
+        startAngle = startAngle != null ? startAngle : (flags.getAsBoolean(FLAG_START_AT_TOP) ? START_TOP : START_BOTTOM);
+    }
+
+    public void setFlag(String flag, boolean value) {
+        flags.put(flag, value);
+        onFlagChanged(flag);
+    }
+
+    protected void onFlagChanged(String flag) {
+        if (flag.equals(FLAG_START_AT_TOP)) {
+            startAngle = (flags.getAsBoolean(FLAG_START_AT_TOP) ? START_TOP : START_BOTTOM);
+        }
+    }
+
+    protected void setFlagIfUnset(String flag, boolean value) {
+        if (!flags.containsKey(flag)) {
+            flags.put(flag, value);
+        }
+    }
+
+    public boolean getFlag(String flag) {
+        return flags.getAsBoolean(flag);
+    }
+
+    public static boolean getDefaultFlag(Context context, String flag) {
+        switch (flag) {
+            case FLAG_SHOW_TIMEZONE: return context.getResources().getBoolean(R.bool.clockface_show_timezone);
+            case FLAG_SHOW_DATE: return context.getResources().getBoolean(R.bool.clockface_show_date);
+            case FLAG_SHOW_VIGILIA: return context.getResources().getBoolean(R.bool.clockface_show_vigilia);
+            case FLAG_SHOW_HAND_SIMPLE: return context.getResources().getBoolean(R.bool.clockface_show_hand_simple);
+            case FLAG_SHOW_BACKGROUND_NIGHT: return context.getResources().getBoolean(R.bool.clockface_show_background_night);
+            case FLAG_SHOW_BACKGROUND_DAY: return context.getResources().getBoolean(R.bool.clockface_show_background_day);
+            case FLAG_SHOW_BACKGROUND_AMPM: return context.getResources().getBoolean(R.bool.clockface_show_background_ampm);
+            case FLAG_SHOW_BACKGROUND_TWILIGHTS: return context.getResources().getBoolean(R.bool.clockface_show_background_twilights);
+            case FLAG_SHOW_TICKS_5M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_5m);
+            case FLAG_SHOW_TICKS_15M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_15m);
+            case FLAG_SHOW_DATEYEAR:
+            default: return false;
+        }
+    }
 
     protected long time = -1;
     public void setTime(long millis) {
@@ -86,6 +141,9 @@ public class NaturalHourClockBitmap
     protected Double startAngle = null;
     public void setStartAngle(double radianValue) {
         startAngle = radianValue;
+    }
+    protected void setStartAngle() {
+
     }
 
     protected boolean showMinorTickLabels = true;
@@ -112,54 +170,6 @@ public class NaturalHourClockBitmap
         setSize(size);
     }
 
-    private void initFlags(Context context)
-    {
-        setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
-        setFlagIfUnset(FLAG_SHOW_DATE, context.getResources().getBoolean(R.bool.clockface_show_date));
-        setFlagIfUnset(FLAG_SHOW_DATEYEAR, false);
-        setFlagIfUnset(FLAG_SHOW_VIGILIA, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
-        setFlagIfUnset(FLAG_SHOW_HAND_SIMPLE, context.getResources().getBoolean(R.bool.clockface_show_hand_simple));
-        setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
-        setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
-        setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
-        setFlagIfUnset(FLAG_SHOW_BACKGROUND_TWILIGHTS, context.getResources().getBoolean(R.bool.clockface_show_background_twilights));
-        setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
-        setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
-
-        setFlagIfUnset(FLAG_START_AT_TOP, context.getResources().getBoolean(R.bool.clockface_start_at_top));
-        startAngle = startAngle != null ? startAngle : (flags.getAsBoolean(FLAG_START_AT_TOP) ? START_TOP : START_BOTTOM);
-    }
-
-    public void setFlag(String flag, boolean value) {
-        flags.put(flag, value);
-    }
-
-    public boolean getFlag(String flag) {
-        return flags.getAsBoolean(flag);
-    }
-
-    public static boolean getDefaultFlag(Context context, String flag) {
-        switch (flag) {
-            case FLAG_SHOW_TIMEZONE: return context.getResources().getBoolean(R.bool.clockface_show_timezone);
-            case FLAG_SHOW_DATE: return context.getResources().getBoolean(R.bool.clockface_show_date);
-            case FLAG_SHOW_VIGILIA: return context.getResources().getBoolean(R.bool.clockface_show_vigilia);
-            case FLAG_SHOW_HAND_SIMPLE: return context.getResources().getBoolean(R.bool.clockface_show_hand_simple);
-            case FLAG_SHOW_BACKGROUND_NIGHT: return context.getResources().getBoolean(R.bool.clockface_show_background_night);
-            case FLAG_SHOW_BACKGROUND_DAY: return context.getResources().getBoolean(R.bool.clockface_show_background_day);
-            case FLAG_SHOW_BACKGROUND_AMPM: return context.getResources().getBoolean(R.bool.clockface_show_background_ampm);
-            case FLAG_SHOW_BACKGROUND_TWILIGHTS: return context.getResources().getBoolean(R.bool.clockface_show_background_twilights);
-            case FLAG_SHOW_TICKS_5M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_5m);
-            case FLAG_SHOW_TICKS_15M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_15m);
-            case FLAG_SHOW_DATEYEAR:
-            default: return false;
-        }
-    }
-
-    protected void setFlagIfUnset(String flag, boolean value) {
-        if (!flags.containsKey(flag)) {
-            flags.put(flag, value);
-        }
-    }
 
     public Bitmap makeBitmap(Context context, NaturalHourData data, ClockColorValues appearance)
     {
