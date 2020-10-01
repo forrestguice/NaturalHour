@@ -388,12 +388,10 @@ public class NaturalHourFragment extends Fragment
                 clockface.set24HourMode(options.is24);
                 clockface.setStartAngle(AppSettings.getClockValue(context, AppSettings.KEY_CLOCK_ORIENTATION) == AppSettings.ORIENTATION_TOP
                         ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
-                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_TWILIGHTS, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_TWILIGHTS));
-                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_AMPM, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_BACKGROUND_AMPM));
-                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE));
-                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_VIGILIA, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_VIGILIA));
-                clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATE, AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_DATE));
-                //clockface.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATEYEAR, true);
+
+                for (String flag : NaturalHourClockBitmap.FLAGS) {
+                    clockface.setFlag(flag, AppSettings.getClockFlag(context, flag));
+                }
 
             } else {
                 text_date.setText("");

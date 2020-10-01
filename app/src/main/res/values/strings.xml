@@ -22,9 +22,18 @@
     <string name="timeformat_12hr">12-hour</string>
     <string name="timeformat_24hr">24-hour</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
+
+    <string name="pref_category_clockface">Clock face</string>
+    <string name="pref_title_midnight_top">Midnight on top</string>
+    <string name="pref_title_show_date">Show date</string>
+    <string name="pref_title_show_timezone">Show time zone</string>
+    <string name="pref_title_show_night">Show night period</string>
+    <string name="pref_title_show_twilights">Show twilight periods</string>
+    <string name="pref_title_show_ampm">Show am/pm periods</string>
+    <string name="pref_title_show_vigilia">Show roman \'vigilia\'</string>
 
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
@@ -142,5 +151,6 @@
         Copyright &#169 2020 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
+
 
 </resources>

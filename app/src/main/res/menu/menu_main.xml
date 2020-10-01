@@ -4,6 +4,13 @@
     tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
 
     <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="700"
+        android:icon="?attr/icSettings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_help"
         android:orderInCategory="800"
         android:icon="?attr/icHelp"

@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.naturalhour;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -207,6 +208,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_settings:
+                showSettings();
+                return true;
+
             case R.id.action_help:
                 showHelp();
                 return true;
@@ -363,6 +368,12 @@ public class MainActivity extends AppCompatActivity
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected void showSettings()
+    {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
 
     protected void showHelp()
     {

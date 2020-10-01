@@ -2,6 +2,7 @@
 <resources>
 
     <attr name="icToday" format="reference" />
+    <attr name="icSettings" format="reference" />
     <attr name="icHelp" format="reference" />
     <attr name="icAbout" format="reference" />
 

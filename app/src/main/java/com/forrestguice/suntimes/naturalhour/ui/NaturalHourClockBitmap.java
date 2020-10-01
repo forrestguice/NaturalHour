@@ -48,18 +48,23 @@ public class NaturalHourClockBitmap
     public static final double START_TOP = -Math.PI / 2d;
     public static final double START_BOTTOM = Math.PI / 2d;
 
-    public static final String FLAG_START_AT_TOP = "startAtTop";
-    public static final String FLAG_SHOW_VIGILIA = "showVigilia";
-    public static final String FLAG_SHOW_TIMEZONE = "showTimeZone";
-    public static final String FLAG_SHOW_DATE = "showDate";
-    public static final String FLAG_SHOW_DATEYEAR = "showDateYear";
-    public static final String FLAG_SHOW_HAND_SIMPLE = "showHandSimple";
-    public static final String FLAG_SHOW_BACKGROUND_DAY = "showBackgroundDay";
-    public static final String FLAG_SHOW_BACKGROUND_NIGHT = "showBackgroundNight";
-    public static final String FLAG_SHOW_BACKGROUND_AMPM = "showBackgroundAmPm";
-    public static final String FLAG_SHOW_BACKGROUND_TWILIGHTS = "showBackgroundTwilights";
-    public static final String FLAG_SHOW_TICKS_15M = "showTick15m";
-    public static final String FLAG_SHOW_TICKS_5M = "showTick5m";
+    public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
+    public static final String FLAG_SHOW_VIGILIA = "clockface_showVigilia";
+    public static final String FLAG_SHOW_TIMEZONE = "clockface_showTimeZone";
+    public static final String FLAG_SHOW_DATE = "clockface_showDate";
+    public static final String FLAG_SHOW_DATEYEAR = "clockface_showDateYear";
+    public static final String FLAG_SHOW_HAND_SIMPLE = "clockface_showHandSimple";
+    public static final String FLAG_SHOW_BACKGROUND_DAY = "clockface_showBackgroundDay";
+    public static final String FLAG_SHOW_BACKGROUND_NIGHT = "clockface_showBackgroundNight";
+    public static final String FLAG_SHOW_BACKGROUND_AMPM = "clockface_showBackgroundAmPm";
+    public static final String FLAG_SHOW_BACKGROUND_TWILIGHTS = "clockface_showBackgroundTwilights";
+    public static final String FLAG_SHOW_TICKS_15M = "clockface_showTick15m";
+    public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
+
+    public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_SHOW_VIGILIA, FLAG_SHOW_TIMEZONE,
+            FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_DAY, FLAG_SHOW_BACKGROUND_NIGHT,
+            FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
+    };
 
     protected ContentValues flags = new ContentValues();
 
