@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/pref_category_clockface">
+        android:title="@string/pref_category_general">
 
         <CheckBoxPreference android:key="clockface_startAtTop"
             android:title="@string/pref_title_midnight_top" android:defaultValue="false" />
@@ -11,6 +11,11 @@
 
         <CheckBoxPreference android:key="clockface_showTimeZone"
             android:title="@string/pref_title_show_timezone" android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_clockface">
 
         <CheckBoxPreference android:key="clockface_showBackgroundAmPm"
             android:title="@string/pref_title_show_ampm" android:defaultValue="true" />
@@ -23,6 +28,15 @@
 
         <CheckBoxPreference android:key="clockface_showVigilia"
             android:title="@string/pref_title_show_vigilia" android:defaultValue="false" />
+
+        <CheckBoxPreference android:key="clockface_showTick15m"
+            android:title="@string/pref_title_show_ticks15m" android:defaultValue="true" />
+
+        <CheckBoxPreference android:key="clockface_showTick5m"
+            android:title="@string/pref_title_show_ticks5m" android:defaultValue="true" />
+
+        <CheckBoxPreference android:key="clockface_showBackgroundPlate"
+            android:title="@string/pref_title_show_plate" android:defaultValue="true" />
 
     </PreferenceCategory>
 

@@ -54,6 +54,7 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_DATE = "clockface_showDate";
     public static final String FLAG_SHOW_DATEYEAR = "clockface_showDateYear";
     public static final String FLAG_SHOW_HAND_SIMPLE = "clockface_showHandSimple";
+    public static final String FLAG_SHOW_BACKGROUND_PLATE = "clockface_showBackgroundPlate";
     public static final String FLAG_SHOW_BACKGROUND_DAY = "clockface_showBackgroundDay";
     public static final String FLAG_SHOW_BACKGROUND_NIGHT = "clockface_showBackgroundNight";
     public static final String FLAG_SHOW_BACKGROUND_AMPM = "clockface_showBackgroundAmPm";
@@ -62,8 +63,8 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
 
     public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_SHOW_VIGILIA, FLAG_SHOW_TIMEZONE,
-            FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_DAY, FLAG_SHOW_BACKGROUND_NIGHT,
-            FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
+            FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
+            FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
     };
 
     protected ContentValues flags = new ContentValues();
@@ -75,6 +76,7 @@ public class NaturalHourClockBitmap
         setFlagIfUnset(FLAG_SHOW_VIGILIA, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
         setFlagIfUnset(FLAG_SHOW_HAND_SIMPLE, context.getResources().getBoolean(R.bool.clockface_show_hand_simple));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_PLATE, context.getResources().getBoolean(R.bool.clockface_show_background_plate));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_TWILIGHTS, context.getResources().getBoolean(R.bool.clockface_show_background_twilights));
@@ -112,6 +114,7 @@ public class NaturalHourClockBitmap
             case FLAG_SHOW_DATE: return context.getResources().getBoolean(R.bool.clockface_show_date);
             case FLAG_SHOW_VIGILIA: return context.getResources().getBoolean(R.bool.clockface_show_vigilia);
             case FLAG_SHOW_HAND_SIMPLE: return context.getResources().getBoolean(R.bool.clockface_show_hand_simple);
+            case FLAG_SHOW_BACKGROUND_PLATE: return context.getResources().getBoolean(R.bool.clockface_show_background_plate);
             case FLAG_SHOW_BACKGROUND_NIGHT: return context.getResources().getBoolean(R.bool.clockface_show_background_night);
             case FLAG_SHOW_BACKGROUND_DAY: return context.getResources().getBoolean(R.bool.clockface_show_background_day);
             case FLAG_SHOW_BACKGROUND_AMPM: return context.getResources().getBoolean(R.bool.clockface_show_background_ampm);
@@ -538,7 +541,7 @@ public class NaturalHourClockBitmap
         double oneHourRad = Math.PI / 12d;
 
         boolean showTick5m = flags.getAsBoolean(FLAG_SHOW_TICKS_5M);
-        boolean showTick15m = flags.getAsBoolean(FLAG_SHOW_TICKS_5M);
+        boolean showTick15m = flags.getAsBoolean(FLAG_SHOW_TICKS_15M);
 
         double a = startAngle;
         for (int i=1; i<=24; i++)
@@ -605,8 +608,10 @@ public class NaturalHourClockBitmap
 
     protected void drawBackground(Context context, NaturalHourData data, Canvas canvas, float cX, float cY)
     {
-        paintBackground.setColor(colors.colorPlate);
-        canvas.drawCircle(cX, cY, radiusOuter1(cX), paintBackground);
+        if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_PLATE)) {
+            paintBackground.setColor(colors.colorPlate);
+            canvas.drawCircle(cX, cY, radiusOuter1(cX), paintBackground);
+        }
 
         paintBackground.setColor(colors.colorFace);
         canvas.drawCircle(cX, cY, radiusOuter(cX), paintBackground);

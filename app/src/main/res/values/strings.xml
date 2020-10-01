@@ -26,6 +26,7 @@
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
 
+    <string name="pref_category_general">General</string>
     <string name="pref_category_clockface">Clock face</string>
     <string name="pref_title_midnight_top">Show midnight at top</string>
     <string name="pref_title_show_date">Show date</string>
@@ -34,6 +35,9 @@
     <string name="pref_title_show_twilights">Show twilight periods</string>
     <string name="pref_title_show_ampm">Show am/pm periods</string>
     <string name="pref_title_show_vigilia">Show roman \'vigilia\'</string>
+    <string name="pref_title_show_ticks5m">Show ticks (5 minutes)</string>
+    <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
+    <string name="pref_title_show_plate">Show background plate</string>
 
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
