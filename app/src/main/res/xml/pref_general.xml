@@ -41,6 +41,11 @@
         <CheckBoxPreference android:key="clockface_showVigilia"
             android:title="@string/pref_title_show_vigilia" android:defaultValue="false" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_clockface">
+
         <CheckBoxPreference android:key="clockface_showTick15m"
             android:title="@string/pref_title_show_ticks15m" android:defaultValue="true" />
 
