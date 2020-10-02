@@ -1,5 +1,6 @@
 <resources>
 
+    <string name="action_seasons">Seasons</string>
     <string name="action_today">Today</string>
     <string name="action_date_solstice_winter">Winter Solstice</string>
     <string name="action_date_solstice_summer">Summer Solstice</string>
