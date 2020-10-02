@@ -3,6 +3,18 @@
     <PreferenceCategory
         android:title="@string/pref_category_general">
 
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="clockhourmode"
+            android:title="@string/pref_title_hourdef"
+            android:entries="@array/pref_hourdef_display"
+            android:entryValues="@array/pref_hourdef_values"
+            android:defaultValue="0"
+            android:summary="%s" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_clockface">
+
         <CheckBoxPreference android:key="clockface_startAtTop"
             android:title="@string/pref_title_midnight_top" android:defaultValue="false" />
 

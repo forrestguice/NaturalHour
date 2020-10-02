@@ -63,10 +63,10 @@ public class AppSettings
         prefs.putInt(key, value);
         prefs.apply();
     }
-    public static int getClockValue(Context context, String key) {
-        return getClockValue(context, key, getClockDefaultValue(context, key));
+    public static int getClockIntValue(Context context, String key) {
+        return getClockIntValue(context, key, getClockDefaultValue(context, key));
     }
-    public static int getClockValue(Context context, String key, int defaultValue) {
+    public static int getClockIntValue(Context context, String key, int defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(key, defaultValue);
     }

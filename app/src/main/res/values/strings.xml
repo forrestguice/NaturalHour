@@ -40,6 +40,16 @@
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
 
+    <string name="pref_title_hourdef">Day hours begin</string>
+    <string-array name="pref_hourdef_display">
+        <item>at sunrise</item>
+        <item>at civil twilight</item>
+    </string-array>
+    <string-array name="pref_hourdef_values" translatable="false">  <!-- one-to-one with pref_hourdef_display -->
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+    </string-array>
+
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
     <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->

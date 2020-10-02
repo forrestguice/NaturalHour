@@ -45,6 +45,7 @@ import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 
 import java.util.ArrayList;
@@ -262,7 +263,9 @@ public class NaturalHourWidget extends AppWidgetProvider
         //views.setViewVisibility(R.id.text_title, showTitle ? View.VISIBLE : View.GONE);
 
         ContentResolver resolver = context.getContentResolver();
-        NaturalHourCalculator calculator = new NaturalHourCalculator();
+        NaturalHourCalculator calculator = AppSettings.HOURMODE_CIVIL == AppSettings.getClockIntValue(context, AppSettings.KEY_CLOCK_HOURMODE)
+                ? new NaturalHourCalculator1() : new NaturalHourCalculator();
+
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
         calculator.calculateData(resolver, data);
 
