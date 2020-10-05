@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     public static final String DIALOG_ABOUT = "aboutDialog";
 
     private SuntimesInfo suntimesInfo = null;
+    private BottomSheetBehavior bottomSheet;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -85,6 +87,11 @@ public class MainActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_suntimes);
         }
+
+        View bottomSheetView = findViewById(R.id.app_bottomsheet);
+        bottomSheet = BottomSheetBehavior.from(bottomSheetView);
+        bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheet.setBottomSheetCallback(bottomSheetCallback);
 
         View timeformatButton = findViewById(R.id.bottombar_button_layout0);
         if (timeformatButton != null) {
@@ -152,6 +159,42 @@ public class MainActivity extends AppCompatActivity
             timezoneText.setText( fragment.getTimeZone().getID() );
         }
     }
+
+    @Override
+    public void onSaveInstanceState( Bundle outState )
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt("bottomSheet", bottomSheet.getState());
+    }
+
+    @Override
+    public void onRestoreInstanceState(@NonNull Bundle savedState)
+    {
+        super.onRestoreInstanceState(savedState);
+        int sheetState = savedState.getInt("bottomSheet", BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheet.setState(sheetState);
+    }
+
+    protected void showBottomSheet()
+    {
+        bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    protected void hideBottomSheet() {
+        bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    protected boolean isBottomSheetShowing() {
+        return bottomSheet.getState() == BottomSheetBehavior.STATE_EXPANDED || bottomSheet.getState() == BottomSheetBehavior.STATE_COLLAPSED;
+    }
+
+    protected BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback()
+    {
+        @Override
+        public void onStateChanged(@NonNull View view, int newState) {}
+        @Override
+        public void onSlide(@NonNull View view, float v) {}
+    };
 
     private View.OnClickListener onTimeFormatClick = new View.OnClickListener() {
         @Override
