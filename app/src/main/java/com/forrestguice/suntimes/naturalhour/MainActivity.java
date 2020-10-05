@@ -44,6 +44,8 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment1;
 
 import java.lang.reflect.Method;
 import java.util.TimeZone;
@@ -177,6 +179,15 @@ public class MainActivity extends AppCompatActivity
 
     protected void showBottomSheet()
     {
+        FragmentManager fragments = getSupportFragmentManager();
+        ColorValuesFragment1 sheetDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        if (sheetDialog != null)
+        {
+            NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+            if (naturalHour != null) {
+                sheetDialog.setColorValues(naturalHour.getClockColors());
+            }
+        }
         bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -251,6 +262,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_test:
+                showBottomSheet();
+                return true;
+
             case R.id.action_settings:
                 showSettings();
                 return true;
