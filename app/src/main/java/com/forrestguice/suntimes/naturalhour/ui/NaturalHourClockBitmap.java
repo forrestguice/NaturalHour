@@ -32,7 +32,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import android.support.v4.content.ContextCompat;
@@ -41,6 +40,7 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -177,7 +177,6 @@ public class NaturalHourClockBitmap
         setSize(size);
     }
 
-
     public Bitmap makeBitmap(Context context, NaturalHourData data, ClockColorValues appearance)
     {
         if (width <= 0 || height <= 0 || appearance == null) {
@@ -192,7 +191,7 @@ public class NaturalHourClockBitmap
 
     public void draw(Context context, Canvas canvas, NaturalHourData data)
     {
-        if (paint == null) {
+        if (paint == null || colors == null) {
             initPaint(context);
         }
 
@@ -200,6 +199,8 @@ public class NaturalHourClockBitmap
         drawTimeArcs(context, data, canvas, cX, cY);
         drawTicks(canvas, cX, cY, is24);
         drawTickLabels(canvas, cX, cY, is24);
+
+        paintTickLarge.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
 
         if (showTime) {
@@ -207,7 +208,13 @@ public class NaturalHourClockBitmap
         }
     }
 
-    private ClockColorValues colors = new ClockColorValues();
+    private ColorValues colors = null;
+    public void setColors(ColorValues values) {
+        colors = values; //new ClockColorValues(values);
+    }
+    public ColorValues getColors() {
+        return colors;
+    }
 
     private float arcStrokeWidth;
     private float arcWidth;
@@ -235,7 +242,9 @@ public class NaturalHourClockBitmap
     private void initPaint(Context context)
     {
         initFlags(context);
-        colors = new ClockColorValues(context);
+        if (colors == null) {
+            colors = new ClockColorValues(context);
+        }
 
         dateFormat_short = new SimpleDateFormat(context.getString(R.string.format_date0), Locale.getDefault());
         dateFormat_long = new SimpleDateFormat(context.getString(R.string.format_date0_long), Locale.getDefault());
@@ -334,12 +343,12 @@ public class NaturalHourClockBitmap
 
         paintFillNight = new Paint();
         paintFillNight.setStyle(Paint.Style.FILL);
-        paintFillNight.setColor(colors.getColor(ClockColorValues.COLOR_NIGHT));
+        paintFillNight.setColor(colors.getColor(ClockColorValues.COLOR_FACE_NIGHT));
         paintFillNight.setAntiAlias(true);
 
         paintFillDay = new Paint();
         paintFillDay.setStyle(Paint.Style.FILL);
-        paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_DAY));
+        paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_DAY));
         paintFillDay.setAntiAlias(true);
     }
 
@@ -381,8 +390,14 @@ public class NaturalHourClockBitmap
             long[] naturalHours = data.getNaturalHours();
             double sunriseAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone));
             double sunsetAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone));
+
             int color_day = colors.getColor(ClockColorValues.COLOR_RING_DAY_LABEL);
+            paintArcDayFill.setColor(colors.getColor(ClockColorValues.COLOR_RING_DAY));
+            paintArcDayBorder.setColor(colors.getColor(ClockColorValues.COLOR_RING_DAY_STROKE));
+
             int color_night = colors.getColor(ClockColorValues.COLOR_RING_NIGHT_LABEL);
+            paintArcNightFill.setColor(colors.getColor(ClockColorValues.COLOR_RING_NIGHT));
+            paintArcNightBorder.setColor(colors.getColor(ClockColorValues.COLOR_RING_NIGHT_STROKE));
 
             for (int i=0; i<naturalHours.length; i++)
             {
@@ -481,6 +496,13 @@ public class NaturalHourClockBitmap
         boolean showTick5m = flags.getAsBoolean(FLAG_SHOW_TICKS_5M);
         boolean showTick15m = flags.getAsBoolean(FLAG_SHOW_TICKS_15M);
 
+        int frameColor = colors.getColor(ClockColorValues.COLOR_FRAME);
+        paintTickTiny.setColor(frameColor);
+        paintTickSmall.setColor(frameColor);
+        paintTickMedium.setColor(frameColor);
+        paintTickLarge.setColor(frameColor);
+        paintTickHuge.setColor(frameColor);
+
         double a = startAngle;
         for (int i=1; i<=24; i++)
         {
@@ -566,6 +588,9 @@ public class NaturalHourClockBitmap
             double daySpan = NaturalHourData.simplifyAngle(Math.max(nightAngle, dayAngle) - Math.min(nightAngle, dayAngle));
             double nightSpan = 2 * Math.PI - daySpan;
 
+            paintFillNight.setColor(colors.getColor(ClockColorValues.COLOR_FACE_NIGHT));
+            paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_DAY));
+
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NIGHT)) {
                 drawPie(canvas, cX, cY, radiusInner(cX), nightAngle, nightSpan, paintFillNight);
             }
@@ -597,11 +622,11 @@ public class NaturalHourClockBitmap
             {
                 double middaySpan = daySpan / 2d;
                 double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone));
-                paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_AM));
+                paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_AM));
                 drawPie(canvas, cX, cY, radiusInner(cX), a1, middaySpan, paintFillDay);
 
                 double a2 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[6], timezone));
-                paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_PM));
+                paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_PM));
                 drawPie(canvas, cX, cY, radiusInner(cX), a2, middaySpan, paintFillDay);
             }
 
@@ -646,11 +671,11 @@ public class NaturalHourClockBitmap
     {
         switch (i)
         {
-            case 7: return colors.getColor(ClockColorValues.COLOR_NIGHT);
-            case 0: case 6: return colors.getColor(ClockColorValues.COLOR_ASTRO);
-            case 1: case 5: return colors.getColor(ClockColorValues.COLOR_NAUTICAL);
-            case 2: case 4: return colors.getColor(ClockColorValues.COLOR_CIVIL);
-            case 3: default: return colors.getColor(ClockColorValues.COLOR_DAY);
+            case 7: return colors.getColor(ClockColorValues.COLOR_FACE_NIGHT);
+            case 0: case 6: return colors.getColor(ClockColorValues.COLOR_FACE_ASTRO);
+            case 1: case 5: return colors.getColor(ClockColorValues.COLOR_FACE_NAUTICAL);
+            case 2: case 4: return colors.getColor(ClockColorValues.COLOR_FACE_CIVIL);
+            case 3: default: return colors.getColor(ClockColorValues.COLOR_FACE_DAY);
         }
     }
 
@@ -672,6 +697,8 @@ public class NaturalHourClockBitmap
         double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(hour, minute, second));
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);
+
+        paintHand.setColor(colors.getColor(ClockColorValues.COLOR_HAND));
 
         if (flags.getAsBoolean(FLAG_SHOW_HAND_SIMPLE)) {
             canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
@@ -695,6 +722,7 @@ public class NaturalHourClockBitmap
             canvas.drawPath(path, paintHand);
         }
         if (centerRadius > 0) {
+            paintCenter.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
             canvas.drawCircle(cX, cY, centerRadius, paintCenter);
         }
     }
@@ -717,23 +745,23 @@ public class NaturalHourClockBitmap
     /**
      * ClockColorValues
      */
-    public static class ClockColorValues implements Parcelable
+    public static class ClockColorValues extends ColorValues implements Parcelable
     {
         public static final String COLOR_PLATE = "color_plate";
         public static final String COLOR_FRAME = "color_frame";
-        public static final String COLOR_FACE = "color_face";
         public static final String COLOR_HAND = "color_hand";
         public static final String COLOR_CENTER = "color_center";
         public static final String COLOR_LABEL = "color_label0";
         public static final String COLOR_LABEL1 = "color_label1";
 
-        public static final String COLOR_AM = "color_am";
-        public static final String COLOR_PM = "color_pm";
-        public static final String COLOR_DAY = "color_day";
-        public static final String COLOR_NIGHT = "color_night";
-        public static final String COLOR_CIVIL = "color_civil";
-        public static final String COLOR_NAUTICAL = "color_nautical";
-        public static final String COLOR_ASTRO = "color_astro";
+        public static final String COLOR_FACE = "color_face";
+        public static final String COLOR_FACE_AM = "color_face_am";
+        public static final String COLOR_FACE_PM = "color_face_pm";
+        public static final String COLOR_FACE_DAY = "color_face_day";
+        public static final String COLOR_FACE_NIGHT = "color_face_night";
+        public static final String COLOR_FACE_CIVIL = "color_face_civil";
+        public static final String COLOR_FACE_NAUTICAL = "color_face_nautical";
+        public static final String COLOR_FACE_ASTRO = "color_face_astro";
 
         public static final String COLOR_RING_DAY = "color_ring_day";
         public static final String COLOR_RING_DAY_STROKE = "color_ring_day_stroke";
@@ -744,45 +772,52 @@ public class NaturalHourClockBitmap
 
         public static final String[] COLORS = new String[] {
                 COLOR_PLATE, COLOR_FRAME, COLOR_FACE, COLOR_HAND, COLOR_CENTER, COLOR_LABEL, COLOR_LABEL1,
-                COLOR_AM, COLOR_PM, COLOR_DAY, COLOR_NIGHT, COLOR_CIVIL, COLOR_NAUTICAL, COLOR_ASTRO,
+                COLOR_FACE_AM, COLOR_FACE_PM, COLOR_FACE_DAY, COLOR_FACE_NIGHT, COLOR_FACE_CIVIL, COLOR_FACE_NAUTICAL, COLOR_FACE_ASTRO,
                 COLOR_RING_DAY, COLOR_RING_DAY_STROKE, COLOR_RING_DAY_LABEL,
                 COLOR_RING_NIGHT, COLOR_RING_NIGHT_STROKE, COLOR_RING_NIGHT_LABEL
         };
 
-        protected ContentValues values = new ContentValues();
-        public ContentValues getContentValues() {
-            return new ContentValues(values);
-        }
-
-        public ClockColorValues(SharedPreferences prefs, String prefix)
-        {
-            for (String key : COLORS) {
-                setColor(key, prefs.getInt(prefix + key, Color.WHITE));
-            }
-        }
-        public void putColors(SharedPreferences.Editor prefs, String prefix)
-        {
-            for (String key : COLORS) {
-                prefs.putInt(prefix + key, values.getAsInteger(key));
-            }
-            prefs.apply();
-        }
-
-        private ClockColorValues(Parcel in)
-        {
-            for (String key : COLORS) {
-                values.put(key, in.readInt());
-            }
-        }
         @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            for (String key : COLORS) {
-                dest.writeInt(values.getAsInteger(key));
-            }
+        public String[] getColorKeys() {
+            return COLORS;
         }
 
+        public ClockColorValues(ColorValues other) {
+            super(other);
+        }
+        public ClockColorValues(SharedPreferences prefs, String prefix) {
+            super(prefs, prefix);
+        }
+        private ClockColorValues(Parcel in) {
+            super(in);
+        }
+        public ClockColorValues()
+        {
+            super();
+            setColor(COLOR_FACE, Color.DKGRAY);
+            setColor(COLOR_PLATE, Color.BLACK);
+            setColor(COLOR_FRAME, Color.WHITE);
+            setColor(COLOR_HAND, Color.MAGENTA);
+            setColor(COLOR_CENTER, Color.WHITE);
+            setColor(COLOR_LABEL, Color.WHITE);
+            setColor(COLOR_LABEL1, Color.LTGRAY);
+            setColor(COLOR_RING_DAY, Color.DKGRAY);
+            setColor(COLOR_RING_DAY_STROKE, Color.WHITE);
+            setColor(COLOR_RING_DAY_LABEL, Color.WHITE);
+            setColor(COLOR_RING_NIGHT, Color.BLUE);
+            setColor(COLOR_RING_NIGHT_STROKE, Color.DKGRAY);
+            setColor(COLOR_RING_NIGHT_LABEL, Color.YELLOW);
+            setColor(COLOR_FACE_AM, Color.LTGRAY);
+            setColor(COLOR_FACE_PM, Color.DKGRAY);
+            setColor(COLOR_FACE_NIGHT, ColorUtils.setAlphaComponent(Color.BLUE, 128));
+            setColor(COLOR_FACE_DAY, ColorUtils.setAlphaComponent(Color.WHITE, 128));
+            setColor(COLOR_FACE_CIVIL, Color.CYAN);
+            setColor(COLOR_FACE_NAUTICAL, Color.BLUE);
+            setColor(COLOR_FACE_ASTRO, Color.BLACK);
+        }
         public ClockColorValues(Context context)
         {
+            super();
             int[] attrs = new int[] {
                     R.attr.clockColorPlate, R.attr.clockColorFace, R.attr.clockColorFrame,
                     R.attr.clockColorCenter, R.attr.clockColorHand,
@@ -805,60 +840,20 @@ public class NaturalHourClockBitmap
             setColor(COLOR_RING_DAY, ContextCompat.getColor(context, a.getResourceId(7, R.color.clockColorDay_dark)));
             setColor(COLOR_RING_DAY_LABEL, ContextCompat.getColor(context, a.getResourceId(8, R.color.clockColorDayLabel_dark)));
             setColor(COLOR_RING_DAY_STROKE, ContextCompat.getColor(context, a.getResourceId(9, R.color.clockColorDayBorder_dark)));
-            setColor(COLOR_DAY, getColor(COLOR_RING_DAY)); // TODO
+            setColor(COLOR_FACE_DAY, getColor(COLOR_RING_DAY)); // TODO
 
             setColor(COLOR_RING_NIGHT, ContextCompat.getColor(context, a.getResourceId(10, R.color.clockColorNight_dark)));
             setColor(COLOR_RING_NIGHT_LABEL, ContextCompat.getColor(context, a.getResourceId(11, R.color.clockColorNightLabel_dark)));
             setColor(COLOR_RING_NIGHT_STROKE, ContextCompat.getColor(context, a.getResourceId(12, R.color.clockColorNightBorder_dark)));
-            setColor(COLOR_NIGHT,  getColor(COLOR_RING_NIGHT));  // TODO
+            setColor(COLOR_FACE_NIGHT,  getColor(COLOR_RING_NIGHT));  // TODO
 
-            setColor(COLOR_AM, ContextCompat.getColor(context, a.getResourceId(13, R.color.clockColorAM_dark)));
-            setColor(COLOR_PM, ContextCompat.getColor(context, a.getResourceId(14, R.color.clockColorPM_dark)));
-            setColor(COLOR_ASTRO, ContextCompat.getColor(context, a.getResourceId(15, R.color.clockColorAstro_dark)));
-            setColor(COLOR_NAUTICAL, ContextCompat.getColor(context, a.getResourceId(16, R.color.clockColorNautical_dark)));
-            setColor(COLOR_CIVIL, ContextCompat.getColor(context, a.getResourceId(17, R.color.clockColorCivil_dark)));
+            setColor(COLOR_FACE_AM, ContextCompat.getColor(context, a.getResourceId(13, R.color.clockColorAM_dark)));
+            setColor(COLOR_FACE_PM, ContextCompat.getColor(context, a.getResourceId(14, R.color.clockColorPM_dark)));
+            setColor(COLOR_FACE_ASTRO, ContextCompat.getColor(context, a.getResourceId(15, R.color.clockColorAstro_dark)));
+            setColor(COLOR_FACE_NAUTICAL, ContextCompat.getColor(context, a.getResourceId(16, R.color.clockColorNautical_dark)));
+            setColor(COLOR_FACE_CIVIL, ContextCompat.getColor(context, a.getResourceId(17, R.color.clockColorCivil_dark)));
 
             a.recycle();
-        }
-
-        public ClockColorValues()
-        {
-            setColor(COLOR_FACE, Color.DKGRAY);
-            setColor(COLOR_PLATE, Color.BLACK);
-            setColor(COLOR_FRAME, Color.WHITE);
-            setColor(COLOR_HAND, Color.MAGENTA);
-            setColor(COLOR_CENTER, Color.WHITE);
-            setColor(COLOR_LABEL, Color.WHITE);
-            setColor(COLOR_LABEL1, Color.LTGRAY);
-            setColor(COLOR_RING_DAY, Color.DKGRAY);
-            setColor(COLOR_RING_DAY_STROKE, Color.WHITE);
-            setColor(COLOR_RING_DAY_LABEL, Color.WHITE);
-            setColor(COLOR_RING_NIGHT, Color.BLUE);
-            setColor(COLOR_RING_NIGHT_STROKE, Color.DKGRAY);
-            setColor(COLOR_RING_NIGHT_LABEL, Color.YELLOW);
-            setColor(COLOR_AM, Color.LTGRAY);
-            setColor(COLOR_PM, Color.DKGRAY);
-            setColor(COLOR_NIGHT, ColorUtils.setAlphaComponent(Color.BLUE, 128));
-            setColor(COLOR_DAY, ColorUtils.setAlphaComponent(Color.WHITE, 128));
-            setColor(COLOR_CIVIL, Color.CYAN);
-            setColor(COLOR_NAUTICAL, Color.BLUE);
-            setColor(COLOR_ASTRO, Color.BLACK);
-        }
-
-        public void setColor(String key, int color) {
-            values.put(key, color);
-        }
-
-        public int getColor(String key)
-        {
-            if (values.containsKey(key)) {
-                return values.getAsInteger(key);
-            } else return Color.WHITE;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
         }
 
         public static final Parcelable.Creator<ClockColorValues> CREATOR = new Parcelable.Creator<ClockColorValues>()

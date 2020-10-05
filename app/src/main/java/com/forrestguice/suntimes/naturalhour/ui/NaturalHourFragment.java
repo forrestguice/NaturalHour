@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -55,6 +56,7 @@ import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
@@ -70,19 +72,25 @@ public class NaturalHourFragment extends Fragment
     protected SuntimesInfo info;
     protected TimeZone timezone = TimeZone.getDefault();
     protected boolean is24 = true;
+    protected ColorValues clockColors = null;
 
     public void setSuntimesInfo(SuntimesInfo value, TimeZone tz, boolean is24)
     {
         this.info = value;
         this.timezone = tz;
         this.is24 = is24;
-        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, is24));
+        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, is24, clockColors));
     }
     public TimeZone getTimeZone() {
         return timezone;
     }
     public boolean is24() {
         return is24;
+    }
+
+    @Nullable
+    public ColorValues getClockColors() {
+        return clockColors;
     }
 
     public NaturalHourFragment() {
@@ -100,8 +108,14 @@ public class NaturalHourFragment extends Fragment
         initViews(view);
 
         Context context = getActivity();
-        if (info == null && context != null) {
-            info = SuntimesInfo.queryInfo(context);
+        if (context != null)
+        {
+            if (info == null) {
+                info = SuntimesInfo.queryInfo(context);
+            }
+            if (clockColors == null) {
+                clockColors = new NaturalHourClockBitmap.ClockColorValues(context);
+            }
         }
 
         initData(getActivity());
@@ -175,7 +189,7 @@ public class NaturalHourFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, is24));
+            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, is24, clockColors));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -386,6 +400,7 @@ public class NaturalHourFragment extends Fragment
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
                 clockface.set24HourMode(options.is24);
+                clockface.setColors(options.colors);
 
                 for (String flag : NaturalHourClockBitmap.FLAGS) {
                     clockface.setFlag(flag, AppSettings.getClockFlag(context, flag));
@@ -409,12 +424,14 @@ public class NaturalHourFragment extends Fragment
         public SuntimesInfo.SuntimesOptions suntimes_options;
         public TimeZone timezone;
         public boolean is24;
+        public ColorValues colors;
 
-        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, boolean is24) {
+        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, boolean is24, ColorValues colors) {
             this.suntimes_info = info;
             this.suntimes_options = info.getOptions(context);
             this.timezone = tz;
             this.is24 = is24;
+            this.colors = colors;
         }
     }
 

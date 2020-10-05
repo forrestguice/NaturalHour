@@ -26,6 +26,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.util.TimeZone;
 
@@ -128,6 +129,13 @@ public class NaturalHourClockView extends View
     }
 
     public boolean getDefaultFlag(Context context, String flag) {
-        return bitmap.getDefaultFlag(context, flag);
+        return NaturalHourClockBitmap.getDefaultFlag(context, flag);
+    }
+
+    public ColorValues getColors() {
+        return bitmap.getColors();
+    }
+    public void setColors( ColorValues values ) {
+        bitmap.setColors(values);
     }
 }
