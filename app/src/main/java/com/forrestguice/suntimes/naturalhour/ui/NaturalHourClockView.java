@@ -120,16 +120,25 @@ public class NaturalHourClockView extends View
         invalidate();
     }
 
-    public void setFlag(String flag, boolean value) {
-        bitmap.setFlag(flag, value);
+    public void setFlag(String key, boolean value) {
+        bitmap.setFlag(key, value);
+    }
+    public void setValue(String key, int value) {
+        bitmap.setValue(key, value);
     }
 
-    public boolean getFlag(String flag) {
-        return bitmap.getFlag(flag);
+    public boolean getFlag(String key) {
+        return bitmap.getFlag(key);
+    }
+    public int getValue(String key) {
+        return bitmap.getValue(key);
     }
 
-    public boolean getDefaultFlag(Context context, String flag) {
-        return NaturalHourClockBitmap.getDefaultFlag(context, flag);
+    public boolean getDefaultFlag(Context context, String key) {
+        return NaturalHourClockBitmap.getDefaultFlag(context, key);
+    }
+    public int getDefaultValue(Context context, String key) {
+        return NaturalHourClockBitmap.getDefaultValue(context, key);
     }
 
     public ColorValues getColors() {

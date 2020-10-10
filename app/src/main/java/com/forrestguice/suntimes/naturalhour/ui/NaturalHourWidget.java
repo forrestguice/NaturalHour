@@ -290,8 +290,11 @@ public class NaturalHourWidget extends AppWidgetProvider
         clockView.setTimeZone(timezone);
         clockView.set24HourMode(is24);
 
-        for (String flag : NaturalHourClockBitmap.FLAGS) {
-            clockView.setFlag(flag, AppSettings.getClockFlag(context, flag));
+        for (String key : NaturalHourClockBitmap.FLAGS) {
+            clockView.setFlag(key, AppSettings.getClockFlag(context, key));
+        }
+        for (String key : NaturalHourClockBitmap.VALUES) {
+            clockView.setValue(key, AppSettings.getClockIntValue(context, key));
         }
 
         views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data, clockAppearance));

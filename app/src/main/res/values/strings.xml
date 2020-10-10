@@ -35,7 +35,7 @@
     <string name="pref_title_show_night">Show night period</string>
     <string name="pref_title_show_twilights">Show twilight periods</string>
     <string name="pref_title_show_ampm">Show am/pm periods</string>
-    <string name="pref_title_show_vigilia">Show roman \'vigilia\'</string>
+    <string name="pref_title_show_nightwatch">Show night watches</string>
     <string name="pref_title_show_ticks5m">Show ticks (5 minutes)</string>
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
@@ -48,6 +48,14 @@
     <string-array name="pref_hourdef_values" translatable="false">  <!-- one-to-one with pref_hourdef_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
+    <string name="pref_title_nightwatch_type">Night Watch</string>
+    <string-array name="pref_nightwatch_display">
+        <item>3 watches</item>
+        <item>4 watches</item>
+    </string-array>
+    <string-array name="pref_nightwatch_values" translatable="false">  <!-- one-to-one with pref_nightwatch_display -->
+        <item>1</item>
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
     </string-array>
 
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
@@ -77,19 +85,18 @@
     <string name="format_date_tomorrow">Tomorrow\n%2$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
     <string name="format_date_future">Future (+%1$s)\n%2$s</string>     <!-- e.g. "Future [+1] \n [format_date] " -->
 
-    <string-array name="vigilia_phrase_latin" translatable="false">
-        <item>0</item>
-        <item>vigilia prima</item>
-        <item>vigilia secunda</item>
-        <item>vigilia tertia</item>
-        <item>vigilia quarta</item>
-    </string-array>
-    <string-array name="vigilia_phrase">
+    <string-array name="nightwatch_phrase0">
         <item>0</item>
         <item>first watch</item>
         <item>second watch</item>
         <item>third watch</item>
         <item>fourth watch</item>
+    </string-array>
+    <string-array name="nightwatch_phrase1">
+        <item>0</item>
+        <item>Evening watch</item>
+        <item>Middle watch</item>
+        <item>Morning watch</item>
     </string-array>
 
     <string-array name="week_symbols">

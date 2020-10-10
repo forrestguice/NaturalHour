@@ -402,8 +402,11 @@ public class NaturalHourFragment extends Fragment
                 clockface.set24HourMode(options.is24);
                 clockface.setColors(options.colors);
 
-                for (String flag : NaturalHourClockBitmap.FLAGS) {
-                    clockface.setFlag(flag, AppSettings.getClockFlag(context, flag));
+                for (String key : NaturalHourClockBitmap.FLAGS) {
+                    clockface.setFlag(key, AppSettings.getClockFlag(context, key));
+                }
+                for (String key : NaturalHourClockBitmap.VALUES) {
+                    clockface.setValue(key, AppSettings.getClockIntValue(context, key));
                 }
 
             } else {

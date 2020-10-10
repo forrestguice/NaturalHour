@@ -59,10 +59,17 @@ public class DisplayStrings
      * @param num [1-4]
      * @return e.g. "Vigilia Prima"
      */
-    public static CharSequence formatNightWatchLabel(@NonNull Context context, int num, boolean latin)
+    public static CharSequence formatNightWatchLabel0(@NonNull Context context, int num)
     {
-        String[] phrase = context.getResources().getStringArray(latin ? R.array.vigilia_phrase_latin : R.array.vigilia_phrase);
+        String[] phrase = context.getResources().getStringArray(R.array.nightwatch_phrase0);
         if (num >= 1 && num <= 4) {
+            return phrase[num];
+        } else return "";
+    }
+    public static CharSequence formatNightWatchLabel1(@NonNull Context context, int num)
+    {
+        String[] phrase = context.getResources().getStringArray(R.array.nightwatch_phrase1);
+        if (num >= 1 && num <= 3) {
             return phrase[num];
         } else return "";
     }

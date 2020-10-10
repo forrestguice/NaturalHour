@@ -52,8 +52,12 @@ public class NaturalHourClockBitmap
     public static final double START_TOP = -Math.PI / 2d;
     public static final double START_BOTTOM = Math.PI / 2d;
 
+    public static final String VALUE_NIGHTWATCH_TYPE = "clockface_nightwatchType";
+    public static final int NIGHTWATCH_4 = 0;
+    public static final int NIGHTWATCH_3 = 1;
+
     public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
-    public static final String FLAG_SHOW_VIGILIA = "clockface_showVigilia";
+    public static final String FLAG_SHOW_NIGHTWATCH = "clockface_showVigilia";
     public static final String FLAG_SHOW_TIMEZONE = "clockface_showTimeZone";
     public static final String FLAG_SHOW_DATE = "clockface_showDate";
     public static final String FLAG_SHOW_DATEYEAR = "clockface_showDateYear";
@@ -66,18 +70,21 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_TICKS_15M = "clockface_showTick15m";
     public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
 
-    public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_SHOW_VIGILIA, FLAG_SHOW_TIMEZONE,
+    public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_SHOW_NIGHTWATCH, FLAG_SHOW_TIMEZONE,
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
     };
+    public static final String[] VALUES = new String[] { VALUE_NIGHTWATCH_TYPE };
 
     protected ContentValues flags = new ContentValues();
     private void initFlags(Context context)
     {
+        setValueIfUnset(VALUE_NIGHTWATCH_TYPE, context.getResources().getInteger(R.integer.clockface_nightwatch_type));
+
         setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
         setFlagIfUnset(FLAG_SHOW_DATE, context.getResources().getBoolean(R.bool.clockface_show_date));
         setFlagIfUnset(FLAG_SHOW_DATEYEAR, false);
-        setFlagIfUnset(FLAG_SHOW_VIGILIA, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
+        setFlagIfUnset(FLAG_SHOW_NIGHTWATCH, context.getResources().getBoolean(R.bool.clockface_show_vigilia));
         setFlagIfUnset(FLAG_SHOW_HAND_SIMPLE, context.getResources().getBoolean(R.bool.clockface_show_hand_simple));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_NIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_night));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_PLATE, context.getResources().getBoolean(R.bool.clockface_show_background_plate));
@@ -95,6 +102,10 @@ public class NaturalHourClockBitmap
         flags.put(flag, value);
         onFlagChanged(flag);
     }
+    public void setValue(String key, int value) {
+        flags.put(key, value);
+        onFlagChanged(key);
+    }
 
     protected void onFlagChanged(String flag) {
         if (flag.equals(FLAG_START_AT_TOP)) {
@@ -107,16 +118,24 @@ public class NaturalHourClockBitmap
             flags.put(flag, value);
         }
     }
+    protected void setValueIfUnset(String key, int value) {
+        if (!flags.containsKey(key)) {
+            flags.put(key, value);
+        }
+    }
 
     public boolean getFlag(String flag) {
         return flags.getAsBoolean(flag);
+    }
+    public int getValue(String key) {
+        return flags.getAsInteger(key);
     }
 
     public static boolean getDefaultFlag(Context context, String flag) {
         switch (flag) {
             case FLAG_SHOW_TIMEZONE: return context.getResources().getBoolean(R.bool.clockface_show_timezone);
             case FLAG_SHOW_DATE: return context.getResources().getBoolean(R.bool.clockface_show_date);
-            case FLAG_SHOW_VIGILIA: return context.getResources().getBoolean(R.bool.clockface_show_vigilia);
+            case FLAG_SHOW_NIGHTWATCH: return context.getResources().getBoolean(R.bool.clockface_show_vigilia);
             case FLAG_SHOW_HAND_SIMPLE: return context.getResources().getBoolean(R.bool.clockface_show_hand_simple);
             case FLAG_SHOW_BACKGROUND_PLATE: return context.getResources().getBoolean(R.bool.clockface_show_background_plate);
             case FLAG_SHOW_BACKGROUND_NIGHT: return context.getResources().getBoolean(R.bool.clockface_show_background_night);
@@ -127,6 +146,12 @@ public class NaturalHourClockBitmap
             case FLAG_SHOW_TICKS_15M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_15m);
             case FLAG_SHOW_DATEYEAR:
             default: return false;
+        }
+    }
+    public static int getDefaultValue(Context context, String key) {
+        switch (key)
+        {
+            default: return -1;
         }
     }
 
@@ -148,9 +173,6 @@ public class NaturalHourClockBitmap
     protected Double startAngle = null;
     public void setStartAngle(double radianValue) {
         startAngle = radianValue;
-    }
-    protected void setStartAngle() {
-
     }
 
     protected boolean showMinorTickLabels = true;
@@ -422,26 +444,30 @@ public class NaturalHourClockBitmap
             drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone)), r_inner, r_outer, paintArcNightBorder);
             drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone)), r_inner, r_outer, paintArcNightBorder);
 
-            if (flags.getAsBoolean(FLAG_SHOW_VIGILIA))
+            if (flags.getAsBoolean(FLAG_SHOW_NIGHTWATCH))
             {
+                int type = getValue(VALUE_NIGHTWATCH_TYPE);
+                int numWatches = (type == NIGHTWATCH_3 ? 3 : 4);
+                int hoursPerWatch = 12 / numWatches;
+
                 int c = 1;
                 Path labelPath = new Path();
-                double nightSweepAngle = nightAngle * 3;
-                for (int i = 12; i<naturalHours.length; i += 3)
+                double watchSweepAngle = nightAngle * hoursPerWatch;
+                for (int i = 12; i<naturalHours.length; i += hoursPerWatch)
                 {
                     double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone));
-                    canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcNightFill);
-                    canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle), false, paintArcNightBorder);
+                    canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightFill);
+                    canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightBorder);
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
 
                     paint.setTextSize(textSmall);
-                    CharSequence label = DisplayStrings.formatNightWatchLabel(context, c, true);
+                    CharSequence label = formatNightWatchLabel(context, type, c);
                     labelPath.reset();
 
                     if (startAngle < 0) {
-                        labelPath.addArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(nightSweepAngle));
+                        labelPath.addArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle));
                     } else {
-                        labelPath.addArc(circle_mid1, (float) Math.toDegrees(a + nightSweepAngle), (float) Math.toDegrees(-nightSweepAngle));
+                        labelPath.addArc(circle_mid1, (float) Math.toDegrees(a + watchSweepAngle), (float) Math.toDegrees(-watchSweepAngle));
                     }
 
                     paint.setColor(color_night);
@@ -449,7 +475,7 @@ public class NaturalHourClockBitmap
                     c++;
                 }
 
-                double a0 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone) + (nightSweepAngle * 4));
+                double a0 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone) + (watchSweepAngle * numWatches));
                 drawRay(canvas, cX, cY, a0, r_outer, r_outer1, paintArcNightBorder);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunsetAngle), (float) Math.toDegrees(2*Math.PI - (sunsetAngle-sunriseAngle)), false, paintArcNightBorder);
@@ -457,6 +483,15 @@ public class NaturalHourClockBitmap
 
         } else {
             canvas.drawCircle(cX, cY, r_outer, paintTickMedium);
+        }
+    }
+
+    protected CharSequence formatNightWatchLabel(@NonNull Context context, int type, int num)
+    {
+        switch (type)
+        {
+            case NIGHTWATCH_3: return DisplayStrings.formatNightWatchLabel1(context, num);
+            case NIGHTWATCH_4: default: return DisplayStrings.formatNightWatchLabel0(context, num);
         }
     }
 
