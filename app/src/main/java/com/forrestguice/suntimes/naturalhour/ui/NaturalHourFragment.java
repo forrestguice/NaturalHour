@@ -540,8 +540,7 @@ public class NaturalHourFragment extends Fragment
         }
 
         public NaturalHourCalculator initCalculator() {
-            return AppSettings.HOURMODE_CIVIL == AppSettings.getClockIntValue(getContext(), AppSettings.KEY_CLOCK_HOURMODE)
-                    ? new NaturalHourCalculator1() : new NaturalHourCalculator();
+            return AppSettings.getCalculator(AppSettings.getClockIntValue(getContext(), AppSettings.KEY_CLOCK_HOURMODE));
         }
 
         private NaturalHourCalculator calculator = initCalculator();

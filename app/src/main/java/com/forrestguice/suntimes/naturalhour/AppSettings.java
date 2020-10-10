@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 
@@ -32,9 +34,9 @@ import java.util.TimeZone;
 public class AppSettings
 {
     public static final String KEY_CLOCK_HOURMODE = "clockhourmode";
-    public static final int HOURMODE_ACTUAL = 0;     // day is bounded by actual sunrise/sunset
-    public static final int HOURMODE_CIVIL = 1;      // day is bounded by civil twilight rise/set
-    public static final int HOURMODE_DEFAULT = HOURMODE_ACTUAL;
+    public static final int HOURMODE_SUNRISE = 0;      // day is bounded by actual sunrise/sunset
+    public static final int HOURMODE_CIVILRISE = 1;    // day is bounded by civil twilight rise/set
+    public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
     public static final String KEY_MODE_TIMEFORMAT = "timeformatmode";
     public static final int TIMEMODE_SYSTEM = 0, TIMEMODE_SUNTIMES = 1, TIMEMODE_12HR = 2, TIMEMODE_24HR = 3;
@@ -126,6 +128,18 @@ public class AppSettings
             case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, suntimesInfo.location[2]);
             case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, suntimesInfo.location[2]);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
+        }
+    }
+
+    /**
+     * @param hourmode HOURMODE_SUNRISE ...
+     * @return an implementation of NaturalHourCalculator
+     */
+    public static NaturalHourCalculator getCalculator(int hourmode)
+    {
+        switch (hourmode) {
+            case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
+            case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
         }
     }
 }
