@@ -84,7 +84,7 @@ public class NaturalHourClockBitmap
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
     };
-    public static final String[] VALUES = new String[] { VALUE_NIGHTWATCH_TYPE };
+    public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NIGHTWATCH_TYPE };
 
     protected ContentValues flags = new ContentValues();
     private void initFlags(Context context)
@@ -436,6 +436,7 @@ public class NaturalHourClockBitmap
             paintArcNightFill.setColor(colors.getColor(ClockColorValues.COLOR_RING_NIGHT));
             paintArcNightBorder.setColor(colors.getColor(ClockColorValues.COLOR_RING_NIGHT_STROKE));
 
+            int hourmode = getValue(VALUE_HOURMODE);
             for (int i=0; i<naturalHours.length; i++)
             {
                 boolean isNight = (i >= 12);
@@ -451,11 +452,13 @@ public class NaturalHourClockBitmap
                 double ly = cY + (r_inner + lw) * Math.sin(a1);
 
                 paint.setColor(isNight ? color_night : color_day);
-                paint.setTextSize(textTiny);
-                int j = //i + 1;
-                        //((i % 12) + 1);
-                        (i >= 12) ? i - 12 + 1 : i + 12 + 1;
-                CharSequence label = DisplayStrings.romanNumeral(context, j);
+                paint.setTextSize(textSmall);
+
+
+                int j = (hourmode == HOURMODE_SUNSET) ? (i >= 12) ? i - 12 + 1 : i + 12 + 1
+                                                      : ((i % 12) + 1);  //i + 1;
+
+                CharSequence label = DisplayStrings.hebrewNumeral(context, j);
                 canvas.drawText(label.toString(), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunriseAngle), (float) Math.toDegrees(sunsetAngle-sunriseAngle), false, paintArcDayBorder);
@@ -928,8 +931,13 @@ public class NaturalHourClockBitmap
     {
         switch (hourmode) {
             case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
+            case HOURMODE_SUNSET: return new NaturalHourCalculator2();
             case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
         }
+    }
+
+    public NaturalHourCalculator getCalculator() {
+        return getCalculator(getValue(VALUE_HOURMODE));
     }
 
 }
