@@ -17,7 +17,7 @@
     along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.naturalhour.ui;
+package com.forrestguice.suntimes.naturalhour.ui.widget;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
@@ -29,12 +29,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ActionProvider;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -45,8 +43,9 @@ import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
-import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
 
 import java.util.ArrayList;
 import java.util.Calendar;
