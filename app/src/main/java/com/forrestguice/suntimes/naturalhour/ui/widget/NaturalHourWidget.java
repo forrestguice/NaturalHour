@@ -296,6 +296,7 @@ public class NaturalHourWidget extends AppWidgetProvider
             clockView.setValue(key, AppSettings.getClockIntValue(context, key));
         }
 
+        prepareClockBitmap(context, clockView);
         views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data, clockAppearance));
         if (Build.VERSION.SDK_INT >= 15)
         {
@@ -304,6 +305,8 @@ public class NaturalHourWidget extends AppWidgetProvider
         }
         //views.setTextViewText(R.id.text_title, "title");
     }
+
+    protected void prepareClockBitmap(Context context, NaturalHourClockBitmap clockView) { /* EMPTY */ }
 
     protected int clockSizePx = 0;
     protected void prepareForUpdate(Context context, int appWidgetId, NaturalHourData data)

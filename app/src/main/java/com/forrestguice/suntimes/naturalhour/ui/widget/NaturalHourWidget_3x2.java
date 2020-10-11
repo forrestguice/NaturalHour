@@ -19,4 +19,17 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
-public class NaturalHourWidget_3x2 extends NaturalHourWidget {}
+import android.content.Context;
+
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
+
+public class NaturalHourWidget_3x2 extends NaturalHourWidget
+{
+    @Override
+    protected void prepareClockBitmap(Context context, NaturalHourClockBitmap clockView)
+    {
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATE, false);
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE, false);
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TICKS_5M, false);
+    }
+}
