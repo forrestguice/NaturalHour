@@ -42,17 +42,57 @@ import java.util.TimeZone;
 
 public class DisplayStrings
 {
-    public static CharSequence romanNumeral(@NonNull Context context, int hour)
+    public static String romanNumeral(@NonNull Context context, int hour)
     {
-        switch (hour) {
-            case 1: return "I"; case 2: return "II"; case 3: return "III"; case 4: return "IV";
-            case 5: return "V"; case 6: return "VI"; case 7: return "VII"; case 8: return "VIII"; case 9: return "IX";
-            case 10: return "X"; case 11: return "XI"; case 12: return "XII"; case 13: return "XIII"; case 14: return "XIV";
-            case 15: return "XV"; case 16: return "XVI"; case 17: return "XVII"; case 18: return "XVIII"; case 19: return "XIX";
-            case 20: return "XX"; case 21: return "XXI"; case 22: return "XXII"; case 23: return "XXIII"; case 24: return "XXIV";
-            default: return "";
+        StringBuilder result = new StringBuilder();
+        String[] numerals = context.getResources().getStringArray(R.array.roman_numeral);
+        String ten = numerals[10];
+
+        int tens = hour / 10;
+        int ones = hour % 10;
+        for (int i=0; i<tens; i++) {
+            result.append(ten);
         }
+        result.append(numerals[ones]);
+        return result.toString();
     }
+
+    public static String greekNumeral(@NonNull Context context, int hour)
+    {
+        StringBuilder result = new StringBuilder();
+        String[] numerals = context.getResources().getStringArray(R.array.greek_numeral);
+        String ten = numerals[10];
+
+        int tens = hour / 10;
+        int ones = hour % 10;
+        for (int i=0; i<tens; i++) {
+            result.append(ten);
+        }
+        result.append(numerals[ones]);
+        return result.toString();
+    }
+
+    public static String atticNumeral(@NonNull Context context, int hour)
+    {
+        StringBuilder result = new StringBuilder();
+        String[] numerals = context.getResources().getStringArray(R.array.attic_numeral);
+        String ten = numerals[10];
+
+        int tens = hour / 10;
+        int ones = hour % 10;
+        for (int i=0; i<tens; i++) {
+            result.append(ten);
+        }
+        result.append(numerals[ones]);
+        return result.toString();
+    }
+
+    public static String hebrewNumeral(@NonNull Context context, int hour)
+    {
+        String[] numerals = context.getResources().getStringArray(R.array.hebrew_numeral);
+        return numerals[hour];
+    }
+
 
     /*
      * @param context Context

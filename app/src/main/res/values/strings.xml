@@ -40,14 +40,18 @@
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
 
-    <string name="pref_title_hourdef">Day hours begin</string>
+    <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
-        <item>at sunrise</item>
-        <item>at civil twilight</item>
+        <item>at sunrise &amp; sunset&#160;(12)</item>
+        <item>at civil&#160;dawn &amp; civil&#160;dusk&#160;(12)</item>
+        <item>at sunset&#160;(24)</item>
     </string-array>
     <string-array name="pref_hourdef_values" translatable="false">  <!-- one-to-one with pref_hourdef_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string name="pref_title_nightwatch_type">Night Watch</string>
     <string-array name="pref_nightwatch_display">
         <item>3 watches</item>

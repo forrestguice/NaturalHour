@@ -1,0 +1,74 @@
+<resources>
+
+    <string-array name="roman_numeral">
+        <item></item>
+        <item>I</item>
+        <item>II</item>
+        <item>III</item>
+        <item>IV</item>
+        <item>V</item>
+        <item>VI</item>
+        <item>VII</item>
+        <item>VIII</item>
+        <item>IX</item>
+        <item>X</item>
+    </string-array>
+
+    <string-array name="attic_numeral">
+        <item></item>
+        <item>I</item>
+        <item>II</item>
+        <item>III</item>
+        <item>IIII</item>
+        <item>Π</item>
+        <item>ΠI</item>
+        <item>ΠII</item>
+        <item>ΠIII</item>
+        <item>ΠIIII</item>
+        <item>Δ</item>
+    </string-array>
+
+    <string-array name="greek_numeral">
+        <item></item>
+        <item>α</item>
+        <item>β</item>
+        <item>γ</item>
+        <item>δ</item>
+        <item>ε</item>
+        <item>ϛ</item>
+        <item>ζ</item>
+        <item>η</item>
+        <item>θ</item>
+        <item>ι</item>
+    </string-array>
+
+    <string-array name="hebrew_numeral">
+        <item></item>
+        <item>א</item>
+        <item>ב</item>
+        <item>ג‎</item>
+        <item>ד</item>
+        <item>ה</item>
+        <item>ו</item>
+        <item>ז</item>
+        <item>ח</item>
+        <item>ט</item>
+        <item>י</item>      <!-- 10 -->
+        <item>יא</item>
+        <item>יב</item>
+        <item>יג</item>
+        <item>יד</item>
+        <item>י״ה</item>    <!-- 15 -->
+        <item>י״ו</item>
+        <item>יז</item>
+        <item>יח</item>
+        <item>יט</item>
+        <item>ך</item>     <!-- 20 -->
+        <item>ךא</item>
+        <item>ךב</item>
+        <item>ךג</item>
+        <item>ךד</item>
+        <item>ךה</item>   <!-- 25 -->
+    </string-array>
+
+</resources>
