@@ -42,6 +42,14 @@ import java.util.TimeZone;
 
 public class DisplayStrings
 {
+    public static String arabicNumeral(@NonNull Context context, int hour) {
+        return Integer.toString(hour);
+    }
+
+    public static String localizedNumeral(@NonNull Context context, @NonNull Locale locale, int hour) {
+        return String.format( locale, "%d", hour);
+    }
+
     public static String romanNumeral(@NonNull Context context, int hour)
     {
         StringBuilder result = new StringBuilder();

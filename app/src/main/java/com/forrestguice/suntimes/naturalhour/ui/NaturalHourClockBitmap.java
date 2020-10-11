@@ -66,6 +66,14 @@ public class NaturalHourClockBitmap
     public static final int HOURMODE_SUNSET = 2;
     public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
+    public static final String VALUE_NUMERALS = "clockface_numerals";
+    public static final int NUMERALS_ROMAN = 0;
+    public static final int NUMERALS_ARABIC = 1;
+    public static final int NUMERALS_ATTIC = 2;
+    public static final int NUMERALS_HEBREW = 3;
+    public static final int NUMERALS_LOCALE = 4;
+    public static final int NUMERALS_DEFAULT = NUMERALS_ROMAN;
+
     public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
     public static final String FLAG_SHOW_NIGHTWATCH = "clockface_showVigilia";
     public static final String FLAG_SHOW_TIMEZONE = "clockface_showTimeZone";
@@ -84,12 +92,13 @@ public class NaturalHourClockBitmap
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
     };
-    public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NIGHTWATCH_TYPE };
+    public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NIGHTWATCH_TYPE };
 
     protected ContentValues flags = new ContentValues();
     private void initFlags(Context context)
     {
         setValueIfUnset(VALUE_HOURMODE, context.getResources().getInteger(R.integer.clockface_hourmode));
+        setValueIfUnset(VALUE_NUMERALS, context.getResources().getInteger(R.integer.clockface_numerals));
         setValueIfUnset(VALUE_NIGHTWATCH_TYPE, context.getResources().getInteger(R.integer.clockface_nightwatch_type));
 
         setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
@@ -163,6 +172,7 @@ public class NaturalHourClockBitmap
         switch (key)
         {
             case VALUE_HOURMODE: return HOURMODE_DEFAULT;
+            case VALUE_NUMERALS: return NUMERALS_DEFAULT;
             case VALUE_NIGHTWATCH_TYPE: return NIGHTWATCH_DEFAULT;
             default: return -1;
         }
@@ -458,8 +468,7 @@ public class NaturalHourClockBitmap
                 int j = (hourmode == HOURMODE_SUNSET) ? (i >= 12) ? i - 12 + 1 : i + 12 + 1
                                                       : ((i % 12) + 1);  //i + 1;
 
-                CharSequence label = DisplayStrings.hebrewNumeral(context, j);
-                canvas.drawText(label.toString(), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
+                canvas.drawText(getNumeral(context, j), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunriseAngle), (float) Math.toDegrees(sunsetAngle-sunriseAngle), false, paintArcDayBorder);
             drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone)), r_inner, r_outer, paintArcNightBorder);
@@ -921,6 +930,18 @@ public class NaturalHourClockBitmap
                 return new ClockColorValues[size];
             }
         };
+    }
+
+    public String getNumeral(Context context, int i)
+    {
+        switch (getValue(VALUE_NUMERALS))
+        {
+            case NUMERALS_ARABIC: return DisplayStrings.arabicNumeral(context, i);
+            case NUMERALS_ATTIC: return DisplayStrings.atticNumeral(context, i);
+            case NUMERALS_HEBREW: return DisplayStrings.hebrewNumeral(context, i);
+            case NUMERALS_LOCALE: return DisplayStrings.localizedNumeral(context, Locale.getDefault(), i);
+            case NUMERALS_ROMAN: default: return DisplayStrings.romanNumeral(context, i);
+        }
     }
 
     /**

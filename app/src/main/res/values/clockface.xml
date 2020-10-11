@@ -15,6 +15,7 @@
 
     <!-- values -->
     <integer name="clockface_hourmode">0</integer>
+    <integer name="clockface_numerals">0</integer>
     <integer name="clockface_nightwatch_type">0</integer>
 
     <!-- dimensions -->

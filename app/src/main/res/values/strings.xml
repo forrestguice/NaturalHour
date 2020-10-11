@@ -62,6 +62,22 @@
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
     </string-array>
 
+    <string name="pref_title_numerals">Numerals</string>
+    <string-array name="pref_numerals_display">
+        <item>Attic</item>
+        <item>Arabic</item>
+        <item>Hebrew</item>
+        <item>Localized</item>
+        <item>Roman</item>
+    </string-array>
+    <string-array name="pref_numerals_values" translatable="false">  <!-- one-to-one with pref_numerals_display -->
+        <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+        <item>3</item>
+        <item>4</item>
+        <item>0</item>
+    </string-array>
+
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
     <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->
