@@ -265,6 +265,7 @@ public class NaturalHourClockBitmap
     private int textLarge;
     private int textMedium;
     private int textSmall;
+    private int textTiny;
 
     private Paint paint, paintLabel, paintHand,
             paintTickHuge, paintTickLarge, paintTickMedium, paintTickSmall, paintTickTiny,
@@ -291,6 +292,7 @@ public class NaturalHourClockBitmap
         textLarge = (int)context.getResources().getDimension(R.dimen.clockface_text_large);
         textMedium = (int)context.getResources().getDimension(R.dimen.clockface_text_medium);
         textSmall = (int)context.getResources().getDimension(R.dimen.clockface_text_small);
+        textTiny = (int)context.getResources().getDimension(R.dimen.clockface_text_tiny);
 
         tickLength_huge = arcWidth;
         tickLength_large = 2 * arcWidth / 3f;
@@ -449,8 +451,11 @@ public class NaturalHourClockBitmap
                 double ly = cY + (r_inner + lw) * Math.sin(a1);
 
                 paint.setColor(isNight ? color_night : color_day);
-                paint.setTextSize(textSmall);
-                CharSequence label = DisplayStrings.romanNumeral(context, ((i % 12) + 1));
+                paint.setTextSize(textTiny);
+                int j = //i + 1;
+                        //((i % 12) + 1);
+                        (i >= 12) ? i - 12 + 1 : i + 12 + 1;
+                CharSequence label = DisplayStrings.romanNumeral(context, j);
                 canvas.drawText(label.toString(), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunriseAngle), (float) Math.toDegrees(sunsetAngle-sunriseAngle), false, paintArcDayBorder);
