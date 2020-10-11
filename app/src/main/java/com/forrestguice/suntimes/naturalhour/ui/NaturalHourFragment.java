@@ -543,7 +543,7 @@ public class NaturalHourFragment extends Fragment
         }
 
         public NaturalHourCalculator initCalculator() {
-            return AppSettings.getCalculator(AppSettings.getClockIntValue(getContext(), AppSettings.KEY_CLOCK_HOURMODE));
+            return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(getContext(), NaturalHourClockBitmap.VALUE_HOURMODE));
         }
 
         private NaturalHourCalculator calculator = initCalculator();

@@ -263,7 +263,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         //views.setViewVisibility(R.id.text_title, showTitle ? View.VISIBLE : View.GONE);
 
         ContentResolver resolver = context.getContentResolver();
-        NaturalHourCalculator calculator = AppSettings.getCalculator(AppSettings.getClockIntValue(context, AppSettings.KEY_CLOCK_HOURMODE));
+        NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE));
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
         calculator.calculateData(resolver, data);
 

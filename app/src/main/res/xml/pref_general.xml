@@ -3,7 +3,7 @@
     <PreferenceCategory
         android:title="@string/pref_category_general">
 
-        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="clockhourmode"
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="clockface_hourmode"
             android:title="@string/pref_title_hourdef"
             android:entries="@array/pref_hourdef_display"
             android:entryValues="@array/pref_hourdef_values"

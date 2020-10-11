@@ -14,7 +14,8 @@
     <bool name="clockface_show_background_twilights">true</bool>
 
     <!-- values -->
-    <integer name="clockface_nightwatch_type">0</integer>   <!-- 0: roman, 1: jewish -->
+    <integer name="clockface_hourmode">0</integer>
+    <integer name="clockface_nightwatch_type">0</integer>
 
     <!-- dimensions -->
     <dimen name="clockface_center_width">0dp</dimen>

@@ -39,6 +39,9 @@ import android.support.v4.graphics.ColorUtils;
 import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator2;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
@@ -55,6 +58,13 @@ public class NaturalHourClockBitmap
     public static final String VALUE_NIGHTWATCH_TYPE = "clockface_nightwatchType";
     public static final int NIGHTWATCH_4 = 0;
     public static final int NIGHTWATCH_3 = 1;
+    public static final int NIGHTWATCH_DEFAULT = NIGHTWATCH_4;
+
+    public static final String VALUE_HOURMODE = "clockface_hourmode";
+    public static final int HOURMODE_SUNRISE = 0;
+    public static final int HOURMODE_CIVILRISE = 1;
+    public static final int HOURMODE_SUNSET = 2;
+    public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
     public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
     public static final String FLAG_SHOW_NIGHTWATCH = "clockface_showVigilia";
@@ -79,6 +89,7 @@ public class NaturalHourClockBitmap
     protected ContentValues flags = new ContentValues();
     private void initFlags(Context context)
     {
+        setValueIfUnset(VALUE_HOURMODE, context.getResources().getInteger(R.integer.clockface_hourmode));
         setValueIfUnset(VALUE_NIGHTWATCH_TYPE, context.getResources().getInteger(R.integer.clockface_nightwatch_type));
 
         setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
@@ -151,6 +162,8 @@ public class NaturalHourClockBitmap
     public static int getDefaultValue(Context context, String key) {
         switch (key)
         {
+            case VALUE_HOURMODE: return HOURMODE_DEFAULT;
+            case VALUE_NIGHTWATCH_TYPE: return NIGHTWATCH_DEFAULT;
             default: return -1;
         }
     }
@@ -900,6 +913,18 @@ public class NaturalHourClockBitmap
                 return new ClockColorValues[size];
             }
         };
+    }
+
+    /**
+     * @param hourmode HOURMODE_SUNRISE ...
+     * @return an implementation of NaturalHourCalculator
+     */
+    public static NaturalHourCalculator getCalculator(int hourmode)
+    {
+        switch (hourmode) {
+            case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
+            case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
+        }
     }
 
 }
