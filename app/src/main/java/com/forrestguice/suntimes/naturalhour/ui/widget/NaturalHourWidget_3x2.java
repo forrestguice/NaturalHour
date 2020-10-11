@@ -19,4 +19,4 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
-public class NaturalHourWidget_3x3 extends NaturalHourWidget {}
+public class NaturalHourWidget_3x2 extends NaturalHourWidget {}

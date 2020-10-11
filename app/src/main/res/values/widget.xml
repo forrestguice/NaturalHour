@@ -17,6 +17,9 @@
     <integer name="widget_size_min_dp4x4">250</integer>
     <dimen name="widget_size_min_4x4">250dp</dimen>
 
+    <integer name="widget_size_min_dp5x5">320</integer>
+    <dimen name="widget_size_min_5x5">320dp</dimen>
+
     <style name="Widget">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
