@@ -147,7 +147,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     {
         String updateFilter = getUpdateIntentFilter();
         Intent intent = new Intent(updateFilter);
-        intent.setComponent(new ComponentName(context, NaturalHourWidget.class));
+        intent.setComponent(new ComponentName(context, getClass()));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.putExtra(KEY_WIDGETCLASS, getClass().toString());
         return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
