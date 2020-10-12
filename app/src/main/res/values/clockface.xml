@@ -32,10 +32,10 @@
     <dimen name="clockface_arc_width">22dp</dimen>
     <dimen name="clockface_arc_stroke_width">1.5dp</dimen>
 
-    <dimen name="clockface_text_tiny">8dp</dimen>
-    <dimen name="clockface_text_small">10dp</dimen>
-    <dimen name="clockface_text_medium">12dp</dimen>
-    <dimen name="clockface_text_large">14dp</dimen>
+    <dimen name="clockface_text_tiny">8sp</dimen>
+    <dimen name="clockface_text_small">10sp</dimen>
+    <dimen name="clockface_text_medium">12sp</dimen>
+    <dimen name="clockface_text_large">14sp</dimen>
 
     <!-- light color theme -->
     <color name="clockColorAstro_light">@color/grey_800</color>
