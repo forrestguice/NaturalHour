@@ -1,6 +1,7 @@
 <resources>
     <!-- flags -->
     <bool name="clockface_start_at_top">false</bool>
+    <bool name="clockface_center_noon">false</bool>
     <bool name="clockface_show_timezone">true</bool>
     <bool name="clockface_show_location">true</bool>
     <bool name="clockface_show_date">true</bool>

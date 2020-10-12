@@ -29,7 +29,8 @@
 
     <string name="pref_category_general">General</string>
     <string name="pref_category_clockface">Clock face</string>
-    <string name="pref_title_midnight_top">Show midnight at top</string>
+    <string name="pref_title_midnight_top">Midnight at top</string>
+    <string name="pref_title_center_noon">Center on solar noon</string>
     <string name="pref_title_show_date">Show date</string>
     <string name="pref_title_show_timezone">Show time zone</string>
     <string name="pref_title_show_location">Show location</string>

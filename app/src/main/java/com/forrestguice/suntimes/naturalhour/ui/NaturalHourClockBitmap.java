@@ -34,6 +34,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.util.Log;
@@ -76,6 +77,7 @@ public class NaturalHourClockBitmap
     public static final int NUMERALS_DEFAULT = NUMERALS_ROMAN;
 
     public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
+    public static final String FLAG_CENTER_NOON = "clockface_centerNoon";
     public static final String FLAG_SHOW_NIGHTWATCH = "clockface_showVigilia";
     public static final String FLAG_SHOW_TIMEZONE = "clockface_showTimeZone";
     public static final String FLAG_SHOW_LOCATION = "clockface_showLocation";
@@ -90,7 +92,7 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_TICKS_15M = "clockface_showTick15m";
     public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
 
-    public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_SHOW_NIGHTWATCH, FLAG_SHOW_TIMEZONE, FLAG_SHOW_LOCATION,
+    public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_CENTER_NOON, FLAG_SHOW_NIGHTWATCH, FLAG_SHOW_TIMEZONE, FLAG_SHOW_LOCATION,
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
     };
@@ -117,6 +119,7 @@ public class NaturalHourClockBitmap
         setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
         setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
 
+        setFlagIfUnset(FLAG_CENTER_NOON, context.getResources().getBoolean(R.bool.clockface_center_noon));
         setFlagIfUnset(FLAG_START_AT_TOP, context.getResources().getBoolean(R.bool.clockface_start_at_top));
         startAngle = startAngle != null ? startAngle : (flags.getAsBoolean(FLAG_START_AT_TOP) ? START_TOP : START_BOTTOM);
     }
@@ -156,6 +159,8 @@ public class NaturalHourClockBitmap
 
     public static boolean getDefaultFlag(Context context, String flag) {
         switch (flag) {
+            case FLAG_CENTER_NOON: return context.getResources().getBoolean(R.bool.clockface_center_noon);
+            case FLAG_START_AT_TOP: return context.getResources().getBoolean(R.bool.clockface_start_at_top);
             case FLAG_SHOW_TIMEZONE: return context.getResources().getBoolean(R.bool.clockface_show_timezone);
             case FLAG_SHOW_LOCATION: return context.getResources().getBoolean(R.bool.clockface_show_location);
             case FLAG_SHOW_DATE: return context.getResources().getBoolean(R.bool.clockface_show_date);
@@ -246,8 +251,8 @@ public class NaturalHourClockBitmap
 
         drawBackground(context, data, canvas, cX, cY);
         drawTimeArcs(context, data, canvas, cX, cY);
-        drawTicks(canvas, cX, cY, is24);
-        drawTickLabels(canvas, cX, cY, is24);
+        drawTicks(data, canvas, cX, cY, is24);
+        drawTickLabels(data, canvas, cX, cY, is24);
 
         paintTickLarge.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
@@ -418,6 +423,15 @@ public class NaturalHourClockBitmap
     public static double getAdjustedAngle( double startAngle, double angle) {
         return startAngle + (Math.PI / 2d) + angle;
     }
+    public double getAdjustedAngle( double startAngle, double angle, @Nullable NaturalHourData data ) {
+        if (flags.getAsBoolean(FLAG_CENTER_NOON) && data != null && data.isCalculated())
+        {
+            double noonAngle = data.getAngle(data.getNaturalHours()[6], timezone);
+            double offset = Math.PI/2d - noonAngle;
+            return getAdjustedAngle(startAngle, angle) + offset;
+        }
+        return getAdjustedAngle(startAngle, angle);
+    }
 
     protected void drawTimeArcs(Context context, NaturalHourData data, Canvas canvas, float cX, float cY)
     {
@@ -439,8 +453,8 @@ public class NaturalHourClockBitmap
             double dayAngle = data.getDayHourAngle();
             double nightAngle = data.getNightHourAngle();
             long[] naturalHours = data.getNaturalHours();
-            double sunriseAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone));
-            double sunsetAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone));
+            double sunriseAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone), data);
+            double sunsetAngle = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone), data);
 
             int color_day = colors.getColor(ClockColorValues.COLOR_RING_DAY_LABEL);
             paintArcDayFill.setColor(colors.getColor(ClockColorValues.COLOR_RING_DAY));
@@ -456,7 +470,7 @@ public class NaturalHourClockBitmap
                 boolean isNight = (i >= 12);
                 double hourAngle = (isNight ? nightAngle : dayAngle);
 
-                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone));
+                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone), data);
                 canvas.drawArc(circle_mid, (float) Math.toDegrees(a), (float) Math.toDegrees(hourAngle), false, (isNight ? paintArcNightFill : paintArcDayFill));
                 drawRay(canvas, cX, cY, a, r_inner, r_outer, isNight ? paintArcNightBorder : paintArcDayBorder);
 
@@ -475,8 +489,8 @@ public class NaturalHourClockBitmap
                 canvas.drawText(getNumeral(context, j), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunriseAngle), (float) Math.toDegrees(sunsetAngle-sunriseAngle), false, paintArcDayBorder);
-            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone)), r_inner, r_outer, paintArcNightBorder);
-            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone)), r_inner, r_outer, paintArcNightBorder);
+            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[0], timezone), data), r_inner, r_outer, paintArcNightBorder);
+            drawRay(canvas, cX, cY, getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone), data), r_inner, r_outer, paintArcNightBorder);
 
             if (flags.getAsBoolean(FLAG_SHOW_NIGHTWATCH))
             {
@@ -489,7 +503,7 @@ public class NaturalHourClockBitmap
                 double watchSweepAngle = nightAngle * hoursPerWatch;
                 for (int i = 12; i<naturalHours.length; i += hoursPerWatch)
                 {
-                    double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone));
+                    double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone), data);
                     canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightFill);
                     canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightBorder);
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
@@ -509,7 +523,7 @@ public class NaturalHourClockBitmap
                     c++;
                 }
 
-                double a0 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone) + (watchSweepAngle * numWatches));
+                double a0 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[12], timezone) + (watchSweepAngle * numWatches), data);
                 drawRay(canvas, cX, cY, a0, r_outer, r_outer1, paintArcNightBorder);
             }
             canvas.drawArc(circle_outer, (float) Math.toDegrees(sunsetAngle), (float) Math.toDegrees(2*Math.PI - (sunsetAngle-sunriseAngle)), false, paintArcNightBorder);
@@ -552,7 +566,7 @@ public class NaturalHourClockBitmap
         canvas.drawPath(path, paint);
     }
 
-    protected void drawTicks(Canvas canvas, float cX, float cY, boolean is24)
+    protected void drawTicks(NaturalHourData data, Canvas canvas, float cX, float cY, boolean is24)
     {
         float r0 = radiusInner(cX);
         float rHugeTick = r0 - tickLength_huge;
@@ -572,7 +586,7 @@ public class NaturalHourClockBitmap
         paintTickLarge.setColor(frameColor);
         paintTickHuge.setColor(frameColor);
 
-        double a = startAngle;
+        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -600,7 +614,7 @@ public class NaturalHourClockBitmap
         }
     }
 
-    protected void drawTickLabels(Canvas canvas, float cX, float cY, boolean is24)
+    protected void drawTickLabels(NaturalHourData data, Canvas canvas, float cX, float cY, boolean is24)
     {
         paint.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
 
@@ -608,7 +622,7 @@ public class NaturalHourClockBitmap
         float rHugeTick = r0 - tickLength_huge;
         float rLargeTick = r0 - tickLength_large;
         float rMediumTick = r0 - tickLength_medium;
-        double a = startAngle;
+        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -651,8 +665,8 @@ public class NaturalHourClockBitmap
             long[] twilightHours = data.getTwilightTimes();
             long[] naturalHours = data.getNaturalHours();
             double dayHourAngle = data.getDayHourAngle();
-            double dayAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone));
-            double nightAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[4], timezone));
+            double dayAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone), data);
+            double nightAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[4], timezone), data);
 
             double daySpan = NaturalHourData.simplifyAngle(Math.max(nightAngle, dayAngle) - Math.min(nightAngle, dayAngle));
             double nightSpan = 2 * Math.PI - daySpan;
@@ -668,10 +682,10 @@ public class NaturalHourClockBitmap
             boolean showDay = flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY);
             if (showTwilights || showDay)
             {
-                double a0 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[0], timezone));
+                double a0 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[0], timezone), data);
                 for (int i=1; i<twilightHours.length; i++)
                 {
-                    double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[i], timezone));
+                    double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[i], timezone), data);
                     if ((i == 4 && showDay) || i != 4 && showTwilights)
                     {
                         double span = a1 - a0;
@@ -690,11 +704,11 @@ public class NaturalHourClockBitmap
             if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_AMPM))
             {
                 double middaySpan = daySpan / 2d;
-                double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone));
+                double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone), data);
                 paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_AM));
                 drawPie(canvas, cX, cY, radiusInner(cX), a1, middaySpan, paintFillDay);
 
-                double a2 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[6], timezone));
+                double a2 = getAdjustedAngle(startAngle, data.getAngle(naturalHours[6], timezone), data);
                 paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_PM));
                 drawPie(canvas, cX, cY, radiusInner(cX), a2, middaySpan, paintFillDay);
             }
@@ -775,7 +789,7 @@ public class NaturalHourClockBitmap
         int minute = now.get(Calendar.MINUTE);
         int second = now.get(Calendar.SECOND);
 
-        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(hour, minute, second));
+        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(hour, minute, second), null);
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);
 

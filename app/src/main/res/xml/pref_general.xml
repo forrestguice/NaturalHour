@@ -18,6 +18,9 @@
         <CheckBoxPreference android:key="clockface_startAtTop"
             android:title="@string/pref_title_midnight_top" android:defaultValue="false" />
 
+        <CheckBoxPreference android:key="clockface_centerNoon"
+            android:title="@string/pref_title_center_noon" android:defaultValue="false" />
+
         <CheckBoxPreference android:key="clockface_showDate"
             android:title="@string/pref_title_show_date" android:defaultValue="true" />
 
