@@ -61,11 +61,11 @@
 
     <!-- dark color theme -->
 
-    <color name="clockColorAstro_dark">#aa212121</color>
-    <color name="clockColorNautical_dark">#aa303030</color>
-    <color name="clockColorCivil_dark">#aa424242</color>
+    <color name="clockColorAstro_dark">#1a1a1a</color>
+    <color name="clockColorNautical_dark">#333333</color>
+    <color name="clockColorCivil_dark">#4d4d4d</color>
     <color name="clockColorAM_dark">@color/grey_600</color> <!-- aaffd500 -->
-    <color name="clockColorPM_dark">@color/grey_700</color> <!-- #aaff9900 -->
+    <color name="clockColorPM_dark">#666666</color> <!-- #aaff9900 -->
     <color name="clockColorDayBorder_dark">#FFFFFF</color>
     <color name="clockColorDay_dark">@color/grey_800</color>
     <color name="clockColorDayLabel_dark">#FFFFFF</color>
