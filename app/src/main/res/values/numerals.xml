@@ -2,30 +2,44 @@
 
     <string-array name="roman_numeral">
         <item></item>
-        <item>I</item>
-        <item>II</item>
-        <item>III</item>
-        <item>IV</item>
-        <item>V</item>
-        <item>VI</item>
-        <item>VII</item>
-        <item>VIII</item>
-        <item>IX</item>
-        <item>X</item>
+        <item>Ⅰ</item>
+        <item>Ⅱ</item>
+        <item>Ⅲ</item>
+        <item>Ⅳ</item>
+        <item>Ⅴ</item>
+        <item>Ⅵ</item>
+        <item>Ⅶ</item>
+        <item>Ⅷ</item>
+        <item>Ⅸ</item>
+        <item>Ⅹ</item>
     </string-array>
 
     <string-array name="attic_numeral">
         <item></item>
-        <item>I</item>
-        <item>II</item>
-        <item>III</item>
-        <item>IIII</item>
+        <item>Ⅰ</item>
+        <item>ⅠⅠ</item>
+        <item>ⅠⅠⅠ</item>
+        <item>ⅠⅠⅠⅠ</item>
         <item>Π</item>
-        <item>ΠI</item>
-        <item>ΠII</item>
-        <item>ΠIII</item>
-        <item>ΠIIII</item>
+        <item>ΠⅠ</item>
+        <item>ΠⅠⅠ</item>
+        <item>ΠⅠⅠⅠ</item>
+        <item>ΠⅠⅠⅠⅠ</item>
         <item>Δ</item>
+    </string-array>
+
+    <string-array name="etruscan_numeral">
+        <item></item>
+        <item>𐌠</item>
+        <item>𐌠𐌠</item>
+        <item>𐌠𐌠𐌠</item>
+        <item>𐌠𐌠𐌠𐌠</item>
+        <item>𐌡</item>
+        <item>𐌡𐌠</item>
+        <item>𐌡𐌠𐌠</item>
+        <item>𐌡𐌠𐌠𐌠</item>
+        <item>𐌡𐌠𐌠𐌠𐌠</item>
+        <item>𐌢</item>
     </string-array>
 
     <string-array name="greek_numeral">

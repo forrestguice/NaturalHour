@@ -95,6 +95,21 @@ public class DisplayStrings
         return result.toString();
     }
 
+    public static String etruscanNumeral(@NonNull Context context, int hour)
+    {
+        StringBuilder result = new StringBuilder();
+        String[] numerals = context.getResources().getStringArray(R.array.etruscan_numeral);
+        String ten = numerals[10];
+
+        int tens = hour / 10;
+        int ones = hour % 10;
+        for (int i=0; i<tens; i++) {
+            result.append(ten);
+        }
+        result.append(numerals[ones]);
+        return result.toString();
+    }
+
     public static String hebrewNumeral(@NonNull Context context, int hour)
     {
         String[] numerals = context.getResources().getStringArray(R.array.hebrew_numeral);

@@ -71,7 +71,8 @@ public class NaturalHourClockBitmap
     public static final int NUMERALS_ARABIC = 1;
     public static final int NUMERALS_ATTIC = 2;
     public static final int NUMERALS_HEBREW = 3;
-    public static final int NUMERALS_LOCALE = 4;
+    public static final int NUMERALS_ETRUSCAN = 4;
+    public static final int NUMERALS_LOCALE = 5;
     public static final int NUMERALS_DEFAULT = NUMERALS_ROMAN;
 
     public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
@@ -938,6 +939,7 @@ public class NaturalHourClockBitmap
         {
             case NUMERALS_ARABIC: return DisplayStrings.arabicNumeral(context, i);
             case NUMERALS_ATTIC: return DisplayStrings.atticNumeral(context, i);
+            case NUMERALS_ETRUSCAN: return DisplayStrings.etruscanNumeral(context, i);
             case NUMERALS_HEBREW: return DisplayStrings.hebrewNumeral(context, i);
             case NUMERALS_LOCALE: return DisplayStrings.localizedNumeral(context, Locale.getDefault(), i);
             case NUMERALS_ROMAN: default: return DisplayStrings.romanNumeral(context, i);
