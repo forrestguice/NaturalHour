@@ -2,6 +2,7 @@
     <!-- flags -->
     <bool name="clockface_start_at_top">false</bool>
     <bool name="clockface_show_timezone">true</bool>
+    <bool name="clockface_show_location">true</bool>
     <bool name="clockface_show_date">true</bool>
     <bool name="clockface_show_vigilia">false</bool>
     <bool name="clockface_show_hand_simple">false</bool>

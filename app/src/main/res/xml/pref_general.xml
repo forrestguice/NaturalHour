@@ -24,6 +24,9 @@
         <CheckBoxPreference android:key="clockface_showTimeZone"
             android:title="@string/pref_title_show_timezone" android:defaultValue="true" />
 
+        <CheckBoxPreference android:key="clockface_showLocation"
+            android:title="@string/pref_title_show_location" android:defaultValue="true" />
+
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="clockface_numerals"
             android:title="@string/pref_title_numerals"
             android:entries="@array/pref_numerals_display"

@@ -32,6 +32,7 @@
     <string name="pref_title_midnight_top">Show midnight at top</string>
     <string name="pref_title_show_date">Show date</string>
     <string name="pref_title_show_timezone">Show time zone</string>
+    <string name="pref_title_show_location">Show location</string>
     <string name="pref_title_show_night">Show night period</string>
     <string name="pref_title_show_twilights">Show twilight periods</string>
     <string name="pref_title_show_ampm">Show am/pm periods</string>
