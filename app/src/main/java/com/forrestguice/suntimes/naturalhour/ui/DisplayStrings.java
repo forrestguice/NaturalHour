@@ -66,10 +66,10 @@ public class DisplayStrings
         return result.toString();
     }
 
-    public static String greekNumeral(@NonNull Context context, int hour)
+    public static String greekNumeral(@NonNull Context context, int hour, boolean lowerCase)
     {
         StringBuilder result = new StringBuilder();
-        String[] numerals = context.getResources().getStringArray(R.array.greek_numeral);
+        String[] numerals = context.getResources().getStringArray((lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral));
         String ten = numerals[10];
 
         int tens = hour / 10;
@@ -95,6 +95,30 @@ public class DisplayStrings
         result.append(numerals[ones]);
         return result.toString();
     }
+
+    public static String armenianNumeral(@NonNull Context context, int hour)
+    {
+        StringBuilder result = new StringBuilder();
+        String[] numerals = context.getResources().getStringArray(R.array.armenian_numeral);
+        String ten = numerals[10];
+
+        int tens = hour / 10;
+        int ones = hour % 10;
+
+        if (tens == 2) {
+            result.append(numerals[11]);
+        } else if (tens == 1) {
+            result.append(ten);
+        } else {
+            for (int i=0; i<tens; i++) {
+                result.append(ten);
+            }
+        }
+
+        result.append(numerals[ones]);
+        return result.toString();
+    }
+
 
     public static String etruscanNumeral(@NonNull Context context, int hour)
     {

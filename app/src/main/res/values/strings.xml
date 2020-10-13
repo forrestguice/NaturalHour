@@ -67,21 +67,25 @@
     <string name="pref_title_numerals">Numerals</string>
     <string-array name="pref_numerals_display">
         <item>Attic</item>
-        <item>Arabic</item>
+        <item>Armenian</item>
         <item>Etruscan</item>
+        <item>Greek (uppercase)</item>
+        <item>Greek (lowercase)</item>
         <item>Hebrew</item>
-        <item>Greek</item>
         <item>Localized</item>
         <item>Roman</item>
+        <item>Westerm Arabic</item>
     </string-array>
     <string-array name="pref_numerals_values" translatable="false">  <!-- one-to-one with pref_numerals_display -->
         <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->
-        <item>1</item>
+        <item>7</item>
         <item>4</item>
-        <item>3</item>
         <item>5</item>
+        <item>6</item>
+        <item>3</item>
         <item>100</item>
         <item>0</item>
+        <item>1</item>
     </string-array>
 
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
