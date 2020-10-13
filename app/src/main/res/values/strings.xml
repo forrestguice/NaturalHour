@@ -70,6 +70,7 @@
         <item>Arabic</item>
         <item>Etruscan</item>
         <item>Hebrew</item>
+        <item>Greek</item>
         <item>Localized</item>
         <item>Roman</item>
     </string-array>
@@ -79,6 +80,7 @@
         <item>4</item>
         <item>3</item>
         <item>5</item>
+        <item>100</item>
         <item>0</item>
     </string-array>
 
