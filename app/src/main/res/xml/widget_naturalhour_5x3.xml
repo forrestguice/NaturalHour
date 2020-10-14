@@ -10,6 +10,7 @@
     android:resizeMode="horizontal|vertical"
     android:minWidth="@dimen/widget_size_min_5x5" android:minHeight="@dimen/widget_size_min_3x3"
     android:minResizeWidth="@dimen/widget_size_min_3x3" android:minResizeHeight="@dimen/widget_size_min_2x2"
+    android:configure="com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3_ConfigActivity"
 
     android:initialKeyguardLayout="@layout/widget_naturalhour_3x3"
     android:initialLayout="@layout/widget_naturalhour_3x3">
