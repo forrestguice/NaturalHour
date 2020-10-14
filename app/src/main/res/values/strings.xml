@@ -74,7 +74,7 @@
         <item>Hebrew</item>
         <item>Localized</item>
         <item>Roman</item>
-        <item>Westerm Arabic</item>
+        <item>Western Arabic</item>
     </string-array>
     <string-array name="pref_numerals_values" translatable="false">  <!-- one-to-one with pref_numerals_display -->
         <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->
