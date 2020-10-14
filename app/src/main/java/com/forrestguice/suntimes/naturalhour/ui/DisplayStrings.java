@@ -43,6 +43,20 @@ import java.util.TimeZone;
 
 public class DisplayStrings
 {
+    public static String numeral(@NonNull Context context, int hour, String[] numerals)
+    {
+        StringBuilder result = new StringBuilder();
+        String ten = numerals[10];
+
+        int tens = hour / 10;
+        int ones = hour % 10;
+        for (int i=0; i<tens; i++) {
+            result.append(ten);
+        }
+        result.append(numerals[ones]);
+        return result.toString();
+    }
+
     public static String arabicNumeral(@NonNull Context context, int hour) {
         return Integer.toString(hour);
     }
@@ -51,49 +65,17 @@ public class DisplayStrings
         return String.format( locale, "%d", hour);
     }
 
-    public static String romanNumeral(@NonNull Context context, int hour)
-    {
-        StringBuilder result = new StringBuilder();
-        String[] numerals = context.getResources().getStringArray(R.array.roman_numeral);
-        String ten = numerals[10];
-
-        int tens = hour / 10;
-        int ones = hour % 10;
-        for (int i=0; i<tens; i++) {
-            result.append(ten);
-        }
-        result.append(numerals[ones]);
-        return result.toString();
+    public static String romanNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, context.getResources().getStringArray(R.array.roman_numeral));
     }
 
-    public static String greekNumeral(@NonNull Context context, int hour, boolean lowerCase)
-    {
-        StringBuilder result = new StringBuilder();
-        String[] numerals = context.getResources().getStringArray((lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral));
-        String ten = numerals[10];
-
-        int tens = hour / 10;
-        int ones = hour % 10;
-        for (int i=0; i<tens; i++) {
-            result.append(ten);
-        }
-        result.append(numerals[ones]);
-        return result.toString();
+    public static String greekNumeral(@NonNull Context context, int hour, boolean lowerCase) {
+        return numeral(context, hour, context.getResources().getStringArray((lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral)));
     }
 
-    public static String atticNumeral(@NonNull Context context, int hour)
-    {
-        StringBuilder result = new StringBuilder();
-        String[] numerals = context.getResources().getStringArray(R.array.attic_numeral);
-        String ten = numerals[10];
 
-        int tens = hour / 10;
-        int ones = hour % 10;
-        for (int i=0; i<tens; i++) {
-            result.append(ten);
-        }
-        result.append(numerals[ones]);
-        return result.toString();
+    public static String atticNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, context.getResources().getStringArray(R.array.attic_numeral));
     }
 
     public static String armenianNumeral(@NonNull Context context, int hour)
@@ -118,21 +100,9 @@ public class DisplayStrings
         result.append(numerals[ones]);
         return result.toString();
     }
-
-
-    public static String etruscanNumeral(@NonNull Context context, int hour)
-    {
-        StringBuilder result = new StringBuilder();
-        String[] numerals = context.getResources().getStringArray(R.array.etruscan_numeral);
-        String ten = numerals[10];
-
-        int tens = hour / 10;
-        int ones = hour % 10;
-        for (int i=0; i<tens; i++) {
-            result.append(ten);
-        }
-        result.append(numerals[ones]);
-        return result.toString();
+    
+    public static String etruscanNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, context.getResources().getStringArray(R.array.etruscan_numeral));
     }
 
     public static String hebrewNumeral(@NonNull Context context, int hour)
@@ -140,7 +110,6 @@ public class DisplayStrings
         String[] numerals = context.getResources().getStringArray(R.array.hebrew_numeral);
         return numerals[hour];
     }
-
 
     /*
      * @param context Context
