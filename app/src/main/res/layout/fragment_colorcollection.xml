@@ -4,9 +4,18 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/grey_900">
 
+    <TextView android:id="@+id/colorvalues_selector_label"
+        android:text="Colors:" android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/colorvalues_selector" app:layout_constraintBottom_toBottomOf="@+id/colorvalues_selector" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/colorvalues_selector"
+        android:labelFor="@+id/colorvalues_selector"
+        android:layout_marginStart="8dp" android:layout_marginLeft="8dp"
+        android:layout_marginEnd="0dp" android:layout_marginRight="0dp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
     <Spinner android:id="@+id/colorvalues_selector"
         android:layout_width="0dp" android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/colorvalues_selector_label"
         app:layout_constraintEnd_toStartOf="@+id/editButton"
         tools:listitem="@android:layout/simple_list_item_1" />
 
