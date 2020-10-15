@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity
             listDialog.setColorCollection(clockColors);
             if (listDialog.getView() != null) {
                 listDialog.getView().setVisibility(View.VISIBLE);
+                bottomSheet.setPeekHeight(listDialog.getView().getHeight());
             }
             listDialog.setFragmentListener(new ColorValuesCollectionFragment.FragmentListener()
             {
