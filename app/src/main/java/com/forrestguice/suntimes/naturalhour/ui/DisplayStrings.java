@@ -100,7 +100,7 @@ public class DisplayStrings
         result.append(numerals[ones]);
         return result.toString();
     }
-    
+
     public static String etruscanNumeral(@NonNull Context context, int hour) {
         return numeral(context, hour, context.getResources().getStringArray(R.array.etruscan_numeral));
     }
