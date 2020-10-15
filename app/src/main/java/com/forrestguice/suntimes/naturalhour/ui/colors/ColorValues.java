@@ -45,40 +45,40 @@ public abstract class ColorValues implements Parcelable
     }
 
     public void loadColorValues(@NonNull Parcel in) {
+        setID(in.readString());
         for (String key : getColorKeys()) {
             setColor(key, in.readInt());
         }
-        setID(in.readString());
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getID());
         for (String key : getColorKeys()) {
             dest.writeInt(values.getAsInteger(key));
         }
-        dest.writeString(getID());
     }
 
     public void loadColorValues(@NonNull ColorValues other)
     {
+        setID(other.getID());
         for (String key : other.getColorKeys()) {
             setColor(key, other.getColor(key));
         }
-        setID(other.getID());
     }
 
     public void loadColorValues(SharedPreferences prefs, String prefix)
     {
+        setID(prefs.getString(prefix + KEY_ID, null));
         for (String key : getColorKeys()) {
             setColor(key, prefs.getInt(prefix + key, getFallbackColor()));
         }
-        setID(prefs.getString(prefix + KEY_ID, null));
     }
     public void putColors(SharedPreferences.Editor prefs, String prefix)
     {
+        prefs.putString(prefix + KEY_ID, getID());
         for (String key : getColorKeys()) {
             prefs.putInt(prefix + key, values.getAsInteger(key));
         }
-        prefs.putString(prefix + KEY_ID, getID());
         prefs.apply();
     }
     public void putColors(ContentValues other) {
@@ -96,6 +96,15 @@ public abstract class ColorValues implements Parcelable
     }
     public String getID() {
         return values.getAsString(KEY_ID);
+    }
+
+    public static final String SUFFIX_LABEL = "_LABEL";
+    protected void setLabel(String key, String label) {
+        values.put(key + SUFFIX_LABEL, label);
+    }
+    public String getLabel(String key) {
+        String label = values.getAsString(key + SUFFIX_LABEL);
+        return (label != null ? label : key);
     }
 
     public void setColor(String key, int color) {

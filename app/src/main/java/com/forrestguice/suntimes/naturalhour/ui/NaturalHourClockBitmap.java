@@ -923,7 +923,6 @@ public class NaturalHourClockBitmap
                 R.color.clockColorNight_light, R.color.clockColorNightLabel_light, R.color.clockColorNightBorder_light, R.color.clockColorNightFace_light,
                 R.color.clockColorAM_light, R.color.clockColorPM_light, R.color.clockColorAstro_light, R.color.clockColorNautical_light, R.color.clockColorCivil_light
         };
-
         public static final int[] LABELS_RESID = new int[] {
                 R.string.clockface_plate, R.string.clockface_face, R.string.clockface_frame,
                 R.string.clockface_center, R.string.clockface_hand, R.string.clockface_label, R.string.clockface_label1,
@@ -931,7 +930,6 @@ public class NaturalHourClockBitmap
                 R.string.clockface_ring_night, R.string.clockface_ring_night_label, R.string.clockface_ring_night_stroke, R.string.clockface_face_night,
                 R.string.clockface_face_am, R.string.clockface_face_pm, R.string.clockface_face_astro, R.string.clockface_face_nautical, R.string.clockface_face_civil
         };
-
         protected static final int[] COLORS_FALLBACK = new int[] {
                 Color.BLACK, Color.DKGRAY, Color.WHITE,
                 Color.WHITE, Color.MAGENTA, Color.WHITE, Color.LTGRAY,
@@ -962,6 +960,7 @@ public class NaturalHourClockBitmap
             }
             for (int i=0; i<COLORS.length; i++) {
                 setColor(COLORS[i], COLORS_FALLBACK[i]);
+                setLabel(COLORS[i], COLORS[i]);
             }
         }
         public ClockColorValues(Context context) {
@@ -977,6 +976,7 @@ public class NaturalHourClockBitmap
             TypedArray a = context.obtainStyledAttributes(COLORS_ATTR);
             for (int i=0; i<COLORS.length; i++) {
                 setColor(COLORS[i], ContextCompat.getColor(context, a.getResourceId(i, defaultResID[i])));
+                setLabel(COLORS[i], context.getString(LABELS_RESID[i]));
             }
             a.recycle();
         }
