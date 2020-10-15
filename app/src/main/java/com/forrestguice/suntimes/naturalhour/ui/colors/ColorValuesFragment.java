@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -44,6 +46,7 @@ import java.lang.reflect.Method;
 
 public class ColorValuesFragment extends Fragment
 {
+    protected EditText editID;
     protected LinearLayout panel;
 
     public ColorValuesFragment() {
@@ -66,10 +69,35 @@ public class ColorValuesFragment extends Fragment
         if (overflow != null) {
             overflow.setOnClickListener(onOverflowButtonClicked);
         }
+
+        ImageButton saveButton = (ImageButton) content.findViewById(R.id.saveButton);
+        if (saveButton != null) {
+            saveButton.setOnClickListener(onSaveButtonClicked);
+        }
+
         panel = (LinearLayout) content.findViewById(R.id.colorPanel);
+        editID = (EditText) content.findViewById(R.id.editTextID);
+
 
         updateViews();
         return content;
+    }
+
+    private View.OnClickListener onSaveButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onSaveColorValues();
+        }
+    };
+
+    protected void onSaveColorValues()
+    {
+        String colorsID = editID.getText().toString();
+        colorValues.setID(colorsID);
+
+        if (listener != null) {
+            listener.onSaveClicked(colorsID, colorValues);
+        }
     }
 
     private View.OnClickListener onOverflowButtonClicked = new View.OnClickListener() {
@@ -111,6 +139,12 @@ public class ColorValuesFragment extends Fragment
     protected TextView[] colorEdits;
     protected void updateViews()
     {
+        if (editID != null && colorValues != null)
+        {
+            String colorsID = colorValues.getID();
+            editID.setText(colorsID != null ? colorsID : "");
+        }
+
         if (panel != null && colorValues != null)
         {
             String[] keys = colorValues.getColorKeys();
@@ -243,6 +277,20 @@ public class ColorValuesFragment extends Fragment
                 }
             }
         }
+    }
+
+
+    /**
+     * FragmentListener
+     */
+    public interface FragmentListener
+    {
+        void onSaveClicked(String colorsID, ColorValues values);
+    }
+
+    protected FragmentListener listener = null;
+    public void setFragmentListener(FragmentListener l) {
+        listener = l;
     }
 
 }

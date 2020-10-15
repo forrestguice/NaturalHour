@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
@@ -47,6 +48,7 @@ import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment1;
 
 import java.lang.reflect.Method;
@@ -183,38 +185,47 @@ public class MainActivity extends AppCompatActivity
     {
         final FragmentManager fragments = getSupportFragmentManager();
 
-        final ColorValuesCollectionFragment sheetDialog0 = (ColorValuesCollectionFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
-        final ColorValuesFragment1 sheetDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        final ColorValuesCollectionFragment listDialog = (ColorValuesCollectionFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+        final ColorValuesFragment1 editDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
 
-        if (sheetDialog0 != null && naturalHour != null)
+        if (listDialog != null && naturalHour != null)
         {
             final ColorValuesCollection clockColors = naturalHour.getColorCollection();
-            sheetDialog0.setColorCollection(clockColors);
-            sheetDialog0.setFragmentListener(new ColorValuesCollectionFragment.FragmentListener()
+            listDialog.setColorCollection(clockColors);
+            listDialog.setFragmentListener(new ColorValuesCollectionFragment.FragmentListener()
             {
                 @Override
                 public void onEditClicked(String colorsID) {
-                    if (sheetDialog != null)
-                    {
-                        clockColors.setSelectedColorsID(MainActivity.this, colorsID);
-                        ColorValues selectedColors = clockColors.getColors(MainActivity.this, colorsID);
-                        naturalHour.setClockColors(selectedColors);
-                        sheetDialog.setColorValues(selectedColors);
+                    if (editDialog != null) {
+                        editDialog.setColorValues(clockColors.getColors(MainActivity.this, colorsID));
                     }
                 }
 
                 @Override
-                public void onItemSelected(ColorValuesCollectionFragment.ColorValuesItem item) {
-                    //if (sheetDialog != null) {
-                    //    sheetDialog.setColorValues(clockColors.getColors(MainActivity.this, item.colorsID));
-                    //}
+                public void onItemSelected(ColorValuesCollectionFragment.ColorValuesItem item)
+                {
+                    clockColors.setSelectedColorsID(MainActivity.this, item.colorsID);
+                    ColorValues selectedColors = clockColors.getColors(MainActivity.this, item.colorsID);
+                    naturalHour.setClockColors(selectedColors);
                 }
             });
         }
 
-        if (sheetDialog != null && naturalHour != null) {
-            sheetDialog.setColorValues(naturalHour.getClockColors());
+        if (editDialog != null && naturalHour != null)
+        {
+            final ColorValuesCollection clockColors = naturalHour.getColorCollection();
+            editDialog.setColorValues(naturalHour.getClockColors());
+            editDialog.setFragmentListener(new ColorValuesFragment.FragmentListener() {
+                @Override
+                public void onSaveClicked(String colorsID, ColorValues values)
+                {
+                    Toast.makeText(MainActivity.this, "Saved " + colorsID, Toast.LENGTH_SHORT).show();
+                    clockColors.setColors(MainActivity.this, colorsID, values);
+                    clockColors.setSelectedColorsID(MainActivity.this, colorsID);
+                    hideBottomSheet();
+                }
+            });
         }
         bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
