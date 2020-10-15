@@ -330,6 +330,17 @@ public class MainActivity extends AppCompatActivity
         AddonHelper.startSuntimesActivity(this);
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        if (isBottomSheetShowing()) {
+            hideBottomSheet();
+
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
