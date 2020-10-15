@@ -17,20 +17,23 @@
     <attr name="clockColorFrame" format="reference" />
     <attr name="clockColorCenter" format="reference" />
     <attr name="clockColorHand" format="reference" />
+    <attr name="clockColorLabel1" format="reference" />
+    <attr name="clockColorLabel2" format="reference" />
+
+    <attr name="clockColorDay" format="reference" />
     <attr name="clockColorDayBorder" format="reference" />
     <attr name="clockColorDayFill" format="reference" />
     <attr name="clockColorDayText" format="reference" />
+
+    <attr name="clockColorNight" format="reference" />
     <attr name="clockColorNightBorder" format="reference" />
     <attr name="clockColorNightFill" format="reference" />
     <attr name="clockColorNightText" format="reference" />
-    <attr name="clockColorLabel1" format="reference" />
-    <attr name="clockColorLabel2" format="reference" />
 
     <attr name="clockColorAM" format="reference" />
     <attr name="clockColorPM" format="reference" />
     <attr name="clockColorAstro" format="reference" />
     <attr name="clockColorNautical" format="reference" />
     <attr name="clockColorCivil" format="reference" />
-
 
 </resources>

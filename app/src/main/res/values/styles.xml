@@ -32,9 +32,11 @@
         <item name="clockColorHand">@color/clockColorHand_light</item>
         <item name="clockColorLabel1">@color/clockColorLabel1_light</item>
         <item name="clockColorLabel2">@color/clockColorLabel2_light</item>
+        <item name="clockColorDay">@color/clockColorDayFace_light</item>
         <item name="clockColorDayBorder">@color/clockColorDayBorder_light</item>
         <item name="clockColorDayFill">@color/clockColorDay_light</item>
         <item name="clockColorDayText">@color/clockColorDayLabel_light</item>
+        <item name="clockColorNight">@color/clockColorNightFace_light</item>
         <item name="clockColorNightBorder">@color/clockColorNightBorder_light</item>
         <item name="clockColorNightFill">@color/clockColorNight_light</item>
         <item name="clockColorNightText">@color/clockColorNightLabel_light</item>
@@ -75,9 +77,11 @@
         <item name="clockColorHand">@color/clockColorHand_dark</item>
         <item name="clockColorLabel1">@color/clockColorLabel1_dark</item>
         <item name="clockColorLabel2">@color/clockColorLabel2_dark</item>
+        <item name="clockColorDay">@color/clockColorDayFace_dark</item>
         <item name="clockColorDayBorder">@color/clockColorDayBorder_dark</item>
         <item name="clockColorDayFill">@color/clockColorDay_dark</item>
         <item name="clockColorDayText">@color/clockColorDayLabel_dark</item>
+        <item name="clockColorNight">@color/clockColorNightFace_dark</item>
         <item name="clockColorNightBorder">@color/clockColorNightBorder_dark</item>
         <item name="clockColorNightFill">@color/clockColorNight_dark</item>
         <item name="clockColorNightText">@color/clockColorNightLabel_dark</item>
