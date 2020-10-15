@@ -7,30 +7,35 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ColorValues implements Parcelable
 {
     public abstract String[] getColorKeys();
 
     public ColorValues() {}
-
     public ColorValues(ColorValues other) {
-        for (String key : other.getColorKeys()) {
-            values.put(key, other.getColor(key));
-        }
+        loadColorValues(other);
+    }
+    protected ColorValues(Parcel in) {
+        loadColorValues(in);
+    }
+    public ColorValues(SharedPreferences prefs, String prefix) {
+        loadColorValues(prefs, prefix);
     }
 
-    protected ColorValues(Parcel in)
-    {
+    public void loadColorValues(@NonNull Parcel in) {
         for (String key : getColorKeys()) {
-            values.put(key, in.readInt());
+            setColor(key, in.readInt());
         }
     }
-
-    public ColorValues(SharedPreferences prefs, String prefix)
+    public void loadColorValues(@NonNull ColorValues other)
+    {
+        for (String key : other.getColorKeys()) {
+            setColor(key, other.getColor(key));
+        }
+    }
+    public void loadColorValues(SharedPreferences prefs, String prefix)
     {
         for (String key : getColorKeys()) {
             setColor(key, prefs.getInt(prefix + key, Color.WHITE));
