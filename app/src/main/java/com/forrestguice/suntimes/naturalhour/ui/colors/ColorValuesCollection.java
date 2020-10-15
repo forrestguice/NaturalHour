@@ -26,6 +26,7 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     protected void loadCollection(SharedPreferences prefs) {
         collection.clear();
         collection.addAll(prefs.getStringSet(KEY_COLLECTION, null));
+        selected = prefs.getString(KEY_SELECTED, null);
     }
     protected void saveCollection(SharedPreferences prefs) {
         SharedPreferences.Editor editor = prefs.edit();
@@ -39,7 +40,7 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         values.loadColorValues(prefs, colorsID);
         return values;
     }
-    protected void saveColors(SharedPreferences prefs, String colorsID, T values) {
+    protected void saveColors(SharedPreferences prefs, String colorsID, ColorValues values) {
         SharedPreferences.Editor editor = prefs.edit();
         values.putColors(editor, colorsID);
         editor.apply();
@@ -58,8 +59,8 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     }
 
     public abstract T getDefaultColors(Context context);
-    protected HashMap<String, T> colorValues = new HashMap<>();
-    protected T getColors( Context context, @NonNull String colorsID )
+    protected HashMap<String, ColorValues> colorValues = new HashMap<>();
+    public ColorValues getColors( Context context, @NonNull String colorsID )
     {
         if (!colorValues.containsKey(colorsID))
         {
@@ -70,7 +71,7 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         }
         return (colorValues.containsKey(colorsID) ? colorValues.get(colorsID) : null);
     }
-    protected void setColors(Context context, String colorsID, T values)
+    public void setColors(Context context, String colorsID, ColorValues values)
     {
         colorValues.put(colorsID, values);
         saveColors(getSharedPreferences(context), colorsID, values);
@@ -80,7 +81,7 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     }
 
     protected String selected = null;
-    public T getSelectedColors(Context context)
+    public ColorValues getSelectedColors(Context context)
     {
         if (selected != null && colorValues.containsKey(selected)) {
             return getColors(context, selected);
