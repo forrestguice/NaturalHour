@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -47,7 +48,7 @@ import java.lang.reflect.Method;
 public class ColorValuesFragment extends Fragment
 {
     protected EditText editID;
-    protected LinearLayout panel;
+    protected GridLayout panel;
 
     public ColorValuesFragment() {
         setHasOptionsMenu(true);
@@ -75,7 +76,7 @@ public class ColorValuesFragment extends Fragment
             saveButton.setOnClickListener(onSaveButtonClicked);
         }
 
-        panel = (LinearLayout) content.findViewById(R.id.colorPanel);
+        panel = (GridLayout) content.findViewById(R.id.colorPanel);
         editID = (EditText) content.findViewById(R.id.editTextID);
 
 
@@ -154,10 +155,13 @@ public class ColorValuesFragment extends Fragment
             for (int i=0; i<keys.length; i++)
             {
                 colorEdits[i] = new TextView(getActivity());
-                colorEdits[i].setText(keys[i]);
+                colorEdits[i].setText(colorValues.getLabel(keys[i]));
                 colorEdits[i].setTextColor(colorValues.getColor(keys[i]));
                 colorEdits[i].setOnClickListener(onColorEditClick(keys[i]));
-                panel.addView(colorEdits[i]);
+                panel.addView(colorEdits[i],
+                        new GridLayout.LayoutParams(GridLayout.spec(i/2, GridLayout.CENTER),
+                                GridLayout.spec(i%2, GridLayout.CENTER))
+                );
             }
 
         } else if (panel != null) {
