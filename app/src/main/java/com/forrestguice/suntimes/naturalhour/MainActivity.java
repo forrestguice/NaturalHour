@@ -44,7 +44,9 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment1;
 
 import java.lang.reflect.Method;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     public static final String DIALOG_ABOUT = "aboutDialog";
 
     private SuntimesInfo suntimesInfo = null;
-    private BottomSheetBehavior bottomSheet;
+    private BottomSheetBehavior<View> bottomSheet;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -179,14 +181,40 @@ public class MainActivity extends AppCompatActivity
 
     protected void showBottomSheet()
     {
-        FragmentManager fragments = getSupportFragmentManager();
-        ColorValuesFragment1 sheetDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
-        if (sheetDialog != null)
+        final FragmentManager fragments = getSupportFragmentManager();
+
+        final ColorValuesCollectionFragment sheetDialog0 = (ColorValuesCollectionFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+        final ColorValuesFragment1 sheetDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+
+        if (sheetDialog0 != null && naturalHour != null)
         {
-            NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
-            if (naturalHour != null) {
-                sheetDialog.setColorValues(naturalHour.getClockColors());
-            }
+            final ColorValuesCollection clockColors = naturalHour.getColorCollection();
+            sheetDialog0.setColorCollection(clockColors);
+            sheetDialog0.setFragmentListener(new ColorValuesCollectionFragment.FragmentListener()
+            {
+                @Override
+                public void onEditClicked(String colorsID) {
+                    if (sheetDialog != null)
+                    {
+                        clockColors.setSelectedColorsID(MainActivity.this, colorsID);
+                        ColorValues selectedColors = clockColors.getColors(MainActivity.this, colorsID);
+                        naturalHour.setClockColors(selectedColors);
+                        sheetDialog.setColorValues(selectedColors);
+                    }
+                }
+
+                @Override
+                public void onItemSelected(ColorValuesCollectionFragment.ColorValuesItem item) {
+                    //if (sheetDialog != null) {
+                    //    sheetDialog.setColorValues(clockColors.getColors(MainActivity.this, item.colorsID));
+                    //}
+                }
+            });
+        }
+
+        if (sheetDialog != null && naturalHour != null) {
+            sheetDialog.setColorValues(naturalHour.getClockColors());
         }
         bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
