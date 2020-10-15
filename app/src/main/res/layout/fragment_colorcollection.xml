@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/grey_900">
+
+    <Spinner android:id="@+id/colorvalues_selector"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editButton"
+        tools:listitem="@android:layout/simple_list_item_1" />
+
+    <ImageButton android:id="@+id/editButton"
+        android:src="?attr/icAbout" style="@style/Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/colorvalues_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Edit" />
+
+</android.support.constraint.ConstraintLayout>
