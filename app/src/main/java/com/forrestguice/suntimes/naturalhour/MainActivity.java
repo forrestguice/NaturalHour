@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
-            case R.id.action_test:
+            case R.id.action_colors:
                 showBottomSheet();
                 return true;
 

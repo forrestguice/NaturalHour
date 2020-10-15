@@ -25,6 +25,7 @@
     <string name="timeformat_12hr">12-hour</string>
     <string name="timeformat_24hr">24-hour</string>
 
+    <string name="action_colors">Colors</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>

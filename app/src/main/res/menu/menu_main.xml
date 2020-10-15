@@ -4,10 +4,10 @@
     tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
 
     <item
-        android:id="@+id/action_test"
+        android:id="@+id/action_colors"
         android:orderInCategory="600"
-        android:icon="?attr/icSettings"
-        android:title="Colors"
+        android:icon="?attr/icColors"
+        android:title="@string/action_colors"
         app:showAsAction="never" />
 
     <item

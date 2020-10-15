@@ -4,8 +4,9 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/grey_900" android:paddingStart="8dp" android:paddingEnd="8dp">
 
-    <TextView android:id="@+id/colorvalues_selector_label" android:visibility="gone"
-        android:text="Colors:" android:textStyle="bold"
+    <TextView android:id="@+id/colorvalues_selector_label"
+        android:drawableStart="?attr/icColors" android:drawableLeft="?attr/icColors"
+        android:text="" android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@+id/colorvalues_selector" app:layout_constraintBottom_toBottomOf="@+id/colorvalues_selector" app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/colorvalues_selector"
         android:labelFor="@+id/colorvalues_selector"

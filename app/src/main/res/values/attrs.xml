@@ -3,6 +3,7 @@
 
     <attr name="icDone" format="reference" />
     <attr name="icEdit" format="reference" />
+    <attr name="icColors" format="reference" />
 
     <attr name="icToday" format="reference" />
     <attr name="icSettings" format="reference" />
