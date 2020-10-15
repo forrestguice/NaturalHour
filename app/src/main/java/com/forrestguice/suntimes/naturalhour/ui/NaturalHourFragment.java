@@ -52,11 +52,13 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
+import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
@@ -92,6 +94,26 @@ public class NaturalHourFragment extends Fragment
     public ColorValues getClockColors() {
         return clockColors;
     }
+    public void setClockColors(ColorValues colors) {
+        clockColors = colors;
+        cardAdapter.getOptions().colors = clockColors;
+        cardAdapter.notifyDataSetChanged();
+    }
+
+    private ColorValuesCollection colorCollection;
+    public void setColorCollection(ColorValuesCollection collection) {
+        colorCollection = collection;
+    }
+    public ColorValuesCollection getColorCollection() {
+        return colorCollection;
+    }
+
+    protected void initClockColors(Context context)
+    {
+        colorCollection = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
+        colorCollection.setColors(context, "dark", NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, true));
+        colorCollection.setColors(context, "light", NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, false));
+    }
 
     public NaturalHourFragment() {
         setHasOptionsMenu(true);
@@ -113,8 +135,11 @@ public class NaturalHourFragment extends Fragment
             if (info == null) {
                 info = SuntimesInfo.queryInfo(context);
             }
+            if (colorCollection == null) {
+                initClockColors(getActivity());
+            }
             if (clockColors == null) {
-                clockColors = new NaturalHourClockBitmap.ClockColorValues(context);
+                clockColors = colorCollection.getSelectedColors(getActivity());
             }
         }
 

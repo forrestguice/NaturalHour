@@ -46,6 +46,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator2;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -842,7 +843,32 @@ public class NaturalHourClockBitmap
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * ClockColorValues
+     * ColorValuesCollection
+     */
+    public static class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCollection
+    {
+        public static final String PREFS_CLOCKCOLORS = "prefs_clockcolors";
+
+        public ClockColorValuesCollection() {
+            super();
+        }
+        public ClockColorValuesCollection(Context context) {
+            super(context);
+        }
+
+        @Override
+        public String getSharedPrefsName() {
+            return PREFS_CLOCKCOLORS;
+        }
+
+        @Override
+        public ColorValues getDefaultColors(Context context) {
+            return new NaturalHourClockBitmap.ClockColorValues(context);
+        }
+    }
+
+    /**
+     * ColorValues
      */
     public static class ClockColorValues extends ColorValues implements Parcelable
     {
