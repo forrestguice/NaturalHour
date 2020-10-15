@@ -31,6 +31,7 @@ import java.util.ArrayList;
 public abstract class ColorValues implements Parcelable
 {
     public abstract String[] getColorKeys();
+    public int getFallbackColor() { return Color.WHITE; }
 
     public ColorValues() {}
     public ColorValues(ColorValues other) {
@@ -47,24 +48,55 @@ public abstract class ColorValues implements Parcelable
         for (String key : getColorKeys()) {
             setColor(key, in.readInt());
         }
+        setID(in.readString());
     }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        for (String key : getColorKeys()) {
+            dest.writeInt(values.getAsInteger(key));
+        }
+        dest.writeString(getID());
+    }
+
     public void loadColorValues(@NonNull ColorValues other)
     {
         for (String key : other.getColorKeys()) {
             setColor(key, other.getColor(key));
         }
+        setID(other.getID());
     }
+
     public void loadColorValues(SharedPreferences prefs, String prefix)
     {
         for (String key : getColorKeys()) {
-            setColor(key, prefs.getInt(prefix + key, Color.WHITE));
+            setColor(key, prefs.getInt(prefix + key, getFallbackColor()));
         }
+        setID(prefs.getString(prefix + KEY_ID, null));
+    }
+    public void putColors(SharedPreferences.Editor prefs, String prefix)
+    {
+        for (String key : getColorKeys()) {
+            prefs.putInt(prefix + key, values.getAsInteger(key));
+        }
+        prefs.apply();
+    }
+    public void putColors(ContentValues other) {
+        other.putAll(values);
     }
 
     protected ContentValues values = new ContentValues();
     public ContentValues getContentValues() {
         return new ContentValues(values);
     }
+
+    public static final String KEY_ID = "colorValuesID";
+    public void setID( String colorsID ) {
+        values.put(KEY_ID, colorsID);
+    }
+    public String getID() {
+        return values.getAsString(KEY_ID);
+    }
+
     public void setColor(String key, int color) {
         values.put(key, color);
     }
@@ -73,7 +105,7 @@ public abstract class ColorValues implements Parcelable
     {
         if (values.containsKey(key)) {
             return values.getAsInteger(key);
-        } else return Color.WHITE;
+        } else return getFallbackColor();
     }
 
     public ArrayList<Integer> getColors()
@@ -83,18 +115,6 @@ public abstract class ColorValues implements Parcelable
             list.add(getColor(key));
         }
         return list;
-    }
-
-    public void putColors(SharedPreferences.Editor prefs, String prefix)
-    {
-        for (String key : getColorKeys()) {
-            prefs.putInt(prefix + key, values.getAsInteger(key));
-        }
-        prefs.apply();
-    }
-
-    public void putColors(ContentValues other) {
-        other.putAll(values);
     }
 
     public int colorKeyIndex(@NonNull String key)
@@ -111,13 +131,6 @@ public abstract class ColorValues implements Parcelable
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        for (String key : getColorKeys()) {
-            dest.writeInt(values.getAsInteger(key));
-        }
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
@@ -128,7 +141,13 @@ public abstract class ColorValues implements Parcelable
     @Override
     public String toString()
     {
-        StringBuilder result = new StringBuilder("--- # ColorValues\n");
+        StringBuilder result = new StringBuilder("--- # ColorValues");
+        String valuesID = getID();
+        if (valuesID != null) {
+            result.append(valuesID);
+        }
+        result.append("\n");
+
         for (String key : getColorKeys())
         {
             result.append("- ");
