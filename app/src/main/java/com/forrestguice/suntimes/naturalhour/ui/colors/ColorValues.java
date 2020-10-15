@@ -78,6 +78,7 @@ public abstract class ColorValues implements Parcelable
         for (String key : getColorKeys()) {
             prefs.putInt(prefix + key, values.getAsInteger(key));
         }
+        prefs.putString(prefix + KEY_ID, getID());
         prefs.apply();
     }
     public void putColors(ContentValues other) {
@@ -141,7 +142,7 @@ public abstract class ColorValues implements Parcelable
     @Override
     public String toString()
     {
-        StringBuilder result = new StringBuilder("--- # ColorValues");
+        StringBuilder result = new StringBuilder("--- # ColorValues ");
         String valuesID = getID();
         if (valuesID != null) {
             result.append(valuesID);

@@ -21,6 +21,7 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 
 import java.lang.reflect.ParameterizedType;
@@ -44,7 +45,8 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     }
     protected void loadCollection(SharedPreferences prefs) {
         collection.clear();
-        collection.addAll(prefs.getStringSet(KEY_COLLECTION, null));
+        Set<String> ids = prefs.getStringSet(KEY_COLLECTION, null);
+        collection.addAll(ids != null ? ids : new TreeSet<String>());
         selected = prefs.getString(KEY_SELECTED, null);
     }
     protected void saveCollection(SharedPreferences prefs) {
@@ -53,9 +55,9 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         editor.apply();
     }
 
-    protected T loadColors(SharedPreferences prefs, String colorsID)
+    protected ColorValues loadColors(Context context, SharedPreferences prefs, String colorsID)
     {
-        T values = getInstanceOfT();
+        ColorValues values = getDefaultColors(context);
         values.loadColorValues(prefs, colorsID);
         return values;
     }
@@ -65,30 +67,22 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         editor.apply();
     }
 
-    private T getInstanceOfT()
-    {
-        try {
-            ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
-            @SuppressWarnings("unchecked")
-            Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
-            return type.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public abstract T getDefaultColors(Context context);
     protected HashMap<String, ColorValues> colorValues = new HashMap<>();
     public ColorValues getColors( Context context, @NonNull String colorsID )
     {
         if (!colorValues.containsKey(colorsID))
         {
-            T values = loadColors(getSharedPreferences(context), colorsID);
+            ColorValues values = loadColors(context, getSharedPreferences(context), colorsID);
             if (values != null) {
                 colorValues.put(colorsID, values);
             }
         }
         return (colorValues.containsKey(colorsID) ? colorValues.get(colorsID) : null);
+    }
+    public void setColors(Context context, ColorValues values) {
+        String colorsID = values.getID();
+        setColors(context, colorsID != null ? colorsID : "", values);
     }
     public void setColors(Context context, String colorsID, ColorValues values)
     {
@@ -102,7 +96,7 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     protected String selected = null;
     public ColorValues getSelectedColors(Context context)
     {
-        if (selected != null && colorValues.containsKey(selected)) {
+        if (selected != null) {
             return getColors(context, selected);
         } else return getDefaultColors(context);
     }

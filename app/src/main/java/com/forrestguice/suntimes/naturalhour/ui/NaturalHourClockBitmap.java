@@ -990,6 +990,7 @@ public class NaturalHourClockBitmap
             for (int i=0; i<COLORS.length; i++) {
                 values.setColor(COLORS[i], ContextCompat.getColor(context, defaultResID[i]));
             }
+            values.setID(darkTheme ? "dark" : "light");   // TODO: i18n
             return values;
         }
     }

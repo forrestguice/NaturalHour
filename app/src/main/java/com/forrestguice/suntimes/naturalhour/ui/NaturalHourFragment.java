@@ -52,10 +52,8 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
-import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
-import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
@@ -111,8 +109,8 @@ public class NaturalHourFragment extends Fragment
     protected void initClockColors(Context context)
     {
         colorCollection = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
-        colorCollection.setColors(context, "dark", NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, true));
-        colorCollection.setColors(context, "light", NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, false));
+        colorCollection.setColors(context, NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, true));
+        colorCollection.setColors(context, NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, false));
     }
 
     public NaturalHourFragment() {
