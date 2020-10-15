@@ -171,6 +171,27 @@
         <item>twelfth&#160;hour of the night</item>
     </string-array>
 
+    <string name="clockface_face">Face</string>
+    <string name="clockface_plate">Plate</string>
+    <string name="clockface_frame">Frame</string>
+    <string name="clockface_face_am">AM</string>
+    <string name="clockface_face_pm">PM</string>
+    <string name="clockface_face_astro">Astronomical Twilight</string>
+    <string name="clockface_face_nautical">Nautical Twilight</string>
+    <string name="clockface_face_civil">Civil Twilight</string>
+    <string name="clockface_hand">Hand</string>
+    <string name="clockface_center">Center</string>
+    <string name="clockface_label">Label1</string>
+    <string name="clockface_label1">Label2</string>
+    <string name="clockface_ring_day">Day Hours</string>
+    <string name="clockface_ring_night">Night Hours</string>
+    <string name="clockface_face_day">Day (Face)</string>
+    <string name="clockface_face_night">Night (Face)</string>
+    <string name="clockface_ring_night_stroke">Night Hours (stroke)</string>
+    <string name="clockface_ring_day_stroke">Day Hours (stroke)</string>
+    <string name="clockface_ring_day_label">Day Hours (label)</string>
+    <string name="clockface_ring_night_label">Night Hours (label)</string>
+
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
         <item>@string/help_general</item>
@@ -206,6 +227,5 @@
         Copyright &#169 2020 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
-
-
+    
 </resources>
