@@ -2,6 +2,8 @@
 <resources>
 
     <attr name="icDone" format="reference" />
+    <attr name="icEdit" format="reference" />
+
     <attr name="icToday" format="reference" />
     <attr name="icSettings" format="reference" />
     <attr name="icHelp" format="reference" />

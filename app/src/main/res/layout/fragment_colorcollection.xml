@@ -20,7 +20,7 @@
         tools:listitem="@android:layout/simple_list_item_1" />
 
     <ImageButton android:id="@+id/editButton"
-        android:src="?attr/icAbout" style="@style/Widget.AppCompat.ActionButton"
+        android:src="?attr/icEdit" style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/colorvalues_selector"
