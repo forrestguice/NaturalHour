@@ -193,12 +193,22 @@ public class MainActivity extends AppCompatActivity
         {
             final ColorValuesCollection clockColors = naturalHour.getColorCollection();
             listDialog.setColorCollection(clockColors);
+            if (listDialog.getView() != null) {
+                listDialog.getView().setVisibility(View.VISIBLE);
+            }
             listDialog.setFragmentListener(new ColorValuesCollectionFragment.FragmentListener()
             {
                 @Override
                 public void onEditClicked(String colorsID) {
                     if (editDialog != null) {
                         editDialog.setColorValues(clockColors.getColors(MainActivity.this, colorsID));
+                        if (listDialog.getView() != null) {
+                            listDialog.getView().setVisibility(View.GONE);
+                        }
+                        if (editDialog.getView() != null) {
+                            editDialog.getView().setVisibility(View.VISIBLE);
+                        }
+                        bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
                     }
                 }
 
@@ -215,6 +225,9 @@ public class MainActivity extends AppCompatActivity
         if (editDialog != null && naturalHour != null)
         {
             final ColorValuesCollection clockColors = naturalHour.getColorCollection();
+            if (editDialog.getView() != null) {
+                editDialog.getView().setVisibility(View.GONE);
+            }
             editDialog.setColorValues(naturalHour.getClockColors());
             editDialog.setFragmentListener(new ColorValuesFragment.FragmentListener() {
                 @Override
