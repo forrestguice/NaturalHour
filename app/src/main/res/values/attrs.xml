@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="icBack" format="reference" />
     <attr name="icDone" format="reference" />
     <attr name="icEdit" format="reference" />
     <attr name="icDelete" format="reference" />

@@ -11,6 +11,7 @@
         <item name="colorAction">@color/colorAction_light</item>
         <item name="colorDisabled">@color/colorDisabled_light</item>
 
+        <item name="icBack">@drawable/ic_back_light</item>
         <item name="icDone">@drawable/ic_done_light</item>
         <item name="icEdit">@drawable/ic_edit_light</item>
         <item name="icDelete">@drawable/ic_delete_light</item>
@@ -60,6 +61,7 @@
         <item name="colorAction">@color/colorAction_dark</item>
         <item name="colorDisabled">@color/colorDisabled_dark</item>
 
+        <item name="icBack">@drawable/ic_back</item>
         <item name="icDone">@drawable/ic_done</item>
         <item name="icEdit">@drawable/ic_edit</item>
         <item name="icDelete">@drawable/ic_delete</item>

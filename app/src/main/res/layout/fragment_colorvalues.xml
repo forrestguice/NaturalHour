@@ -10,7 +10,7 @@
         android:gravity="end">
 
         <ImageButton android:id="@+id/cancelButton"
-            style="@style/Widget.AppCompat.ActionButton" android:src="?attr/homeAsUpIndicator"
+            style="@style/Widget.AppCompat.ActionButton" android:src="?attr/icBack"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:contentDescription="@android:string/cancel" />
 
