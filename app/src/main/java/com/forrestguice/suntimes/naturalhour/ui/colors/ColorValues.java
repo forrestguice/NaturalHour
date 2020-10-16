@@ -73,16 +73,27 @@ public abstract class ColorValues implements Parcelable
             setColor(key, prefs.getInt(prefix + key, getFallbackColor()));
         }
     }
-    public void putColors(SharedPreferences.Editor prefs, String prefix)
+    public void putColors(SharedPreferences prefs, String prefix)
     {
-        prefs.putString(prefix + KEY_ID, getID());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(prefix + KEY_ID, getID());
         for (String key : getColorKeys()) {
-            prefs.putInt(prefix + key, values.getAsInteger(key));
+            editor.putInt(prefix + key, values.getAsInteger(key));
         }
-        prefs.apply();
+        editor.apply();
     }
     public void putColors(ContentValues other) {
         other.putAll(values);
+    }
+
+    public void removeColors(SharedPreferences prefs, String prefix)
+    {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(prefix + KEY_ID);
+        for (String key : getColorKeys()) {
+            editor.remove(prefix + key);
+        }
+        editor.apply();
     }
 
     protected ContentValues values = new ContentValues();

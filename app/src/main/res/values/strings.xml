@@ -1,6 +1,7 @@
 <resources>
 
     <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
     <string name="action_done">Done</string>
     <string name="action_share">Share</string>
     <string name="action_overflow">Menu</string>
@@ -195,8 +196,9 @@
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
 
-    <string name="hint_edittext_colorid">Name</string>   <!-- edittext hint -->
-    <string name="msg_colors_saved">Saved %0$s</string>    <!-- toast -->
+    <string name="hint_edittext_colorid">Name</string>       <!-- edittext hint -->
+    <string name="msg_colors_saved">Saved %s</string>        <!-- toast -->
+    <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>

@@ -62,9 +62,13 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         return values;
     }
     protected void saveColors(SharedPreferences prefs, String colorsID, ColorValues values) {
-        SharedPreferences.Editor editor = prefs.edit();
-        values.putColors(editor, colorsID);
-        editor.apply();
+        values.putColors(prefs, colorsID);
+    }
+    protected void removeColors(Context context, SharedPreferences prefs, String colorsID) {
+        ColorValues values = getColors(context, colorsID);
+        if (values != null) {
+            values.removeColors(prefs, colorsID);
+        }
     }
 
     public abstract T getDefaultColors(Context context);
@@ -89,6 +93,14 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         colorValues.put(colorsID, values);
         saveColors(getSharedPreferences(context), colorsID, values);
         if (collection.add(colorsID)) {
+            saveCollection(getSharedPreferences(context));
+        }
+    }
+
+    public void removeColors(Context context, String colorsID) {
+        colorValues.remove(colorsID);
+        removeColors(context, getSharedPreferences(context), colorsID);
+        if (collection.remove(colorsID)) {
             saveCollection(getSharedPreferences(context));
         }
     }

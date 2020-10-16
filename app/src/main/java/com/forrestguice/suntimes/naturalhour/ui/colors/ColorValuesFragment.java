@@ -238,6 +238,13 @@ public class ColorValuesFragment extends Fragment
         startActivity(Intent.createChooser(intent, null));
     }
 
+    protected void deleteColors(Context context)
+    {
+        if (listener != null) {
+            listener.onDeleteClicked(colorValues.getID());
+        }
+    }
+
     public void showOverflowMenu(Context context, View v)
     {
         PopupMenu popup = new PopupMenu(context, v);
@@ -255,6 +262,10 @@ public class ColorValuesFragment extends Fragment
         {
             switch (item.getItemId())
             {
+                case R.id.action_colors_delete:
+                    deleteColors(getActivity());
+                    return true;
+
                 case R.id.action_colors_share:
                     shareColors(getActivity());
                     return true;
@@ -307,6 +318,7 @@ public class ColorValuesFragment extends Fragment
     {
         void onCancelClicked();
         void onSaveClicked(String colorsID, ColorValues values);
+        void onDeleteClicked(String colorsID);
     }
 
     protected FragmentListener listener = null;

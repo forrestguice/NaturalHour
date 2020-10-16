@@ -10,4 +10,11 @@
         android:title="@string/action_share"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_colors_delete"
+        android:orderInCategory="200"
+        android:icon="?attr/icDelete"
+        android:title="@string/action_delete"
+        app:showAsAction="never" />
+
 </menu>

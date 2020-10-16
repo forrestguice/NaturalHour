@@ -249,6 +249,13 @@ public class MainActivity extends AppCompatActivity
                     hideBottomSheet();
                     Toast.makeText(MainActivity.this, getString(R.string.msg_colors_saved, colorsID), Toast.LENGTH_SHORT).show();
                 }
+
+                @Override
+                public void onDeleteClicked(String colorsID) {
+                    clockColors.removeColors(MainActivity.this, colorsID);
+                    Toast.makeText(MainActivity.this, getString(R.string.msg_colors_deleted, colorsID), Toast.LENGTH_SHORT).show();
+                    hideBottomSheet();
+                }
             });
         }
         bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
