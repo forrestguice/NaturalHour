@@ -1,6 +1,7 @@
 <resources>
 
     <string name="action_done">Done</string>
+    <string name="action_share">Share</string>
 
     <string name="action_seasons">Seasons</string>
     <string name="action_today">Today</string>
@@ -227,5 +228,5 @@
         Copyright &#169 2020 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
-    
+
 </resources>

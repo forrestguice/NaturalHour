@@ -997,6 +997,7 @@ public class NaturalHourClockBitmap
             int[] defaultResID = darkTheme ? COLORS_RES_DARK : COLORS_RES_LIGHT;
             for (int i=0; i<COLORS.length; i++) {
                 values.setColor(COLORS[i], ContextCompat.getColor(context, defaultResID[i]));
+                values.setLabel(COLORS[i], context.getString(LABELS_RESID[i]));
             }
             values.setID(darkTheme ? "dark" : "light");   // TODO: i18n
             return values;
