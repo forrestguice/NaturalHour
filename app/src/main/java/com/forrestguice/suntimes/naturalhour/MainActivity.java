@@ -46,10 +46,7 @@ import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment1;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
 
 import java.lang.reflect.Method;
 import java.util.TimeZone;
@@ -184,74 +181,32 @@ public class MainActivity extends AppCompatActivity
     protected void showBottomSheet()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-        final ColorValuesSelectFragment listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
-        final ColorValuesEditFragment1 editDialog = (ColorValuesEditFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        final ColorValuesSheetFragment sheetDialog = (ColorValuesSheetFragment) fragments.findFragmentById(R.id.colorSheetFragment);
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
-
-        if (listDialog != null && editDialog != null && naturalHour != null)
+        if (sheetDialog != null && naturalHour != null)
         {
-            final ColorValuesCollection clockColors = naturalHour.getColorCollection();
-            listDialog.setColorCollection(clockColors);
-            if (listDialog.getView() != null) {
-                listDialog.getView().setVisibility(View.VISIBLE);
-                bottomSheet.setPeekHeight(listDialog.getView().getHeight());
-            }
-            listDialog.setFragmentListener(new ColorValuesSelectFragment.FragmentListener()
+            sheetDialog.setColorCollection(naturalHour.getColorCollection());
+            sheetDialog.updateViews(naturalHour.getClockColors());
+            sheetDialog.setFragmentListener(new ColorValuesSheetFragment.FragmentListener()
             {
                 @Override
-                public void onEditClicked(String colorsID) {
-                    editDialog.setColorValues(clockColors.getColors(MainActivity.this, colorsID));
-                    if (listDialog.getView() != null) {
-                        listDialog.getView().setVisibility(View.GONE);
-                    }
-                    if (editDialog.getView() != null) {
-                        editDialog.getView().setVisibility(View.VISIBLE);
-                    }
+                public void requestPeekHeight(int height) {
+                    bottomSheet.setPeekHeight(height);
+                }
+
+                @Override
+                public void requestHideSheet() {
+                    hideBottomSheet();
+                }
+
+                @Override
+                public void requestExpandSheet() {
                     bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
 
                 @Override
-                public void onItemSelected(ColorValuesSelectFragment.ColorValuesItem item)
-                {
-                    clockColors.setSelectedColorsID(MainActivity.this, item.colorsID);
-                    ColorValues selectedColors = clockColors.getColors(MainActivity.this, item.colorsID);
-                    naturalHour.setClockColors(selectedColors);
-                }
-            });
-
-            if (editDialog.getView() != null) {
-                editDialog.getView().setVisibility(View.GONE);
-            }
-            editDialog.setColorValues(naturalHour.getClockColors());
-            editDialog.setFragmentListener(new ColorValuesEditFragment.FragmentListener()
-            {
-                @Override
-                public void onCancelClicked() {
-                    if (editDialog.getView() != null) {
-                        editDialog.getView().setVisibility(View.GONE);
-                    }
-                    if (listDialog.getView() != null) {
-                        listDialog.getView().setVisibility(View.VISIBLE);
-                    }
-                    clockColors.clearCache();    // cached instance may have been modified
-                    naturalHour.setClockColors(clockColors.getSelectedColors(MainActivity.this));
-                }
-
-                @Override
-                public void onSaveClicked(String colorsID, ColorValues values)
-                {
-                    clockColors.clearCache();
-                    clockColors.setColors(MainActivity.this, colorsID, values);
-                    clockColors.setSelectedColorsID(MainActivity.this, colorsID);
-                    hideBottomSheet();
-                    Toast.makeText(MainActivity.this, getString(R.string.msg_colors_saved, colorsID), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onDeleteClicked(String colorsID) {
-                    clockColors.removeColors(MainActivity.this, colorsID);
-                    Toast.makeText(MainActivity.this, getString(R.string.msg_colors_deleted, colorsID), Toast.LENGTH_SHORT).show();
-                    hideBottomSheet();
+                public void onColorValuesSelected(ColorValues values) {
+                    naturalHour.setClockColors(values);
                 }
             });
         }
