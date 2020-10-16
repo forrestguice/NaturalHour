@@ -14,6 +14,7 @@
         <item name="icDone">@drawable/ic_done_light</item>
         <item name="icEdit">@drawable/ic_edit_light</item>
         <item name="icColors">@drawable/ic_palette_light</item>
+        <item name="icShare">@drawable/ic_share_light</item>
         <item name="icToday">@drawable/ic_today_light</item>
         <item name="icSettings">@drawable/ic_settings_light</item>
         <item name="icHelp">@drawable/ic_help_light</item>
@@ -61,6 +62,7 @@
         <item name="icDone">@drawable/ic_done</item>
         <item name="icEdit">@drawable/ic_edit</item>
         <item name="icColors">@drawable/ic_palette</item>
+        <item name="icShare">@drawable/ic_share</item>
         <item name="icToday">@drawable/ic_today</item>
         <item name="icSettings">@drawable/ic_settings</item>
         <item name="icHelp">@drawable/ic_help</item>

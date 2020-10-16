@@ -6,8 +6,8 @@
     <item
         android:id="@+id/action_colors_share"
         android:orderInCategory="100"
-        android:icon="?attr/icAbout"
         android:title="Share"
+        android:icon="?attr/icShare"
         app:showAsAction="never" />
 
 </menu>
