@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         final ColorValuesFragment1 editDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
 
-        if (listDialog != null && naturalHour != null)
+        if (listDialog != null && editDialog != null && naturalHour != null)
         {
             final ColorValuesCollection clockColors = naturalHour.getColorCollection();
             listDialog.setColorCollection(clockColors);
@@ -200,16 +200,14 @@ public class MainActivity extends AppCompatActivity
             {
                 @Override
                 public void onEditClicked(String colorsID) {
-                    if (editDialog != null) {
-                        editDialog.setColorValues(clockColors.getColors(MainActivity.this, colorsID));
-                        if (listDialog.getView() != null) {
-                            listDialog.getView().setVisibility(View.GONE);
-                        }
-                        if (editDialog.getView() != null) {
-                            editDialog.getView().setVisibility(View.VISIBLE);
-                        }
-                        bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    editDialog.setColorValues(clockColors.getColors(MainActivity.this, colorsID));
+                    if (listDialog.getView() != null) {
+                        listDialog.getView().setVisibility(View.GONE);
                     }
+                    if (editDialog.getView() != null) {
+                        editDialog.getView().setVisibility(View.VISIBLE);
+                    }
+                    bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
 
                 @Override
@@ -220,11 +218,7 @@ public class MainActivity extends AppCompatActivity
                     naturalHour.setClockColors(selectedColors);
                 }
             });
-        }
 
-        if (listDialog != null && editDialog != null && naturalHour != null)
-        {
-            final ColorValuesCollection clockColors = naturalHour.getColorCollection();
             if (editDialog.getView() != null) {
                 editDialog.getView().setVisibility(View.GONE);
             }
