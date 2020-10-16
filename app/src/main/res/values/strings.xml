@@ -195,7 +195,8 @@
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
 
-    <string name="hint_edittext_colorid">Name</string>
+    <string name="hint_edittext_colorid">Name</string>   <!-- edittext hint -->
+    <string name="msg_colors_saved">Saved %0$s</string>    <!-- toast -->
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>

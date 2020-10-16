@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity
     protected void showBottomSheet()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-
         final ColorValuesCollectionFragment listDialog = (ColorValuesCollectionFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
         final ColorValuesFragment1 editDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
@@ -245,10 +244,10 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onSaveClicked(String colorsID, ColorValues values)
                 {
-                    Toast.makeText(MainActivity.this, "Saved " + colorsID, Toast.LENGTH_SHORT).show();
                     clockColors.setColors(MainActivity.this, colorsID, values);
                     clockColors.setSelectedColorsID(MainActivity.this, colorsID);
                     hideBottomSheet();
+                    Toast.makeText(MainActivity.this, getString(R.string.msg_colors_saved, colorsID), Toast.LENGTH_SHORT).show();
                 }
             });
         }
