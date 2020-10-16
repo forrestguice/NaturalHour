@@ -13,6 +13,7 @@
 
         <item name="icBack">@drawable/ic_back_light</item>
         <item name="icDone">@drawable/ic_done_light</item>
+        <item name="icAdd">@drawable/ic_add_light</item>
         <item name="icEdit">@drawable/ic_edit_light</item>
         <item name="icDelete">@drawable/ic_delete_light</item>
         <item name="icColors">@drawable/ic_palette_light</item>
@@ -63,6 +64,7 @@
 
         <item name="icBack">@drawable/ic_back</item>
         <item name="icDone">@drawable/ic_done</item>
+        <item name="icAdd">@drawable/ic_add</item>
         <item name="icEdit">@drawable/ic_edit</item>
         <item name="icDelete">@drawable/ic_delete</item>
         <item name="icColors">@drawable/ic_palette</item>
