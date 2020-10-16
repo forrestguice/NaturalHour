@@ -76,6 +76,11 @@ public class ColorValuesFragment extends Fragment
             saveButton.setOnClickListener(onSaveButtonClicked);
         }
 
+        ImageButton cancelButton = (ImageButton) content.findViewById(R.id.cancelButton);
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(onCancelButtonClicked);
+        }
+
         panel = (GridLayout) content.findViewById(R.id.colorPanel);
         editID = (EditText) content.findViewById(R.id.editTextID);
 
@@ -90,7 +95,6 @@ public class ColorValuesFragment extends Fragment
             onSaveColorValues();
         }
     };
-
     protected void onSaveColorValues()
     {
         String colorsID = editID.getText().toString();
@@ -98,6 +102,18 @@ public class ColorValuesFragment extends Fragment
 
         if (listener != null) {
             listener.onSaveClicked(colorsID, colorValues);
+        }
+    }
+
+    private View.OnClickListener onCancelButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onCancelled();
+        }
+    };
+    protected void onCancelled() {
+        if (listener != null) {
+            listener.onCancelClicked();
         }
     }
 
@@ -289,6 +305,7 @@ public class ColorValuesFragment extends Fragment
      */
     public interface FragmentListener
     {
+        void onCancelClicked();
         void onSaveClicked(String colorsID, ColorValues values);
     }
 

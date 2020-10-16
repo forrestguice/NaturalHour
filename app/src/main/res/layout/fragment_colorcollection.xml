@@ -10,7 +10,8 @@
         app:layout_constraintTop_toTopOf="@+id/colorvalues_selector" app:layout_constraintBottom_toBottomOf="@+id/colorvalues_selector" app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/colorvalues_selector"
         android:labelFor="@+id/colorvalues_selector"
-        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:contentDescription="@string/action_colors" />
 
     <Spinner android:id="@+id/colorvalues_selector"
         android:layout_width="0dp" android:layout_height="wrap_content"
@@ -24,6 +25,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/colorvalues_selector"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="Edit" />
+        android:contentDescription="@string/action_edit" />
 
 </android.support.constraint.ConstraintLayout>

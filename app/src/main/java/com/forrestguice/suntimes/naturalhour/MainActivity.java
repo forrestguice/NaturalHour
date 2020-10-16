@@ -223,14 +223,25 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        if (editDialog != null && naturalHour != null)
+        if (listDialog != null && editDialog != null && naturalHour != null)
         {
             final ColorValuesCollection clockColors = naturalHour.getColorCollection();
             if (editDialog.getView() != null) {
                 editDialog.getView().setVisibility(View.GONE);
             }
             editDialog.setColorValues(naturalHour.getClockColors());
-            editDialog.setFragmentListener(new ColorValuesFragment.FragmentListener() {
+            editDialog.setFragmentListener(new ColorValuesFragment.FragmentListener()
+            {
+                @Override
+                public void onCancelClicked() {
+                    if (editDialog.getView() != null) {
+                        editDialog.getView().setVisibility(View.GONE);
+                    }
+                    if (listDialog.getView() != null) {
+                        listDialog.getView().setVisibility(View.VISIBLE);
+                    }
+                }
+
                 @Override
                 public void onSaveClicked(String colorsID, ColorValues values)
                 {

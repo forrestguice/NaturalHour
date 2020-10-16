@@ -9,22 +9,29 @@
         app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
         android:gravity="end">
 
+        <ImageButton android:id="@+id/cancelButton"
+            style="@style/Widget.AppCompat.ActionButton" android:src="?attr/homeAsUpIndicator"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:contentDescription="@android:string/cancel" />
+
         <EditText android:id="@+id/editTextID"
             android:layout_width="0dp" android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp" android:layout_marginRight="0dp"
-            android:layout_marginStart="8dp" android:layout_marginEnd="0dp" />
+            android:layout_marginStart="8dp" android:layout_marginEnd="0dp"
+            android:inputType="text"
+            android:hint="@string/hint_edittext_colorid"
+            android:importantForAutofill="no" />
 
         <ImageButton android:id="@+id/saveButton"
-            style="@style/Widget.AppCompat.ActionButton"
-            android:src="?attr/icDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/Widget.AppCompat.ActionButton" android:src="?attr/icDone"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:contentDescription="@string/action_done" />
 
         <ImageButton android:id="@+id/overflow"
             style="@style/Widget.AppCompat.ActionButton.Overflow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:contentDescription="@string/action_overflow" />
 
     </LinearLayout>
 

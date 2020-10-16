@@ -1,7 +1,9 @@
 <resources>
 
+    <string name="action_edit">Edit</string>
     <string name="action_done">Done</string>
     <string name="action_share">Share</string>
+    <string name="action_overflow">Menu</string>
 
     <string name="action_seasons">Seasons</string>
     <string name="action_today">Today</string>
@@ -193,6 +195,8 @@
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
 
+    <string name="hint_edittext_colorid">Name</string>
+
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
         <item>@string/help_general</item>
@@ -228,5 +232,6 @@
         Copyright &#169 2020 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
+
 
 </resources>
