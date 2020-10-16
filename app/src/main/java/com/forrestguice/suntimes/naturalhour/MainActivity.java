@@ -47,9 +47,9 @@ import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionFragment;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment1;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment1;
 
 import java.lang.reflect.Method;
 import java.util.TimeZone;
@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity
     protected void showBottomSheet()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-        final ColorValuesCollectionFragment listDialog = (ColorValuesCollectionFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
-        final ColorValuesFragment1 editDialog = (ColorValuesFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        final ColorValuesSelectFragment listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+        final ColorValuesEditFragment1 editDialog = (ColorValuesEditFragment1) fragments.findFragmentById(R.id.colorsFragment);
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
 
         if (listDialog != null && editDialog != null && naturalHour != null)
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity
                 listDialog.getView().setVisibility(View.VISIBLE);
                 bottomSheet.setPeekHeight(listDialog.getView().getHeight());
             }
-            listDialog.setFragmentListener(new ColorValuesCollectionFragment.FragmentListener()
+            listDialog.setFragmentListener(new ColorValuesSelectFragment.FragmentListener()
             {
                 @Override
                 public void onEditClicked(String colorsID) {
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 @Override
-                public void onItemSelected(ColorValuesCollectionFragment.ColorValuesItem item)
+                public void onItemSelected(ColorValuesSelectFragment.ColorValuesItem item)
                 {
                     clockColors.setSelectedColorsID(MainActivity.this, item.colorsID);
                     ColorValues selectedColors = clockColors.getColors(MainActivity.this, item.colorsID);
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity
                 editDialog.getView().setVisibility(View.GONE);
             }
             editDialog.setColorValues(naturalHour.getClockColors());
-            editDialog.setFragmentListener(new ColorValuesFragment.FragmentListener()
+            editDialog.setFragmentListener(new ColorValuesEditFragment.FragmentListener()
             {
                 @Override
                 public void onCancelClicked() {

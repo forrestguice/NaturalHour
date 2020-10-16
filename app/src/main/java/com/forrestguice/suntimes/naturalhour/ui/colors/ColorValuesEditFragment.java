@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -45,12 +46,12 @@ import com.forrestguice.suntimes.naturalhour.R;
 
 import java.lang.reflect.Method;
 
-public class ColorValuesFragment extends Fragment
+public class ColorValuesEditFragment extends Fragment
 {
     protected EditText editID;
     protected GridLayout panel;
 
-    public ColorValuesFragment() {
+    public ColorValuesEditFragment() {
         setHasOptionsMenu(true);
     }
 
@@ -83,10 +84,28 @@ public class ColorValuesFragment extends Fragment
 
         panel = (GridLayout) content.findViewById(R.id.colorPanel);
         editID = (EditText) content.findViewById(R.id.editTextID);
-
+        setID(null);
 
         updateViews();
         return content;
+    }
+
+    /**
+     * @param colorsID value to set on edittext; use null to get the id from ColorValues
+     */
+    protected void setID(@Nullable String colorsID)
+    {
+        if (editID != null)
+        {
+            if (colorValues != null && colorsID == null) {
+                colorsID =  colorValues.getID();
+            }
+            editID.setText(colorsID != null ? colorsID : "");
+        }
+    }
+
+    protected String suggestColorValuesID() {
+        return "custom";   // TODO
     }
 
     private View.OnClickListener onSaveButtonClicked = new View.OnClickListener() {
@@ -139,9 +158,11 @@ public class ColorValuesFragment extends Fragment
     {
         super.onSaveInstanceState(out);
         out.putParcelable("colorValues", colorValues);
+        out.putString("editID", editID.getText().toString());
     }
     protected void onRestoreInstanceState(@NonNull Bundle savedState) {
         colorValues = savedState.getParcelable("colorValues");
+        setID(savedState.getString("editID"));
     }
 
     @Override
@@ -156,12 +177,6 @@ public class ColorValuesFragment extends Fragment
     protected TextView[] colorEdits;
     protected void updateViews()
     {
-        if (editID != null && colorValues != null)
-        {
-            String colorsID = colorValues.getID();
-            editID.setText(colorsID != null ? colorsID : "");
-        }
-
         if (panel != null && colorValues != null)
         {
             String[] keys = colorValues.getColorKeys();
@@ -200,6 +215,7 @@ public class ColorValuesFragment extends Fragment
     protected ColorValues colorValues = null;
     public void setColorValues(ColorValues v) {
         colorValues = v;
+        setID(null);
         updateViews();
     }
 

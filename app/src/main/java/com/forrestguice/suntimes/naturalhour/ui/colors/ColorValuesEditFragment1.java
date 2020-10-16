@@ -25,7 +25,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class ColorValuesFragment1 extends ColorValuesFragment
+public class ColorValuesEditFragment1 extends ColorValuesEditFragment
 {
     @Override
     protected Intent pickColorIntent(String key, int requestCode)

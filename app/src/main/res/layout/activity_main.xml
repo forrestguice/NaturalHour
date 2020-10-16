@@ -51,19 +51,12 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/app_bottomsheet"
+    <android.support.v7.widget.LinearLayoutCompat android:id="@+id/app_bottomsheet"
         android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
         app:layout_insetEdge="bottom" app:behavior_hideable="true" app:behavior_peekHeight="0dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionFragment"
-            android:id="@+id/colorsCollectionFragment"
-            android:layout_width="match_parent" android:layout_height="wrap_content" />
-
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment1"
-            android:id="@+id/colorsFragment"
-            android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <include layout="@layout/fragment_colorsheet" />
 
     </android.support.v7.widget.LinearLayoutCompat>
 

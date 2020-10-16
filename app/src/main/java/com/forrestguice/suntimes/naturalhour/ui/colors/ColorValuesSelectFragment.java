@@ -33,13 +33,13 @@ import android.widget.Spinner;
 
 import com.forrestguice.suntimes.naturalhour.R;
 
-public class ColorValuesCollectionFragment extends Fragment
+public class ColorValuesSelectFragment extends Fragment
 {
     protected Spinner selector;
     protected ImageButton editButton;
 
-    public ColorValuesCollectionFragment() {
-        setHasOptionsMenu(true);
+    public ColorValuesSelectFragment() {
+        setHasOptionsMenu(false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
