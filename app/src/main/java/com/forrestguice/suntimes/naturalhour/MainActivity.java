@@ -233,11 +233,14 @@ public class MainActivity extends AppCompatActivity
                     if (listDialog.getView() != null) {
                         listDialog.getView().setVisibility(View.VISIBLE);
                     }
+                    clockColors.clearCache();    // cached instance may have been modified
+                    naturalHour.setClockColors(clockColors.getSelectedColors(MainActivity.this));
                 }
 
                 @Override
                 public void onSaveClicked(String colorsID, ColorValues values)
                 {
+                    clockColors.clearCache();
                     clockColors.setColors(MainActivity.this, colorsID, values);
                     clockColors.setSelectedColorsID(MainActivity.this, colorsID);
                     hideBottomSheet();

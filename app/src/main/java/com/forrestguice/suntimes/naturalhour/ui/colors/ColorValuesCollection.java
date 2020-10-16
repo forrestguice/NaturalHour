@@ -90,8 +90,11 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     }
     public void setColors(Context context, String colorsID, ColorValues values)
     {
-        colorValues.put(colorsID, values);
-        saveColors(getSharedPreferences(context), colorsID, values);
+        ColorValues v = getDefaultColors(context);
+        v.loadColorValues(values);    // copy colors into a new instance
+        colorValues.put(colorsID, v);
+
+        saveColors(getSharedPreferences(context), colorsID, v);
         if (collection.add(colorsID)) {
             saveCollection(getSharedPreferences(context));
         }
@@ -103,6 +106,10 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         if (collection.remove(colorsID)) {
             saveCollection(getSharedPreferences(context));
         }
+    }
+
+    public void clearCache() {
+        colorValues.clear();
     }
 
     protected String selected = null;
