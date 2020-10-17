@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity
 
         View bottomSheetView = findViewById(R.id.app_bottomsheet);
         bottomSheet = BottomSheetBehavior.from(bottomSheetView);
+        bottomSheet.setHideable(true);
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheet.setBottomSheetCallback(bottomSheetCallback);
 
@@ -232,9 +233,25 @@ public class MainActivity extends AppCompatActivity
                 naturalHour.setClockColors(values);
             }
         }
+
+        @Override
+        public void onModeChanged(int mode) {
+            switch (mode)
+            {
+                case ColorValuesSheetFragment.MODE_EDIT:
+                    bottomSheet.setHideable(false);
+                    break;
+
+                case ColorValuesSheetFragment.MODE_SELECT:
+                default:
+                    bottomSheet.setHideable(true);
+                    break;
+            }
+        }
     };
 
     protected void hideBottomSheet() {
+        bottomSheet.setHideable(true);
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
@@ -337,12 +354,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (isBottomSheetShowing()) {
-            hideBottomSheet();
-
-        } else {
-            super.onBackPressed();
-        }
+        if (isBottomSheetShowing())
+        {
+            FragmentManager fragments = getSupportFragmentManager();
+            ColorValuesSheetFragment sheetDialog = (ColorValuesSheetFragment) fragments.findFragmentById(R.id.colorSheetFragment);
+            if (sheetDialog != null) {
+                if (sheetDialog.getMode() == ColorValuesSheetFragment.MODE_EDIT) {
+                    sheetDialog.cancelEdit(MainActivity.this);
+                } else hideBottomSheet();
+            } else hideBottomSheet();
+        } else super.onBackPressed();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

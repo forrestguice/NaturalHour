@@ -47,6 +47,7 @@ public class ColorValuesSheetFragment extends Fragment
     }
     public void setMode(int mode) {
         this.mode = mode;
+        onModeChanged();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -165,7 +166,8 @@ public class ColorValuesSheetFragment extends Fragment
             if (context != null) {
                 editDialog.setColorValues(colorCollection.getColors(context, colorsID));
                 editDialog.setID(suggestColorValuesID(context));
-                toggleFragmentVisibility(mode = MODE_EDIT);
+                setMode(MODE_EDIT);
+                toggleFragmentVisibility(getMode());
                 requestExpandSheet();
             }
         }
@@ -177,7 +179,8 @@ public class ColorValuesSheetFragment extends Fragment
             Context context = getActivity();
             if (context != null) {
                 editDialog.setColorValues(colorCollection.getColors(context, colorsID));
-                toggleFragmentVisibility(mode = MODE_EDIT);
+                setMode(MODE_EDIT);
+                toggleFragmentVisibility(getMode());
                 requestExpandSheet();
             }
         }
@@ -198,15 +201,8 @@ public class ColorValuesSheetFragment extends Fragment
     private ColorValuesEditFragment.FragmentListener editDialogListener = new ColorValuesEditFragment.FragmentListener()
     {
         @Override
-        public void onCancelClicked()
-        {
-            Context context = getActivity();
-            if (context != null)
-            {
-                colorCollection.clearCache();    // cached instance may have been modified
-                toggleFragmentVisibility(mode = MODE_SELECT);
-                onSelectColors(colorCollection.getSelectedColors(context));
-            }
+        public void onCancelClicked() {
+            cancelEdit(getActivity());
         }
 
         @Override
@@ -220,7 +216,8 @@ public class ColorValuesSheetFragment extends Fragment
                 colorCollection.setSelectedColorsID(context, colorsID);
                 onSelectColors(colorCollection.getColors(context, colorsID));
 
-                toggleFragmentVisibility(mode = MODE_SELECT);
+                setMode(MODE_SELECT);
+                toggleFragmentVisibility(getMode());
                 requestHideSheet();
                 Toast.makeText(context, getString(R.string.msg_colors_saved, colorsID), Toast.LENGTH_SHORT).show();
             }
@@ -231,8 +228,8 @@ public class ColorValuesSheetFragment extends Fragment
             Context context = getActivity();
             if (context != null) {
                 colorCollection.removeColors(context, colorsID);
-
-                toggleFragmentVisibility(mode = MODE_SELECT);
+                setMode(MODE_SELECT);
+                toggleFragmentVisibility(getMode());
                 requestHideSheet();
                 Toast.makeText(context, getString(R.string.msg_colors_deleted, colorsID), Toast.LENGTH_SHORT).show();
             }
@@ -246,6 +243,17 @@ public class ColorValuesSheetFragment extends Fragment
         }
         if (editDialog.getView() != null) {
             editDialog.getView().setVisibility(mode == MODE_EDIT ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void cancelEdit(Context context)
+    {
+        if (context != null)
+        {
+            colorCollection.clearCache();    // cached instance may have been modified
+            setMode(MODE_SELECT);
+            toggleFragmentVisibility(getMode());
+            onSelectColors(colorCollection.getSelectedColors(context));
         }
     }
 
@@ -274,6 +282,11 @@ public class ColorValuesSheetFragment extends Fragment
             listener.onColorValuesSelected(values);
         }
     }
+    protected void onModeChanged() {
+        if (listener != null) {
+            listener.onModeChanged(mode);
+        }
+    }
 
     /**
      * FragmentListener
@@ -284,6 +297,7 @@ public class ColorValuesSheetFragment extends Fragment
         void requestHideSheet();
         void requestExpandSheet();
         void onColorValuesSelected(ColorValues values);
+        void onModeChanged(int mode);
     }
 
     protected FragmentListener listener = null;
