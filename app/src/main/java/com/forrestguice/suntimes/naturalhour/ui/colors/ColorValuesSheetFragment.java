@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +34,19 @@ import com.forrestguice.suntimes.naturalhour.R;
 
 public class ColorValuesSheetFragment extends Fragment
 {
+    public static final int MODE_SELECT = 0;
+    public static final int MODE_EDIT = 1;
+
     public ColorValuesSheetFragment() {
         setHasOptionsMenu(false);
+    }
+
+    private int mode = MODE_SELECT;
+    public int getMode() {
+        return mode;
+    }
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -54,83 +66,187 @@ public class ColorValuesSheetFragment extends Fragment
         return content;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        FragmentManager fragments = getChildFragmentManager();
+        listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+        if (listDialog != null) {
+            listDialog.setColorCollection(colorCollection);
+            listDialog.setFragmentListener(listDialogListener);
+        }
+
+        editDialog = (ColorValuesEditFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        if (editDialog != null) {
+            editDialog.setFragmentListener(editDialogListener);
+            View v = getView();
+            if (v != null)
+            {
+                getView().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mode == MODE_EDIT) {
+                            onSelectColors(editDialog.getColorValues());
+                        }
+                    }
+                }, 500);
+            }
+        }
+    }
+
     protected ColorValuesSelectFragment listDialog;
     protected ColorValuesEditFragment1 editDialog;
 
-    protected void onRestoreInstanceState(@NonNull Bundle savedState) { /* EMPTY */ }
+    protected void onRestoreInstanceState(@NonNull Bundle savedState) {
+        mode = savedState.getInt("mode");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("mode", mode);
+        super.onSaveInstanceState(outState);
+    }
+
+    public void updateViews()
+    {
+        if (listDialog != null && editDialog != null)
+        {
+            toggleFragmentVisibility(mode);
+            if (listDialog.getView() != null) {
+                requestPeekHeight(listDialog.getView().getHeight());
+            }
+
+            listDialog.setColorCollection(colorCollection);
+            listDialog.setFragmentListener(listDialogListener);
+            editDialog.setFragmentListener(editDialogListener);
+        }
+        requestExpandSheet();
+    }
 
     public void updateViews(ColorValues values)
     {
-        final Context context = getActivity();
-        if (listDialog != null && editDialog != null)
-        {
-            listDialog.setColorCollection(colorCollection);
-            if (listDialog.getView() != null) {
-                listDialog.getView().setVisibility(View.VISIBLE);
-                requestPeekHeight(listDialog.getView().getHeight());
-            }
-            listDialog.setFragmentListener(new ColorValuesSelectFragment.FragmentListener()
-            {
-                @Override
-                public void onEditClicked(String colorsID) {
-                    editDialog.setColorValues(colorCollection.getColors(context, colorsID));
-                    if (listDialog.getView() != null) {
-                        listDialog.getView().setVisibility(View.GONE);
-                    }
-                    if (editDialog.getView() != null) {
-                        editDialog.getView().setVisibility(View.VISIBLE);
-                    }
-                    requestExpandSheet();
-                }
-
-                @Override
-                public void onItemSelected(ColorValuesSelectFragment.ColorValuesItem item)
-                {
-                    colorCollection.setSelectedColorsID(context, item.colorsID);
-                    ColorValues selectedColors = colorCollection.getColors(context, item.colorsID);
-                    onSelectColors(selectedColors);
-                }
-            });
-
-            if (editDialog.getView() != null) {
-                editDialog.getView().setVisibility(View.GONE);
-            }
+        if (editDialog != null) {
             editDialog.setColorValues(values);
-            editDialog.setFragmentListener(new ColorValuesEditFragment.FragmentListener()
-            {
-                @Override
-                public void onCancelClicked() {
-                    if (editDialog.getView() != null) {
-                        editDialog.getView().setVisibility(View.GONE);
-                    }
-                    if (listDialog.getView() != null) {
-                        listDialog.getView().setVisibility(View.VISIBLE);
-                    }
-                    colorCollection.clearCache();    // cached instance may have been modified
-                    onSelectColors(colorCollection.getSelectedColors(context));
-                }
-
-                @Override
-                public void onSaveClicked(String colorsID, ColorValues values)
-                {
-                    colorCollection.clearCache();
-                    colorCollection.setColors(context, colorsID, values);
-                    colorCollection.setSelectedColorsID(context, colorsID);
-                    if (listener != null) {
-                        listener.requestHideSheet();
-                    }
-                    Toast.makeText(context, getString(R.string.msg_colors_saved, colorsID), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onDeleteClicked(String colorsID) {
-                    colorCollection.removeColors(context, colorsID);
-                    Toast.makeText(context, getString(R.string.msg_colors_deleted, colorsID), Toast.LENGTH_SHORT).show();
-                    requestHideSheet();
-                }
-            });
         }
-        requestExpandSheet();
+        updateViews();
+    }
+
+    protected String suggestColorValuesID(Context context)
+    {
+        String base = context.getString(R.string.suggest_colorid).toLowerCase();
+        String suggestion = base;
+        if (colorCollection != null)
+        {
+            int c = 1;
+            while (colorCollection.hasColors(suggestion))
+            {
+                suggestion = base + c;
+                c++;
+            }
+        }
+        return suggestion;
+    }
+
+    public ColorValues getColors() {
+        if (editDialog != null) {
+            return editDialog.getColorValues();
+        } else return null;
+    }
+
+    private ColorValuesSelectFragment.FragmentListener listDialogListener = new ColorValuesSelectFragment.FragmentListener()
+    {
+        @Override
+        public void onAddClicked(String colorsID)
+        {
+            //Log.d("DEBUG", "onAddClicked " + colorsID);
+            Context context = getActivity();
+            if (context != null) {
+                editDialog.setColorValues(colorCollection.getColors(context, colorsID));
+                editDialog.setID(suggestColorValuesID(context));
+                toggleFragmentVisibility(mode = MODE_EDIT);
+                requestExpandSheet();
+            }
+        }
+
+        @Override
+        public void onEditClicked(String colorsID)
+        {
+            //Log.d("DEBUG", "onEditClicked " + colorsID);
+            Context context = getActivity();
+            if (context != null) {
+                editDialog.setColorValues(colorCollection.getColors(context, colorsID));
+                toggleFragmentVisibility(mode = MODE_EDIT);
+                requestExpandSheet();
+            }
+        }
+
+        @Override
+        public void onItemSelected(ColorValuesSelectFragment.ColorValuesItem item)
+        {
+            //Log.d("DEBUG", "onItemSelected " + item.colorsID);
+            Context context = getActivity();
+            if (context != null) {
+                colorCollection.setSelectedColorsID(context, item.colorsID);
+                ColorValues selectedColors = colorCollection.getColors(context, item.colorsID);
+                onSelectColors(selectedColors);
+            }
+        }
+    };
+
+    private ColorValuesEditFragment.FragmentListener editDialogListener = new ColorValuesEditFragment.FragmentListener()
+    {
+        @Override
+        public void onCancelClicked()
+        {
+            Context context = getActivity();
+            if (context != null)
+            {
+                colorCollection.clearCache();    // cached instance may have been modified
+                toggleFragmentVisibility(mode = MODE_SELECT);
+                onSelectColors(colorCollection.getSelectedColors(context));
+            }
+        }
+
+        @Override
+        public void onSaveClicked(String colorsID, ColorValues values)
+        {
+            Context context = getActivity();
+            if (context != null)
+            {
+                colorCollection.clearCache();
+                colorCollection.setColors(context, colorsID, values);
+                colorCollection.setSelectedColorsID(context, colorsID);
+                onSelectColors(colorCollection.getColors(context, colorsID));
+
+                toggleFragmentVisibility(mode = MODE_SELECT);
+                requestHideSheet();
+                Toast.makeText(context, getString(R.string.msg_colors_saved, colorsID), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onDeleteClicked(String colorsID) {
+            Context context = getActivity();
+            if (context != null) {
+                colorCollection.removeColors(context, colorsID);
+
+                toggleFragmentVisibility(mode = MODE_SELECT);
+                requestHideSheet();
+                Toast.makeText(context, getString(R.string.msg_colors_deleted, colorsID), Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    protected void toggleFragmentVisibility(int mode)
+    {
+        if (listDialog.getView() != null) {
+            listDialog.getView().setVisibility(mode == MODE_EDIT ? View.GONE : View.VISIBLE);
+        }
+        if (editDialog.getView() != null) {
+            editDialog.getView().setVisibility(mode == MODE_EDIT ? View.VISIBLE : View.GONE);
+        }
     }
 
     protected ColorValuesCollection colorCollection = null;

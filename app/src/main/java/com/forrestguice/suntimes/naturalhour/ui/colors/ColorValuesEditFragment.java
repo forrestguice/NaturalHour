@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -102,10 +103,6 @@ public class ColorValuesEditFragment extends Fragment
             }
             editID.setText(colorsID != null ? colorsID : "");
         }
-    }
-
-    protected String suggestColorValuesID() {
-        return "custom";   // TODO
     }
 
     private View.OnClickListener onSaveButtonClicked = new View.OnClickListener() {
@@ -217,6 +214,9 @@ public class ColorValuesEditFragment extends Fragment
         colorValues = v;
         setID(null);
         updateViews();
+    }
+    public ColorValues getColorValues() {
+         return colorValues;
     }
 
     protected void setColor(String key, int color) {

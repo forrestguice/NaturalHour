@@ -128,12 +128,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    protected void restoreDialogs()
+    {
+        final FragmentManager fragments = getSupportFragmentManager();
+        ColorValuesSheetFragment sheetDialog = (ColorValuesSheetFragment) fragments.findFragmentById(R.id.colorSheetFragment);
+        NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+        if (sheetDialog != null && naturalHour != null)
+        {
+            sheetDialog.setColorCollection(naturalHour.getColorCollection());
+            sheetDialog.updateViews();
+            sheetDialog.setFragmentListener(colorSheetListener);
+        }
+    }
+
     @Override
     protected void onResumeFragments()
     {
         super.onResumeFragments();
         Log.d("DEBUG", "onResumeFragments");
         updateViews(MainActivity.this);
+        restoreDialogs();
     }
 
     protected void updateViews(Context context)
@@ -185,33 +199,40 @@ public class MainActivity extends AppCompatActivity
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
         if (sheetDialog != null && naturalHour != null)
         {
+            sheetDialog.setMode(ColorValuesSheetFragment.MODE_SELECT);
             sheetDialog.setColorCollection(naturalHour.getColorCollection());
             sheetDialog.updateViews(naturalHour.getClockColors());
-            sheetDialog.setFragmentListener(new ColorValuesSheetFragment.FragmentListener()
-            {
-                @Override
-                public void requestPeekHeight(int height) {
-                    bottomSheet.setPeekHeight(height);
-                }
-
-                @Override
-                public void requestHideSheet() {
-                    hideBottomSheet();
-                }
-
-                @Override
-                public void requestExpandSheet() {
-                    bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }
-
-                @Override
-                public void onColorValuesSelected(ColorValues values) {
-                    naturalHour.setClockColors(values);
-                }
-            });
+            sheetDialog.setFragmentListener(colorSheetListener);
         }
         bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
+
+    private ColorValuesSheetFragment.FragmentListener colorSheetListener = new ColorValuesSheetFragment.FragmentListener()
+    {
+        @Override
+        public void requestPeekHeight(int height) {
+            bottomSheet.setPeekHeight(height);
+        }
+
+        @Override
+        public void requestHideSheet() {
+            hideBottomSheet();
+        }
+
+        @Override
+        public void requestExpandSheet() {
+            bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+
+        @Override
+        public void onColorValuesSelected(ColorValues values) {
+            FragmentManager fragments = getSupportFragmentManager();
+            NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+            if (naturalHour != null) {
+                naturalHour.setClockColors(values);
+            }
+        }
+    };
 
     protected void hideBottomSheet() {
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);

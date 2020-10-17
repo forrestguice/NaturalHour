@@ -108,6 +108,10 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         }
     }
 
+    public boolean hasColors(String colorsID) {
+        return collection.contains(colorsID);
+    }
+
     public void clearCache() {
         colorValues.clear();
     }

@@ -197,6 +197,7 @@
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
 
+    <string name="suggest_colorid">Custom</string>       <!-- edittext hint -->
     <string name="hint_edittext_colorid">Name</string>       <!-- edittext hint -->
     <string name="msg_colors_saved">Saved %s</string>        <!-- toast -->
     <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->

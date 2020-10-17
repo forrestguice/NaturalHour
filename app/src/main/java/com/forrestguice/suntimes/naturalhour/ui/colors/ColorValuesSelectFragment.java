@@ -36,7 +36,7 @@ import com.forrestguice.suntimes.naturalhour.R;
 public class ColorValuesSelectFragment extends Fragment
 {
     protected Spinner selector;
-    protected ImageButton editButton;
+    protected ImageButton addButton, editButton;
 
     public ColorValuesSelectFragment() {
         setHasOptionsMenu(false);
@@ -62,6 +62,11 @@ public class ColorValuesSelectFragment extends Fragment
         editButton = content.findViewById(R.id.editButton);
         if (editButton != null) {
             editButton.setOnClickListener(onEditButtonClicked);
+        }
+
+        addButton = content.findViewById(R.id.addButton);
+        if (addButton != null) {
+            addButton.setOnClickListener(onAddButtonClicked);
         }
 
         updateViews();
@@ -93,6 +98,19 @@ public class ColorValuesSelectFragment extends Fragment
     {
         if (listener != null) {
             listener.onEditClicked(((ColorValuesItem) selector.getSelectedItem()).colorsID);
+        }
+    }
+
+    private View.OnClickListener onAddButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onAddItem();
+        }
+    };
+    protected void onAddItem()
+    {
+        if (listener != null) {
+            listener.onAddClicked(((ColorValuesItem) selector.getSelectedItem()).colorsID);
         }
     }
 
@@ -165,6 +183,7 @@ public class ColorValuesSelectFragment extends Fragment
      */
     public interface FragmentListener
     {
+        void onAddClicked(String colorsID);
         void onEditClicked(String colorsID);
         void onItemSelected(ColorValuesItem item);
     }
