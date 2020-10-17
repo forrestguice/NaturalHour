@@ -236,9 +236,9 @@ public class NaturalHourClockBitmap
         setSize(size);
     }
 
-    public Bitmap makeBitmap(Context context, NaturalHourData data, ClockColorValues appearance)
+    public Bitmap makeBitmap(Context context, NaturalHourData data)
     {
-        if (width <= 0 || height <= 0 || appearance == null) {
+        if (width <= 0 || height <= 0) {
             return null;
         }
 
