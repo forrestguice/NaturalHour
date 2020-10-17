@@ -282,18 +282,24 @@ public class NaturalHourFragment extends Fragment
             int position = cardLayout.findFirstVisibleItemPosition();
             NaturalHourData data = cardAdapter.initData(position);
 
-            Calendar now = Calendar.getInstance(timezone);
-            int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-            int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
-            String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
+            int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
+            boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
 
-            int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
+            Calendar now = Calendar.getInstance(timezone);
+            int currentHour = NaturalHourData.findNaturalHour(now, data);                 // [1,24]
+            int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
+            if (mode24) {
+                currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+            }
+
+            String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
+
             String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, is24).toString();
             String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
             String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
             String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
 
-            String naturalHourString = context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[currentHour]);
+            String naturalHourString = context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[mode24 ? currentHourOf : currentHour]);
             String displayString = context.getString(R.string.format_announcement, clockTimeString, naturalHourString);
 
             int[] attrs = new int[] {R.attr.colorAccent};
