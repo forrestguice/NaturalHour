@@ -46,6 +46,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -278,7 +279,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         saveNextSuggestedUpdate(context, appWidgetId, nextUpdate.getTimeInMillis());
     }
 
-    private NaturalHourClockBitmap.ClockColorValues clockAppearance;
+    private ColorValues clockAppearance;
     protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data, SuntimesInfo suntimesInfo)
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
@@ -297,7 +298,8 @@ public class NaturalHourWidget extends AppWidgetProvider
         }
 
         prepareClockBitmap(context, clockView);
-        views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data, clockAppearance));
+        clockView.setColors(clockAppearance);
+        views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data));
         if (Build.VERSION.SDK_INT >= 15)
         {
             String timeDescription = "TODO";            // TODO
@@ -332,7 +334,8 @@ public class NaturalHourWidget extends AppWidgetProvider
 
     protected void themeViews(Context context, RemoteViews views, int appWidgetId)
     {
-        clockAppearance = new NaturalHourClockBitmap.ClockColorValues(context);
+        NaturalHourClockBitmap.ClockColorValuesCollection<NaturalHourClockBitmap.ClockColorValues> colors = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
+        clockAppearance = colors.getSelectedColors(context, appWidgetId);
     }
 
     @Override

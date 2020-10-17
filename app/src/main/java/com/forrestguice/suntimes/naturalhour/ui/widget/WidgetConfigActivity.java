@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +40,8 @@ import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
 {
@@ -49,6 +52,9 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     protected SuntimesInfo suntimesInfo = null;
     protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     protected boolean reconfigure = false;
+
+    protected NaturalHourClockBitmap.ClockColorValuesCollection colors;
+    protected ColorValuesSelectFragment colorFragment;
 
     public abstract Class getWidgetClass();
 
@@ -122,6 +128,15 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        colors = new NaturalHourClockBitmap.ClockColorValuesCollection(context);
+        FragmentManager fragments = getSupportFragmentManager();
+        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockThemeSelectorFragment);
+        if (colorFragment != null)
+        {
+            colorFragment.setAllowEdit(false);
+            colorFragment.setColorCollection(colors);
+        }
     }
 
     @SuppressWarnings("RestrictedApi")
@@ -161,8 +176,9 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected boolean onDone()
     {
-        // TODO: save settings
-        // TODO: trigger immediate update
+        if (colorFragment != null) {
+            colors.setSelectedColorsID(WidgetConfigActivity.this, colorFragment.getSelectedID(), getAppWidgetId());
+        }
 
         updateWidgets(this);
         setResult(RESULT_OK);
