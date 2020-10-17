@@ -35,11 +35,19 @@ import com.forrestguice.suntimes.naturalhour.R;
 
 public class ColorValuesSelectFragment extends Fragment
 {
+    public static final String ARG_ALLOW_EDIT = "allowEdit";
+    public static final boolean DEF_ALLOW_EDIT = true;
+
     protected Spinner selector;
     protected ImageButton addButton, editButton;
 
-    public ColorValuesSelectFragment() {
+    public ColorValuesSelectFragment()
+    {
         setHasOptionsMenu(false);
+
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT);
+        setArguments(args);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -143,12 +151,32 @@ public class ColorValuesSelectFragment extends Fragment
                 selector.setSelection(selectedIndex, false);
             }
         }
+
+        boolean allowEdit = allowEdit();
+        if (addButton != null) {
+            addButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
+        }
+        if (editButton != null) {
+            editButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
+        }
     }
 
     protected ColorValuesCollection colorCollection = null;
     public void setColorCollection(ColorValuesCollection collection) {
         colorCollection = collection;
         updateViews();
+    }
+
+    public void setAllowEdit(boolean allowEdit)
+    {
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putBoolean(ARG_ALLOW_EDIT, allowEdit);
+        }
+    }
+    public boolean allowEdit() {
+        Bundle args = getArguments();
+        return args != null ? args.getBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT) : DEF_ALLOW_EDIT;
     }
 
     /**
