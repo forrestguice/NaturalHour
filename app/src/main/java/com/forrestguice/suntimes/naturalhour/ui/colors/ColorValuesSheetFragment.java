@@ -123,7 +123,6 @@ public class ColorValuesSheetFragment extends Fragment
             listDialog.setFragmentListener(listDialogListener);
             editDialog.setFragmentListener(editDialogListener);
         }
-        requestExpandSheet();
     }
 
     public void updateViews(ColorValues values)

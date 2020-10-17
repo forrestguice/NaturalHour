@@ -260,7 +260,7 @@ public class NaturalHourWidget extends AppWidgetProvider
 
         RemoteViews views = getViews(context);
         views.setOnClickPendingIntent(R.id.widgetframe_inner, getClickActionIntent(context, appWidgetId, getClass()));
-        
+
         ContentResolver resolver = context.getContentResolver();
         NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE));
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
