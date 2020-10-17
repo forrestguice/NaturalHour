@@ -142,6 +142,12 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         editor.apply();
     }
 
+    public void clearSelectedColorsID(Context context, int appWidgetID) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.remove(KEY_SELECTED + "_" + appWidgetID);
+        editor.apply();
+    }
+
     public abstract String getSharedPrefsName();
     protected SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(getSharedPrefsName(), 0);

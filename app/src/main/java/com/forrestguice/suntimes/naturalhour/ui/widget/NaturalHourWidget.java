@@ -195,10 +195,12 @@ public class NaturalHourWidget extends AppWidgetProvider
     @Override
     public void onDeleted(Context context, int[] appWidgetIds)
     {
+        NaturalHourClockBitmap.ClockColorValuesCollection<NaturalHourClockBitmap.ClockColorValues> colors = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
         for (int appWidgetId : appWidgetIds)
         {
             unsetUpdateAlarm(context, appWidgetId);
             deleteNextSuggestedUpdate(context, appWidgetId);
+            colors.clearSelectedColorsID(context, appWidgetId);
         }
     }
 
@@ -258,10 +260,7 @@ public class NaturalHourWidget extends AppWidgetProvider
 
         RemoteViews views = getViews(context);
         views.setOnClickPendingIntent(R.id.widgetframe_inner, getClickActionIntent(context, appWidgetId, getClass()));
-
-        //boolean showTitle = false; // TODO: WidgetSettings.loadShowTitlePref(context, appWidgetId);
-        //views.setViewVisibility(R.id.text_title, showTitle ? View.VISIBLE : View.GONE);
-
+        
         ContentResolver resolver = context.getContentResolver();
         NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE));
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
