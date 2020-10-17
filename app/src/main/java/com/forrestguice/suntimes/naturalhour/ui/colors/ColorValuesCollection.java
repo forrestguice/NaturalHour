@@ -47,7 +47,6 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         collection.clear();
         Set<String> ids = prefs.getStringSet(KEY_COLLECTION, null);
         collection.addAll(ids != null ? ids : new TreeSet<String>());
-        selected = prefs.getString(KEY_SELECTED, null);
     }
     protected void saveCollection(SharedPreferences prefs) {
         SharedPreferences.Editor editor = prefs.edit();
@@ -116,19 +115,19 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         colorValues.clear();
     }
 
-    protected String selected = null;
     public ColorValues getSelectedColors(Context context)
     {
+        String selected = getSelectedColorsID(context);
         if (selected != null) {
             return getColors(context, selected);
         } else return getDefaultColors(context);
     }
-    public String getSelectedColorsID() {
-        return selected;
+    public String getSelectedColorsID(Context context) {
+        SharedPreferences prefs = getSharedPreferences(context);
+        return prefs.getString(KEY_SELECTED, null);
     }
     public void setSelectedColorsID(Context context, String colorsID)
     {
-        selected = colorsID;
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(KEY_SELECTED, colorsID);
         editor.apply();

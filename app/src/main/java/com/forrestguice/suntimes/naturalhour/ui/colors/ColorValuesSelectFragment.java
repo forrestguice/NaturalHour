@@ -131,7 +131,7 @@ public class ColorValuesSelectFragment extends Fragment
             if (colorCollection != null)
             {
                 int selectedIndex = 0;
-                String selectedColorsID = colorCollection.getSelectedColorsID();
+                String selectedColorsID = colorCollection.getSelectedColorsID(getActivity());
                 for (int i=0; i<selector.getCount(); i++)
                 {
                     ColorValuesItem item = (ColorValuesItem) selector.getItemAtPosition(i);
