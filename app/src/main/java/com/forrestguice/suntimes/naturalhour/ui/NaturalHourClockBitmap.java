@@ -263,7 +263,7 @@ public class NaturalHourClockBitmap
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
 
         if (showTime) {
-            drawHourHand(time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
+            drawHourHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
         }
     }
 
@@ -785,7 +785,7 @@ public class NaturalHourClockBitmap
         return angle >= 0 && angle <= Math.PI;
     }
 
-    protected void drawHourHand(long nowMillis, Canvas canvas, float cX, float cY, float length)
+    protected void drawHourHand(NaturalHourData data, long nowMillis, Canvas canvas, float cX, float cY, float length)
     {
         Calendar now = Calendar.getInstance(timezone);
         now.setTimeInMillis(nowMillis);
@@ -794,7 +794,7 @@ public class NaturalHourClockBitmap
         int minute = now.get(Calendar.MINUTE);
         int second = now.get(Calendar.SECOND);
 
-        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(hour, minute, second), null);
+        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(hour, minute, second), data);
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);
 
