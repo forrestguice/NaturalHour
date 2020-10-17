@@ -22,13 +22,17 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -179,6 +183,17 @@ public class ColorValuesEditFragment extends Fragment
             String[] keys = colorValues.getColorKeys();
             colorEdits = new TextView[keys.length];
 
+            int itemMargin = 0;
+            TypedValue itemBackground = null;
+            Context context = getActivity();
+            if (context != null)
+            {
+                Resources.Theme theme = context.getTheme();
+                itemBackground = new TypedValue();
+                theme.resolveAttribute(android.R.attr.selectableItemBackground, itemBackground, true);
+                itemMargin = (int)context.getResources().getDimension(R.dimen.colortext_margin);
+            }
+
             panel.removeAllViews();
             for (int i=0; i<keys.length; i++)
             {
@@ -186,10 +201,14 @@ public class ColorValuesEditFragment extends Fragment
                 colorEdits[i].setText(colorValues.getLabel(keys[i]));
                 colorEdits[i].setTextColor(colorValues.getColor(keys[i]));
                 colorEdits[i].setOnClickListener(onColorEditClick(keys[i]));
-                panel.addView(colorEdits[i],
-                        new GridLayout.LayoutParams(GridLayout.spec(i/2, GridLayout.CENTER),
-                                GridLayout.spec(i%2, GridLayout.CENTER))
-                );
+                colorEdits[i].setGravity(Gravity.CENTER);
+
+                if (itemBackground != null) {
+                    colorEdits[i].setBackgroundResource(itemBackground.resourceId);
+                }
+
+                colorEdits[i].setPadding(itemMargin, itemMargin, itemMargin, itemMargin);
+                panel.addView(colorEdits[i], getItemLayoutParams(i));
             }
 
         } else if (panel != null) {
@@ -197,6 +216,18 @@ public class ColorValuesEditFragment extends Fragment
             emptyMsg.setText(" ");
             panel.removeAllViews();
             panel.addView(emptyMsg);
+        }
+    }
+
+    private GridLayout.LayoutParams getItemLayoutParams(int i) {
+        if (Build.VERSION.SDK_INT >= 21)
+        {
+            return new GridLayout.LayoutParams(GridLayout.spec(i/2, GridLayout.FILL, 1f),
+                    GridLayout.spec(i%2, GridLayout.FILL, 1f));
+
+        } else {
+            return new GridLayout.LayoutParams(GridLayout.spec(i/2, GridLayout.CENTER),
+                    GridLayout.spec(i%2, GridLayout.CENTER));
         }
     }
 

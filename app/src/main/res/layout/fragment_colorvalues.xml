@@ -10,6 +10,7 @@
         <ImageButton android:id="@+id/cancelButton"
             style="@style/Widget.AppCompat.ActionButton" android:src="?attr/icBack"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:tooltipText="@android:string/cancel"
             android:contentDescription="@android:string/cancel" />
 
         <EditText android:id="@+id/editTextID"
@@ -24,6 +25,7 @@
         <ImageButton android:id="@+id/saveButton"
             style="@style/Widget.AppCompat.ActionButton" android:src="?attr/icDone"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:tooltipText="@string/action_done"
             android:contentDescription="@string/action_done" />
 
         <ImageButton android:id="@+id/overflow"
@@ -43,7 +45,9 @@
         <GridLayout android:id="@+id/colorPanel" android:columnCount="2"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="vertical" android:gravity="top|start"
-            android:layout_margin="16dp">
+            android:useDefaultMargins="false"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp" android:layout_marginBottom="8dp">
 
         </GridLayout>
 
