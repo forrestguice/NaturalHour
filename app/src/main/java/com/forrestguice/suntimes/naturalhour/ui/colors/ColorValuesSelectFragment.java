@@ -35,6 +35,9 @@ import com.forrestguice.suntimes.naturalhour.R;
 
 public class ColorValuesSelectFragment extends Fragment
 {
+    public static final String ARG_APPWIDGETID = "appWidgetID";
+    public static final int DEF_APPWIDGETID = 0;
+
     public static final String ARG_ALLOW_EDIT = "allowEdit";
     public static final boolean DEF_ALLOW_EDIT = true;
 
@@ -47,6 +50,7 @@ public class ColorValuesSelectFragment extends Fragment
 
         Bundle args = new Bundle();
         args.putBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT);
+        args.putInt(ARG_APPWIDGETID, DEF_APPWIDGETID);
         setArguments(args);
     }
 
@@ -95,6 +99,12 @@ public class ColorValuesSelectFragment extends Fragment
             listener.onItemSelected((ColorValuesItem) selector.getItemAtPosition(position));
         }
     }
+    public String getSelectedID() {
+        if (selector != null) {
+            ColorValuesItem item = (ColorValuesItem) selector.getSelectedItem();
+            return item.colorsID;
+        } else return null;
+    }
 
     private View.OnClickListener onEditButtonClicked = new View.OnClickListener() {
         @Override
@@ -139,7 +149,7 @@ public class ColorValuesSelectFragment extends Fragment
             if (colorCollection != null)
             {
                 int selectedIndex = 0;
-                String selectedColorsID = colorCollection.getSelectedColorsID(getActivity());
+                String selectedColorsID = colorCollection.getSelectedColorsID(getActivity(), getAppWidgetID());
                 for (int i=0; i<selector.getCount(); i++)
                 {
                     ColorValuesItem item = (ColorValuesItem) selector.getItemAtPosition(i);
@@ -172,11 +182,25 @@ public class ColorValuesSelectFragment extends Fragment
         Bundle args = getArguments();
         if (args != null) {
             args.putBoolean(ARG_ALLOW_EDIT, allowEdit);
+            updateViews();
         }
     }
     public boolean allowEdit() {
         Bundle args = getArguments();
         return args != null ? args.getBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT) : DEF_ALLOW_EDIT;
+    }
+
+    public void setAppWidgetID(int appWidgetID)
+    {
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putInt(ARG_APPWIDGETID, appWidgetID);
+            updateViews();
+        }
+    }
+    public int getAppWidgetID() {
+        Bundle args = getArguments();
+        return args != null ? args.getInt(ARG_APPWIDGETID, DEF_APPWIDGETID) : DEF_APPWIDGETID;
     }
 
     /**
