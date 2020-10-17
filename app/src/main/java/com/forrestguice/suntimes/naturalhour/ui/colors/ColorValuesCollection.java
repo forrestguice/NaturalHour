@@ -21,10 +21,8 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
@@ -115,21 +113,32 @@ public abstract class ColorValuesCollection<T extends ColorValues>
         colorValues.clear();
     }
 
-    public ColorValues getSelectedColors(Context context)
+    public ColorValues getSelectedColors(Context context) {
+        return getSelectedColors(context, 0);
+    }
+    public ColorValues getSelectedColors(Context context, int appWidgetID)
     {
-        String selected = getSelectedColorsID(context);
+        String selected = getSelectedColorsID(context, appWidgetID);
         if (selected != null) {
             return getColors(context, selected);
         } else return getDefaultColors(context);
     }
+
     public String getSelectedColorsID(Context context) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        return prefs.getString(KEY_SELECTED, null);
+        return getSelectedColorsID(context, 0);
     }
-    public void setSelectedColorsID(Context context, String colorsID)
+    public String getSelectedColorsID(Context context, int appWidgetID) {
+        SharedPreferences prefs = getSharedPreferences(context);
+        return prefs.getString(KEY_SELECTED + "_" + appWidgetID, null);
+    }
+
+    public void setSelectedColorsID(Context context, String colorsID) {
+        setSelectedColorsID(context, colorsID, 0);
+    }
+    public void setSelectedColorsID(Context context, String colorsID, int appWidgetID)
     {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(KEY_SELECTED, colorsID);
+        editor.putString(KEY_SELECTED + "_" + appWidgetID, colorsID);
         editor.apply();
     }
 
