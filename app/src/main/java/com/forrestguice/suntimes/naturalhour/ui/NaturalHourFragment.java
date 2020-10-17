@@ -287,11 +287,13 @@ public class NaturalHourFragment extends Fragment
             int currentHourOf = ((currentHour - 1) % 12) + 1;            // [1,12]
             String[] phrase = context.getResources().getStringArray(R.array.hour_phrase);
 
+            int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
             String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, is24).toString();
             String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
             String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
-            String romanNumeralString = DisplayStrings.romanNumeral(context, currentHourOf).toString();
-            String naturalHourString = context.getString(R.string.format_announcement_naturalhour, romanNumeralString, phrase[currentHour]);
+            String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
+
+            String naturalHourString = context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[currentHour]);
             String displayString = context.getString(R.string.format_announcement, clockTimeString, naturalHourString);
 
             int[] attrs = new int[] {R.attr.colorAccent};
@@ -300,8 +302,8 @@ public class NaturalHourFragment extends Fragment
             a.recycle();
 
             SpannableString announcement = DisplayStrings.createRelativeSpan(null, displayString, timezoneString, 0.75f);
-            announcement = DisplayStrings.createRelativeSpan(announcement, displayString, romanNumeralString, 1.25f);
-            announcement = DisplayStrings.createColorSpan(announcement, displayString, romanNumeralString, timeColor);
+            announcement = DisplayStrings.createRelativeSpan(announcement, displayString, numeralString, 1.25f);
+            announcement = DisplayStrings.createColorSpan(announcement, displayString, numeralString, timeColor);
             announcement = DisplayStrings.createColorSpan(announcement, displayString, timeString, timeColor);
             announcement = DisplayStrings.createRelativeSpan(announcement, displayString, timeString, 1.25f);
 

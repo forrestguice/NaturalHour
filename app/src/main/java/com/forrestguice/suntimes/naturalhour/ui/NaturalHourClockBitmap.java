@@ -1004,9 +1004,13 @@ public class NaturalHourClockBitmap
         }
     }
 
-    public String getNumeral(Context context, int i)
+    public String getNumeral(Context context, int i) {
+        return getNumeral(context, getValue(VALUE_NUMERALS), i);
+    }
+
+    public static String getNumeral(Context context, int type, int i)
     {
-        switch (getValue(VALUE_NUMERALS))
+        switch (type)
         {
             case NUMERALS_ARABIC: return DisplayStrings.arabicNumeral(context, i);
             case NUMERALS_ATTIC: return DisplayStrings.atticNumeral(context, i);
