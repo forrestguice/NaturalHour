@@ -33,6 +33,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -46,6 +47,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.util.ArrayList;
@@ -301,8 +303,8 @@ public class NaturalHourWidget extends AppWidgetProvider
         views.setImageViewBitmap(R.id.clockface, clockView.makeBitmap(context, data));
         if (Build.VERSION.SDK_INT >= 15)
         {
-            String timeDescription = "TODO";            // TODO
-            views.setContentDescription(R.id.clockface, timeDescription);
+            Calendar now = Calendar.getInstance(timezone);
+            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), is24));
         }
         //views.setTextViewText(R.id.text_title, "title");
     }

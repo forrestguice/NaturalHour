@@ -274,44 +274,52 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24)
+    {
+        int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
+        int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+
+        int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
+        if (mode24) {
+            currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+        }
+
+        String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
+
+        TimeZone timezone = now.getTimeZone();
+        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, timeFormat24).toString();
+        String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
+        String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
+        String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
+
+        String naturalHourString = context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[mode24 ? currentHourOf : currentHour]);
+        String displayString = context.getString(R.string.format_announcement, clockTimeString, naturalHourString);
+
+        int[] attrs = new int[] {R.attr.colorAccent};
+        TypedArray a = context.obtainStyledAttributes(attrs);
+        int timeColor = ContextCompat.getColor(context, a.getResourceId(0, R.color.colorAccent_dark));
+        a.recycle();
+
+        SpannableString announcement = DisplayStrings.createRelativeSpan(null, displayString, timezoneString, 0.75f);
+        announcement = DisplayStrings.createRelativeSpan(announcement, displayString, numeralString, 1.25f);
+        announcement = DisplayStrings.createColorSpan(announcement, displayString, numeralString, timeColor);
+        announcement = DisplayStrings.createColorSpan(announcement, displayString, timeString, timeColor);
+        announcement = DisplayStrings.createRelativeSpan(announcement, displayString, timeString, 1.25f);
+        return announcement;
+    }
+
     public void announceTime()
     {
         Context context = getActivity();
         if (context != null)
         {
+            Calendar now = Calendar.getInstance(timezone);
             int position = cardLayout.findFirstVisibleItemPosition();
             NaturalHourData data = cardAdapter.initData(position);
 
-            int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-            boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
-
-            Calendar now = Calendar.getInstance(timezone);
-            int currentHour = NaturalHourData.findNaturalHour(now, data);                 // [1,24]
-            int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
-            if (mode24) {
-                currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
-            }
-
-            String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
-
-            String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, is24).toString();
-            String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
-            String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
-            String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
-
-            String naturalHourString = context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[mode24 ? currentHourOf : currentHour]);
-            String displayString = context.getString(R.string.format_announcement, clockTimeString, naturalHourString);
-
-            int[] attrs = new int[] {R.attr.colorAccent};
-            TypedArray a = context.obtainStyledAttributes(attrs);
-            int timeColor = ContextCompat.getColor(context, a.getResourceId(0, R.color.colorAccent_dark));
-            a.recycle();
-
-            SpannableString announcement = DisplayStrings.createRelativeSpan(null, displayString, timezoneString, 0.75f);
-            announcement = DisplayStrings.createRelativeSpan(announcement, displayString, numeralString, 1.25f);
-            announcement = DisplayStrings.createColorSpan(announcement, displayString, numeralString, timeColor);
-            announcement = DisplayStrings.createColorSpan(announcement, displayString, timeString, timeColor);
-            announcement = DisplayStrings.createRelativeSpan(announcement, displayString, timeString, 1.25f);
+            int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
+            SpannableString announcement = announceTime(context, now, currentHour, is24);
 
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
