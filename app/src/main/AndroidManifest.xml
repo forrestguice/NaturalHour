@@ -40,7 +40,7 @@
 
         <!-- Widget: 3x2 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_3x2"
-            android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round">
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="suntimes.naturalhour.WIDGET_UPDATE" />
@@ -50,14 +50,14 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_naturalhour_3x2" />
         </receiver>
         <activity android:name=".ui.widget.NaturalHourWidget_3x2_ConfigActivity"
-            android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round"
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
             android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
 
         <!-- Widget: 4x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_4x3"
-            android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round">
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="suntimes.naturalhour.WIDGET_UPDATE" />
@@ -67,14 +67,14 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_naturalhour_4x3" />
         </receiver>
         <activity android:name=".ui.widget.NaturalHourWidget_4x3_ConfigActivity"
-            android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round"
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
             android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
 
         <!-- Widget: 5x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_5x3"
-            android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round">
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="suntimes.naturalhour.WIDGET_UPDATE" />
@@ -84,7 +84,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_naturalhour_5x3" />
         </receiver>
         <activity android:name=".ui.widget.NaturalHourWidget_5x3_ConfigActivity"
-            android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round"
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
             android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
