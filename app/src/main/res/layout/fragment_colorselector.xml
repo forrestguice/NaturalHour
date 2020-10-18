@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
 
     <ImageButton android:id="@+id/addButton"
         android:src="?attr/icAdd" style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:tooltipText="@string/action_add"
+        android:tooltipText="@string/action_add" tools:ignore="UnusedAttribute"
         android:contentDescription="@string/action_add" />
 
     <Spinner android:id="@+id/colorvalues_selector"
@@ -16,7 +15,7 @@
     <ImageButton android:id="@+id/editButton"
         android:src="?attr/icEdit" style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:tooltipText="@string/action_edit"
+        android:tooltipText="@string/action_edit"  tools:ignore="UnusedAttribute"
         android:contentDescription="@string/action_edit" />
 
     <ImageButton android:id="@+id/menuButton" android:visibility="gone"

@@ -65,7 +65,7 @@ public class ColorValuesSelectFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState)
     {
-        View content = inflater.inflate(R.layout.fragment_colorcollection, container, false);
+        View content = inflater.inflate(R.layout.fragment_colorselector, container, false);
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }

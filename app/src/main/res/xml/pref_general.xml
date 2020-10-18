@@ -25,7 +25,7 @@
 
     <PreferenceCategory
         android:title="@string/pref_category_nightwatch">
-        
+
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="clockface_nightwatchType"
             android:title="@string/pref_title_nightwatch_type"
             android:entries="@array/pref_nightwatch_display"
