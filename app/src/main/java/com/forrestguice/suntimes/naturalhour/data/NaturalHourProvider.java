@@ -28,19 +28,26 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
+import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2_ConfigActivity;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3_ConfigActivity;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3_ConfigActivity;
+
+import java.io.ByteArrayOutputStream;
 
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_APP_VERSION;
@@ -50,6 +57,7 @@ import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderCont
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_APPWIDGETID;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_CLASS;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_CONFIGCLASS;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_ICON;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_LABEL;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_PACKAGENAME;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_SUMMARY;
@@ -217,6 +225,10 @@ public class NaturalHourProvider extends ContentProvider
                                 row[i] = summary[j];
                                 break;
 
+                            case COLUMN_WIDGET_ICON:
+                                row[i] = drawableToBitmapArray(ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round));
+                                break;
+
                             default:
                                 row[i] = null;
                                 break;
@@ -228,5 +240,23 @@ public class NaturalHourProvider extends ContentProvider
 
         } else Log.d("DEBUG", "context is null!");
         return cursor;
+    }
+
+    private byte[] drawableToBitmapArray(Drawable drawable)
+    {
+        if (drawable != null)
+        {
+            int w = drawable.getIntrinsicWidth();
+            int h = drawable.getIntrinsicHeight();
+            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, w, h);
+            drawable.draw(canvas);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            byte[] retValue = out.toByteArray();
+            bitmap.recycle();
+            return retValue;
+        } else return null;
     }
 }
