@@ -24,12 +24,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.forrestguice.suntimes.naturalhour.R;
 
@@ -42,7 +46,7 @@ public class ColorValuesSelectFragment extends Fragment
     public static final boolean DEF_ALLOW_EDIT = true;
 
     protected Spinner selector;
-    protected ImageButton addButton, editButton;
+    protected ImageButton addButton, editButton, menuButton;
 
     public ColorValuesSelectFragment()
     {
@@ -79,6 +83,11 @@ public class ColorValuesSelectFragment extends Fragment
         addButton = content.findViewById(R.id.addButton);
         if (addButton != null) {
             addButton.setOnClickListener(onAddButtonClicked);
+        }
+
+        menuButton = content.findViewById(R.id.menuButton);
+        if (menuButton != null) {
+            menuButton.setOnClickListener(onMenuButtonClicked);
         }
 
         updateViews();
@@ -130,6 +139,52 @@ public class ColorValuesSelectFragment extends Fragment
         if (listener != null) {
             listener.onAddClicked(((ColorValuesItem) selector.getSelectedItem()).colorsID);
         }
+    }
+
+    private View.OnClickListener onMenuButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showOverflowMenu(getActivity(), v);
+        }
+    };
+
+    protected void showOverflowMenu(Context context, View v)
+    {
+        PopupMenu popup = new PopupMenu(context, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_colorlist, popup.getMenu());
+        ColorValuesEditFragment.forceActionBarIcons(popup.getMenu());
+        popup.setOnMenuItemClickListener(onOverflowMenuItemSelected);
+        popup.show();
+    }
+    private PopupMenu.OnMenuItemClickListener onOverflowMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
+    {
+        @Override
+        public boolean onMenuItemClick(MenuItem item)
+        {
+            switch (item.getItemId())
+            {
+                case R.id.action_colors_export:
+                    onExportColors();
+                    return true;
+
+                case R.id.action_colors_import:
+                    onImportColors();
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    protected void onExportColors()
+    {
+        // TODO
+        Toast.makeText(getActivity(), "export (TODO)", Toast.LENGTH_SHORT).show();
+    }
+    protected void onImportColors()
+    {
+        // TODO
+        Toast.makeText(getActivity(), "import (TODO)", Toast.LENGTH_SHORT).show();
     }
 
     protected ArrayAdapter<ColorValuesItem> initAdapter(Context context)

@@ -23,12 +23,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
@@ -42,10 +40,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.forrestguice.suntimes.naturalhour.R;
 
@@ -296,7 +292,7 @@ public class ColorValuesEditFragment extends Fragment
     {
         PopupMenu popup = new PopupMenu(context, v);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_colorfragment, popup.getMenu());
+        inflater.inflate(R.menu.menu_coloredit, popup.getMenu());
         forceActionBarIcons(popup.getMenu());
         popup.setOnMenuItemClickListener(onOverflowMenuItemSelected);
         popup.show();
@@ -339,7 +335,7 @@ public class ColorValuesEditFragment extends Fragment
     /**
      * from http://stackoverflow.com/questions/18374183/how-to-show-icons-in-overflow-menu-in-actionbar
      */
-    private static void forceActionBarIcons(Menu menu)
+    protected static void forceActionBarIcons(Menu menu)
     {
         if (menu != null)
         {

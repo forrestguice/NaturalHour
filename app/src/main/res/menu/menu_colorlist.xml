@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
+
+    <item
+        android:id="@+id/action_colors_export"
+        android:orderInCategory="100"
+        android:icon="?attr/icShare"
+        android:title="@string/action_export"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_colors_import"
+        android:orderInCategory="200"
+        android:icon="?attr/icAdd"
+        android:title="@string/action_import"
+        app:showAsAction="never" />
+
+</menu>
