@@ -403,13 +403,14 @@ public class NaturalHourClockBitmap
         paintArcNightFill.setAntiAlias(true);
 
         paintFillNight = new Paint();
-        paintFillNight.setStyle(Paint.Style.FILL);
+        paintFillNight.setStyle(Paint.Style.FILL_AND_STROKE);
         paintFillNight.setColor(colors.getColor(ClockColorValues.COLOR_FACE_NIGHT));
         paintFillNight.setAntiAlias(true);
 
         paintFillDay = new Paint();
-        paintFillDay.setStyle(Paint.Style.FILL);
+        paintFillDay.setStyle(Paint.Style.FILL_AND_STROKE);
         paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_DAY));
+        paintFillDay.setStrokeWidth(2);
         paintFillDay.setAntiAlias(true);
     }
 
