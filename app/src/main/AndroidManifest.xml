@@ -52,7 +52,8 @@
         <activity android:name=".ui.widget.NaturalHourWidget_3x2_ConfigActivity"
             android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
 
         <!-- Widget: 4x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_4x3"
@@ -68,7 +69,8 @@
         <activity android:name=".ui.widget.NaturalHourWidget_4x3_ConfigActivity"
             android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
 
         <!-- Widget: 5x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_5x3"
@@ -84,7 +86,8 @@
         <activity android:name=".ui.widget.NaturalHourWidget_5x3_ConfigActivity"
             android:label="@string/app_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
 
     </application>
 

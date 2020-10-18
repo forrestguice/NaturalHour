@@ -135,6 +135,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         if (colorFragment != null)
         {
             colorFragment.setAllowEdit(false);
+            colorFragment.setAppWidgetID(appWidgetId);;
             colorFragment.setColorCollection(colors);
         }
     }
