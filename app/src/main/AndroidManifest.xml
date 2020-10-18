@@ -32,11 +32,25 @@
             </intent-filter>
             <meta-data android:name="SuntimesMenuItemTitle" android:value="@string/app_name" />
 
+            <intent-filter>
+                <action android:name="suntimes.action.LIST_WIDGETS" />
+                <category android:name="suntimes.SUNTIMES_ADDON" />
+            </intent-filter>
+            <meta-data android:name="WidgetInfoProvider"
+                android:value="content://suntimes.naturalhour.provider" />
+
         </activity>
 
         <!-- Activity: Settings -->
         <activity android:name=".SettingsActivity" android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher_round" />
+
+        <!-- Content Provider -->
+        <provider
+            android:name="com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider"
+            android:authorities="suntimes.naturalhour.provider"
+            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR"
+            android:syncable="false" />
 
         <!-- Widget: 3x2 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_3x2"
