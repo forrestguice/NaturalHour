@@ -19,48 +19,30 @@
 
 package com.forrestguice.suntimes.naturalhour.data;
 
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
-import android.content.ComponentName;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2;
-import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2_ConfigActivity;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3;
-import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3_ConfigActivity;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3;
-import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3_ConfigActivity;
-
-import java.io.ByteArrayOutputStream;
+import com.forrestguice.suntimes.widget.WidgetListHelper;
 
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_APP_VERSION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_APP_VERSION_CODE;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER_VERSION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER_VERSION_CODE;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_APPWIDGETID;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_CLASS;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_CONFIGCLASS;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_ICON;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_LABEL;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_PACKAGENAME;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_WIDGET_SUMMARY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_CONFIG;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_CONFIG_PROJECTION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_WIDGET;
@@ -181,82 +163,10 @@ public class NaturalHourProvider extends ContentProvider
     public Cursor queryWidgets(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
     {
         String[] columns = (projection != null ? projection : QUERY_WIDGET_PROJECTION);
-        MatrixCursor cursor = new MatrixCursor(columns);
-
-        Context context = getContext();
-        if (context != null)
-        {
-            AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-            Class[] widgetClass = new Class[] { NaturalHourWidget_3x2.class, NaturalHourWidget_4x3.class, NaturalHourWidget_5x3.class };
-            Class[] configClass = new Class[] { NaturalHourWidget_3x2_ConfigActivity.class, NaturalHourWidget_4x3_ConfigActivity.class, NaturalHourWidget_5x3_ConfigActivity.class };
-            String[] summary = new String[] {"Clock Widget (3x2)", "Clock Widget (4x3)", "Clock Widget (5x3)"};
-            for (int j=0; j<widgetClass.length; j++)
-            {
-                int[] widgetIDs = widgetManager.getAppWidgetIds(new ComponentName(context, widgetClass[j]));
-                for (int appWidgetID : widgetIDs)
-                {
-                    AppWidgetProviderInfo info = widgetManager.getAppWidgetInfo(appWidgetID);
-                    Object[] row = new Object[columns.length];
-                    for (int i=0; i<columns.length; i++)
-                    {
-                        switch (columns[i])
-                        {
-                            case COLUMN_WIDGET_PACKAGENAME:
-                                row[i] = context.getPackageName();
-                                break;
-
-                            case COLUMN_WIDGET_APPWIDGETID:
-                                row[i] = appWidgetID;
-                                break;
-
-                            case COLUMN_WIDGET_CLASS:
-                                row[i] = widgetClass[j].getName();
-                                break;
-
-                            case COLUMN_WIDGET_CONFIGCLASS:
-                                row[i] = configClass[j].getName();
-                                break;
-
-                            case COLUMN_WIDGET_LABEL:
-                                row[i] = info.label;
-                                break;
-
-                            case COLUMN_WIDGET_SUMMARY:
-                                row[i] = summary[j];
-                                break;
-
-                            case COLUMN_WIDGET_ICON:
-                                row[i] = drawableToBitmapArray(ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round));
-                                break;
-
-                            default:
-                                row[i] = null;
-                                break;
-                        }
-                    }
-                    cursor.addRow(row);
-                }
-            }
-
-        } else Log.d("DEBUG", "context is null!");
-        return cursor;
+        Class[] widgetClass = new Class[] { NaturalHourWidget_3x2.class, NaturalHourWidget_4x3.class, NaturalHourWidget_5x3.class };
+        String[] summary = new String[] { "Clock Widget (3x2)", "Clock Widget (4x3)", "Clock Widget (5x3)" };    // TODO: i18n
+        int[] icons = new int[] { R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round };
+        return WidgetListHelper.createWidgetListCursor(getContext(), columns, widgetClass, summary, icons);
     }
 
-    private byte[] drawableToBitmapArray(Drawable drawable)
-    {
-        if (drawable != null)
-        {
-            int w = drawable.getIntrinsicWidth();
-            int h = drawable.getIntrinsicHeight();
-            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, w, h);
-            drawable.draw(canvas);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            byte[] retValue = out.toByteArray();
-            bitmap.recycle();
-            return retValue;
-        } else return null;
-    }
 }

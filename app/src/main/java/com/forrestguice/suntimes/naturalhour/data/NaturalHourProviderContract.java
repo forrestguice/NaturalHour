@@ -19,6 +19,8 @@
 
 package com.forrestguice.suntimes.naturalhour.data;
 
+import com.forrestguice.suntimes.widget.WidgetListHelper;
+
 public interface NaturalHourProviderContract
 {
     String AUTHORITY = "suntimes.naturalhour.provider";
@@ -43,18 +45,15 @@ public interface NaturalHourProviderContract
     /*
      * WIDGET
      */
-    String COLUMN_WIDGET_PACKAGENAME = "packagename";
-    String COLUMN_WIDGET_APPWIDGETID = "appwidgetid";
-    String COLUMN_WIDGET_CLASS = "widgetclass";
-    String COLUMN_WIDGET_CONFIGCLASS = "configclass";
-    String COLUMN_WIDGET_LABEL = "label";
-    String COLUMN_WIDGET_SUMMARY = "summary";
-    String COLUMN_WIDGET_ICON = "icon";
+    String COLUMN_WIDGET_PACKAGENAME = WidgetListHelper.COLUMN_WIDGET_PACKAGENAME;
+    String COLUMN_WIDGET_APPWIDGETID = WidgetListHelper.COLUMN_WIDGET_APPWIDGETID;
+    String COLUMN_WIDGET_CLASS = WidgetListHelper.COLUMN_WIDGET_CLASS;
+    String COLUMN_WIDGET_CONFIGCLASS = WidgetListHelper.COLUMN_WIDGET_CONFIGCLASS;
+    String COLUMN_WIDGET_LABEL = WidgetListHelper.COLUMN_WIDGET_LABEL;
+    String COLUMN_WIDGET_SUMMARY = WidgetListHelper.COLUMN_WIDGET_SUMMARY;
+    String COLUMN_WIDGET_ICON = WidgetListHelper.COLUMN_WIDGET_ICON;
 
-    String QUERY_WIDGET = "widgets";
-    String[] QUERY_WIDGET_PROJECTION = new String[] {
-            COLUMN_WIDGET_APPWIDGETID, COLUMN_WIDGET_CLASS, COLUMN_WIDGET_CONFIGCLASS, COLUMN_WIDGET_PACKAGENAME,
-            COLUMN_WIDGET_LABEL, COLUMN_WIDGET_SUMMARY, COLUMN_WIDGET_ICON
-    };
+    String QUERY_WIDGET = WidgetListHelper.QUERY_WIDGET;
+    String[] QUERY_WIDGET_PROJECTION = WidgetListHelper.QUERY_WIDGET_PROJECTION;
 
 }
