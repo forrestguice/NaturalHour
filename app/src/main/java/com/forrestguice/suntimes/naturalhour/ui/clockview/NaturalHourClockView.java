@@ -17,7 +17,7 @@
     along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.naturalhour.ui;
+package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
 import android.graphics.Canvas;

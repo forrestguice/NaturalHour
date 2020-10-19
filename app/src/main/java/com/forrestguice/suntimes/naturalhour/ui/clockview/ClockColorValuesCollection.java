@@ -17,19 +17,34 @@
     along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.naturalhour.ui.widget;
+package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
 
-import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 
-public class NaturalHourWidget_3x2 extends NaturalHourWidget
+/**
+ * ColorValuesCollection
+ */
+public class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCollection
 {
+    public static final String PREFS_CLOCKCOLORS = "prefs_clockcolors";
+
+    public ClockColorValuesCollection() {
+        super();
+    }
+    public ClockColorValuesCollection(Context context) {
+        super(context);
+    }
+
     @Override
-    protected void prepareClockBitmap(Context context, NaturalHourClockBitmap clockView)
-    {
-        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATE, false);
-        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE, false);
-        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TICKS_5M, false);
+    public String getSharedPrefsName() {
+        return PREFS_CLOCKCOLORS;
+    }
+
+    @Override
+    public ColorValues getDefaultColors(Context context) {
+        return new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context);
     }
 }

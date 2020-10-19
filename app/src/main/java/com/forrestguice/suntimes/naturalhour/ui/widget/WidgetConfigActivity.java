@@ -40,7 +40,7 @@ import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
-import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
@@ -53,7 +53,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     protected boolean reconfigure = false;
 
-    protected NaturalHourClockBitmap.ClockColorValuesCollection colors;
+    protected ClockColorValuesCollection colors;
     protected ColorValuesSelectFragment colorFragment;
 
     public abstract Class getWidgetClass();
@@ -129,7 +129,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        colors = new NaturalHourClockBitmap.ClockColorValuesCollection(context);
+        colors = new ClockColorValuesCollection(context);
         FragmentManager fragments = getSupportFragmentManager();
         colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockThemeSelectorFragment);
         if (colorFragment != null)

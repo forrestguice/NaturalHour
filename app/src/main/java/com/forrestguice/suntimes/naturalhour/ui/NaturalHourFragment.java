@@ -55,6 +55,10 @@ import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 
@@ -108,9 +112,9 @@ public class NaturalHourFragment extends Fragment
 
     protected void initClockColors(Context context)
     {
-        colorCollection = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
-        colorCollection.setColors(context, NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, true));
-        colorCollection.setColors(context, NaturalHourClockBitmap.ClockColorValues.getColorDefaults(context, false));
+        colorCollection = new ClockColorValuesCollection<>(context);
+        colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, true));
+        colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, false));
     }
 
     public NaturalHourFragment() {

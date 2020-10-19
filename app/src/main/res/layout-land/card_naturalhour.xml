@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".ui.NaturalHourFragment">
 
-    <com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockView
+    <com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView
         android:id="@+id/clockface"  android:background="?attr/selectableItemBackground"
         android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
         app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"

@@ -33,7 +33,6 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.SpannableString;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -46,7 +45,9 @@ import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
-import com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
@@ -197,7 +198,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     @Override
     public void onDeleted(Context context, int[] appWidgetIds)
     {
-        NaturalHourClockBitmap.ClockColorValuesCollection<NaturalHourClockBitmap.ClockColorValues> colors = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
+        ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);
         for (int appWidgetId : appWidgetIds)
         {
             unsetUpdateAlarm(context, appWidgetId);
@@ -335,7 +336,7 @@ public class NaturalHourWidget extends AppWidgetProvider
 
     protected void themeViews(Context context, RemoteViews views, int appWidgetId)
     {
-        NaturalHourClockBitmap.ClockColorValuesCollection<NaturalHourClockBitmap.ClockColorValues> colors = new NaturalHourClockBitmap.ClockColorValuesCollection<>(context);
+        ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);
         clockAppearance = colors.getSelectedColors(context, appWidgetId);
     }
 

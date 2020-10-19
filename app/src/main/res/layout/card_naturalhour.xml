@@ -10,7 +10,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Today\nApril 1, 2016" />
 
-    <com.forrestguice.suntimes.naturalhour.ui.NaturalHourClockView
+    <com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView
         android:id="@+id/clockface" android:background="?attr/selectableItemBackground"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginLeft="8dp" android:layout_marginRight="8dp"
