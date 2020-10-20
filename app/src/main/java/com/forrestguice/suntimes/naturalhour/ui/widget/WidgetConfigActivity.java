@@ -151,7 +151,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     @Override
     protected boolean onPrepareOptionsPanel(View view, Menu menu)
     {
-        MainActivity.forceActionBarIcons(menu);
+        Messages.forceActionBarIcons(menu);
         return super.onPrepareOptionsPanel(view, menu);
     }
 

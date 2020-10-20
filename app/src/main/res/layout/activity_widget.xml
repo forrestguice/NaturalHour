@@ -14,7 +14,7 @@
             app:title="@string/app_name"
             app:popupTheme="?attr/actionBarPopupTheme" />
 
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment"
+        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesSelectFragment"
             android:id="@+id/clockThemeSelectorFragment"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 

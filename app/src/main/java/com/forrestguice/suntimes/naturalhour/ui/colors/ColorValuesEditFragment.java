@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,8 +43,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.naturalhour.R;
-
-import java.lang.reflect.Method;
 
 public class ColorValuesEditFragment extends Fragment
 {
@@ -306,7 +303,6 @@ public class ColorValuesEditFragment extends Fragment
         PopupMenu popup = new PopupMenu(context, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_coloredit, popup.getMenu());
-        forceActionBarIcons(popup.getMenu());
         onPrepareOverflowMenu(context, popup.getMenu());
         popup.setOnMenuItemClickListener(onOverflowMenuItemSelected);
         popup.show();
@@ -350,28 +346,6 @@ public class ColorValuesEditFragment extends Fragment
             return true;
         } else { return super.onOptionsItemSelected(item); }
     }
-
-    /**
-     * from http://stackoverflow.com/questions/18374183/how-to-show-icons-in-overflow-menu-in-actionbar
-     */
-    protected static void forceActionBarIcons(Menu menu)
-    {
-        if (menu != null)
-        {
-            if (menu.getClass().getSimpleName().equals("MenuBuilder"))
-            {
-                try {
-                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                    m.setAccessible(true);
-                    m.invoke(menu, true);
-
-                } catch (Exception e) {
-                    Log.e("ColorValuesFragment", "failed to set show overflow icons", e);
-                }
-            }
-        }
-    }
-
 
     /**
      * FragmentListener

@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -153,10 +154,11 @@ public class ColorValuesSelectFragment extends Fragment
         PopupMenu popup = new PopupMenu(context, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_colorlist, popup.getMenu());
-        ColorValuesEditFragment.forceActionBarIcons(popup.getMenu());
+        onPrepareOverflowMenu(context, popup.getMenu());
         popup.setOnMenuItemClickListener(onOverflowMenuItemSelected);
         popup.show();
     }
+    protected void onPrepareOverflowMenu(Context context, Menu menu) { /* EMPTY */ }
     private PopupMenu.OnMenuItemClickListener onOverflowMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
     {
         @Override

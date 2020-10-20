@@ -28,6 +28,7 @@ import android.view.MenuItem;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
 import com.forrestguice.suntimes.themes.SuntimesThemeContract;
@@ -56,6 +57,7 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
     @Override
     protected void onPrepareOverflowMenu(Context context, Menu menu)
     {
+        Messages.forceActionBarIcons(menu);
         MenuItem copyFromTheme = menu.findItem(R.id.action_colors_copytheme);
         if (copyFromTheme != null) {
             copyFromTheme.setVisible(AddonHelper.supportForThemesActivity(initSuntimesInfo(context)));
