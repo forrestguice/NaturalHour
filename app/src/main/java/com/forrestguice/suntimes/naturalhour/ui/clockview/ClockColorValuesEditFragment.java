@@ -19,22 +19,30 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
+import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
 import com.forrestguice.suntimes.themes.SuntimesThemeContract;
+import com.forrestguice.suntimes.themes.ThemeHelper;
 
 public class ClockColorValuesEditFragment extends ColorValuesEditFragment
 {
+    private SuntimesInfo suntimesInfo = null;
+    private SuntimesInfo initSuntimesInfo(Context context) {
+        if (suntimesInfo == null) {
+            suntimesInfo = SuntimesInfo.queryInfo(context);
+        }
+        return suntimesInfo;
+    }
+
     @Override
     protected Intent pickColorIntent(String key, int requestCode) {
         return AddonHelper.intentForColorActivity(colorValues.getColor(key), true, colorValues.getColors());
@@ -43,6 +51,25 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
     @Override
     protected void onPickColorResult(String key, Intent data) {
         setColor(key, AddonHelper.resultForColorActivity(data, colorValues.getColor(key)));
+    }
+
+    @Override
+    protected void onPrepareOverflowMenu(Context context, Menu menu)
+    {
+        MenuItem copyFromTheme = menu.findItem(R.id.action_colors_copytheme);
+        if (copyFromTheme != null) {
+            copyFromTheme.setVisible(AddonHelper.supportForThemesActivity(initSuntimesInfo(context)));
+        }
+    }
+
+    @Override
+    protected void importFromTheme(Context context)
+    {
+        if (AddonHelper.supportForThemesActivity(initSuntimesInfo(context))) {
+            super.importFromTheme(context);
+        } else {
+            Log.w("importFromTheme", "This feature requires Suntimes v0.12.8 (60) or greater.");
+        }
     }
 
     @Override
@@ -58,7 +85,7 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
         {
             String themeName = AddonHelper.resultForThemesActivity(data);
             if (themeName != null) {
-                mapThemeToClockColors(loadTheme(getActivity(), themeName));
+                mapThemeToClockColors(ThemeHelper.loadTheme(getActivity(), themeName));
             }
         }
     }
@@ -90,30 +117,6 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
             setColor(ClockColorValues.COLOR_RING_NIGHT_LABEL, themeValues.getAsInteger(SuntimesThemeContract.THEME_TITLECOLOR));
             setColor(ClockColorValues.COLOR_RING_NIGHT_STROKE, themeValues.getAsInteger(SuntimesThemeContract.THEME_TITLECOLOR));
         }
-    }
-
-
-    public static ContentValues loadTheme(Context context, @NonNull String themeName)
-    {
-        ContentValues values = null;
-        ContentResolver resolver = context.getContentResolver();
-        if (resolver != null)
-        {
-            Uri uri = Uri.parse("content://" + SuntimesThemeContract.AUTHORITY + "/" + SuntimesThemeContract.QUERY_THEME + "/" + themeName);
-            try {
-                Cursor cursor = resolver.query(uri, SuntimesThemeContract.QUERY_THEME_PROJECTION, null, null, null);
-                if (cursor != null)
-                {
-                    cursor.moveToFirst();
-                    values = new ContentValues();
-                    DatabaseUtils.cursorRowToContentValues(cursor, values);
-                    cursor.close();
-                }
-            } catch (SecurityException e) {
-                Log.e("ThemeHelper", "Unable to access " + SuntimesThemeContract.AUTHORITY + "! " + e);
-            }
-        }
-        return values;
     }
 
 }

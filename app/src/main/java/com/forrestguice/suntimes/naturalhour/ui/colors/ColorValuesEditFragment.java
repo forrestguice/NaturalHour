@@ -307,8 +307,17 @@ public class ColorValuesEditFragment extends Fragment
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_coloredit, popup.getMenu());
         forceActionBarIcons(popup.getMenu());
+        onPrepareOverflowMenu(context, popup.getMenu());
         popup.setOnMenuItemClickListener(onOverflowMenuItemSelected);
         popup.show();
+    }
+
+    protected void onPrepareOverflowMenu(Context context, Menu menu)
+    {
+        MenuItem copyFromTheme = menu.findItem(R.id.action_colors_copytheme);
+        if (copyFromTheme != null) {
+            copyFromTheme.setVisible(false);
+        }
     }
 
     private PopupMenu.OnMenuItemClickListener onOverflowMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
@@ -337,16 +346,9 @@ public class ColorValuesEditFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int id = item.getItemId();
-        switch (id)
-        {
-            case R.id.action_colors_share:
-                shareColors(getActivity());
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        if (onOverflowMenuItemSelected.onMenuItemClick(item)) {
+            return true;
+        } else { return super.onOptionsItemSelected(item); }
     }
 
     /**

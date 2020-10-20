@@ -22,7 +22,7 @@ package com.forrestguice.suntimes.naturalhour.data;
 import android.content.ContentResolver;
 
 /**
- * An alternate definition of "natural hour" where the day begins and ends at civil twilight (6 degrees).
+ * An alternate definition of "natural hour" where the day is counted sunset to sunset.
  */
 public class NaturalHourCalculator2 extends NaturalHourCalculator
 {
@@ -33,5 +33,4 @@ public class NaturalHourCalculator2 extends NaturalHourCalculator
         long[] riseset1 = querySunriseSunset(resolver, dateMillis);
         return new long[] {riseset1[0], riseset0[1] + 24 * 60 * 60 * 1000};
     }
-
 }
