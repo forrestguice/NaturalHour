@@ -162,9 +162,11 @@ public class NaturalHourProvider extends ContentProvider
      */
     public Cursor queryWidgets(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder)
     {
+        Context context = getContext();
         String[] columns = (projection != null ? projection : QUERY_WIDGET_PROJECTION);
         Class[] widgetClass = new Class[] { NaturalHourWidget_3x2.class, NaturalHourWidget_4x3.class, NaturalHourWidget_5x3.class };
-        String[] summary = new String[] { "Clock Widget (3x2)", "Clock Widget (4x3)", "Clock Widget (5x3)" };    // TODO: i18n
+        String[] summary = (context == null) ? new String[] {"Clock Widget (3x2)", "Clock Widget (4x3)", "Clock Widget (5x3)"}
+                : new String[] { context.getString(R.string.widget_summary, "3x2"), context.getString(R.string.widget_summary, "4x3"), context.getString(R.string.widget_summary, "5x3") };
         int[] icons = new int[] { R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round };
         return WidgetListHelper.createWidgetListCursor(getContext(), columns, widgetClass, summary, icons);
     }

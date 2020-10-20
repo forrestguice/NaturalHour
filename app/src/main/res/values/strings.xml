@@ -256,6 +256,7 @@
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
     <string name="widget_name">@string/app_name</string>
+    <string name="widget_summary">Clock Widget (%s)</string>    <!-- e.g. Clock Widget (3x2) -->
 
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
