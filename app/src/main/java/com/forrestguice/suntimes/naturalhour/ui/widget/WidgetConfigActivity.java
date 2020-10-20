@@ -37,7 +37,6 @@ import android.view.View;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
-import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.SettingsActivity;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
@@ -51,8 +50,10 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     public static final String EXTRA_RECONFIGURE = "reconfigure";
 
     protected SuntimesInfo suntimesInfo = null;
-    protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     protected boolean reconfigure = false;
+
+    protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private Intent resultValue;
 
     protected ClockColorValuesCollection colors;
     protected ColorValuesSelectFragment colorFragment;
@@ -96,9 +97,9 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             reconfigure = extras.getBoolean(EXTRA_RECONFIGURE, false);
         }
 
-        Intent cancelIntent = new Intent();
-        cancelIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(RESULT_CANCELED, cancelIntent);
+        resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        setResult(RESULT_CANCELED, resultValue);
 
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
         {
@@ -189,14 +190,14 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         }
 
         updateWidgets(this);
-        setResult(RESULT_OK);
+        setResult(RESULT_OK, resultValue);
         finish();
         return true;
     }
 
     protected boolean onCanceled()
     {
-        setResult(RESULT_CANCELED);
+        setResult(RESULT_CANCELED, resultValue);
         finish();
         return true;
     }
