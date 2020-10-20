@@ -57,7 +57,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected ClockColorValuesCollection colors;
     protected ColorValuesSelectFragment colorFragment;
-    protected SettingsActivity.GeneralPreferenceFragment flagFragment;
 
     public abstract Class getWidgetClass();
 
@@ -140,11 +139,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             colorFragment.setAllowEdit(false);
             colorFragment.setAppWidgetID(appWidgetId);;
             colorFragment.setColorCollection(colors);
-        }
-
-        flagFragment = (SettingsActivity.GeneralPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsSelectorFragment);
-        if (flagFragment != null) {
-            flagFragment.setAppWidgetID(appWidgetId);
         }
     }
 
