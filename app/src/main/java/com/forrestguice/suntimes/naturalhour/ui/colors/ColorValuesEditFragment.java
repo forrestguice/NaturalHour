@@ -166,8 +166,12 @@ public class ColorValuesEditFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, android.content.Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode >= 0) {
+
+        if (requestCode >= 0 && requestCode < REQUEST_IMPORT_THEME) {
             onPickColorResult(requestCode, resultCode, data);
+
+        } else if (requestCode == REQUEST_IMPORT_THEME) {
+            onPickThemeResult(data);
         }
     }
 
@@ -288,6 +292,15 @@ public class ColorValuesEditFragment extends Fragment
         }
     }
 
+    public static final int REQUEST_IMPORT_THEME = 1000;
+    protected void importFromTheme(Context context) {
+        startActivityForResult(pickThemeIntent(), REQUEST_IMPORT_THEME);
+    }
+    protected Intent pickThemeIntent() {
+        return null;
+    }
+    protected void onPickThemeResult(Intent data) { /* EMPTY */ }
+
     public void showOverflowMenu(Context context, View v)
     {
         PopupMenu popup = new PopupMenu(context, v);
@@ -305,6 +318,10 @@ public class ColorValuesEditFragment extends Fragment
         {
             switch (item.getItemId())
             {
+                case R.id.action_colors_copytheme:
+                    importFromTheme(getActivity());
+                    return true;
+
                 case R.id.action_colors_delete:
                     deleteColors(getActivity());
                     return true;

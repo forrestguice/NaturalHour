@@ -9,7 +9,7 @@
         android:id="@+id/colorsCollectionFragment"
         android:layout_width="match_parent" android:layout_height="wrap_content" />
 
-    <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment1"
+    <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment"
         android:id="@+id/colorsFragment"
         android:layout_width="match_parent" android:layout_height="wrap_content" />
 

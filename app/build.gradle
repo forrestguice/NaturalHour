@@ -28,7 +28,7 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:support-vector-drawable:28.0.0'
-    implementation 'com.github.forrestguice:SuntimesAddon:8cc22a9f82'
+    implementation 'com.github.forrestguice:SuntimesAddon:ece52cf51f'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

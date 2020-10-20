@@ -17,4 +17,11 @@
         android:title="@string/action_delete"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_colors_copytheme"
+        android:orderInCategory="200"
+        android:icon="?attr/icAdd"
+        android:title="@string/action_import_fromtheme"
+        app:showAsAction="never" />
+
 </menu>

@@ -24,13 +24,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment;
 
 public class ColorValuesSheetFragment extends Fragment
 {
@@ -60,7 +60,7 @@ public class ColorValuesSheetFragment extends Fragment
         View content = inflater.inflate(R.layout.fragment_colorsheet, container, false);
         FragmentManager fragments = getChildFragmentManager();
         listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
-        editDialog = (ColorValuesEditFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        editDialog = (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }
@@ -79,7 +79,7 @@ public class ColorValuesSheetFragment extends Fragment
             listDialog.setFragmentListener(listDialogListener);
         }
 
-        editDialog = (ColorValuesEditFragment1) fragments.findFragmentById(R.id.colorsFragment);
+        editDialog = (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
         if (editDialog != null) {
             editDialog.setFragmentListener(editDialogListener);
             View v = getView();
@@ -98,7 +98,7 @@ public class ColorValuesSheetFragment extends Fragment
     }
 
     protected ColorValuesSelectFragment listDialog;
-    protected ColorValuesEditFragment1 editDialog;
+    protected ClockColorValuesEditFragment editDialog;
 
     protected void onRestoreInstanceState(@NonNull Bundle savedState) {
         mode = savedState.getInt("mode");
