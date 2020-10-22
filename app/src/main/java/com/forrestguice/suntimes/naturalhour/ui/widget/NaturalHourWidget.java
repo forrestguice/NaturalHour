@@ -211,10 +211,10 @@ public class NaturalHourWidget extends AppWidgetProvider
     {
         deleteNextSuggestedUpdate(context, appWidgetId);
         for (String key : NaturalHourClockBitmap.FLAGS) {
-            AppSettings.deleteKey(context, "widget_" + appWidgetId + "_" + key);
+            AppSettings.deleteKey(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key);
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
-            AppSettings.deleteKey(context, "widget_" + appWidgetId + "_" + key);
+            AppSettings.deleteKey(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key);
         }
     }
 
@@ -304,13 +304,13 @@ public class NaturalHourWidget extends AppWidgetProvider
         clockView.set24HourMode(is24);
 
         for (String key : NaturalHourClockBitmap.FLAGS) {
-            String widgetKey = "widget_" + appWidgetId + "_" + key;
+            String widgetKey = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key;
             if (AppSettings.containsKey(context, widgetKey)) {
                 clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey));
             }
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
-            String widgetKey = "widget_" + appWidgetId + "_" + key;
+            String widgetKey = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key;
             if (AppSettings.containsKey(context, widgetKey)) {
                 clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
             }

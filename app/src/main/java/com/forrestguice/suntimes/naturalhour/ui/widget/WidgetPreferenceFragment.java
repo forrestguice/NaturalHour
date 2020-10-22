@@ -36,6 +36,11 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class WidgetPreferenceFragment extends PreferenceFragment
 {
+    public static final String KEY_PREFIX = "widget";
+    public static String widgetKeyPrefix(int appWidgetId) {
+        return KEY_PREFIX + "_" + appWidgetId + "_";
+    }
+
     /**
      * @return appWidgetId (apply as widget settings), or 0 if unset (apply as global settings)
      */
@@ -70,13 +75,13 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
             for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_0 to widget_i
-                String prefKey = "widget_0_" + key;
-                String widgetKey = "widget_" + appWidgetId + "_" + key;
+                String prefKey = widgetKeyPrefix(0) + key;
+                String widgetKey = widgetKeyPrefix(appWidgetId) + key;
                 editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, NaturalHourClockBitmap.getDefaultFlag(context, key)));
             }
             for (String key : NaturalHourClockBitmap.VALUES) {                    // copy values from widget_0 to widget_i
-                String prefKey = "widget_0_" + key;
-                String widgetKey = "widget_" + appWidgetId + "_" + key;
+                String prefKey = widgetKeyPrefix(0) + key;
+                String widgetKey = widgetKeyPrefix(appWidgetId) + key;
                 editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
             }
             editor.apply();
@@ -97,6 +102,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         super.onPause();
     }
 
+
     private SharedPreferences.OnSharedPreferenceChangeListener onWidgetPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
     {
         @Override
@@ -105,10 +111,10 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             int appWidgetId = getAppWidgetId();
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
             {
-                if (prefKey.startsWith("widget_0_"))
+                if (prefKey.startsWith(widgetKeyPrefix(0)))
                 {
-                    String key = prefKey.replace("widget_0_", "");
-                    String widgetKey = "widget_" + appWidgetId + "_" + key;
+                    String key = prefKey.replace(widgetKeyPrefix(0), "");
+                    String widgetKey = widgetKeyPrefix(appWidgetId) + key;
 
                     Context context = getActivity();
                     SharedPreferences.Editor editor = prefs.edit();
