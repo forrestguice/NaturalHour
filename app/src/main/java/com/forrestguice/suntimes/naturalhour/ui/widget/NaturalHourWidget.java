@@ -202,8 +202,19 @@ public class NaturalHourWidget extends AppWidgetProvider
         for (int appWidgetId : appWidgetIds)
         {
             unsetUpdateAlarm(context, appWidgetId);
-            deleteNextSuggestedUpdate(context, appWidgetId);
+            deleteWidgetPrefs(context, appWidgetId);
             colors.clearSelectedColorsID(context, appWidgetId);
+        }
+    }
+
+    protected void deleteWidgetPrefs(Context context, int appWidgetId)
+    {
+        deleteNextSuggestedUpdate(context, appWidgetId);
+        for (String key : NaturalHourClockBitmap.FLAGS) {
+            AppSettings.deleteKey(context, "widget_" + appWidgetId + "_" + key);
+        }
+        for (String key : NaturalHourClockBitmap.VALUES) {
+            AppSettings.deleteKey(context, "widget_" + appWidgetId + "_" + key);
         }
     }
 
@@ -293,10 +304,16 @@ public class NaturalHourWidget extends AppWidgetProvider
         clockView.set24HourMode(is24);
 
         for (String key : NaturalHourClockBitmap.FLAGS) {
-            clockView.setFlag(key, AppSettings.getClockFlag(context, key));
+            String widgetKey = "widget_" + appWidgetId + "_" + key;
+            if (AppSettings.containsKey(context, widgetKey)) {
+                clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey));
+            }
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
-            clockView.setValue(key, AppSettings.getClockIntValue(context, key));
+            String widgetKey = "widget_" + appWidgetId + "_" + key;
+            if (AppSettings.containsKey(context, widgetKey)) {
+                clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
+            }
         }
 
         prepareClockBitmap(context, clockView);

@@ -38,11 +38,11 @@ public class SettingsActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new GeneralPreferenceFragment()).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment()).commit();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment
+    public static class NaturalHourPreferenceFragment extends PreferenceFragment
     {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -62,4 +62,5 @@ public class SettingsActivity extends AppCompatActivity
             return super.onOptionsItemSelected(item);
         }
     }
+
 }

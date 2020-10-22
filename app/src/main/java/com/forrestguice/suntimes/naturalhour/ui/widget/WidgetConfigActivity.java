@@ -38,7 +38,6 @@ import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.R;
-import com.forrestguice.suntimes.naturalhour.SettingsActivity;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
@@ -57,6 +56,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected ClockColorValuesCollection colors;
     protected ColorValuesSelectFragment colorFragment;
+    protected WidgetPreferenceFragment flagFragment;
 
     public abstract Class getWidgetClass();
 
@@ -133,12 +133,17 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
         colors = new ClockColorValuesCollection(context);
         FragmentManager fragments = getSupportFragmentManager();
-        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockThemeSelectorFragment);
+        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
         if (colorFragment != null)
         {
             colorFragment.setAllowEdit(false);
             colorFragment.setAppWidgetID(appWidgetId);;
             colorFragment.setColorCollection(colors);
+        }
+
+        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        if (flagFragment != null) {
+            flagFragment.setAppWidgetId(appWidgetId);
         }
     }
 

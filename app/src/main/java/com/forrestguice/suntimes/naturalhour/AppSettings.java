@@ -74,6 +74,13 @@ public class AppSettings
         }
     }
 
+    public static boolean containsKey(Context context, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context).contains(key);
+    }
+    public static void deleteKey(Context context, String key) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).apply();
+    }
+
     public static void setTimeFormatMode(Context context, int mode)
     {
         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
