@@ -207,6 +207,10 @@ public class ColorValuesSelectFragment extends Fragment
             {
                 int selectedIndex = 0;
                 String selectedColorsID = colorCollection.getSelectedColorsID(getActivity(), getAppWidgetID());
+                if (selectedColorsID == null) {
+                    selectedColorsID = colorCollection.getSelectedColorsID(getActivity(), 0);
+                }
+
                 for (int i=0; i<selector.getCount(); i++)
                 {
                     ColorValuesItem item = (ColorValuesItem) selector.getItemAtPosition(i);
