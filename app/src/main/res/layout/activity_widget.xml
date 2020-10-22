@@ -11,7 +11,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:theme="?attr/toolbarTheme"
-            app:title="@string/app_name"
+            app:title="@string/widgetconfig_title"
             app:popupTheme="?attr/actionBarPopupTheme" />
 
         <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesSelectFragment"
