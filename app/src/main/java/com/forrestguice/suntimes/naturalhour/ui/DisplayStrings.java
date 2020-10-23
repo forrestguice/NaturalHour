@@ -172,6 +172,27 @@ public class DisplayStrings
         }
     }
 
+    public static String timeFormatLabel(@NonNull Context context, boolean is24) {
+        return context.getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+    }
+    public static String timeFormatTag(@NonNull Context context, boolean is24) {
+        return context.getString(R.string.action_timeformat_system_format, timeFormatLabel(context, is24));
+    }
+    public static CharSequence formatTimeFormatLabel(Context context, String labelFormat, boolean is24) {
+        String tag = DisplayStrings.timeFormatTag(context, is24);
+        String label = String.format(labelFormat, tag);
+        return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
+    }
+
+    public static String timeZoneTag(@NonNull Context context, @NonNull String timezone) {
+        return context.getString(R.string.action_timezone_system_format, timezone);
+    }
+    public static CharSequence formatTimeZoneLabel(Context context, String labelFormat, String timezone) {
+        String tag = DisplayStrings.timeZoneTag(context, timezone);
+        String label = String.format(labelFormat, tag);
+        return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
+    }
+
     public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
     {
         Calendar calendar = Calendar.getInstance();

@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity
         if (itemSystem != null)
         {
             boolean is24 = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SYSTEM, suntimesInfo);
-            String timeFormat = getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+            CharSequence timeFormat = DisplayStrings.timeFormatLabel(MainActivity.this, is24);
             String displayTag = getString(R.string.action_timeformat_system_format, timeFormat);
             String displayString = getString(R.string.action_timeformat_system, displayTag);
             itemSystem.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity
         if (itemSuntimes != null)
         {
             boolean is24 = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SUNTIMES, suntimesInfo);
-            String timeFormat = getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+            CharSequence timeFormat = DisplayStrings.timeFormatLabel(MainActivity.this, is24);
             String displayTag = getString(R.string.action_timeformat_system_format, timeFormat);
             String displayString = getString(R.string.action_timeformat_suntimes, displayTag);
             itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
