@@ -143,7 +143,19 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
         flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
+            flagFragment.setSuntimesInfo(suntimesInfo);
             flagFragment.setAppWidgetId(appWidgetId);
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        if (flagFragment != null) {
+            flagFragment.setSuntimesInfo(suntimesInfo);
         }
     }
 

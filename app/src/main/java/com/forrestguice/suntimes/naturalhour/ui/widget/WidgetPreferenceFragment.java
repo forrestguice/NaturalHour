@@ -27,11 +27,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.SettingsActivity;
+import com.forrestguice.suntimes.naturalhour.ui.IntListPreference;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -95,6 +99,12 @@ public class WidgetPreferenceFragment extends PreferenceFragment
 
             editor.apply();
         }
+    }
+
+    protected void updateDynamicPrefs(Context context, @NonNull SuntimesInfo info)
+    {
+        SettingsActivity.NaturalHourPreferenceFragment.updateTimeZonePref(context, (IntListPreference) findPreference("widget_0_timezonemode"), info);
+        SettingsActivity.NaturalHourPreferenceFragment.updateTimeModePref(context, (IntListPreference) findPreference("widget_0_timeformatmode"), info);
     }
 
     @Override
@@ -163,4 +173,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         return false;
     }
 
+    protected SuntimesInfo info;
+    public void setSuntimesInfo(SuntimesInfo info) {
+        this.info = info;
+        if (this.info != null) {
+            updateDynamicPrefs(getActivity(), this.info);
+        }
+    }
 }

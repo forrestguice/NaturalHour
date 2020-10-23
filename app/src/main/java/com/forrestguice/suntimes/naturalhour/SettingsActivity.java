@@ -20,16 +20,37 @@
 package com.forrestguice.suntimes.naturalhour;
 
 import android.annotation.TargetApi;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.forrestguice.suntimes.addon.LocaleHelper;
+import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.IntListPreference;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+
+import java.util.TimeZone;
+
 public class SettingsActivity extends AppCompatActivity
 {
+    private SuntimesInfo suntimesInfo = null;
+
+    @Override
+    protected void attachBaseContext(Context context)
+    {
+        suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
+        super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
+                LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -38,12 +59,29 @@ public class SettingsActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment()).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment(), NaturalHourPreferenceFragment.TAG).commit();
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        FragmentManager fragments = getFragmentManager();
+        NaturalHourPreferenceFragment fragment = (NaturalHourPreferenceFragment) fragments.findFragmentByTag(NaturalHourPreferenceFragment.TAG);
+        if (fragment != null) {
+            fragment.setSuntimesInfo(suntimesInfo);
+        }
+    }
+
+    /**
+     * NaturalHourPreferenceFragment
+     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class NaturalHourPreferenceFragment extends PreferenceFragment
     {
+        public static final String TAG = "naturalHourFragment";
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -60,6 +98,38 @@ public class SettingsActivity extends AppCompatActivity
                 return true;
             }
             return super.onOptionsItemSelected(item);
+        }
+
+        protected void updateDynamicPrefs(Context context, @NonNull SuntimesInfo info)
+        {
+            updateTimeZonePref(context, (IntListPreference) findPreference("timezonemode"), info);
+            updateTimeModePref(context, (IntListPreference) findPreference("timeformatmode"), info);
+        }
+        public static void updateTimeZonePref(Context context, IntListPreference pref, @NonNull SuntimesInfo info)
+        {
+            if (pref != null)
+            {
+                CharSequence[] entries = pref.getEntries();
+                entries[0] = DisplayStrings.formatTimeZoneLabel(context, entries[0].toString(), TimeZone.getDefault().getID());
+                entries[1] = DisplayStrings.formatTimeZoneLabel(context, entries[1].toString(), NaturalHourFragment.getTimeZone(context, info).getID());
+            }
+        }
+        public static void updateTimeModePref(Context context, IntListPreference pref, @NonNull SuntimesInfo info)
+        {
+            if (pref != null)
+            {
+                CharSequence[] entries = pref.getEntries();
+                entries[0] = DisplayStrings.formatTimeFormatLabel(context, entries[0].toString(), AppSettings.fromTimeFormatMode(context, AppSettings.TIMEMODE_SYSTEM, info));
+                entries[1] = DisplayStrings.formatTimeFormatLabel(context, entries[1].toString(), AppSettings.fromTimeFormatMode(context, AppSettings.TIMEMODE_SUNTIMES, info));
+            }
+        }
+
+        protected SuntimesInfo info;
+        public void setSuntimesInfo(SuntimesInfo info) {
+            this.info = info;
+            if (this.info != null) {
+                updateDynamicPrefs(getActivity(), this.info);
+            }
         }
     }
 
