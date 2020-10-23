@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.forrestguice.suntimes.naturalhour.R;
@@ -46,6 +47,10 @@ public class ColorValuesSelectFragment extends Fragment
     public static final String ARG_ALLOW_EDIT = "allowEdit";
     public static final boolean DEF_ALLOW_EDIT = true;
 
+    public static final String ARG_SHOW_LABEL = "showLabel";
+    public static final boolean DEF_SHOW_LABEL = false;
+
+    protected TextView label;
     protected Spinner selector;
     protected ImageButton addButton, editButton, menuButton;
 
@@ -55,6 +60,7 @@ public class ColorValuesSelectFragment extends Fragment
 
         Bundle args = new Bundle();
         args.putBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT);
+        args.putBoolean(ARG_SHOW_LABEL, DEF_SHOW_LABEL);
         args.putInt(ARG_APPWIDGETID, DEF_APPWIDGETID);
         setArguments(args);
     }
@@ -70,6 +76,8 @@ public class ColorValuesSelectFragment extends Fragment
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }
+
+        label = (TextView) content.findViewById(R.id.color_values_selector_label);
 
         selector = content.findViewById(R.id.colorvalues_selector);
         if (selector != null) {
@@ -199,6 +207,10 @@ public class ColorValuesSelectFragment extends Fragment
 
     protected void updateViews()
     {
+        if (label != null) {
+            label.setVisibility(getShowLabel() ? View.VISIBLE : View.GONE);
+        }
+
         if (selector != null)
         {
             selector.setAdapter(initAdapter(getActivity()));
@@ -238,17 +250,30 @@ public class ColorValuesSelectFragment extends Fragment
         updateViews();
     }
 
-    public void setAllowEdit(boolean allowEdit)
-    {
+    public void setAllowEdit(boolean allowEdit) {
+        setBoolArg(ARG_ALLOW_EDIT, allowEdit);
+    }
+    public boolean allowEdit() {
+        return getBoolArg(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT);
+    }
+
+    public void setShowLabel(boolean showLabel) {
+        setBoolArg(ARG_SHOW_LABEL, showLabel);
+    }
+    public boolean getShowLabel() {
+        return getBoolArg(ARG_SHOW_LABEL, DEF_SHOW_LABEL);
+    }
+
+    protected void setBoolArg(String key, boolean value) {
         Bundle args = getArguments();
         if (args != null) {
-            args.putBoolean(ARG_ALLOW_EDIT, allowEdit);
+            args.putBoolean(key, value);
             updateViews();
         }
     }
-    public boolean allowEdit() {
+    protected boolean getBoolArg(String key, boolean defValue) {
         Bundle args = getArguments();
-        return args != null ? args.getBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT) : DEF_ALLOW_EDIT;
+        return args != null ? args.getBoolean(key, defValue) : defValue;
     }
 
     public void setAppWidgetID(int appWidgetID)

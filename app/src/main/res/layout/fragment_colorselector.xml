@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+    android:gravity="center_vertical">
 
     <ImageButton android:id="@+id/addButton"
         android:src="?attr/icAdd" style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:tooltipText="@string/action_add" tools:ignore="UnusedAttribute"
         android:contentDescription="@string/action_add" />
+
+    <TextView android:id="@+id/color_values_selector_label" android:visibility="gone"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+        android:text="@string/action_colors" android:labelFor="@+id/colorvalues_selector" />
 
     <Spinner android:id="@+id/colorvalues_selector"
         android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"

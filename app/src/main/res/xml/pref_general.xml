@@ -26,15 +26,15 @@
     <PreferenceCategory
         android:title="@string/pref_category_nightwatch">
 
+        <CheckBoxPreference android:key="clockface_showVigilia"
+            android:title="@string/pref_title_show_nightwatch" android:defaultValue="false" />
+
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="clockface_nightwatchType"
             android:title="@string/pref_title_nightwatch_type"
             android:entries="@array/pref_nightwatch_display"
             android:entryValues="@array/pref_nightwatch_values"
             android:defaultValue="0"
             android:summary="%s" />
-
-        <CheckBoxPreference android:key="clockface_showVigilia"
-            android:title="@string/pref_title_show_nightwatch" android:defaultValue="false" />
 
     </PreferenceCategory>
 
