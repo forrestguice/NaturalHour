@@ -4,6 +4,13 @@
     tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
 
     <item
+        android:id="@+id/action_colors_add"
+        android:orderInCategory="100"
+        android:icon="?attr/icAdd"
+        android:title="@string/action_add"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_colors_export"
         android:orderInCategory="100"
         android:icon="?attr/icShare"
@@ -14,7 +21,7 @@
         android:id="@+id/action_colors_import"
         android:orderInCategory="200"
         android:icon="?attr/icAdd"
-        android:title="@string/action_import"
+        android:title="@string/action_import" android:visible="false"
         app:showAsAction="never" />
 
 </menu>

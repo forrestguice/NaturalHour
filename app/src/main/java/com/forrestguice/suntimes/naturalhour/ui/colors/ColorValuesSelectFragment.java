@@ -174,6 +174,10 @@ public class ColorValuesSelectFragment extends Fragment
         {
             switch (item.getItemId())
             {
+                case R.id.action_colors_add:
+                    onAddItem();
+                    return true;
+
                 case R.id.action_colors_export:
                     onExportColors();
                     return true;
