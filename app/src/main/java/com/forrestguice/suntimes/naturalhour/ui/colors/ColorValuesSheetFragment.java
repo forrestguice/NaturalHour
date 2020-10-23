@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -163,11 +164,11 @@ public class ColorValuesSheetFragment extends Fragment
         }
 
         @Override
-        public void onAddClicked(String colorsID)
+        public void onAddClicked(@Nullable String colorsID)
         {
             //Log.d("DEBUG", "onAddClicked " + colorsID);
             Context context = getActivity();
-            if (context != null) {
+            if (context != null && colorsID != null) {
                 editDialog.setColorValues(colorCollection.getColors(context, colorsID));
                 editDialog.setID(suggestColorValuesID(context));
                 setMode(MODE_EDIT);
@@ -177,11 +178,11 @@ public class ColorValuesSheetFragment extends Fragment
         }
 
         @Override
-        public void onEditClicked(String colorsID)
+        public void onEditClicked(@Nullable String colorsID)
         {
             //Log.d("DEBUG", "onEditClicked " + colorsID);
             Context context = getActivity();
-            if (context != null) {
+            if (context != null && colorsID != null) {
                 editDialog.setColorValues(colorCollection.getColors(context, colorsID));
                 setMode(MODE_EDIT);
                 toggleFragmentVisibility(getMode());

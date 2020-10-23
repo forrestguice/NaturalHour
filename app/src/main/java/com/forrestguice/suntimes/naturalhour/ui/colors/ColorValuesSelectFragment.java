@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -147,7 +148,8 @@ public class ColorValuesSelectFragment extends Fragment
     protected void onEditSelectedItem()
     {
         if (listener != null) {
-            listener.onEditClicked(((ColorValuesItem) selector.getSelectedItem()).colorsID);
+            ColorValuesItem item = (ColorValuesItem) selector.getSelectedItem();
+            listener.onEditClicked(item != null ? item.colorsID : null);
         }
     }
 
@@ -160,7 +162,8 @@ public class ColorValuesSelectFragment extends Fragment
     protected void onAddItem()
     {
         if (listener != null) {
-            listener.onAddClicked(((ColorValuesItem) selector.getSelectedItem()).colorsID);
+            ColorValuesItem item = (ColorValuesItem) selector.getSelectedItem();
+            listener.onAddClicked(item != null ? item.colorsID : null);
         }
     }
 
@@ -391,8 +394,8 @@ public class ColorValuesSelectFragment extends Fragment
     public interface FragmentListener
     {
         void onBackClicked();
-        void onAddClicked(String colorsID);
-        void onEditClicked(String colorsID);
+        void onAddClicked(@Nullable String colorsID);
+        void onEditClicked(@Nullable String colorsID);
         void onItemSelected(ColorValuesItem item);
     }
 
