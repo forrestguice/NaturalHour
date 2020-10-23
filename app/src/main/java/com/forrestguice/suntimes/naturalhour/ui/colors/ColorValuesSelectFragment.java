@@ -218,8 +218,23 @@ public class ColorValuesSelectFragment extends Fragment
 
     protected void onExportColors()
     {
-        // TODO
-        Toast.makeText(getActivity(), "export (TODO)", Toast.LENGTH_SHORT).show();
+        Context context = getActivity();
+        if (colorCollection != null && context != null)
+        {
+            StringBuilder exportString = new StringBuilder(colorCollection.toString());
+            for (String colorsID : colorCollection.getCollection())
+            {
+                ColorValues colors = colorCollection.getColors(context, colorsID);
+                exportString.append("\n");
+                exportString.append(colors.toString());
+            }
+            exportString.append("...");
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, exportString.toString());
+            startActivity(Intent.createChooser(intent, null));
+        }
     }
     protected void onImportColors()
     {
