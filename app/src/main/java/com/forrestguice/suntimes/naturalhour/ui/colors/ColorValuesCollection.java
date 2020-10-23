@@ -157,11 +157,14 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     public String toString()
     {
         StringBuilder result = new StringBuilder("---\n[");
-        for (String colorsId : getCollection()) {
-            result.append(colorsId);
-            result.append(", ");
-        }
-        result.replace(result.length()-2, result.length(), "]\n");
+        String[] collection = getCollection();
+        if (collection.length > 0) {
+            for (String colorsId : getCollection()) {
+                result.append(colorsId);
+                result.append(", ");
+            }
+            result.replace(result.length()-2, result.length(), "]\n");
+        } else result.append("]\n");
         return result.toString();
     }
 }
