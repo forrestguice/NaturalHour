@@ -46,11 +46,18 @@ import com.forrestguice.suntimes.naturalhour.R;
 
 public class ColorValuesEditFragment extends Fragment
 {
+    public static final String ARG_ALLOW_DELETE = "allowDelete";
+    public static final boolean DEF_ALLOW_DELETE = true;
+
     protected EditText editID;
     protected GridLayout panel;
 
     public ColorValuesEditFragment() {
+        super();
         setHasOptionsMenu(true);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ARG_ALLOW_DELETE, DEF_ALLOW_DELETE);
+        setArguments(bundle);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -302,9 +309,15 @@ public class ColorValuesEditFragment extends Fragment
 
     protected void deleteColors(Context context)
     {
-        if (listener != null) {
+        if (listener != null && allowDelete()) {
             listener.onDeleteClicked(colorValues.getID());
         }
+    }
+    public boolean allowDelete() {
+        return getBoolArg(ARG_ALLOW_DELETE, DEF_ALLOW_DELETE);
+    }
+    public void setAllowDelete(boolean allowDelete) {
+        setBoolArg(ARG_ALLOW_DELETE, allowDelete);
     }
 
     public static final int REQUEST_IMPORT_THEME = 1000;
@@ -328,9 +341,9 @@ public class ColorValuesEditFragment extends Fragment
 
     protected void onPrepareOverflowMenu(Context context, Menu menu)
     {
-        MenuItem copyFromTheme = menu.findItem(R.id.action_colors_copytheme);
-        if (copyFromTheme != null) {
-            copyFromTheme.setVisible(false);
+        MenuItem deleteItem = menu.findItem(R.id.action_colors_delete);
+        if (deleteItem != null) {
+            deleteItem.setVisible(allowDelete());
         }
     }
 
@@ -363,6 +376,18 @@ public class ColorValuesEditFragment extends Fragment
         if (onOverflowMenuItemSelected.onMenuItemClick(item)) {
             return true;
         } else { return super.onOptionsItemSelected(item); }
+    }
+
+    protected void setBoolArg(String key, boolean value) {
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putBoolean(key, value);
+            updateViews();
+        }
+    }
+    protected boolean getBoolArg(String key, boolean defValue) {
+        Bundle args = getArguments();
+        return args != null ? args.getBoolean(key, defValue) : defValue;
     }
 
     /**

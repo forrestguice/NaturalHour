@@ -57,6 +57,7 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
     @Override
     protected void onPrepareOverflowMenu(Context context, Menu menu)
     {
+        super.onPrepareOverflowMenu(context, menu);
         Messages.forceActionBarIcons(menu);
         MenuItem copyFromTheme = menu.findItem(R.id.action_colors_copytheme);
         if (copyFromTheme != null) {

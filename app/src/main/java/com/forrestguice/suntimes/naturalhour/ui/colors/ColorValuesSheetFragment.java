@@ -171,6 +171,7 @@ public class ColorValuesSheetFragment extends Fragment
             if (context != null && colorsID != null) {
                 editDialog.setColorValues(colorCollection.getColors(context, colorsID));
                 editDialog.setID(suggestColorValuesID(context));
+                editDialog.setAllowDelete(false);
                 setMode(MODE_EDIT);
                 toggleFragmentVisibility(getMode());
                 requestExpandSheet();
@@ -184,6 +185,7 @@ public class ColorValuesSheetFragment extends Fragment
             Context context = getActivity();
             if (context != null && colorsID != null) {
                 editDialog.setColorValues(colorCollection.getColors(context, colorsID));
+                editDialog.setAllowDelete(true);
                 setMode(MODE_EDIT);
                 toggleFragmentVisibility(getMode());
                 requestExpandSheet();
