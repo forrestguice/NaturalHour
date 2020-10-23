@@ -273,7 +273,7 @@ public class ColorValuesSelectFragment extends Fragment
             boolean showMenu = getShowMenu();
             menuButton.setVisibility(showMenu ? View.VISIBLE : View.GONE);
             if (addButton != null) {    // shown as part of menu
-                addButton.setVisibility(showMenu ? View.GONE : View.VISIBLE);
+                addButton.setVisibility(showMenu || !allowEdit() ? View.GONE : View.VISIBLE);
             }
         }
 
@@ -329,8 +329,8 @@ public class ColorValuesSelectFragment extends Fragment
         return getBoolArg(ARG_SHOW_BACK, DEF_SHOW_BACK);
     }
 
-    public void setShowMenu(boolean showBack) {
-        setBoolArg(ARG_SHOW_BACK, showBack);
+    public void setShowMenu(boolean showMenu) {
+        setBoolArg(ARG_SHOW_MENU, showMenu);
     }
     public boolean getShowMenu() {
         return getBoolArg(ARG_SHOW_MENU, DEF_SHOW_MENU);
