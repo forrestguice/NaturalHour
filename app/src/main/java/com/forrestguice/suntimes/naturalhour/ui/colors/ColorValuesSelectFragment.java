@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -53,9 +54,12 @@ public class ColorValuesSelectFragment extends Fragment
     public static final String ARG_SHOW_BACK = "showBack";
     public static final boolean DEF_SHOW_BACK = true;
 
+    public static final String ARG_SHOW_MENU = "showMenu";
+    public static final boolean DEF_SHOW_MENU = true;
+
     protected TextView label;
     protected Spinner selector;
-    protected ImageButton addButton, editButton, menuButton;
+    protected ImageButton addButton, editButton, backButton, menuButton;
 
     public ColorValuesSelectFragment()
     {
@@ -65,6 +69,7 @@ public class ColorValuesSelectFragment extends Fragment
         args.putBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT);
         args.putBoolean(ARG_SHOW_LABEL, DEF_SHOW_LABEL);
         args.putBoolean(ARG_SHOW_BACK, DEF_SHOW_BACK);
+        args.putBoolean(ARG_SHOW_MENU, DEF_SHOW_MENU);
         args.putInt(ARG_APPWIDGETID, DEF_APPWIDGETID);
         setArguments(args);
     }
@@ -245,6 +250,14 @@ public class ColorValuesSelectFragment extends Fragment
         if (editButton != null) {
             editButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
         }
+        if (menuButton != null)
+        {
+            boolean showMenu = getShowMenu();
+            menuButton.setVisibility(showMenu ? View.VISIBLE : View.GONE);
+            if (addButton != null) {    // shown as part of menu
+                addButton.setVisibility(showMenu ? View.GONE : View.VISIBLE);
+            }
+        }
 
         if (selector != null)
         {
@@ -296,6 +309,13 @@ public class ColorValuesSelectFragment extends Fragment
     }
     public boolean getShowBack() {
         return getBoolArg(ARG_SHOW_BACK, DEF_SHOW_BACK);
+    }
+
+    public void setShowMenu(boolean showBack) {
+        setBoolArg(ARG_SHOW_BACK, showBack);
+    }
+    public boolean getShowMenu() {
+        return getBoolArg(ARG_SHOW_MENU, DEF_SHOW_MENU);
     }
 
     protected void setBoolArg(String key, boolean value) {
