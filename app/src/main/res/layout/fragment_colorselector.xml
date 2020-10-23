@@ -3,11 +3,11 @@
     android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
     android:gravity="center_vertical">
 
-    <ImageButton android:id="@+id/addButton"
-        android:src="?attr/icAdd" style="@style/Widget.AppCompat.ActionButton"
+    <ImageButton android:id="@+id/backButton"
+        android:src="?attr/icBack" style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:tooltipText="@string/action_add" tools:ignore="UnusedAttribute"
-        android:contentDescription="@string/action_add" />
+        android:tooltipText="@string/action_back" tools:ignore="UnusedAttribute"
+        android:contentDescription="@string/action_back" />
 
     <TextView android:id="@+id/color_values_selector_label" android:visibility="gone"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -23,6 +23,12 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:tooltipText="@string/action_edit"  tools:ignore="UnusedAttribute"
         android:contentDescription="@string/action_edit" />
+
+    <ImageButton android:id="@+id/addButton"
+        android:src="?attr/icAdd" style="@style/Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:tooltipText="@string/action_add" tools:ignore="UnusedAttribute"
+        android:contentDescription="@string/action_add" />
 
     <ImageButton android:id="@+id/menuButton" android:visibility="gone"
         style="@style/Widget.AppCompat.ActionButton.Overflow"

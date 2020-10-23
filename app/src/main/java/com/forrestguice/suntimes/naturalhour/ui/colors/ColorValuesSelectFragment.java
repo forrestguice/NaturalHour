@@ -50,6 +50,9 @@ public class ColorValuesSelectFragment extends Fragment
     public static final String ARG_SHOW_LABEL = "showLabel";
     public static final boolean DEF_SHOW_LABEL = false;
 
+    public static final String ARG_SHOW_BACK = "showBack";
+    public static final boolean DEF_SHOW_BACK = true;
+
     protected TextView label;
     protected Spinner selector;
     protected ImageButton addButton, editButton, menuButton;
@@ -61,6 +64,7 @@ public class ColorValuesSelectFragment extends Fragment
         Bundle args = new Bundle();
         args.putBoolean(ARG_ALLOW_EDIT, DEF_ALLOW_EDIT);
         args.putBoolean(ARG_SHOW_LABEL, DEF_SHOW_LABEL);
+        args.putBoolean(ARG_SHOW_BACK, DEF_SHOW_BACK);
         args.putInt(ARG_APPWIDGETID, DEF_APPWIDGETID);
         setArguments(args);
     }
@@ -92,6 +96,11 @@ public class ColorValuesSelectFragment extends Fragment
         addButton = content.findViewById(R.id.addButton);
         if (addButton != null) {
             addButton.setOnClickListener(onAddButtonClicked);
+        }
+
+        backButton = content.findViewById(R.id.backButton);
+        if (backButton != null) {
+            backButton.setOnClickListener(onBackButtonClicked);
         }
 
         menuButton = content.findViewById(R.id.menuButton);
@@ -147,6 +156,18 @@ public class ColorValuesSelectFragment extends Fragment
     {
         if (listener != null) {
             listener.onAddClicked(((ColorValuesItem) selector.getSelectedItem()).colorsID);
+        }
+    }
+
+    private View.OnClickListener onBackButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onBack();
+        }
+    };
+    protected void onBack() {
+        if (listener != null) {
+            listener.onBackClicked();
         }
     }
 
@@ -214,6 +235,16 @@ public class ColorValuesSelectFragment extends Fragment
         if (label != null) {
             label.setVisibility(getShowLabel() ? View.VISIBLE : View.GONE);
         }
+        if (backButton != null) {
+            backButton.setVisibility(getShowBack() ? View.VISIBLE : View.GONE);
+        }
+        boolean allowEdit = allowEdit();
+        if (addButton != null) {
+            addButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
+        }
+        if (editButton != null) {
+            editButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
+        }
 
         if (selector != null)
         {
@@ -238,14 +269,6 @@ public class ColorValuesSelectFragment extends Fragment
                 selector.setSelection(selectedIndex, false);
             }
         }
-
-        boolean allowEdit = allowEdit();
-        if (addButton != null) {
-            addButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
-        }
-        if (editButton != null) {
-            editButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
-        }
     }
 
     protected ColorValuesCollection colorCollection = null;
@@ -266,6 +289,13 @@ public class ColorValuesSelectFragment extends Fragment
     }
     public boolean getShowLabel() {
         return getBoolArg(ARG_SHOW_LABEL, DEF_SHOW_LABEL);
+    }
+
+    public void setShowBack(boolean showBack) {
+        setBoolArg(ARG_SHOW_BACK, showBack);
+    }
+    public boolean getShowBack() {
+        return getBoolArg(ARG_SHOW_BACK, DEF_SHOW_BACK);
     }
 
     protected void setBoolArg(String key, boolean value) {
@@ -325,6 +355,7 @@ public class ColorValuesSelectFragment extends Fragment
      */
     public interface FragmentListener
     {
+        void onBackClicked();
         void onAddClicked(String colorsID);
         void onEditClicked(String colorsID);
         void onItemSelected(ColorValuesItem item);

@@ -136,6 +136,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
         if (colorFragment != null)
         {
+            colorFragment.setShowBack(false);
             colorFragment.setAllowEdit(false);
             colorFragment.setAppWidgetID(appWidgetId);;
             colorFragment.setColorCollection(colors);

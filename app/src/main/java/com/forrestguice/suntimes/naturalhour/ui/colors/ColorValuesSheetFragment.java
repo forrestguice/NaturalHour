@@ -158,6 +158,11 @@ public class ColorValuesSheetFragment extends Fragment
     private ColorValuesSelectFragment.FragmentListener listDialogListener = new ColorValuesSelectFragment.FragmentListener()
     {
         @Override
+        public void onBackClicked() {
+            requestHideSheet();
+        }
+
+        @Override
         public void onAddClicked(String colorsID)
         {
             //Log.d("DEBUG", "onAddClicked " + colorsID);
