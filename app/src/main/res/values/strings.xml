@@ -4,6 +4,7 @@
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_done">Done</string>
+    <string name="action_back">Back</string>
     <string name="action_share">Share</string>
     <string name="action_export">Export</string>
     <string name="action_import">Import</string>
@@ -12,10 +13,10 @@
 
     <string name="action_seasons">Seasons</string>
     <string name="action_today">Today</string>
-    <string name="action_date_solstice_winter">Winter Solstice</string>
-    <string name="action_date_solstice_summer">Summer Solstice</string>
-    <string name="action_date_equinox_autumn">Autumn Equinox</string>
-    <string name="action_date_equinox_spring">Spring Equinox</string>
+    <string name="action_date_solstice_winter">Winter</string>
+    <string name="action_date_solstice_summer">Summer</string>
+    <string name="action_date_equinox_autumn">Autumn</string>
+    <string name="action_date_equinox_spring">Spring</string>
 
     <string name="action_timezone_system_format">(%s)</string>
     <string name="action_timezone_system">System %s</string>
