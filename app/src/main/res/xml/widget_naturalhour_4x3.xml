@@ -4,7 +4,7 @@
                     tools:ignore="UnusedAttribute"
 
     android:updatePeriodMillis="0"
-    android:widgetCategory="home_screen|keyguard"
+    android:widgetCategory="home_screen"
     android:previewImage="@mipmap/ic_launcher_round"
 
     android:resizeMode="horizontal|vertical"
