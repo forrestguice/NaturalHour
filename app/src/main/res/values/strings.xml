@@ -261,7 +261,9 @@
     <string name="clockface_ring_night_label">Night Hours (label)</string>
 
     <string name="suggest_colorid">Custom</string>       <!-- edittext hint -->
-    <string name="hint_edittext_colorid">Name</string>       <!-- edittext hint -->
+    <string name="hint_colorid">ID</string>              <!-- edittext hint -->
+    <string name="error_colorid_empty">ID required</string>                  <!-- edittext error text -->
+    <string name="error_colorid_spaces">ID may not contains spaces</string>   <!-- edittext error text -->
     <string name="msg_colors_saved">Saved %s</string>        <!-- toast -->
     <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->
 

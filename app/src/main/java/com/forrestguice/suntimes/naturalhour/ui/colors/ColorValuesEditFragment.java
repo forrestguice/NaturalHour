@@ -102,6 +102,21 @@ public class ColorValuesEditFragment extends Fragment
         }
     }
 
+    protected boolean validateInput()
+    {
+        String colorsID = editID.getText().toString();
+        if (colorsID.trim().isEmpty()) {    // must not be empty
+            editID.setError(getString(R.string.error_colorid_empty));
+            return false;
+
+        } else if (colorsID.contains(" ")) {    // must not contain spaces
+            editID.setError(getString(R.string.error_colorid_spaces));
+            editID.setSelection(colorsID.indexOf(" "), colorsID.indexOf(" ") + 1);
+            return false;
+
+        } else return true;
+    }
+
     private View.OnClickListener onSaveButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -110,11 +125,14 @@ public class ColorValuesEditFragment extends Fragment
     };
     protected void onSaveColorValues()
     {
-        String colorsID = editID.getText().toString();
-        colorValues.setID(colorsID);
+        if (validateInput())
+        {
+            String colorsID = editID.getText().toString();
+            colorValues.setID(colorsID);
 
-        if (listener != null) {
-            listener.onSaveClicked(colorsID, colorValues);
+            if (listener != null) {
+                listener.onSaveClicked(colorsID, colorValues);
+            }
         }
     }
 
