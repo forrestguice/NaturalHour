@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
@@ -84,6 +85,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                 String widgetKey = widgetKeyPrefix(appWidgetId) + key;
                 editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
             }
+
+            String prefKey = widgetKeyPrefix(0) + AppSettings.KEY_MODE_TIMEFORMAT;
+            String widgetKey = widgetKeyPrefix(appWidgetId) + AppSettings.KEY_MODE_TIMEFORMAT;
+            editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.TIMEMODE_DEFAULT));
+
             editor.apply();
         }
     }
@@ -134,6 +140,12 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                             editor.apply();
                             return;
                         }
+                    }
+
+                    if (AppSettings.KEY_MODE_TIMEFORMAT.equals(key)) {
+                        editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.TIMEMODE_DEFAULT));
+                        editor.apply();
+                        return;
                     }
                 }
 

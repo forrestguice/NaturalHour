@@ -10,6 +10,13 @@
             android:defaultValue="0"
             android:summary="%s" />
 
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="timeformatmode"
+            android:title="@string/pref_title_timeformat"
+            android:entries="@array/pref_timeformat_display"
+            android:entryValues="@array/pref_timeformat_values"
+            android:defaultValue="3"
+            android:summary="%s" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

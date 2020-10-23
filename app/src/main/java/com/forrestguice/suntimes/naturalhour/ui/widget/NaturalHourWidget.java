@@ -296,7 +296,8 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data, SuntimesInfo suntimesInfo)
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
-        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
+        int timeMode = AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
+        boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo);
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);

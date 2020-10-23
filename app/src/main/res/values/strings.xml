@@ -68,6 +68,20 @@
         <item>2</item>
     </string-array>
 
+    <string name="pref_title_timeformat">Time Format</string>
+    <string-array name="pref_timeformat_display">
+        <item>@string/action_timeformat_system</item>
+        <item>@string/action_timeformat_suntimes</item>
+        <item>@string/timeformat_12hr</item>
+        <item>@string/timeformat_24hr</item>
+    </string-array>
+    <string-array name="pref_timeformat_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="pref_title_nightwatch_type">Night Watch</string>
     <string-array name="pref_nightwatch_display">
         <item>3 watches</item>
