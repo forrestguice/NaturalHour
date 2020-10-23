@@ -73,22 +73,25 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         int appWidgetId = getAppWidgetId();
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
         {
+            String widgetPrefix0 = widgetKeyPrefix(0);
+            String widgetPrefix = widgetKeyPrefix(appWidgetId);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
             for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_0 to widget_i
-                String prefKey = widgetKeyPrefix(0) + key;
-                String widgetKey = widgetKeyPrefix(appWidgetId) + key;
+                String prefKey = widgetPrefix0 + key;
+                String widgetKey = widgetPrefix + key;
                 editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, NaturalHourClockBitmap.getDefaultFlag(context, key)));
             }
             for (String key : NaturalHourClockBitmap.VALUES) {                    // copy values from widget_0 to widget_i
-                String prefKey = widgetKeyPrefix(0) + key;
-                String widgetKey = widgetKeyPrefix(appWidgetId) + key;
+                String prefKey = widgetPrefix0 + key;
+                String widgetKey = widgetPrefix + key;
                 editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
             }
-
-            String prefKey = widgetKeyPrefix(0) + AppSettings.KEY_MODE_TIMEFORMAT;
-            String widgetKey = widgetKeyPrefix(appWidgetId) + AppSettings.KEY_MODE_TIMEFORMAT;
-            editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.TIMEMODE_DEFAULT));
+            for (int i = 0; i<AppSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix0 + AppSettings.VALUES[i];
+                String widgetKey = widgetPrefix + AppSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+            }
 
             editor.apply();
         }
@@ -116,9 +119,10 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             int appWidgetId = getAppWidgetId();
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
             {
-                if (prefKey.startsWith(widgetKeyPrefix(0)))
+                String widgetPrefix0 = widgetKeyPrefix(0);
+                if (prefKey.startsWith(widgetPrefix0))
                 {
-                    String key = prefKey.replace(widgetKeyPrefix(0), "");
+                    String key = prefKey.replace(widgetPrefix0, "");
                     String widgetKey = widgetKeyPrefix(appWidgetId) + key;
 
                     Context context = getActivity();
@@ -132,7 +136,6 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                             return;
                         }
                     }
-
                     for (String intPref : NaturalHourClockBitmap.VALUES)
                     {
                         if (intPref.equals(key)) {
@@ -141,11 +144,13 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                             return;
                         }
                     }
-
-                    if (AppSettings.KEY_MODE_TIMEFORMAT.equals(key)) {
-                        editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.TIMEMODE_DEFAULT));
-                        editor.apply();
-                        return;
+                    for (int i = 0; i<AppSettings.VALUES.length; i++)
+                    {
+                        if (AppSettings.VALUES[i].equals(key)) {
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+                            editor.apply();
+                            return;
+                        }
                     }
                 }
 

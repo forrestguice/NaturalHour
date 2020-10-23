@@ -18,6 +18,13 @@
             android:defaultValue="3"
             android:summary="%s" />
 
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_timezonemode"
+            android:title="@string/pref_title_tzmode"
+            android:entries="@array/pref_tzmode_display"
+            android:entryValues="@array/pref_tzmode_values"
+            android:defaultValue="3"
+            android:summary="%s" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

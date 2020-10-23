@@ -210,11 +210,15 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void deleteWidgetPrefs(Context context, int appWidgetId)
     {
         deleteNextSuggestedUpdate(context, appWidgetId);
+        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
         for (String key : NaturalHourClockBitmap.FLAGS) {
-            AppSettings.deleteKey(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key);
+            AppSettings.deleteKey(context, widgetPrefix + key);
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
-            AppSettings.deleteKey(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key);
+            AppSettings.deleteKey(context, widgetPrefix + key);
+        }
+        for (String key : AppSettings.VALUES) {
+            AppSettings.deleteKey(context, widgetPrefix + key);
         }
     }
 
@@ -296,22 +300,24 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data, SuntimesInfo suntimesInfo)
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
-        int timeMode = AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
+        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
+        int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
+        int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
         boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
-        TimeZone timezone = AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo);
+        TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
         clockView.setTimeZone(timezone);
         clockView.set24HourMode(is24);
 
         for (String key : NaturalHourClockBitmap.FLAGS) {
-            String widgetKey = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key;
+            String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
                 clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey));
             }
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
-            String widgetKey = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + key;
+            String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
                 clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
             }

@@ -82,6 +82,20 @@
         <item>3</item>
     </string-array>
 
+    <string name="pref_title_tzmode">Time Zone</string>
+    <string-array name="pref_tzmode_display">
+        <item>@string/action_timezone_system</item>
+        <item>@string/action_timezone_suntimes</item>
+        <item>@string/action_timezone_localmean</item>
+        <item>@string/action_timezone_apparentsolar</item>
+    </string-array>
+    <string-array name="pref_tzmode_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="pref_title_nightwatch_type">Night Watch</string>
     <string-array name="pref_nightwatch_display">
         <item>3 watches</item>
