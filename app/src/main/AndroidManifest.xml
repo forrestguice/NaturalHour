@@ -67,7 +67,7 @@
             android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
-            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
+            android:exported="true" />
 
         <!-- Widget: 4x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_4x3"
@@ -84,7 +84,7 @@
             android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
-            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
+            android:exported="true" />
 
         <!-- Widget: 5x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_5x3"
@@ -101,7 +101,7 @@
             android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
-            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR" />
+            android:exported="true" />
 
     </application>
 
