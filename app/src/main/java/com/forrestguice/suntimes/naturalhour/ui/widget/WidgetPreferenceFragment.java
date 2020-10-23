@@ -102,7 +102,6 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         super.onPause();
     }
 
-
     private SharedPreferences.OnSharedPreferenceChangeListener onWidgetPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
     {
         @Override
