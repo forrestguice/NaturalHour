@@ -152,4 +152,16 @@ public abstract class ColorValuesCollection<T extends ColorValues>
     protected SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(getSharedPrefsName(), 0);
     }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder result = new StringBuilder("---\n[");
+        for (String colorsId : getCollection()) {
+            result.append(colorsId);
+            result.append(", ");
+        }
+        result.replace(result.length()-2, result.length(), "]\n");
+        return result.toString();
+    }
 }
