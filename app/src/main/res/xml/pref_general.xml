@@ -10,19 +10,19 @@
             android:defaultValue="0"
             android:summary="%s" />
 
-        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="timeformatmode"
+        <!--<com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="timeformatmode"
             android:title="@string/pref_title_timeformat"
             android:entries="@array/pref_timeformat_display"
             android:entryValues="@array/pref_timeformat_values"
             android:defaultValue="3"
-            android:summary="%s" />
+            android:summary="%s" />-->
 
-        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="timezonemode"
+        <!--<com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="timezonemode"
             android:title="@string/pref_title_tzmode"
             android:entries="@array/pref_tzmode_display"
             android:entryValues="@array/pref_tzmode_values"
             android:defaultValue="3"
-            android:summary="%s" />
+            android:summary="%s" />-->
 
     </PreferenceCategory>
 
