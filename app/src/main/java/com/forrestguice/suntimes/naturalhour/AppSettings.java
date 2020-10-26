@@ -22,6 +22,8 @@ package com.forrestguice.suntimes.naturalhour;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
@@ -111,8 +113,11 @@ public class AppSettings
      * @param mode TIMEMODE_12HR, TIMEMODE_24HR, TIMEMODE_SUNTIMES, TIMEMODE_SYSTEM
      * @return true 24hr format, false 12hr format
      */
-    public static boolean fromTimeFormatMode(Context context, int mode, SuntimesInfo suntimesInfo)
+    public static boolean fromTimeFormatMode(@NonNull Context context, int mode, @Nullable SuntimesInfo suntimesInfo)
     {
+        if (suntimesInfo == null) {
+            return android.text.format.DateFormat.is24HourFormat(context);
+        }
         switch (mode)
         {
             case TIMEMODE_12HR: return false;
@@ -122,13 +127,13 @@ public class AppSettings
         }
     }
 
-    public static TimeZone fromTimeZoneMode(Context context, int mode, SuntimesInfo suntimesInfo)
+    public static TimeZone fromTimeZoneMode(@NonNull Context context, int mode, @Nullable SuntimesInfo suntimesInfo)
     {
-        switch (mode)
-        {
+        boolean hasLocation = (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4);
+        switch (mode) {
+            case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
+            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(context, suntimesInfo);
-            case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, suntimesInfo.location[2]);
-            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, suntimesInfo.location[2]);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
         }
     }

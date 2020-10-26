@@ -582,8 +582,14 @@ public class NaturalHourFragment extends Fragment
             date.set(Calendar.HOUR_OF_DAY, 12);
             date.set(Calendar.MINUTE, 0);
             date.set(Calendar.SECOND, 0);
-            return calculateData(new NaturalHourData(date.getTimeInMillis(), info.location[1], info.location[2], info.location[3]));
+            String[] location = getLocation();
+            return calculateData(new NaturalHourData(date.getTimeInMillis(), location[1], location[2], location[3]));
         }
+
+        protected String[] getLocation() {
+            return info != null && info.location != null && info.location.length >= 4 ? info.location : new String[] {"", "0", "0", "0"};   // TODO: default/fallback value
+        }
+
 
         public NaturalHourCalculator initCalculator() {
             return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(getContext(), NaturalHourClockBitmap.VALUE_HOURMODE));
@@ -710,12 +716,15 @@ public class NaturalHourFragment extends Fragment
         }
     }
 
-    public static TimeZone getTimeZone(Context context, SuntimesInfo info)
+    public static TimeZone getTimeZone(@NonNull Context context, @Nullable SuntimesInfo info)
     {
-        if (info.timezoneMode == null || info.timezoneMode.equals("CUSTOM_TIMEZONE")) {
+        if (info == null) {
+            return TimeZone.getDefault();
+
+        } else if (info.timezoneMode == null || info.timezoneMode.equals("CUSTOM_TIMEZONE") && info.timezone != null) {
             return TimeZone.getTimeZone(info.timezone);
 
-        } else if (info.timezoneMode.equals("SOLAR_TIME")) {
+        } else if (info.timezoneMode.equals("SOLAR_TIME") && info.location != null && info.location.length >= 3) {
             if (info.solartimeMode.equals("LOCAL_MEAN_TIME"))
                 return getLocalMeanTZ(context, info.location[2]);
             else return getApparantSolarTZ(context, info.location[2]);

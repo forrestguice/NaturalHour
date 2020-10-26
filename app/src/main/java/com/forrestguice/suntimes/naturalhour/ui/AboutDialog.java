@@ -53,7 +53,7 @@ public class AboutDialog extends BottomSheetDialogFragment
     private String appVersion = null;
     private Integer providerVersion = null;
     private boolean providerPermissionsDenied = false;
-    public void setVersion(SuntimesInfo info)
+    public void setVersion(@NonNull SuntimesInfo info)
     {
         this.appVersion = info.appName;
         this.providerVersion = info.providerCode;

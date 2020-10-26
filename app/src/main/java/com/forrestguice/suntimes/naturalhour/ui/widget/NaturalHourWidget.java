@@ -271,18 +271,23 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId)
     {
         Calendar now = Calendar.getInstance();
-        SuntimesInfo suntimesInfo = SuntimesInfo.queryInfo(context);
-        double latitude = Double.parseDouble(suntimesInfo.location[1]);
-        double longitude = Double.parseDouble(suntimesInfo.location[2]);
-        double altitude = Double.parseDouble(suntimesInfo.location[3]);
+        double latitude = 0, longitude = 0, altitude = 0;
 
-        RemoteViews views = getViews(context);
-        views.setOnClickPendingIntent(R.id.widgetframe_inner, getClickActionIntent(context, appWidgetId, getClass()));
+        SuntimesInfo suntimesInfo = SuntimesInfo.queryInfo(context);
+        if (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4)
+        {
+            latitude = Double.parseDouble(suntimesInfo.location[1]);
+            longitude = Double.parseDouble(suntimesInfo.location[2]);
+            altitude = Double.parseDouble(suntimesInfo.location[3]);
+        }
 
         ContentResolver resolver = context.getContentResolver();
         NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
         calculator.calculateData(resolver, data);
+
+        RemoteViews views = getViews(context);
+        views.setOnClickPendingIntent(R.id.widgetframe_inner, getClickActionIntent(context, appWidgetId, getClass()));
 
         prepareForUpdate(context, appWidgetId, data);
         themeViews(context, views, appWidgetId);

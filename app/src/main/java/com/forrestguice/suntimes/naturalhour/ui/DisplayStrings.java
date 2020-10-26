@@ -205,6 +205,10 @@ public class DisplayStrings
 
     public static SpannableString formatLocation(@NonNull Context context, @NonNull SuntimesInfo info)
     {
+        if (info.location == null || info.location.length < 4) {
+            return new SpannableString("");
+        }
+
         SuntimesInfo.SuntimesOptions options = info.getOptions(context);
         boolean useAltitude = options.use_altitude;
         if (!useAltitude || info.location[3] == null || info.location[3].equals("0") || info.location[3].isEmpty()) {

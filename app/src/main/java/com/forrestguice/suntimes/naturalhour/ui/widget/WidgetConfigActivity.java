@@ -37,6 +37,7 @@ import android.view.View;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
@@ -223,11 +224,8 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         sendBroadcast(updateIntent);
     }
 
-    protected void showAbout()
-    {
-        AboutDialog dialog = new AboutDialog();
-        dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
-        dialog.setVersion(suntimesInfo);
+    protected void showAbout() {
+        AboutDialog dialog = MainActivity.createAboutDialog(suntimesInfo);
         dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
     }
 }

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
     }
 
-    private int getThemeResID(@NonNull String themeName) {
+    public static int getThemeResID(@NonNull String themeName) {
         return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.NaturalHourAppTheme_Light : R.style.NaturalHourAppTheme_Dark;
     }
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         Log.d("DEBUG", "onResume");
         String appTheme = SuntimesInfo.queryAppTheme(getContentResolver());
-        if (appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
+        if (appTheme != null && suntimesInfo != null && suntimesInfo.appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
@@ -151,11 +152,21 @@ public class MainActivity extends AppCompatActivity
         restoreDialogs();
     }
 
+    protected CharSequence createTitle(SuntimesInfo info) {
+        return (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4)
+                ? suntimesInfo.location[0]
+                : getString(R.string.app_name);
+    }
+
+    protected CharSequence createSubTitle(SuntimesInfo info) {
+        return (suntimesInfo != null) ? DisplayStrings.formatLocation(this, suntimesInfo) : "";
+    }
+
     protected void updateViews(Context context)
     {
         ActionBar toolbar = getSupportActionBar();
         if (toolbar != null) {
-            toolbar.setTitle(suntimesInfo.location[0]);
+            toolbar.setTitle(createTitle(suntimesInfo));
             toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
         }
 
@@ -490,7 +501,9 @@ public class MainActivity extends AppCompatActivity
     protected void showHelp()
     {
         HelpDialog dialog = new HelpDialog();
-        dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {
+            dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+        }
 
         String[] help = getResources().getStringArray(R.array.help_topics);
         String helpContent = help[0];
@@ -501,11 +514,19 @@ public class MainActivity extends AppCompatActivity
         dialog.show(getSupportFragmentManager(), DIALOG_HELP);
     }
 
-    protected void showAbout()
+    protected void showAbout() {
+        AboutDialog dialog = MainActivity.createAboutDialog(suntimesInfo);
+        dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
+    }
+    public static AboutDialog createAboutDialog(@Nullable SuntimesInfo suntimesInfo)
     {
         AboutDialog dialog = new AboutDialog();
-        dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
-        dialog.setVersion(suntimesInfo);
-        dialog.show(getSupportFragmentManager(), DIALOG_ABOUT);
+        if (suntimesInfo != null) {
+            dialog.setVersion(suntimesInfo);
+            if (suntimesInfo.appTheme != null) {
+                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            }
+        }
+        return dialog;
     }
 }
