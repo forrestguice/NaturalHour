@@ -61,8 +61,7 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
         Messages.forceActionBarIcons(menu);
         MenuItem copyFromTheme = menu.findItem(R.id.action_colors_copytheme);
         if (copyFromTheme != null) {
-            //copyFromTheme.setVisible(AddonHelper.supportForThemesActivity(initSuntimesInfo(context)));
-            copyFromTheme.setVisible(false);
+            copyFromTheme.setVisible(AddonHelper.supportForThemesActivity(initSuntimesInfo(context)));
         }
     }
 
