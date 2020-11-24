@@ -18,6 +18,7 @@
     <attr name="colorLabel" format="reference" />
     <attr name="colorTime" format="reference" />
     <attr name="colorValue" format="reference" />
+    <attr name="colorBottomSheet" format="reference" />
 
     <attr name="clockColorFace" format="reference" />
     <attr name="clockColorPlate" format="reference" />

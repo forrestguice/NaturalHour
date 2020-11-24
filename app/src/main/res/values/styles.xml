@@ -30,6 +30,7 @@
         <item name="colorLabel">@color/colorLabel_light</item>
         <item name="colorTime">@color/colorTime_light</item>
         <item name="colorValue">@color/colorValue_light</item>
+        <item name="colorBottomSheet">@color/grey_200</item>
 
         <item name="clockColorFace">@color/clockColorFace_light</item>
         <item name="clockColorPlate">@color/clockColorPlate_light</item>
@@ -81,6 +82,7 @@
         <item name="colorLabel">@color/colorLabel_dark</item>
         <item name="colorTime">@color/colorTime_dark</item>
         <item name="colorValue">@color/colorValue_dark</item>
+        <item name="colorBottomSheet">@color/grey_900</item>
 
         <item name="clockColorFace">@color/clockColorFace_dark</item>
         <item name="clockColorPlate">@color/clockColorPlate_dark</item>
