@@ -57,8 +57,8 @@
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
         android:background="?attr/colorBottomSheet">
 
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment"
-            android:id="@+id/colorSheetFragment" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <!--<fragment android:name="com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment"
+            android:id="@+id/colorSheetFragment" android:layout_width="match_parent" android:layout_height="wrap_content" />-->
 
     </android.support.v7.widget.LinearLayoutCompat>
 

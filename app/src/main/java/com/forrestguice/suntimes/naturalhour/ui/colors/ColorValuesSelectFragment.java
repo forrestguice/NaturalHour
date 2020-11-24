@@ -41,7 +41,7 @@ import android.widget.Toast;
 
 import com.forrestguice.suntimes.naturalhour.R;
 
-public class ColorValuesSelectFragment extends Fragment
+public class ColorValuesSelectFragment extends ColorValuesFragment
 {
     public static final String ARG_APPWIDGETID = "appWidgetID";
     public static final int DEF_APPWIDGETID = 0;
@@ -82,7 +82,8 @@ public class ColorValuesSelectFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState)
     {
-        View content = inflater.inflate(R.layout.fragment_colorselector, container, false);
+        android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
+        View content = inflater.cloneInContext(contextWrapper).inflate(R.layout.fragment_colorselector, container, false);
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }

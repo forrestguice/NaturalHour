@@ -33,7 +33,7 @@ import android.widget.Toast;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment;
 
-public class ColorValuesSheetFragment extends Fragment
+public class ColorValuesSheetFragment extends ColorValuesFragment
 {
     public static final int MODE_SELECT = 0;
     public static final int MODE_EDIT = 1;
@@ -58,10 +58,17 @@ public class ColorValuesSheetFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState)
     {
-        View content = inflater.inflate(R.layout.fragment_colorsheet, container, false);
-        FragmentManager fragments = getChildFragmentManager();
-        listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
-        editDialog = (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
+        android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
+        View content = inflater.cloneInContext(contextWrapper).inflate(R.layout.fragment_colorsheet, container, false);
+
+        listDialog = new ColorValuesSelectFragment(); //(ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+        listDialog.setTheme(getThemeResID());
+
+        editDialog = new ClockColorValuesEditFragment();  // (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
+        editDialog.setTheme(getThemeResID());
+
+        getChildFragmentManager().beginTransaction().add(R.id.layout_color_sheet, listDialog).add(R.id.layout_color_sheet, editDialog).commit();
+
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }
@@ -74,13 +81,13 @@ public class ColorValuesSheetFragment extends Fragment
         super.onResume();
 
         FragmentManager fragments = getChildFragmentManager();
-        listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+        //listDialog = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
         if (listDialog != null) {
             listDialog.setColorCollection(colorCollection);
             listDialog.setFragmentListener(listDialogListener);
         }
 
-        editDialog = (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
+        //editDialog = (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
         if (editDialog != null) {
             editDialog.setFragmentListener(editDialogListener);
             View v = getView();

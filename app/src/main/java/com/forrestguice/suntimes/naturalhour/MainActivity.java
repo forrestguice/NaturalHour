@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
     private SuntimesInfo suntimesInfo = null;
     private BottomSheetBehavior<View> bottomSheet;
+    private ColorValuesSheetFragment sheetDialog;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -98,6 +99,12 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheet.setBottomSheetCallback(bottomSheetCallback);
 
+        sheetDialog = new ColorValuesSheetFragment();
+        if (suntimesInfo.appTheme != null) {    // override the theme
+            sheetDialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.app_bottomsheet, sheetDialog).commit();
+
         View timeformatButton = findViewById(R.id.bottombar_button_layout0);
         if (timeformatButton != null) {
             timeformatButton.setOnClickListener(onTimeFormatClick);
@@ -133,7 +140,6 @@ public class MainActivity extends AppCompatActivity
     protected void restoreDialogs()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-        ColorValuesSheetFragment sheetDialog = (ColorValuesSheetFragment) fragments.findFragmentById(R.id.colorSheetFragment);
         NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
         if (sheetDialog != null && naturalHour != null)
         {
@@ -207,7 +213,6 @@ public class MainActivity extends AppCompatActivity
     protected void showBottomSheet()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-        final ColorValuesSheetFragment sheetDialog = (ColorValuesSheetFragment) fragments.findFragmentById(R.id.colorSheetFragment);
         final NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
         if (sheetDialog != null && naturalHour != null)
         {
@@ -346,8 +351,6 @@ public class MainActivity extends AppCompatActivity
     {
         if (isBottomSheetShowing())
         {
-            FragmentManager fragments = getSupportFragmentManager();
-            ColorValuesSheetFragment sheetDialog = (ColorValuesSheetFragment) fragments.findFragmentById(R.id.colorSheetFragment);
             if (sheetDialog != null) {
                 if (sheetDialog.getMode() == ColorValuesSheetFragment.MODE_EDIT) {
                     sheetDialog.cancelEdit(MainActivity.this);

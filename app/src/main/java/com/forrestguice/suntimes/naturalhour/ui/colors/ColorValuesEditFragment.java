@@ -44,7 +44,7 @@ import android.widget.TextView;
 
 import com.forrestguice.suntimes.naturalhour.R;
 
-public class ColorValuesEditFragment extends Fragment
+public class ColorValuesEditFragment extends ColorValuesFragment
 {
     public static final String ARG_ALLOW_DELETE = "allowDelete";
     public static final boolean DEF_ALLOW_DELETE = true;
@@ -67,7 +67,8 @@ public class ColorValuesEditFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState)
     {
-        View content = inflater.inflate(R.layout.fragment_colorvalues, container, false);
+        android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
+        View content = inflater.cloneInContext(contextWrapper).inflate(R.layout.fragment_colorvalues, container, false);
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }
