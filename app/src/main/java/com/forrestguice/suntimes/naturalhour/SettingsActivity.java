@@ -55,6 +55,9 @@ public class SettingsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        if (suntimesInfo.appTheme != null) {    // override the theme
+            setTheme(MainActivity.getThemeResID(suntimesInfo.appTheme));
+        }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
