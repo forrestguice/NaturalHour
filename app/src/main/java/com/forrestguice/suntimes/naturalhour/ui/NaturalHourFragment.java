@@ -115,6 +115,11 @@ public class NaturalHourFragment extends Fragment
         colorCollection = new ClockColorValuesCollection<>(context);
         colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, true));
         colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, false));
+
+        String[] defaults = context.getResources().getStringArray(R.array.clockface_collection);
+        for (String json : defaults) {
+            colorCollection.setColors(context, new ClockColorValues(json));
+        }
     }
 
     public NaturalHourFragment() {

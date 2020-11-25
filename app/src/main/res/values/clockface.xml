@@ -84,4 +84,8 @@
     <color name="clockColorLabel1_dark">#FFFFFF</color>
     <color name="clockColorLabel2_dark">@color/grey_300</color>
 
+    <string-array name="clockface_collection">     <!-- items should contain a json {} string; quote " characters must be escaped. -->
+        <!--<item>{\"colorValuesID\":\"extra\",\"color_plate\":\"#ff212121\",\"color_face\":\"#ff212121\",\"color_frame\":\"#ffeeeeee\",\"color_center\":\"#ff80cbc4\",\"color_hand\":\"#ff80cbc4\",\"color_label0\":\"#ffffffff\",\"color_label1\":\"#ffe0e0e0\",\"color_ring_day\":\"#ff424242\",\"color_ring_day_label\":\"#ffffffff\",\"color_ring_day_stroke\":\"#ffffffff\",\"color_face_day\":\"#ffbdbdbd\",\"color_ring_night\":\"#ff000000\",\"color_ring_night_label\":\"#ffffffff\",\"color_ring_night_stroke\":\"#ff757575\",\"color_face_night\":\"#ff000000\",\"color_face_am\":\"#ff757575\",\"color_face_pm\":\"#ff666666\",\"color_face_astro\":\"#ff1a1a1a\",\"color_face_nautical\":\"#ff333333\",\"color_face_civil\":\"#ff4d4d4d\"}</item>-->
+    </string-array>
+
 </resources>
