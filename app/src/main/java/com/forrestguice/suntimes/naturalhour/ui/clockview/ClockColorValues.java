@@ -145,6 +145,9 @@ public class ClockColorValues extends ColorValues implements Parcelable
         }
         a.recycle();
     }
+    public ClockColorValues(String jsonString) {
+        super(jsonString);
+    }
 
     public static final Creator<ClockColorValues> CREATOR = new Creator<ClockColorValues>()
     {

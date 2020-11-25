@@ -25,6 +25,10 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -42,6 +46,9 @@ public abstract class ColorValues implements Parcelable
     }
     public ColorValues(SharedPreferences prefs, String prefix) {
         loadColorValues(prefs, prefix);
+    }
+    public ColorValues(String jsonString) {
+        loadColorValues(jsonString);
     }
 
     public void loadColorValues(@NonNull Parcel in) {
@@ -73,6 +80,20 @@ public abstract class ColorValues implements Parcelable
             setColor(key, prefs.getInt(prefix + key, getFallbackColor()));
         }
     }
+
+    public void loadColorValues(String jsonString)
+    {
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            setID(json.getString(KEY_ID));
+            for (String key : getColorKeys()) {
+                setColor(key, json.has(key) ? Color.parseColor(json.getString(key).trim()) : getFallbackColor());
+            }
+        } catch (JSONException e) {
+            Log.e("ColorValues", "fromJSON: " + e);
+        }
+    }
+
     public void putColors(SharedPreferences prefs, String prefix)
     {
         SharedPreferences.Editor editor = prefs.edit();
@@ -157,26 +178,25 @@ public abstract class ColorValues implements Parcelable
     }
 
     /**
-     * @return yaml
+     * @return json
      */
     @Override
-    public String toString()
-    {
-        StringBuilder result = new StringBuilder("--- # ColorValues ");
-        String valuesID = getID();
-        if (valuesID != null) {
-            result.append(valuesID);
-        }
-        result.append("\n");
+    public String toString() {
+        return toJSON();
+    }
 
-        for (String key : getColorKeys())
-        {
-            result.append("- ");
-            result.append(key);
-            result.append(": \"#");
-            result.append( Integer.toHexString(getColor(key)) );
-            result.append("\"\n");
+    public String toJSON()
+    {
+        JSONObject result = new JSONObject();
+        try {
+            result.put(KEY_ID, getID());
+            for (String key : getColorKeys()) {
+                result.put(key, "#" + Integer.toHexString(getColor(key)));
+            }
+        } catch (JSONException e) {
+            Log.e("ColorValues", "toJSON: " + e);
         }
         return result.toString();
     }
+
 }
