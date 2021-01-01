@@ -1,5 +1,5 @@
 # Natural Hour
-A roman timekeeping add-on for Suntimes. It depends on [Suntimes v0.10.3](https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/) or later.
+A 24-hour clock &amp; roman timekeeping add-on for Suntimes. It depends on [Suntimes v0.10.3](https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/) or later.
 
 [![GitHub release](https://img.shields.io/github/release/forrestguice/NaturalHour.svg)](https://github.com/forrestguice/NaturalHour/releases)
 
@@ -7,6 +7,19 @@ A roman timekeeping add-on for Suntimes. It depends on [Suntimes v0.10.3](https:
 * [Bug Reports](#bug-reports)
 * [Privacy and Permissions](#privacy-and-permissions)
 * [Legal Stuff](#legal-stuff)
+
+Features:
+* A 24-hr clock face with roman timekeeping divisions; hours, twilights, and night watches.
+* Home screen widgets (resizable 3x2, 4x3, and 5x3 clock widgets).
+* The app announces the current time (and roman hour) when the clock is clicked.
+* Quick navigation to the dates of the solstices and equinoxes.
+
+Options for:
+* hour definitions; the day begins at sunrise/sunset (12), at sunset (24), etc.
+* time zone (support for solar time), and time format (12hr / 24hr)
+* clock orientation; show "midnight at top", "center on noon".
+* clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
+* clock colors (support for custom color schemes).
 
 <img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
 

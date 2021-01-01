@@ -1,1 +1,1 @@
-A roman timekeeping add-on for Suntimes.
+A 24-hour clock &amp; roman timekeeping add-on for Suntimes.

@@ -1,6 +1,18 @@
-A roman timekeeping add-on for Suntimes. TODO
+A 24-hour clock &amp; roman timekeeping add-on for Suntimes. This app displays the roman hours for a given date and location.
 
 This is an add-on for Suntimes. It depends on <a href="https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/">Suntimes v0.10.3</a> or later.
+
+* A 24-hr clock face with roman timekeeping divisions; hours, twilights, and night watches.
+* Home screen widgets (resizable 3x2, 4x3, and 5x3 clock widgets).
+* The app announces the current time (and roman hour) when the clock is clicked.
+* Quick navigation to the dates of the solstices and equinoxes.
+
+Options for:
+* hour definitions; the day begins at sunrise/sunset (12), at sunset (24), etc.
+* time zone (support for solar time), and time format (12hr / 24hr)
+* clock orientation; show "midnight at top", "center on noon".
+* clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
+* clock colors (support for custom color schemes).
 
 The following permissions are required:
 * <small><u>suntimes.permission.READ_CALCULATOR</u></small> is used to read data from the Suntimes provider.
