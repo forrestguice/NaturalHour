@@ -266,6 +266,7 @@
     <string name="error_colorid_spaces">ID may not contains spaces</string>   <!-- edittext error text -->
     <string name="msg_colors_saved">Saved %s</string>        <!-- toast -->
     <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->
+    <string name="msg_colors_imported">Imported colors %s</string>    <!-- toast -->
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>

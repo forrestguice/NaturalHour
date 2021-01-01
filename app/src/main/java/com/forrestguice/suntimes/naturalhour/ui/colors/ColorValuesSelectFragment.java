@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -230,7 +229,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
             {
                 ColorValues colors = colorCollection.getColors(context, colorsID);
                 exportString.append("\n");
-                exportString.append(colors.toString());
+                exportString.append(colors.toJSON());
             }
             exportString.append("...");
 
@@ -240,10 +239,38 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
             startActivity(Intent.createChooser(intent, null));
         }
     }
+
     protected void onImportColors()
     {
-        // TODO
-        Toast.makeText(getActivity(), "import (TODO)", Toast.LENGTH_SHORT).show();
+        Context context = getActivity();
+        if (colorCollection != null && context != null)
+        {
+            String importString = "";  // TODO: user input
+            importColors(context, importString);
+        }
+    }
+    protected void importColors(@NonNull Context context, String jsonString)
+    {
+        ColorValues values = createColorValues(jsonString);
+        if (values != null)
+        {
+            String id = values.getID();
+            if (!colorCollection.hasColors(id))
+            {
+                colorCollection.setColors(context, values);
+                Toast.makeText(getActivity(), context.getString(R.string.msg_colors_imported, id), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /**
+     * createColorsValues
+     * @param jsonString json colorvalues string
+     * @return defaults null; this method should be overridden by concrete implementations to create and return a valid ColorValues obj
+     */
+    @Nullable
+    protected ColorValues createColorValues(String jsonString) {
+        return null;
     }
 
     protected ArrayAdapter<ColorValuesItem> initAdapter(Context context)

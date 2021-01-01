@@ -20,9 +20,11 @@
 package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.Menu;
 
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public class ClockColorValuesSelectFragment extends ColorValuesSelectFragment
@@ -30,5 +32,11 @@ public class ClockColorValuesSelectFragment extends ColorValuesSelectFragment
     @Override
     protected void onPrepareOverflowMenu(Context context, Menu menu) {
         Messages.forceActionBarIcons(menu);
+    }
+
+    @Override
+    @Nullable
+    protected ColorValues createColorValues(String jsonString) {
+        return new ClockColorValues(jsonString);
     }
 }
