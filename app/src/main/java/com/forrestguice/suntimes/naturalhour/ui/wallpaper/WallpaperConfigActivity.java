@@ -107,7 +107,7 @@ public class WallpaperConfigActivity extends AppCompatActivity
 
         colors = new ClockColorValuesCollection(context);
         FragmentManager fragments = getSupportFragmentManager();
-        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
+        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment1);
         if (colorFragment != null)
         {
             colorFragment.setShowMenu(false);
@@ -117,7 +117,7 @@ public class WallpaperConfigActivity extends AppCompatActivity
             colorFragment.setColorCollection(colors);
         }
 
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment1);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
             flagFragment.setAppWidgetId(-1);
@@ -129,7 +129,7 @@ public class WallpaperConfigActivity extends AppCompatActivity
     {
         super.onResume();
 
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment1);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
         }

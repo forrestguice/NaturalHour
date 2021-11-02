@@ -15,11 +15,11 @@
             app:popupTheme="?attr/actionBarPopupTheme" />
 
         <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesSelectFragment"
-            android:id="@+id/clockColorSelectorFragment"
+            android:id="@+id/clockColorSelectorFragment1"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 
         <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment"
-            android:id="@+id/clockFlagsFragment"
+            android:id="@+id/clockFlagsFragment1"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 
     </LinearLayout>
