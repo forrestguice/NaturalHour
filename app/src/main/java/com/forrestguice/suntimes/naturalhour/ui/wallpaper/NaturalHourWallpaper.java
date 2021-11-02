@@ -77,6 +77,7 @@ public class NaturalHourWallpaper extends WallpaperService
         @Override
         public void onVisibilityChanged(boolean visible)
         {
+            Log.d(getClass().getSimpleName(), "onVisibilityChanged: " + visible);
             isVisible = visible;
             if (visible) {
                 handler.post(drawRunner);
@@ -91,11 +92,13 @@ public class NaturalHourWallpaper extends WallpaperService
             super.onSurfaceDestroyed(holder);
             isVisible = false;
             handler.removeCallbacks(drawRunner);
+            Log.d(getClass().getSimpleName(), "onSurfaceDestroyed");
         }
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height)
         {
+            Log.d(getClass().getSimpleName(), "onSurfaceChanged");
             this.width = width;
             this.height = height;
             super.onSurfaceChanged(holder, format, width, height);
@@ -129,8 +132,8 @@ public class NaturalHourWallpaper extends WallpaperService
         }
         private void draw(@NonNull Context context, @NonNull Canvas canvas, @NonNull Paint paint, @Nullable SuntimesInfo suntimesInfo, @NonNull NaturalHourData data)
         {
-            Log.d(getClass().getSimpleName(), "updateViews: " + -1);
             String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(-1);
+            Log.d(getClass().getSimpleName(), "draw: " + width + "," + height);
             int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
             int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
             boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
