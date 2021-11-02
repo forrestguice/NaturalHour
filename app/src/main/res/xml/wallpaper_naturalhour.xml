@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wallpaper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedAttribute"
+    android:thumbnail="@mipmap/ic_launcher_round"
+    android:description="@string/wallpaper_summary"
+    android:settingsActivity="com.forrestguice.suntimes.naturalhour.ui.wallpaper.WallpaperConfigActivity"
+/>

@@ -291,6 +291,10 @@
     <string name="widget_summary">Clock Widget (%s)</string>    <!-- e.g. Clock Widget (3x2) -->
     <string name="widgetconfig_title">Natural Hour Widget</string>   <!-- widget configuration activity title text -->
 
+    <string name="wallpaper_name">@string/app_name</string>  <!-- TODO -->
+    <string name="wallpaper_summary">@string/app_name</string>  <!-- TODO -->
+    <string name="wallpaperconfig_title">Natural Hour Wallpaper</string>   <!-- wallpaper configuration activity title text -->  <!-- TODO -->
+
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
         <a href="https://github.com/forrestguice/NaturalHour/issues">issue tracker</a> to submit a request.

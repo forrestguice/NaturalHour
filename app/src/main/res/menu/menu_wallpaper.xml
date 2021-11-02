@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.forrestguice.suntimes.naturalhour.ui.wallpaper.WallpaperConfigActivity">
+
+    <item
+        android:id="@+id/action_done"
+        android:orderInCategory="0"
+        android:icon="?attr/icDone"
+        android:title="@string/action_done"
+        app:showAsAction="always" tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="900"
+        android:icon="?attr/icAbout"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
+</menu>
