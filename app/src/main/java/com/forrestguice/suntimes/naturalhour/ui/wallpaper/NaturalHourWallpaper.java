@@ -49,9 +49,8 @@ import java.util.TimeZone;
 public class NaturalHourWallpaper extends WallpaperService
 {
     @Override
-    public Engine onCreateEngine()
-    {
-        return new NaturalHourWallpaperEngine();
+    public Engine onCreateEngine() {
+        return new NaturalHourWallpaperEngine(-1);
     }
 
     /**
@@ -61,13 +60,15 @@ public class NaturalHourWallpaper extends WallpaperService
     {
         public static final int UPDATE_INTERVAL_MS = 30000;
 
+        private int appWidgetId;
         private final Handler handler = new Handler();
         private boolean isVisible = false;
         private int width, height;
         private Paint paint;
 
-        public NaturalHourWallpaperEngine()
+        public NaturalHourWallpaperEngine( int appWidgetId )
         {
+            this.appWidgetId = appWidgetId;
             paint = new Paint();
             // TODO
 
@@ -126,7 +127,7 @@ public class NaturalHourWallpaper extends WallpaperService
             }
 
             ContentResolver resolver = context.getContentResolver();
-            NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(-1) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
+            NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
 
             Calendar now = Calendar.getInstance();
             NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
@@ -135,8 +136,8 @@ public class NaturalHourWallpaper extends WallpaperService
         }
         private void draw(@NonNull Context context, @NonNull Canvas canvas, @NonNull Paint paint, @Nullable SuntimesInfo suntimesInfo, @NonNull NaturalHourData data)
         {
-            String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(-1);
             Log.d(getClass().getSimpleName(), "draw: " + width + "," + height);
+            String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
             int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
             int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
             boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
@@ -167,7 +168,7 @@ public class NaturalHourWallpaper extends WallpaperService
             }
 
             ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);
-            ColorValues clockAppearance = colors.getSelectedColors(context, -1);
+            ColorValues clockAppearance = colors.getSelectedColors(context, appWidgetId);
             clockView.setColors(clockAppearance);
 
             Bitmap bitmap = clockView.makeBitmap(context, data);
