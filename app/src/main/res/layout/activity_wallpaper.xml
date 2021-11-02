@@ -13,6 +13,15 @@
             android:theme="?attr/toolbarTheme"
             app:title="@string/wallpaperconfig_title"
             app:popupTheme="?attr/actionBarPopupTheme" />
+
+        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesSelectFragment"
+            android:id="@+id/clockColorSelectorFragment"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment"
+            android:id="@+id/clockFlagsFragment"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

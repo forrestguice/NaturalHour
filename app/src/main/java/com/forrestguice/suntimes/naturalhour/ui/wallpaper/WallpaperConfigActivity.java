@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,8 @@ import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
+import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 
 public class WallpaperConfigActivity extends AppCompatActivity
 {
@@ -46,6 +49,9 @@ public class WallpaperConfigActivity extends AppCompatActivity
 
     private Intent resultValue;
 
+    protected ClockColorValuesCollection colors;
+    protected ColorValuesSelectFragment colorFragment;
+    protected WidgetPreferenceFragment flagFragment;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -66,6 +72,11 @@ public class WallpaperConfigActivity extends AppCompatActivity
         if (suntimesInfo.appTheme != null) {    // override the theme
             setTheme(getThemeResID(suntimesInfo.appTheme));
         }
+
+        /*Intent intent = getIntent();
+        //Bundle extras = intent.getExtras();
+        //if (extras != null) {
+        }*/
 
         resultValue = new Intent();
         setResult(RESULT_CANCELED, resultValue);
@@ -93,12 +104,35 @@ public class WallpaperConfigActivity extends AppCompatActivity
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        colors = new ClockColorValuesCollection(context);
+        FragmentManager fragments = getSupportFragmentManager();
+        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
+        if (colorFragment != null)
+        {
+            colorFragment.setShowMenu(false);
+            colorFragment.setShowBack(false);
+            colorFragment.setAllowEdit(false);
+            colorFragment.setAppWidgetID(-1);
+            colorFragment.setColorCollection(colors);
+        }
+
+        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        if (flagFragment != null) {
+            flagFragment.setSuntimesInfo(suntimesInfo);
+            flagFragment.setAppWidgetId(-1);
+        }
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
+
+        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        if (flagFragment != null) {
+            flagFragment.setSuntimesInfo(suntimesInfo);
+        }
     }
 
     @SuppressWarnings("RestrictedApi")
@@ -138,6 +172,9 @@ public class WallpaperConfigActivity extends AppCompatActivity
 
     protected boolean onDone()
     {
+        if (colorFragment != null) {
+            colors.setSelectedColorsID(WallpaperConfigActivity.this, colorFragment.getSelectedID(), -1);
+        }
         setResult(RESULT_OK, resultValue);
         finish();
         return true;
