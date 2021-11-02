@@ -79,10 +79,9 @@ public class NaturalHourWallpaper extends WallpaperService
         {
             Log.d(getClass().getSimpleName(), "onVisibilityChanged: " + visible);
             isVisible = visible;
+            handler.removeCallbacks(drawRunner);
             if (visible) {
                 handler.post(drawRunner);
-            } else {
-                handler.removeCallbacks(drawRunner);
             }
         }
 
@@ -101,6 +100,10 @@ public class NaturalHourWallpaper extends WallpaperService
             Log.d(getClass().getSimpleName(), "onSurfaceChanged");
             this.width = width;
             this.height = height;
+            handler.removeCallbacks(drawRunner);
+            if (isVisible) {
+                handler.post(drawRunner);
+            }
             super.onSurfaceChanged(holder, format, width, height);
         }
 
