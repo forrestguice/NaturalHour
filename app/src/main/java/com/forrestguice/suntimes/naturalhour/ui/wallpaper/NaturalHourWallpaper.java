@@ -201,6 +201,7 @@ public class NaturalHourWallpaper extends WallpaperService
             clockView.setColors(clockAppearance);
 
             Bitmap bitmap = clockView.makeBitmap(context, data);
+            canvas.drawColor(Color.BLACK);
             canvas.drawColor(clockAppearance.getColor(ClockColorValues.COLOR_PLATE));
             canvas.drawBitmap(bitmap, left, top, paint);
         }
