@@ -19,6 +19,8 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.wallpaper;
 
+import android.graphics.Canvas;
+import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -36,28 +38,42 @@ public class NaturalHourWallpaper extends WallpaperService
      */
     private class NaturalHourWallpaperEngine extends Engine
     {
+        public static final int UPDATE_INTERVAL_MS = 30000;
+
+        private final Handler handler = new Handler();
+        private boolean isVisible = false;
+        private int width, height;
+
         public NaturalHourWallpaperEngine()
         {
             // TODO
+            handler.post(drawRunner);
         }
 
         @Override
         public void onVisibilityChanged(boolean visible)
         {
-            // TODO
+            isVisible = visible;
+            if (visible) {
+                handler.post(drawRunner);
+            } else {
+                handler.removeCallbacks(drawRunner);
+            }
         }
 
         @Override
         public void onSurfaceDestroyed(SurfaceHolder holder)
         {
             super.onSurfaceDestroyed(holder);
-            // TODO
+            isVisible = false;
+            handler.removeCallbacks(drawRunner);
         }
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height)
         {
-            // TODO
+            this.width = width;
+            this.height = height;
             super.onSurfaceChanged(holder, format, width, height);
         }
 
@@ -67,5 +83,34 @@ public class NaturalHourWallpaper extends WallpaperService
             // TODO
             super.onTouchEvent(event);
         }
+
+        private void draw()
+        {
+            SurfaceHolder holder = getSurfaceHolder();
+            Canvas canvas = null;
+            try {
+                canvas = holder.lockCanvas();
+                if (canvas != null)
+                {
+                    // TODO
+                }
+
+            } finally {
+                if (canvas != null) {
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            }
+
+            handler.removeCallbacks(drawRunner);
+            if (isVisible) {
+                handler.postDelayed(drawRunner, UPDATE_INTERVAL_MS);
+            }
+        }
+        private final Runnable drawRunner = new Runnable() {
+            @Override
+            public void run() {
+                draw();
+            }
+        };
     }
 }
