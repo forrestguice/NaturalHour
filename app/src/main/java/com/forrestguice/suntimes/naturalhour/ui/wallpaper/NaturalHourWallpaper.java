@@ -137,8 +137,11 @@ public class NaturalHourWallpaper extends WallpaperService
             TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
             int clockSizePx = Math.min(width, height);
-            int left = (width - clockSizePx) / 2;
-            int top = (height - clockSizePx) / 2;     // TODO: alignment
+
+            int left = (width - clockSizePx) / 2;      // TODO: configurable?
+            int top = 0;                               // top
+            //int top = (height - clockSizePx) / 2;    // center
+            //int top = (height - clockSizePx);        // bottom
 
             NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
             clockView.setTimeZone(timezone);
