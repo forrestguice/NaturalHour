@@ -39,7 +39,6 @@ import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
-import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 
 public class WallpaperConfigActivity extends AppCompatActivity
 {
@@ -51,7 +50,7 @@ public class WallpaperConfigActivity extends AppCompatActivity
 
     protected ClockColorValuesCollection colors;
     protected ColorValuesSelectFragment colorFragment;
-    protected WidgetPreferenceFragment flagFragment;
+    protected WallpaperPreferenceFragment flagFragment;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -117,7 +116,7 @@ public class WallpaperConfigActivity extends AppCompatActivity
             colorFragment.setColorCollection(colors);
         }
 
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment1);
+        flagFragment = (WallpaperPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment1);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
             flagFragment.setAppWidgetId(-1);
@@ -129,7 +128,7 @@ public class WallpaperConfigActivity extends AppCompatActivity
     {
         super.onResume();
 
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment1);
+        flagFragment = (WallpaperPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment1);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
         }

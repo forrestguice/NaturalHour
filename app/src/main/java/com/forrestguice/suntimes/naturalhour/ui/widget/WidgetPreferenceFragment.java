@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2021 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -46,6 +46,10 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         return KEY_PREFIX + "_" + appWidgetId + "_";
     }
 
+    public int getPrefResId() {
+        return R.xml.pref_widget;
+    }
+
     /**
      * @return appWidgetId (apply as widget settings), or 0 if unset (apply as global settings)
      */
@@ -66,7 +70,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_widget);
+        addPreferencesFromResource(getPrefResId());
         initWidgetDefaults();
         setHasOptionsMenu(false);
     }

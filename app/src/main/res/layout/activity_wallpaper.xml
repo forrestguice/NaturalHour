@@ -18,7 +18,7 @@
             android:id="@+id/clockColorSelectorFragment1"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment"
+        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.wallpaper.WallpaperPreferenceFragment"
             android:id="@+id/clockFlagsFragment1"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 

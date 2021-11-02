@@ -21,6 +21,7 @@ package com.forrestguice.suntimes.naturalhour.ui.wallpaper;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import android.service.wallpaper.WallpaperService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -48,6 +50,18 @@ import java.util.TimeZone;
 
 public class NaturalHourWallpaper extends WallpaperService
 {
+    public static final int UPDATE_INTERVAL_MS = 30000;
+
+    public static final int ALIGN_TOP = 1, ALIGN_CENTER = 4, ALIGN_BOTTOM = 7;  // 0,top-left .. 7,bottom-right
+    public static final String KEY_WALLPAPER_ALIGNMENT = "wallpaper_alignment";
+    public static final int DEF_WALLPAPER_ALIGNMENT = ALIGN_CENTER;
+
+    public static final String KEY_WALLPAPER_MARGIN_DP = "wallpaper_margin";
+    public static final int DEF_WALLPAPER_MARGIN_DP = 24;  // offset from top or bottom edge of screen
+
+    public static final String[] VALUES = new String[] { KEY_WALLPAPER_ALIGNMENT, KEY_WALLPAPER_MARGIN_DP };
+    public static final int[] VALUES_DEF = new int[] { DEF_WALLPAPER_ALIGNMENT, DEF_WALLPAPER_MARGIN_DP };
+
     @Override
     public Engine onCreateEngine() {
         return new NaturalHourWallpaperEngine(-1);
@@ -58,8 +72,6 @@ public class NaturalHourWallpaper extends WallpaperService
      */
     private class NaturalHourWallpaperEngine extends Engine
     {
-        public static final int UPDATE_INTERVAL_MS = 30000;
-
         private int appWidgetId;
         private final Handler handler = new Handler();
         private boolean isVisible = false;
@@ -70,8 +82,6 @@ public class NaturalHourWallpaper extends WallpaperService
         {
             this.appWidgetId = appWidgetId;
             paint = new Paint();
-            // TODO
-
             handler.post(drawRunner);
         }
 
@@ -143,12 +153,31 @@ public class NaturalHourWallpaper extends WallpaperService
             boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
             TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
-            int clockSizePx = Math.min(width, height);
+            Resources r = getResources();
+            float margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    AppSettings.getClockIntValue(context, widgetPrefix + KEY_WALLPAPER_MARGIN_DP, DEF_WALLPAPER_MARGIN_DP),
+                    r.getDisplayMetrics());
 
-            int left = (width - clockSizePx) / 2;      // TODO: configurable?
-            int top = 0;                               // top
-            //int top = (height - clockSizePx) / 2;    // center
-            //int top = (height - clockSizePx);        // bottom
+            int clockSizePx = Math.min(width, height);
+            int left = (width - clockSizePx) / 2;
+
+            int top;
+            int alignment = AppSettings.getClockIntValue(context, widgetPrefix + KEY_WALLPAPER_ALIGNMENT, DEF_WALLPAPER_ALIGNMENT);
+            switch (alignment)
+            {
+                case ALIGN_BOTTOM:
+                    top = (int)Math.floor((height - clockSizePx) - margin);
+                    break;
+
+                case ALIGN_CENTER:
+                    top = (height - clockSizePx) / 2;
+                    break;
+
+                case ALIGN_TOP:
+                default:
+                    top = (int)Math.ceil(margin);
+                    break;
+            }
 
             NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
             clockView.setTimeZone(timezone);
