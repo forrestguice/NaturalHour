@@ -137,6 +137,9 @@ public class NaturalHourWallpaper extends WallpaperService
             TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
             int clockSizePx = Math.min(width, height);
+            int left = (width - clockSizePx) / 2;
+            int top = (height - clockSizePx) / 2;     // TODO: alignment
+
             NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
             clockView.setTimeZone(timezone);
             clockView.set24HourMode(is24);
@@ -159,8 +162,8 @@ public class NaturalHourWallpaper extends WallpaperService
             clockView.setColors(clockAppearance);
 
             Bitmap bitmap = clockView.makeBitmap(context, data);
-            canvas.drawColor(Color.BLACK);                      // TODO: configurable?
-            canvas.drawBitmap(bitmap, 0, 0, paint);   // TODO: alignment
+            canvas.drawColor(Color.BLACK);// TODO: configurable?
+            canvas.drawBitmap(bitmap, left, top, paint);
         }
 
         private void draw()
