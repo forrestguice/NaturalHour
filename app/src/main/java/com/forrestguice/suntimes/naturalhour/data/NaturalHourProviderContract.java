@@ -19,6 +19,7 @@
 
 package com.forrestguice.suntimes.naturalhour.data;
 
+import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.widget.WidgetListHelper;
 
 public interface NaturalHourProviderContract
@@ -55,5 +56,19 @@ public interface NaturalHourProviderContract
 
     String QUERY_WIDGET = WidgetListHelper.QUERY_WIDGET;
     String[] QUERY_WIDGET_PROJECTION = WidgetListHelper.QUERY_WIDGET_PROJECTION;
+
+    /*
+     * ALARMS
+     */
+    String COLUMN_ALARM_NAME = AlarmHelper.COLUMN_ALARM_NAME;              // String (alarm/event ID)
+    String COLUMN_ALARM_TITLE = AlarmHelper.COLUMN_ALARM_TITLE;            // String (display string)
+    String COLUMN_ALARM_SUMMARY = AlarmHelper.COLUMN_ALARM_SUMMARY;        // String (extended display string)
+    String COLUMN_ALARM_TIMEMILLIS = AlarmHelper.COLUMN_ALARM_TIMEMILLIS;  // long (timestamp millis)
+
+    String QUERY_ALARM_INFO = AlarmHelper.QUERY_ALARM_INFO;
+    String[] QUERY_ALARM_INFO_PROJECTION = AlarmHelper.QUERY_ALARM_INFO_PROJECTION;
+
+    String QUERY_ALARM_CALC = AlarmHelper.QUERY_ALARM_CALC;
+    String[] QUERY_ALARM_CALC_PROJECTION = AlarmHelper.QUERY_ALARM_CALC_PROJECTION;
 
 }

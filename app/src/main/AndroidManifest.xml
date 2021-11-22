@@ -39,6 +39,13 @@
             <meta-data android:name="WidgetInfoProvider"
                 android:value="content://suntimes.naturalhour.provider" />
 
+            <intent-filter>
+                <action android:name="suntimes.action.ADDON_ALARM" />
+                <category android:name="suntimes.SUNTIMES_ALARM" />
+            </intent-filter>
+            <meta-data android:name="AlarmInfoProvider"
+                android:value="content://suntimes.naturalhour.provider" />
+
         </activity>
 
         <!-- Activity: Settings -->
