@@ -35,7 +35,10 @@ public class NaturalHourCalculator {
      * calculateData
      */
     public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data) {
-        if (queryData(resolver, data)) {
+        return calculateData(resolver, data, true);
+    }
+    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data, boolean includeSolsticeEquinox) {
+        if (queryData(resolver, data, includeSolsticeEquinox)) {
             if (data.dayStart > 0 && data.dayEnd > 0) {
                 long dayLength = (data.dayEnd - data.dayStart);
                 data.dayHourLength = dayLength / 12L;
@@ -65,7 +68,7 @@ public class NaturalHourCalculator {
     /**
      * queryData
      */
-    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data) {
+    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data, boolean querySolsticeEquinox) {
         if (resolver != null) {
             try {
                 long date = data.getDateMillis();
@@ -75,8 +78,10 @@ public class NaturalHourCalculator {
                 data.dayStart = daylight[0];
                 data.dayEnd = daylight[1];
 
-                solsticeEquinox = queryEquinoxSolsticeDates(resolver, date);
-                data.solsticeEquinox = solsticeEquinox;
+                if (querySolsticeEquinox) {
+                    solsticeEquinox = queryEquinoxSolsticeDates(resolver, date);
+                    data.solsticeEquinox = solsticeEquinox;
+                }
 
             } catch (SecurityException e) {
                 Log.e(getClass().getSimpleName(), "calculateData: Unable to access " + CalculatorProviderContract.AUTHORITY + "! " + e);
