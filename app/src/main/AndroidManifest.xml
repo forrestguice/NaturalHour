@@ -43,7 +43,7 @@
 
         <!-- Activity: AlarmPicker -->
         <activity
-            android:name=".alarms.AlarmActivity" android:label="@string/app_name"
+            android:name=".ui.alarms.AlarmActivity" android:label="@string/app_name"
             android:permission=""
             android:icon="@mipmap/ic_launcher_round">
 

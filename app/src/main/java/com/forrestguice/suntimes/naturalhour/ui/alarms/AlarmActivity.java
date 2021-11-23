@@ -17,7 +17,7 @@
     along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.naturalhour.alarms;
+package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
