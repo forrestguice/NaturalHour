@@ -373,6 +373,7 @@ public class NaturalHourProvider extends ContentProvider
         {
             Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
+            float momentRatio = (hour[2] + 1) / 40f;
 
             String offsetString = selectionMap.get(EXTRA_ALARM_OFFSET);
             long offset = offsetString != null ? Long.parseLong(offsetString) : 0L;
@@ -405,7 +406,7 @@ public class NaturalHourProvider extends ContentProvider
             Calendar day = Calendar.getInstance();
             NaturalHourData data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
             calculator.calculateData(resolver, data, false, false);
-            eventTime = data.getNaturalHour(hour[1]);
+            eventTime = data.getNaturalHour(hour[1], momentRatio);
             if (eventTime != null)
             {
                 eventTime.set(Calendar.SECOND, 0);
@@ -427,7 +428,7 @@ public class NaturalHourProvider extends ContentProvider
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
                 calculator.calculateData(resolver, data, false, false);
-                eventTime = data.getNaturalHour(hour[1]);
+                eventTime = data.getNaturalHour(hour[1], momentRatio);
                 if (eventTime != null)
                 {
                     eventTime.set(Calendar.SECOND, 0);

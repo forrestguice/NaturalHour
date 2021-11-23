@@ -311,22 +311,34 @@ public class NaturalHourData implements Parcelable
     }
 
     /**
-     * @param i index into array returned by getNaturalHours()
+     * @param hourNum index into array returned by getNaturalHours()
+     * @param moments [0,1]
      * @return Calendar for natural hour or null if dne
      */
-    public Calendar getNaturalHour(int i)
+    public Calendar getNaturalHour(int hourNum, float moments)
     {
-        if (i < 0 || i >= naturalHours.length) {
-            throw new IndexOutOfBoundsException("i must be [0," + naturalHours.length + "); " + i);
+        if (hourNum < 0 || hourNum >= naturalHours.length) {
+            throw new IndexOutOfBoundsException("i must be [0," + naturalHours.length + "); " + hourNum);
+        }
+        if (moments < 0) {
+            moments = 0;
+        }
+        if (moments > 1) {
+            moments = 1;
         }
 
-        if (calculated && naturalHours[i] > 0)
+        if (calculated && naturalHours[hourNum] > 0)
         {
+            float hourLength = (hourNum >= 12) ? (naturalHours[13] - naturalHours[12]) : (naturalHours[1] - naturalHours[0]);
+            long momentMillis = (long)(hourLength * moments);
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(naturalHours[i]);
+            calendar.setTimeInMillis(naturalHours[hourNum] + momentMillis);
             return calendar;
         }
         return null;
+    }
+    public Calendar getNaturalHour(int i) {
+        return getNaturalHour(i, 0);
     }
 
     /**
