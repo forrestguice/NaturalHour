@@ -283,6 +283,19 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static String naturalHourPhrase(Context context, int hourMode, int hourNum)
+    {
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
+        int currentHourOf = ((hourNum - 1) % 12) + 1;    // [1,12]
+        if (mode24) {
+            currentHourOf = (hourNum > 12 ? hourNum - 12 : hourNum + 12);
+        }
+        int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
+        String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
+        return context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[mode24 ? currentHourOf : hourNum]);
+    }
+
     public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24)
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);

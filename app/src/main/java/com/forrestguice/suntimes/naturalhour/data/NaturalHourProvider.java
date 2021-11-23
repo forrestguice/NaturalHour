@@ -33,8 +33,10 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3;
@@ -231,7 +233,7 @@ public class NaturalHourProvider extends ContentProvider
         {
             String[] alarms = (alarmName != null)
                     ? new String[] { alarmName }
-                    : getAlarmList();
+                    : getAlarmList(context);
 
             for (int j=0; j<alarms.length; j++)
             {
@@ -297,22 +299,63 @@ public class NaturalHourProvider extends ContentProvider
         return cursor;
     }
 
-    protected boolean isValidAlarmID(String alarmID) {
-        return alarmID != null;  // TODO
+    /**
+     * @param alarmID alarmID; hourMode_hourNum
+     * @return [CalculatorMode, hourNum]; or null if alarmID is invalid
+     */
+    public static int[] alarmIdToNaturalHour(@Nullable String alarmID)
+    {
+        String[] parts = alarmID != null ? alarmID.split("_") : new String[0];
+        if (parts.length == 2)
+        {
+            try {
+                int hourNum = Integer.parseInt(parts[1]);
+                int hourMode = Integer.parseInt(parts[0]);
+                return new int[] { hourMode, hourNum };
+
+            } catch (NumberFormatException e) {
+                Log.e("NaturalHourProvider", "alarmToNaturalHour: invalid alarmID: " + alarmID + " .. " + e);
+            }
+        }
+        return null;
     }
 
-    /**
-     * @param alarmID alarmID
-     * @return [CalculatorMode, hourNum]
-     */
-    public int[] alarmIdToRomanHour(String alarmID) {
-        return new int[] { NaturalHourClockBitmap.HOURMODE_DEFAULT, 6 };    // TODO
+    public static String naturalHourToAlarmID(int hourMode, int hourNum) {
+        return hourMode + "_" + hourNum;
+    }
+
+    public static String[] getAlarmList(@NonNull Context context) {
+        return getAlarmList(AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
+    }
+
+    public static String[] getAlarmList(int hourMode)
+    {
+        String[] retValue = new String[24];
+        for (int i=0; i<retValue.length; i++) {
+            retValue[i] = naturalHourToAlarmID(hourMode, i);
+        }
+        return retValue;
+    }
+
+    public static String getAlarmTitle(Context context, @Nullable String alarmID)
+    {
+        int[] hour = alarmIdToNaturalHour(alarmID);
+        if (hour != null) {
+            return context.getString(R.string.alarm_title_format, NaturalHourFragment.naturalHourPhrase(context, hour[0], hour[1]));
+        } else return null;
+    }
+
+    public static String getAlarmSummary(Context context, @Nullable String alarmID) {
+        if (alarmIdToNaturalHour(alarmID) != null) {
+            return context.getString(R.string.alarm_summary_format);
+        } else return null;
     }
 
     public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap)
     {
+        int[] hour = alarmIdToNaturalHour(alarmID);
         ContentResolver resolver = context.getContentResolver();
-        if (isValidAlarmID(alarmID) && resolver != null)
+        if (hour != null && resolver != null)
         {
             Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
@@ -340,7 +383,6 @@ public class NaturalHourProvider extends ContentProvider
             Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
                     + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
 
-            int[] hour = alarmIdToRomanHour(alarmID);
             NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(hour[0]);
 
             Calendar alarmTime = Calendar.getInstance();
@@ -385,19 +427,6 @@ public class NaturalHourProvider extends ContentProvider
         } else {
             return -1L;
         }
-    }
-
-    public static String[] getAlarmList() {
-        return new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
-                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"};   // TODO
-    }
-
-    public static String getAlarmTitle(Context context, String alarmName) {
-        return context.getString(R.string.alarm_title_format, alarmName);
-    }
-
-    public static String getAlarmSummary(Context context, String alarmName) {
-        return context.getString(R.string.alarm_summary_format);
     }
 
 }
