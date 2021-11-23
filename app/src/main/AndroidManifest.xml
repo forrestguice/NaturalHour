@@ -39,12 +39,27 @@
             <meta-data android:name="WidgetInfoProvider"
                 android:value="content://suntimes.naturalhour.provider" />
 
+        </activity>
+
+        <!-- Activity: AlarmPicker -->
+        <activity
+            android:name=".alarms.AlarmActivity" android:label="@string/app_name"
+            android:permission=""
+            android:icon="@mipmap/ic_launcher_round">
+
             <intent-filter>
                 <action android:name="suntimes.action.ADDON_ALARM" />
                 <category android:name="suntimes.SUNTIMES_ALARM" />
             </intent-filter>
             <meta-data android:name="AlarmInfoProvider"
                 android:value="content://suntimes.naturalhour.provider" />
+
+            <intent-filter>
+                <action android:name="suntimes.action.PICK_ALARM" />
+                <category android:name="suntimes.SUNTIMES_ADDON" />
+            </intent-filter>
+            <meta-data android:name="SuntimesAlarmPickerTitle"
+                android:value="@string/app_name" />
 
         </activity>
 

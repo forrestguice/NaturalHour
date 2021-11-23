@@ -22,16 +22,21 @@ package com.forrestguice.suntimes.naturalhour.data;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.widget.WidgetListHelper;
 
+/**
+ * 0: initial version (QUERY_CONFIG, COLUMN_CONFIG_* QUERY_WIDGET, COLUMN_WIDGET_*)
+ * 1: adds alarms; QUERY_ALARM_*; COLUMN_ALARM_*; COLUMN_CONFIG_PROVIDER
+ */
 public interface NaturalHourProviderContract
 {
     String AUTHORITY = "suntimes.naturalhour.provider";
     String READ_PERMISSION = "suntimes.permission.READ_CALCULATOR";
-    String VERSION_NAME = "v0.0.0";
-    int VERSION_CODE = 0;
+    String VERSION_NAME = "v0.1.0";
+    int VERSION_CODE = 1;
 
     /*
      * CONFIG
      */
+    String COLUMN_CONFIG_PROVIDER = "provider";                             // String (provider reference)
     String COLUMN_CONFIG_PROVIDER_VERSION = "provider_version";             // String (provider version string)
     String COLUMN_CONFIG_PROVIDER_VERSION_CODE = "provider_version_code";   // int (provider version code)
     String COLUMN_CONFIG_APP_VERSION = "app_version";                       // String (app version string)
@@ -70,5 +75,16 @@ public interface NaturalHourProviderContract
 
     String QUERY_ALARM_CALC = AlarmHelper.QUERY_ALARM_CALC;
     String[] QUERY_ALARM_CALC_PROJECTION = AlarmHelper.QUERY_ALARM_CALC_PROJECTION;
+
+    String EXTRA_ALARM_NOW = AlarmHelper.EXTRA_ALARM_NOW;                  // long (millis)
+    String EXTRA_ALARM_REPEAT = AlarmHelper.EXTRA_ALARM_REPEAT;            // boolean
+    String EXTRA_ALARM_REPEAT_DAYS = AlarmHelper.EXTRA_ALARM_REPEAT_DAYS;  // boolean[] .. [m,t,w,t,f,s,s]
+    String EXTRA_ALARM_OFFSET = AlarmHelper.EXTRA_ALARM_OFFSET;            // long (millis)
+    String EXTRA_ALARM_EVENT = AlarmHelper.EXTRA_ALARM_EVENT;              // eventID
+
+    String EXTRA_LOCATION_LABEL = AlarmHelper.EXTRA_LOCATION_LABEL;        // String
+    String EXTRA_LOCATION_LAT = AlarmHelper.EXTRA_LOCATION_LAT;            // double (DD)
+    String EXTRA_LOCATION_LON = AlarmHelper.EXTRA_LOCATION_LON;            // double (DD)
+    String EXTRA_LOCATION_ALT = AlarmHelper.EXTRA_LOCATION_ALT;            // double (meters)
 
 }
