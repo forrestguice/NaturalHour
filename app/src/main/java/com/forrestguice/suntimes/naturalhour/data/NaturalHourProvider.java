@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.naturalhour.data;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -34,6 +35,7 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3;
@@ -42,6 +44,8 @@ import com.forrestguice.suntimes.widget.WidgetListHelper;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_NOW;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_OFFSET;
@@ -294,12 +298,21 @@ public class NaturalHourProvider extends ContentProvider
     }
 
     protected boolean isValidAlarmID(String alarmID) {
-        return true;  // TODO
+        return alarmID != null;  // TODO
+    }
+
+    /**
+     * @param alarmID alarmID
+     * @return [CalculatorMode, hourNum]
+     */
+    public int[] alarmIdToRomanHour(String alarmID) {
+        return new int[] { NaturalHourClockBitmap.HOURMODE_DEFAULT, 6 };    // TODO
     }
 
     public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap)
     {
-        if (isValidAlarmID(alarmID))
+        ContentResolver resolver = context.getContentResolver();
+        if (isValidAlarmID(alarmID) && resolver != null)
         {
             Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
@@ -327,20 +340,16 @@ public class NaturalHourProvider extends ContentProvider
             Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
                     + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
 
+            int[] hour = alarmIdToRomanHour(alarmID);
+            NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(hour[0]);
+
             Calendar alarmTime = Calendar.getInstance();
             Calendar eventTime;
 
-            // TODO
-
-            /** Example implementation..
-
-            IntervalMidpointsCalculator calculator = new IntervalMidpointsCalculator();
-            IntervalMidpointsData data = new IntervalMidpointsData(alarmName, latitude, longitude, altitude);
-
             Calendar day = Calendar.getInstance();
-            data.setDate(day.getTimeInMillis());
-            calculator.calculateData(context, data);
-            eventTime = data.getMidpoint(data.index);
+            NaturalHourData data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
+            calculator.calculateData(resolver, data, false);
+            eventTime = data.getNaturalHour(hour[1]);
             if (eventTime != null)
             {
                 eventTime.set(Calendar.SECOND, 0);
@@ -360,19 +369,18 @@ public class NaturalHourProvider extends ContentProvider
 
                 Log.w(getClass().getSimpleName(), "updateAlarmTime: advancing by 1 day..");
                 day.add(Calendar.DAY_OF_YEAR, 1);
-                data.setDate(day.getTimeInMillis());
-                calculator.calculateData(context, data);
-                eventTime = data.getMidpoint(data.index);
+                data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
+                calculator.calculateData(resolver, data, false);
+                eventTime = data.getNaturalHour(hour[1]);
                 if (eventTime != null)
                 {
                     eventTime.set(Calendar.SECOND, 0);
                     alarmTime.setTimeInMillis(eventTime.getTimeInMillis() + offset);
                 }
                 c++;
-            }*/
+            }
 
-            //return eventTime.getTimeInMillis();
-            return -1L;
+            return eventTime.getTimeInMillis();
 
         } else {
             return -1L;
