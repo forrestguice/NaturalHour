@@ -503,18 +503,23 @@ public class MainActivity extends AppCompatActivity
 
     protected void showHelp()
     {
+        HelpDialog dialog = createHelpDialog(this,suntimesInfo, R.array.help_topics);
+        dialog.show(getSupportFragmentManager(), DIALOG_HELP);
+    }
+    public static HelpDialog createHelpDialog(Context context, @Nullable SuntimesInfo suntimesInfo, int helpTopicsArrayRes)
+    {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
             dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
         }
 
-        String[] help = getResources().getStringArray(R.array.help_topics);
+        String[] help = context.getResources().getStringArray(helpTopicsArrayRes);
         String helpContent = help[0];
         for (int i=1; i<help.length; i++) {
-            helpContent = getString(R.string.format_help, helpContent, help[i]);
+            helpContent = context.getString(R.string.format_help, helpContent, help[i]);
         }
         dialog.setContent(helpContent + "<br/>");
-        dialog.show(getSupportFragmentManager(), DIALOG_HELP);
+        return dialog;
     }
 
     protected void showAbout() {
