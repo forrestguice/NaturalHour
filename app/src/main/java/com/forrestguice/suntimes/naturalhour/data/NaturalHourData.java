@@ -53,7 +53,7 @@ public class NaturalHourData implements Parcelable
     protected long dayStart, dayEnd;
     protected long dayHourLength, nightHourLength;
     protected long[] twilightHours = new long[8];    // rising [0-3] (astro, nautical, civil, actual), setting [4-7] (actual, civil, nautical, astro)
-    protected long[] naturalHours = new long[24];    // 24 natural hours; 1 sunrise; 13 sunset
+    protected long[] naturalHours = new long[24];    // 24 natural hours; 0 sunrise; 12 sunset
     protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
     protected boolean calculated = false;
 
@@ -308,6 +308,25 @@ public class NaturalHourData implements Parcelable
      */
     public long[] getNaturalHours() {
         return naturalHours;
+    }
+
+    /**
+     * @param i index into array returned by getNaturalHours()
+     * @return Calendar for natural hour or null if dne
+     */
+    public Calendar getNaturalHour(int i)
+    {
+        if (i < 0 || i >= naturalHours.length) {
+            throw new IndexOutOfBoundsException("i must be [0," + naturalHours.length + "); " + i);
+        }
+
+        if (calculated && naturalHours[i] > 0)
+        {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(naturalHours[i]);
+            return calendar;
+        }
+        return null;
     }
 
     /**
