@@ -20,21 +20,26 @@
 package com.forrestguice.suntimes.naturalhour.alarms;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
@@ -47,12 +52,17 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 
+import java.util.TimeZone;
+
 public class AlarmActivity extends AppCompatActivity
 {
     public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
-    private SuntimesInfo suntimesInfo = null;
+    protected SuntimesInfo suntimesInfo = null;
+
+    protected ActionMode actionMode = null;
+    protected AlarmActionsCompat alarmActions;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -88,6 +98,7 @@ public class AlarmActivity extends AppCompatActivity
         }
 
         initToolbar();
+        alarmActions = new AlarmActionsCompat();
 
         /*View timeformatButton = findViewById(R.id.bottombar_button_layout0);
         if (timeformatButton != null) {
@@ -255,6 +266,97 @@ public class AlarmActivity extends AppCompatActivity
         result.setData(Uri.parse(AlarmHelper.getAlarmInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID)));
         setResult(Activity.RESULT_OK, result);
         finish();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected boolean triggerActionMode(View view, String alarmID)
+    {
+        if (actionMode == null)
+        {
+            if (alarmID != null) {
+                onTriggerActionMode(alarmID);
+            }
+            return true;
+
+        } else {
+            actionMode.finish();
+            triggerActionMode(view, alarmID);
+            return false;
+        }
+    }
+
+    protected void onTriggerActionMode(@NonNull String alarmID)
+    {
+        alarmActions.setSelection(alarmID);
+        actionMode = startSupportActionMode(alarmActions);
+        if (actionMode != null) {
+            actionMode.setTitle(NaturalHourProvider.getAlarmTitle(this, alarmID));
+        }
+    }
+
+    /**
+     * AlarmActionsCompat
+     */
+    private class AlarmActionsCompat implements android.support.v7.view.ActionMode.Callback
+    {
+        protected String alarmID = null;
+        public void setSelection(String alarmID ) {
+            this.alarmID = alarmID;
+        }
+
+        @Override
+        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_alarm1, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        {
+            Messages.forceActionBarIcons(menu);
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode)
+        {
+            actionMode = null;
+            //adapter.setSelectedIndex(-1);   // TODO
+        }
+
+        @Override
+        public boolean onActionItemClicked(android.support.v7.view.ActionMode mode, MenuItem item)
+        {
+            if (alarmID != null)
+            {
+                switch (item.getItemId())
+                {
+                    case R.id.action_select:
+                        onDone(alarmID);
+                        mode.finish();
+                        return true;
+                }
+            }
+            mode.finish();
+            return false;
+        }
+    }
+
+    protected void scheduleAlarm(String alarmID)
+    {
+        String alarmUri = AlarmHelper.getAlarmInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID);
+        String label = NaturalHourProvider.getAlarmTitle(AlarmActivity.this, alarmID);
+        try {
+            TimeZone tz = TimeZone.getDefault();    // TODO: as configured
+            startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, tz, alarmUri));
+
+        } catch (ActivityNotFoundException e) {
+            Log.e(getClass().getSimpleName(), "Failed to schedule alarm: " + e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
