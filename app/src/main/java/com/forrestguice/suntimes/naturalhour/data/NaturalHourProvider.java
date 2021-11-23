@@ -222,17 +222,17 @@ public class NaturalHourProvider extends ContentProvider
     /**
      * queryAlarmInfo
      */
-    public Cursor queryAlarmInfo(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
+    public Cursor queryAlarmInfo(@Nullable String alarmId, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryAlarmInfo: " + alarmName);
+        Log.d("DEBUG", "queryAlarmInfo: " + alarmId);
         String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
         Context context = getContext();
         if (context != null)
         {
-            String[] alarms = (alarmName != null)
-                    ? new String[] { alarmName }
+            String[] alarms = (alarmId != null)
+                    ? new String[] { alarmId }
                     : getAlarmList(context);
 
             for (int j=0; j<alarms.length; j++)
@@ -300,19 +300,25 @@ public class NaturalHourProvider extends ContentProvider
     }
 
     /**
-     * @param alarmID alarmID; hourMode_hourNum
-     * @return [CalculatorMode, hourNum]; or null if alarmID is invalid
+     * @param alarmID alarmID; hourMode_hourNum or hourMode_hourNum_momentNum
+     * @return null if alarmID is invalid; or int[3] .. [CalculatorMode, hourNum, momentNum], where hourNum [0,24) and momentNum [0,40)
      */
     public static int[] alarmIdToNaturalHour(@Nullable String alarmID)
     {
         String[] parts = alarmID != null ? alarmID.split("_") : new String[0];
-        if (parts.length == 2)
+        if (parts.length == 2 || parts.length == 3)
         {
             try {
+                int momentNum = (parts.length == 3) ? Integer.parseInt(parts[2]) : 0;
                 int hourNum = Integer.parseInt(parts[1]);
                 int hourMode = Integer.parseInt(parts[0]);
-                return new int[] { hourMode, hourNum };
 
+                if (hourNum >= 0 && hourNum < 24) {
+                    return new int[] { hourMode, hourNum, momentNum };
+
+                } else {
+                    Log.e("NaturalHourProvider", "alarmToNaturalHour: invalid alarmID: " + alarmID + "; hour out-of-range: " + hourNum);
+                }
             } catch (NumberFormatException e) {
                 Log.e("NaturalHourProvider", "alarmToNaturalHour: invalid alarmID: " + alarmID + " .. " + e);
             }
@@ -320,8 +326,15 @@ public class NaturalHourProvider extends ContentProvider
         return null;
     }
 
-    public static String naturalHourToAlarmID(int hourMode, int hourNum) {
-        return hourMode + "_" + hourNum;
+    public static String naturalHourToAlarmID(int hourMode, int hourNum, int momentNum)
+    {
+        if (hourNum < 0 || hourNum >= 24) {
+            throw new IndexOutOfBoundsException("hourNum must be [0,24); " + hourNum);
+        }
+        if (momentNum < 0 || momentNum >= 40) {
+            throw new IndexOutOfBoundsException("momentNum [0,40); " + momentNum);
+        }
+        return hourMode + "_" + hourNum + "_" + momentNum;
     }
 
     public static String[] getAlarmList(@NonNull Context context) {
@@ -330,18 +343,19 @@ public class NaturalHourProvider extends ContentProvider
 
     public static String[] getAlarmList(int hourMode)
     {
-        String[] retValue = new String[24];
-        for (int i=0; i<retValue.length; i++) {
-            retValue[i] = naturalHourToAlarmID(hourMode, i);
-        }
-        return retValue;
+        //String[] retValue = new String[24];
+        //for (int i=0; i<retValue.length; i++) {
+        //    retValue[i] = naturalHourToAlarmID(hourMode, i, 0);
+        //}
+        //return retValue;
+        return new String[0];
     }
 
     public static String getAlarmTitle(Context context, @Nullable String alarmID)
     {
         int[] hour = alarmIdToNaturalHour(alarmID);
         if (hour != null) {
-            return context.getString(R.string.alarm_title_format, NaturalHourFragment.naturalHourPhrase(context, hour[0], hour[1]));
+            return context.getString(R.string.alarm_title_format, NaturalHourFragment.naturalHourPhrase(context, hour[0], hour[1], hour[2]));
         } else return null;
     }
 

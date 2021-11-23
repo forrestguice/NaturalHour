@@ -283,7 +283,7 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static String naturalHourPhrase(Context context, int hourMode, int hourNum)
+    public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
     {
         boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
         String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
