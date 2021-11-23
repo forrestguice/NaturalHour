@@ -348,7 +348,7 @@ public class NaturalHourProvider extends ContentProvider
 
             Calendar day = Calendar.getInstance();
             NaturalHourData data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
-            calculator.calculateData(resolver, data, false);
+            calculator.calculateData(resolver, data, false, false);
             eventTime = data.getNaturalHour(hour[1]);
             if (eventTime != null)
             {
@@ -370,7 +370,7 @@ public class NaturalHourProvider extends ContentProvider
                 Log.w(getClass().getSimpleName(), "updateAlarmTime: advancing by 1 day..");
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
-                calculator.calculateData(resolver, data, false);
+                calculator.calculateData(resolver, data, false, false);
                 eventTime = data.getNaturalHour(hour[1]);
                 if (eventTime != null)
                 {

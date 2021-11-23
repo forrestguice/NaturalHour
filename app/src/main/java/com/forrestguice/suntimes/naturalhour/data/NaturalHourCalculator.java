@@ -35,10 +35,10 @@ public class NaturalHourCalculator {
      * calculateData
      */
     public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data) {
-        return calculateData(resolver, data, true);
+        return calculateData(resolver, data, true, true);
     }
-    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data, boolean includeSolsticeEquinox) {
-        if (queryData(resolver, data, includeSolsticeEquinox)) {
+    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data, boolean includeTwilights, boolean includeSolsticeEquinox) {
+        if (queryData(resolver, data, includeTwilights, includeSolsticeEquinox)) {
             if (data.dayStart > 0 && data.dayEnd > 0) {
                 long dayLength = (data.dayEnd - data.dayStart);
                 data.dayHourLength = dayLength / 12L;
@@ -68,11 +68,14 @@ public class NaturalHourCalculator {
     /**
      * queryData
      */
-    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data, boolean querySolsticeEquinox) {
+    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data, boolean queryTwilights, boolean querySolsticeEquinox) {
         if (resolver != null) {
             try {
                 long date = data.getDateMillis();
-                data.twilightHours = queryTwilights(resolver, date);
+
+                if (queryTwilights) {
+                    data.twilightHours = queryTwilights(resolver, date);
+                }
 
                 long[] daylight = queryStartEndDay(resolver, date, data);
                 data.dayStart = daylight[0];
