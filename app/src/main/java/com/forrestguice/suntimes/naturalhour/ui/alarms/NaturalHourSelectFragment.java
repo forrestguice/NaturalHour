@@ -123,12 +123,15 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
 
     protected void updateViews()
     {
-        if (hourPicker != null)
-        {
-            boolean mode24 = getBoolArg(ARG_MODE24, DEF_MODE24);
-            int hour = getIntArg(ARG_HOUR, DEF_HOUR);
+        boolean mode24 = getBoolArg(ARG_MODE24, DEF_MODE24);
+        int hour = getIntArg(ARG_HOUR, DEF_HOUR);
+
+        if (hourPicker != null) {
             hourPicker.setValue(mode24 ? hour
                     : (hour >= 12 ? hour-12 : hour));
+        }
+
+        if (daynightPicker != null) {
             daynightPicker.setValue(mode24 ? 0
                     : (hour >= 12 ? 1 : 0));
         }
