@@ -43,6 +43,7 @@ import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
@@ -99,14 +100,13 @@ public class AlarmActivity extends AppCompatActivity
         initToolbar();
         alarmActions = new AlarmActionsCompat();
 
-        /*View timeformatButton = findViewById(R.id.bottombar_button_layout0);
-        if (timeformatButton != null) {
-            timeformatButton.setOnClickListener(onTimeFormatClick);
-        }*/
-        /*View timezoneButton = findViewById(R.id.bottombar_button_layout1);
-        if (timezoneButton != null) {
-            //timezoneButton.setOnClickListener(onTimeZoneClick);
-        }*/
+        FragmentManager fragments = getSupportFragmentManager();
+        NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
+        if (fragment != null)
+        {
+            fragment.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, false);  // TODO: from datasource
+            fragment.setFragmentListener(onAlarmSelectionChanged);
+        }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
         {
@@ -116,6 +116,16 @@ public class AlarmActivity extends AppCompatActivity
             else Messages.showMissingDependencyMessage(this, view);
         }
     }
+
+    private NaturalHourSelectFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourSelectFragment.FragmentListener()
+    {
+        @Override
+        public void onItemSelected(int hour)
+        {
+            Log.d("DEBUG", "on item selected: " + hour);
+            // TODO
+        }
+    };
 
     protected void initToolbar()
     {
@@ -146,13 +156,12 @@ public class AlarmActivity extends AppCompatActivity
     protected void restoreDialogs()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-        /*NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
-        if (sheetDialog != null && naturalHour != null)
+        NaturalHourSelectFragment alarmSelect = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
+        if (alarmSelect != null)
         {
-            sheetDialog.setColorCollection(naturalHour.getColorCollection());
-            sheetDialog.updateViews();
-            sheetDialog.setFragmentListener(colorSheetListener);
-        }*/
+            alarmSelect.updateViews();
+            alarmSelect.setFragmentListener(onAlarmSelectionChanged);
+        }
     }
 
     @Override
@@ -182,6 +191,9 @@ public class AlarmActivity extends AppCompatActivity
             toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
         }
 
+        TimeZone timezone = TimeZone.getDefault();
+        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
+
         //FragmentManager fragments = getSupportFragmentManager();
         //NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
         //if (fragment != null) {
@@ -190,15 +202,16 @@ public class AlarmActivity extends AppCompatActivity
         //            AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));
         //}
 
-        TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);   // TODO
-        /*if (timeformatText != null && fragment != null) {
-            timeformatText.setText( getString( fragment.is24() ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
-        }*/
+        TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
+        if (timeformatText != null) {
+            timeformatText.setText( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr );
+            timeformatText.setVisibility(View.GONE);
+        }
 
-        TextView timezoneText = (TextView) findViewById(R.id.bottombar_button1);   // TODO
-        /*if (timezoneText != null && fragment != null) {
-            timezoneText.setText( fragment.getTimeZone().getID() );
-        }*/
+        TextView timezoneText = (TextView) findViewById(R.id.bottombar_button1);
+        if (timezoneText != null) {
+            timezoneText.setText( timezone.getID() );
+        }
     }
 
     /*@Override

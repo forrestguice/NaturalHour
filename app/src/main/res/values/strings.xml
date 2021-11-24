@@ -183,6 +183,53 @@
         <item>♄</item> <!-- saturday -->
     </string-array>
 
+    <string name="phrase_of_day">of the day</string>  <!-- TODO -->
+    <string name="phrase_of_night">of the night</string>  <!-- TODO -->
+    <string-array name="phrase_of_day">
+        <item>@string/phrase_of_day</item>
+        <item>@string/phrase_of_night</item>
+    </string-array>
+    <string-array name="hour_12">
+        <item>1st&#160;hour</item>
+        <item>2nd&#160;hour</item>
+        <item>3rd&#160;hour</item>
+        <item>4th&#160;hour</item>
+        <item>5th&#160;hour</item>
+        <item>6th&#160;hour</item>
+        <item>7th&#160;hour</item>
+        <item>8th&#160;hour</item>
+        <item>9th&#160;hour</item>
+        <item>10th&#160;hour</item>
+        <item>11th&#160;hour</item>
+        <item>12th&#160;hour</item>
+    </string-array>
+    <string-array name="hour_24">
+        <item>1st&#160;hour</item>
+        <item>2nd&#160;hour</item>
+        <item>3rd&#160;hour</item>
+        <item>4th&#160;hour</item>
+        <item>5th&#160;hour</item>
+        <item>6th&#160;hour</item>
+        <item>7th&#160;hour</item>
+        <item>8th&#160;hour</item>
+        <item>9th&#160;hour</item>
+        <item>10th&#160;hour</item>
+        <item>11th&#160;hour</item>
+        <item>12th&#160;hour</item>
+        <item>13th&#160;hour</item>
+        <item>14th&#160;hour</item>
+        <item>15th&#160;hour</item>
+        <item>16th&#160;hour</item>
+        <item>17th&#160;hour</item>
+        <item>18th&#160;hour</item>
+        <item>19th&#160;hour</item>
+        <item>20th&#160;hour</item>
+        <item>21st&#160;hour</item>
+        <item>22nd&#160;hour</item>
+        <item>23rd&#160;hour</item>
+        <item>24th&#160;hour</item>
+    </string-array>
+
     <string-array name="hour_phrase_12">
         <item>0</item>
         <item>first&#160;hour of the day</item>
