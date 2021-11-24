@@ -286,14 +286,14 @@ public class NaturalHourFragment extends Fragment
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
     {
         boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
-        String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
-        int currentHourOf = ((hourNum - 1) % 12) + 1;    // [1,12]
-        if (mode24) {
-            currentHourOf = (hourNum > 12 ? hourNum - 12 : hourNum + 12);
-        }
-        int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
-        String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
-        return context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[mode24 ? currentHourOf : hourNum]);
+        int hour = mode24 ? hourNum : (hourNum >= 12 ? hourNum-12 : hourNum);
+
+        Resources r = context.getResources();
+        String[] phrase = r.getStringArray((mode24 ? R.array.hour_24 : R.array.hour_12));
+        String[] phrase_of_day = r.getStringArray(R.array.phrase_of_day);
+        String phraseOfDay = phrase_of_day[mode24 ? 0 : (hourNum >= 12 ? 1 : 0)];
+        String hourPhrase = phrase[hour];
+        return context.getString(R.string.format_announcement_naturalhour, hourPhrase, phraseOfDay);
     }
 
     public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24)
