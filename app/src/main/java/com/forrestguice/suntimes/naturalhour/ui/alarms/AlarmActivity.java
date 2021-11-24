@@ -83,6 +83,7 @@ public class AlarmActivity extends AppCompatActivity
         setResult(RESULT_CANCELED);
 
         Intent intent = getIntent();
+        int[] param_naturalHour = null;
         if (intent.hasExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT))
         {
             String alarmUriString = intent.getStringExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
@@ -90,11 +91,9 @@ public class AlarmActivity extends AppCompatActivity
             {
                 Uri alarmUri = Uri.parse(alarmUriString);
                 String alarmID = alarmUri.getLastPathSegment();
-                int[] naturalHour = NaturalHourProvider.alarmIdToNaturalHour(alarmID);
-                if (naturalHour != null) {
-                    // TODO: loadUserInput(alarmID, false);
-                }
+                param_naturalHour = NaturalHourProvider.alarmIdToNaturalHour(alarmID);
             }
+            intent.removeExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
         }
 
         initToolbar();
@@ -105,6 +104,9 @@ public class AlarmActivity extends AppCompatActivity
         if (fragment != null)
         {
             fragment.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, false);  // TODO: from datasource
+            if (param_naturalHour != null) {
+                fragment.setIntArg(NaturalHourSelectFragment.ARG_HOUR, param_naturalHour[1]);
+            }
             fragment.setFragmentListener(onAlarmSelectionChanged);
         }
 
@@ -123,7 +125,7 @@ public class AlarmActivity extends AppCompatActivity
         public void onItemSelected(int hour)
         {
             Log.d("DEBUG", "on item selected: " + hour);
-            // TODO
+            triggerActionMode(null, NaturalHourProvider.naturalHourToAlarmID(0, hour, 0));   // TODO: hourMode
         }
     };
 
