@@ -29,8 +29,8 @@ public class NaturalHourCalculator2 extends NaturalHourCalculator
     @Override
     public long[] queryStartEndDay(ContentResolver resolver, long dateMillis, NaturalHourData data)
     {
-        long[] riseset0 = querySunriseSunset(resolver, dateMillis - (24 * 60 * 60 * 1000));
-        long[] riseset1 = querySunriseSunset(resolver, dateMillis);
+        long[] riseset0 = querySunriseSunset(resolver, dateMillis - (24 * 60 * 60 * 1000), data.latitude, data.longitude, data.altitude);
+        long[] riseset1 = querySunriseSunset(resolver, dateMillis, data.latitude, data.longitude, data.altitude);
         return new long[] {riseset1[0], riseset0[1] + 24 * 60 * 60 * 1000};
     }
 }

@@ -18,15 +18,25 @@
             android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <TextView android:id="@+id/text_time"
+                android:layout_width="0dp" android:layout_height="0dp"
+                android:background="?attr/selectableItemBackground"
+                tools:text="9:00 PM" android:textAppearance="@style/TextAppearance.AppCompat.Display1" android:gravity="center"
+                android:layout_margin="8dp" app:layout_constraintVertical_weight="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/naturalhourselect_fragment" />
+
             <fragment
                 android:id="@+id/naturalhourselect_fragment"
                 android:name="com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourSelectFragment"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="0dp" app:layout_constraintVertical_weight="2.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/text_time" />
 
         </android.support.constraint.ConstraintLayout>
 

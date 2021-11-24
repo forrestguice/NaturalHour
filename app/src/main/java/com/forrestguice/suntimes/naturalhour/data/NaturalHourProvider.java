@@ -365,7 +365,7 @@ public class NaturalHourProvider extends ContentProvider
         } else return null;
     }
 
-    public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap)
+    public static long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap)
     {
         int[] hour = alarmIdToNaturalHour(alarmID);
         ContentResolver resolver = context.getContentResolver();
@@ -399,6 +399,7 @@ public class NaturalHourProvider extends ContentProvider
                     + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
 
             NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(hour[0]);
+            calculator.setUseDefaultLocation(false);
 
             Calendar alarmTime = Calendar.getInstance();
             Calendar eventTime;
@@ -420,11 +421,11 @@ public class NaturalHourProvider extends ContentProvider
                     || (repeating && !repeatingDays.contains(eventTime.get(Calendar.DAY_OF_WEEK))))
             {
                 if (!timestamps.add(alarmTime.getTimeInMillis()) && c > 365) {
-                    Log.e(getClass().getSimpleName(), "updateAlarmTime: encountered same timestamp twice! (breaking loop)");
+                    Log.e("NaturalHourProvider", "updateAlarmTime: encountered same timestamp twice! (breaking loop)");
                     return -1L;
                 }
 
-                Log.w(getClass().getSimpleName(), "updateAlarmTime: advancing by 1 day..");
+                Log.w("NaturalHourProvider", "updateAlarmTime: advancing by 1 day..");
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
                 calculator.calculateData(resolver, data, false, false);

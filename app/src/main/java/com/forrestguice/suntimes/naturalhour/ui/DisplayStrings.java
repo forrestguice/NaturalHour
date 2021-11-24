@@ -239,6 +239,18 @@ public class DisplayStrings
         return new SpannableString(context.getString(R.string.format_location, formatter.format(latitude), formatter.format(longitude)));
     }
 
+
+    public static SpannableString formatLocation(@NonNull Context context, double latitude, double longitude, double meters, @Nullable Integer places, String units)
+    {
+        String altitude = formatHeight(context, meters, units, 0, true);
+        String altitudeTag = context.getString(R.string.format_tag, altitude);
+        formatter.setRoundingMode(RoundingMode.FLOOR);
+        formatter.setMinimumFractionDigits(0);
+        formatter.setMaximumFractionDigits(places != null ? places : 4);
+        String displayString = context.getString(R.string.format_location_long, formatter.format(latitude), formatter.format(longitude), altitudeTag);
+        return createRelativeSpan(null, displayString, altitudeTag, 0.5f);
+    }
+
     public static String formatHeight(Context context, double meters, String units, int places, boolean shortForm)
     {
         double value;

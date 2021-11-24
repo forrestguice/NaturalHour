@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +53,15 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.TimeZone;
+
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_NOW;
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.EXTRA_LOCATION_LABEL;
 
 public class AlarmActivity extends AppCompatActivity
 {
@@ -60,6 +69,8 @@ public class AlarmActivity extends AppCompatActivity
     public static final String DIALOG_ABOUT = "aboutDialog";
 
     protected SuntimesInfo suntimesInfo = null;
+    protected String param_location;
+    protected double param_latitude = 0, param_longitude = 0, param_altitude = 0;
 
     protected ActionMode actionMode = null;
     protected AlarmActionsCompat alarmActions;
@@ -99,6 +110,22 @@ public class AlarmActivity extends AppCompatActivity
         initToolbar();
         alarmActions = new AlarmActionsCompat();
 
+        TextView text_time = (TextView)findViewById(R.id.text_time);
+        if (text_time != null)
+        {
+            text_time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    FragmentManager fragments = getSupportFragmentManager();
+                    NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
+                    if (fragment != null) {
+                        triggerActionMode(v, NaturalHourProvider.naturalHourToAlarmID(0, fragment.getSelectedHour(), 0));  // TODO: hourMode
+                    }
+                }
+            });
+        }
+
         FragmentManager fragments = getSupportFragmentManager();
         NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
         if (fragment != null)
@@ -108,6 +135,7 @@ public class AlarmActivity extends AppCompatActivity
                 fragment.setIntArg(NaturalHourSelectFragment.ARG_HOUR, param_naturalHour[1]);
             }
             fragment.setFragmentListener(onAlarmSelectionChanged);
+            triggerActionMode(fragment.getView(), NaturalHourProvider.naturalHourToAlarmID(0, fragment.getSelectedHour(), 0));
         }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -119,15 +147,74 @@ public class AlarmActivity extends AppCompatActivity
         }
     }
 
+    protected void initLocation(Intent intent)
+    {
+        intent.setExtrasClassLoader(getClassLoader());
+        if (intent.hasExtra(EXTRA_LOCATION_LAT) && intent.hasExtra(EXTRA_LOCATION_LON))
+        {
+            double latitude = intent.getDoubleExtra(EXTRA_LOCATION_LAT, -1000);
+            double longitude = intent.getDoubleExtra(EXTRA_LOCATION_LON, -1000);
+            if ((latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180))
+            {
+                String labelString = intent.getStringExtra(EXTRA_LOCATION_LABEL);
+                param_location = labelString != null ? labelString : "";
+                param_latitude = latitude;
+                param_longitude = longitude;
+                param_altitude = intent.getDoubleExtra(EXTRA_LOCATION_ALT, 0);
+
+            } else {
+                initLocation(suntimesInfo);
+            }
+        } else {
+            initLocation(suntimesInfo);
+        }
+    }
+    protected void initLocation(@Nullable SuntimesInfo info)
+    {
+        if (info != null && info.location != null)
+        {
+            param_location = info.location[0];
+            param_latitude = Double.parseDouble(info.location[1]);
+            param_longitude = Double.parseDouble(info.location[2]);
+            param_altitude = Double.parseDouble(info.location[3]);
+        }
+    }
+
     private NaturalHourSelectFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourSelectFragment.FragmentListener()
     {
         @Override
         public void onItemSelected(int hour)
         {
-            Log.d("DEBUG", "on item selected: " + hour);
-            triggerActionMode(null, NaturalHourProvider.naturalHourToAlarmID(0, hour, 0));   // TODO: hourMode
+            String alarmID = NaturalHourProvider.naturalHourToAlarmID(0, hour, 0);     // TODO: hourMode
+            Log.d("DEBUG", "on item selected: " + hour + " .. " + alarmID);
+            updateViews(AlarmActivity.this);
+            triggerActionMode(null, alarmID);
         }
     };
+
+    protected void updateTimeView(String alarmID)
+    {
+        TextView text_time = (TextView)findViewById(R.id.text_time);
+        if (text_time != null)
+        {
+            Calendar now = Calendar.getInstance();
+            TimeZone timezone = TimeZone.getDefault();
+            boolean is24Hr = suntimesInfo.getOptions(AlarmActivity.this).time_is24;
+
+            HashMap<String, String> selectionMap = new HashMap<>();
+            selectionMap.put(EXTRA_ALARM_NOW, Long.toString(now.getTimeInMillis()));
+            selectionMap.put(EXTRA_LOCATION_LAT, param_latitude + "");
+            selectionMap.put(EXTRA_LOCATION_LON, param_longitude + "");
+            selectionMap.put(EXTRA_LOCATION_ALT, param_altitude + "");
+
+            long alarmTimeMillis = NaturalHourProvider.calculateAlarmTime(AlarmActivity.this, alarmID, selectionMap);
+            if (alarmTimeMillis >= 0) {
+                text_time.setText(DisplayStrings.formatTime(AlarmActivity.this, alarmTimeMillis, timezone, is24Hr));
+            } else {
+                text_time.setText("");
+            }
+        }
+    }
 
     protected void initToolbar()
     {
@@ -152,6 +239,7 @@ public class AlarmActivity extends AppCompatActivity
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(AlarmActivity.this);    // refresh suntimesInfo
+            initLocation(getIntent());
         }
     }
 
@@ -175,34 +263,35 @@ public class AlarmActivity extends AppCompatActivity
         restoreDialogs();
     }
 
-    protected CharSequence createTitle(SuntimesInfo info) {
-        return (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4)
-                ? suntimesInfo.location[0]
-                : getString(R.string.app_name);
+    protected static CharSequence createTitle(Context context, SuntimesInfo info) {
+        return (info != null && info.location != null && info.location.length >= 4)
+                ? info.location[0]
+                : context.getString(R.string.app_name);
     }
 
-    protected CharSequence createSubTitle(SuntimesInfo info) {
-        return (suntimesInfo != null) ? DisplayStrings.formatLocation(this, suntimesInfo) : "";
+    protected static CharSequence createSubTitle(Context context, SuntimesInfo info) {
+        return (info != null) ? DisplayStrings.formatLocation(context, info) : "";
     }
 
     protected void updateViews(Context context)
     {
         ActionBar toolbar = getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setTitle(createTitle(suntimesInfo));
-            toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
+        if (toolbar != null)
+        {
+            toolbar.setTitle(param_location != null ? param_location : createTitle(context, suntimesInfo));
+            toolbar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
         }
 
         TimeZone timezone = TimeZone.getDefault();
         boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
 
-        //FragmentManager fragments = getSupportFragmentManager();
-        //NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
-        //if (fragment != null) {
-        //    fragment.setSuntimesInfo(suntimesInfo,
-        //            AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo),
-        //            AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));
-        //}
+        FragmentManager fragments = getSupportFragmentManager();
+        NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
+        if (fragment != null)
+        {
+            String alarmID = NaturalHourProvider.naturalHourToAlarmID(0, fragment.getSelectedHour(), 0);     // TODO: hourMode
+            updateTimeView(alarmID);
+        }
 
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
         if (timeformatText != null) {
