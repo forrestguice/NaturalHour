@@ -373,7 +373,7 @@ public class NaturalHourProvider extends ContentProvider
         {
             Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
-            float momentRatio = (hour[2] + 1) / 40f;
+            float momentRatio = hour[2] / 39f;
 
             String offsetString = selectionMap.get(EXTRA_ALARM_OFFSET);
             long offset = offsetString != null ? Long.parseLong(offsetString) : 0L;
