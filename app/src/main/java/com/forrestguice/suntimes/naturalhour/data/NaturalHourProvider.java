@@ -201,7 +201,7 @@ public class NaturalHourProvider extends ContentProvider
             }
             cursor.addRow(row);
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.w(getClass().getSimpleName(), "queryConfig: context is null!");
         return cursor;
     }
 
@@ -224,7 +224,7 @@ public class NaturalHourProvider extends ContentProvider
      */
     public Cursor queryAlarmInfo(@Nullable String alarmId, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryAlarmInfo: " + alarmId);
+        //Log.d("DEBUG", "queryAlarmInfo: " + alarmId);
         String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -262,13 +262,13 @@ public class NaturalHourProvider extends ContentProvider
                 cursor.addRow(row);
             }
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.w(getClass().getSimpleName(), "queryAlarmInfo: context is null!");
         return cursor;
     }
 
     public Cursor queryAlarmTime(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
-        Log.d("DEBUG", "queryAlarmTime: " + alarmName);
+        //Log.d("DEBUG", "queryAlarmTime: " + alarmName);
         String[] columns = (projection != null ? projection : QUERY_ALARM_CALC_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -295,7 +295,7 @@ public class NaturalHourProvider extends ContentProvider
             }
             cursor.addRow(row);
 
-        } else Log.d("DEBUG", "context is null!");
+        } else Log.w(getClass().getSimpleName(), "queryAlarmTime: context is null!");
         return cursor;
     }
 
@@ -395,8 +395,8 @@ public class NaturalHourProvider extends ContentProvider
                 altitude = Double.parseDouble(info.location[3]);
             }
 
-            Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
-                    + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
+            //Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
+            //        + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
 
             NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(hour[0]);
             calculator.setUseDefaultLocation(false);
