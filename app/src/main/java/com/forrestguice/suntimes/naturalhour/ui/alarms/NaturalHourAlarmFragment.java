@@ -44,6 +44,7 @@ import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TimeZone;
 
@@ -273,6 +274,20 @@ public class NaturalHourAlarmFragment extends Fragment
     }
 
     /**
+     * Set fragment arguments; supports (passes) args to NaturalHourAlarmFragment
+     * @param a Bundle of args
+     */
+    public void addArguments(@Nullable Bundle a)
+    {
+        Bundle args = getArguments();
+        if (args != null && a != null) {
+            args.putAll(a);
+        } else if (a != null) {
+            setArguments(a);
+        }
+    }
+
+    /**
      * FragmentListener
      */
     public interface FragmentListener
@@ -280,14 +295,25 @@ public class NaturalHourAlarmFragment extends Fragment
         void onAlarmSelected(String alarmID);
     }
 
-    protected FragmentListener listener = null;
-    public void setFragmentListener(FragmentListener l) {
-        listener = l;
+    protected ArrayList<FragmentListener> listeners = new ArrayList<>();
+    public void addFragmentListener(FragmentListener l) {
+        if (!listeners.contains(l)) {
+            listeners.add(l);
+        }
+    }
+    public void removeFragmentListener(FragmentListener l) {
+        listeners.remove(l);
+    }
+    public void clearFragmentListeners() {
+        listeners.clear();
     }
 
-    protected void triggerAlarmSelected() {
-        if (listener != null) {
-            listener.onAlarmSelected(getAlarmID());
+    protected void triggerAlarmSelected()
+    {
+        for (FragmentListener listener : listeners) {
+            if (listener != null) {
+                listener.onAlarmSelected(getAlarmID());
+            }
         }
     }
 }

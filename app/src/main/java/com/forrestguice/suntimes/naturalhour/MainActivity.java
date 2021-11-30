@@ -47,6 +47,8 @@ import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmSheet;
+import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourSelectFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
 
@@ -148,6 +150,11 @@ public class MainActivity extends AppCompatActivity
             sheetDialog.updateViews();
             sheetDialog.setFragmentListener(colorSheetListener);
         }
+
+        NaturalHourAlarmSheet alarmSheet = (NaturalHourAlarmSheet) fragments.findFragmentByTag(DIALOG_ALARM);
+        if (alarmSheet != null) {
+            alarmSheet.setFragmentListener(onAlarmDialog);
+        }
     }
 
     @Override
@@ -167,6 +174,10 @@ public class MainActivity extends AppCompatActivity
 
     protected CharSequence createSubTitle(SuntimesInfo info) {
         return (suntimesInfo != null) ? DisplayStrings.formatLocation(this, suntimesInfo) : "";
+    }
+
+    protected String[] getLocation() {
+        return suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4 ? suntimesInfo.location : new String[] {"", "0", "0", "0"};   // TODO: default/fallback value
     }
 
     protected void updateViews(Context context)
@@ -513,13 +524,23 @@ public class MainActivity extends AppCompatActivity
             dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
         }
 
+        Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
+        args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo));
+        args.putInt(NaturalHourAlarmFragment.ARG_HOURMODE, AppSettings.getClockIntValue(MainActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
+        args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
+        dialog.setArguments(args);
+
+        dialog.setLocation(getLocation());
         dialog.setFragmentListener(onAlarmDialog);
         dialog.show(getSupportFragmentManager(), DIALOG_ALARM);
     }
-    private NaturalHourAlarmFragment.FragmentListener onAlarmDialog = new NaturalHourAlarmFragment.FragmentListener() {
+    private NaturalHourAlarmSheet.FragmentListener onAlarmDialog = new NaturalHourAlarmSheet.FragmentListener() {
         @Override
-        public void onAlarmSelected(String alarmID) {
-            // TODO
+        public void onAlarmSelected(String alarmID) {}
+
+        @Override
+        public void onAddAlarmClicked(String alarmID) {
+            NaturalHourAlarmFragment.scheduleAlarm(MainActivity.this, alarmID);
         }
     };
 

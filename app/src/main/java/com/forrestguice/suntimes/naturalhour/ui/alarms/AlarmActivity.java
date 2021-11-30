@@ -116,7 +116,7 @@ public class AlarmActivity extends AppCompatActivity
             }
             fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo));
             fragment.setLocation(param_latitude, param_longitude, param_altitude);
-            fragment.setFragmentListener(onAlarmSelectionChanged);
+            fragment.addFragmentListener(onAlarmSelectionChanged);
             triggerActionMode(fragment.getView(), fragment.getAlarmID());
         }
 
@@ -214,7 +214,7 @@ public class AlarmActivity extends AppCompatActivity
         NaturalHourAlarmFragment fragment = (NaturalHourAlarmFragment) fragments.findFragmentById(R.id.naturalhouralarm_fragment);
         if (fragment != null) {
             fragment.updateViews(AlarmActivity.this);
-            fragment.setFragmentListener(onAlarmSelectionChanged);
+            fragment.addFragmentListener(onAlarmSelectionChanged);
         }
     }
 

@@ -32,8 +32,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.forrestguice.suntimes.naturalhour.R;
+
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
 
 public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
 {
@@ -56,12 +61,20 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
     {
         super.onViewCreated(view, savedInstanceState);
 
+        ImageButton okButton = (ImageButton) view.findViewById(R.id.btn_done);
+        if (okButton != null) {
+            okButton.setOnClickListener(onOkClicked);
+        }
+
         FragmentManager fragments = getChildFragmentManager();
         fragment = (NaturalHourAlarmFragment) fragments.findFragmentByTag("alarmFragment");
         if (fragment == null) {
             fragment = new NaturalHourAlarmFragment();
         }
-        fragment.setFragmentListener(listener);
+        if (listener != null) {
+            fragment.addFragmentListener(listener);
+            fragment.addArguments(getArguments());
+        }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.alarmdialog_fragments, fragment, "alarmFragment").commit();
@@ -75,6 +88,16 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
         expandSheet(getDialog());
     }
 
+    private View.OnClickListener onOkClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (listener != null) {
+                listener.onAddAlarmClicked(fragment.getAlarmID());
+            }
+            dismiss();
+        }
+    };
+
     public void setTheme(int themeResID) {
         Bundle args = getArguments();
         if (args != null) {
@@ -86,12 +109,33 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
         return args != null ? args.getInt("themeResID", R.style.NaturalHourAppTheme_Dark) : R.style.NaturalHourAppTheme_Dark;
     }
 
-    protected NaturalHourAlarmFragment.FragmentListener listener = null;
-    public void setFragmentListener(NaturalHourAlarmFragment.FragmentListener l)
+    public void setLocation(String... location) {
+        if (location != null && location.length >= 4) {
+            setLocation(Double.parseDouble(location[1]), Double.parseDouble(location[2]), Double.parseDouble(location[3]));
+        }
+    }
+    public void setLocation(double lat, double lon, double alt)
+    {
+        Bundle args = getArguments();
+        if (args == null) {
+            args = new Bundle();
+            setArguments(args);
+        }
+        args.putDouble(EXTRA_LOCATION_LAT, lat);
+        args.putDouble(EXTRA_LOCATION_LON, lon);
+        args.putDouble(EXTRA_LOCATION_ALT, alt);
+    }
+
+    public interface FragmentListener extends NaturalHourAlarmFragment.FragmentListener {
+        void onAddAlarmClicked(String alarmID);
+    }
+
+    protected NaturalHourAlarmSheet.FragmentListener listener = null;
+    public void setFragmentListener(NaturalHourAlarmSheet.FragmentListener l)
     {
         listener = l;
         if (fragment != null) {
-            fragment.setFragmentListener(listener);
+            fragment.addFragmentListener(listener);
         }
     }
 
