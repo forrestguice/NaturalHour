@@ -24,7 +24,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -41,6 +40,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
 
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -50,7 +50,7 @@ import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
 
-public class NaturalHourAlarmFragment extends Fragment
+public class NaturalHourAlarmFragment extends ColorValuesFragment
 {
     public static final String ARG_HOURMODE = "hourmode";
     public static final int DEF_HOURMODE = NaturalHourClockBitmap.HOURMODE_SUNRISE;
