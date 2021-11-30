@@ -25,8 +25,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +52,7 @@ import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
 
-public class NaturalHourAlarmFragment extends ColorValuesFragment
+public class NaturalHourAlarmFragment extends Fragment
 {
     public static final String ARG_HOURMODE = "hourmode";
     public static final int DEF_HOURMODE = NaturalHourClockBitmap.HOURMODE_SUNRISE;
@@ -174,6 +176,7 @@ public class NaturalHourAlarmFragment extends ColorValuesFragment
         }
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }

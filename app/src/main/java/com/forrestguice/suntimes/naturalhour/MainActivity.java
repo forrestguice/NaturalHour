@@ -36,7 +36,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
@@ -46,10 +45,11 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmFragment;
+import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmSheet;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
 
-import java.lang.reflect.Method;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
@@ -508,8 +508,20 @@ public class MainActivity extends AppCompatActivity
 
     protected void showAlarmDialog()
     {
-        // TODO
+        NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {
+            dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+        }
+
+        dialog.setFragmentListener(onAlarmDialog);
+        dialog.show(getSupportFragmentManager(), DIALOG_ALARM);
     }
+    private NaturalHourAlarmFragment.FragmentListener onAlarmDialog = new NaturalHourAlarmFragment.FragmentListener() {
+        @Override
+        public void onAlarmSelected(String alarmID) {
+            // TODO
+        }
+    };
 
     protected void showHelp()
     {

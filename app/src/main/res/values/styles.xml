@@ -26,6 +26,7 @@
 
         <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
 
         <item name="colorDate">@color/colorDate_light</item>
         <item name="colorLabel">@color/colorLabel_light</item>
@@ -81,6 +82,7 @@
 
         <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
 
         <item name="colorDate">@color/colorDate_dark</item>
         <item name="colorLabel">@color/colorLabel_dark</item>
@@ -120,6 +122,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ThemeOverlay.NaturalHour.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+    </style>
 
     <style name="NaturalHourCardView" parent="Base.CardView" />
     <style name="NaturalHourCardView.Dark">
