@@ -8,6 +8,7 @@
     <attr name="icDelete" format="reference" />
     <attr name="icColors" format="reference" />
     <attr name="icShare" format="reference" />
+    <attr name="icAlarms" format="reference" />
 
     <attr name="icToday" format="reference" />
     <attr name="icSettings" format="reference" />
