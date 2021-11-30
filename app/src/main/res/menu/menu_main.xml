@@ -8,7 +8,7 @@
         android:orderInCategory="600"
         android:icon="?attr/icAlarms"
         android:title="@string/action_alarms"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_colors"
