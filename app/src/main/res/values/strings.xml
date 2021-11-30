@@ -320,6 +320,9 @@
     <string name="alarm_title_format">%s</string>  <!-- TODO -->
     <string name="alarm_summary_format">@string/app_name</string>  <!-- TODO -->
 
+    <string name="min_suntimes_alarms_version" translatable="false">Suntimes v0.14.0</string>   <!-- should match version_code -->
+    <integer name="min_suntimes_alarms_version_code" translatable="false">80</integer>                         <!-- TODO: set code -->
+
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
         <item>@string/help_general</item>

@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
@@ -314,6 +315,16 @@ public class MainActivity extends AppCompatActivity
     protected boolean onPrepareOptionsPanel(View view, Menu menu)
     {
         Messages.forceActionBarIcons(menu);
+
+        MenuItem alarmItem = menu.findItem(R.id.action_alarms);
+        if (alarmItem != null)
+        {
+            int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
+            boolean itemEnabled = (suntimesInfo.appCode >= suntimesAlarms_minVersion);
+            alarmItem.setVisible(itemEnabled);
+            alarmItem.setEnabled(itemEnabled);
+        }
+
         return super.onPrepareOptionsPanel(view, menu);
     }
 
@@ -519,20 +530,28 @@ public class MainActivity extends AppCompatActivity
 
     protected void showAlarmDialog()
     {
-        NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
-        if (suntimesInfo != null && suntimesInfo.appTheme != null) {
-            dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+        int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
+        if (suntimesInfo.appCode >= suntimesAlarms_minVersion)
+        {
+            NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
+            if (suntimesInfo != null && suntimesInfo.appTheme != null) {
+                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            }
+
+            Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
+            args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo));
+            args.putInt(NaturalHourAlarmFragment.ARG_HOURMODE, AppSettings.getClockIntValue(MainActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
+            args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
+            dialog.setArguments(args);
+
+            dialog.setLocation(getLocation());
+            dialog.setFragmentListener(onAlarmDialog);
+            dialog.show(getSupportFragmentManager(), DIALOG_ALARM);
+
+        } else {
+            String notSupportedMessage = DisplayStrings.fromHtml(getString(R.string.missing_dependency, getString(R.string.min_suntimes_alarms_version))).toString();
+            Toast.makeText(MainActivity.this, notSupportedMessage, Toast.LENGTH_LONG).show();
         }
-
-        Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
-        args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo));
-        args.putInt(NaturalHourAlarmFragment.ARG_HOURMODE, AppSettings.getClockIntValue(MainActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
-        args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
-        dialog.setArguments(args);
-
-        dialog.setLocation(getLocation());
-        dialog.setFragmentListener(onAlarmDialog);
-        dialog.show(getSupportFragmentManager(), DIALOG_ALARM);
     }
     private NaturalHourAlarmSheet.FragmentListener onAlarmDialog = new NaturalHourAlarmSheet.FragmentListener() {
         @Override
