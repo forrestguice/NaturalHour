@@ -11,11 +11,11 @@
             style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="0dp" android:layout_weight="1"
             android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_marginLeft="?attr/dialogPreferredPadding" android:layout_marginRight="16dp"
             android:layout_height="wrap_content"
             android:text="@string/action_alarms" />
 
-        <ImageButton android:id="@+id/btn_done" android:src="?attr/icAlarms"
+        <ImageButton android:id="@+id/btn_done" android:src="?attr/icDone"
             style="?attr/actionOverflowButtonStyle"
             android:contentDescription="@string/action_done"
             android:layout_width="96dp" android:layout_height="56dp" android:paddingLeft="16dp" android:paddingRight="16dp"
