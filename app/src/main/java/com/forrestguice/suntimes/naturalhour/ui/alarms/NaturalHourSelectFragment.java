@@ -37,8 +37,12 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
     public static final String ARG_HOUR = "hour";
     public static final int DEF_HOUR = 0;
 
+    public static final String ARG_MOMENT = "moment";
+    public static final int DEF_MOMENT = 0;
+
     protected NumberPicker hourPicker;
     protected NumberPicker daynightPicker;
+    protected NumberPicker momentPicker;
 
     public NaturalHourSelectFragment()
     {
@@ -46,6 +50,7 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
 
         Bundle args = new Bundle();
         args.putInt(ARG_HOUR, DEF_HOUR);           // selected hour; [0,23]
+        args.putInt(ARG_MOMENT, DEF_MOMENT);       // selected moment; [0,39]
         args.putBoolean(ARG_MODE24, DEF_MODE24);
         setArguments(args);
     }
@@ -84,6 +89,15 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
             daynightPicker.setOnValueChangedListener(onDayNightSelected);
         }
 
+        momentPicker = (NumberPicker)content.findViewById(R.id.pick_moment);
+        if (momentPicker != null)
+        {
+            momentPicker.setMinValue(0);
+            momentPicker.setMaxValue(39);
+            momentPicker.setWrapSelectorWheel(false);
+            momentPicker.setOnValueChangedListener(onMomentSelected);
+        }
+
         updateViews();
         return content;
     }
@@ -100,13 +114,21 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
             onInputChanged();
         }
     };
+    private NumberPicker.OnValueChangeListener onMomentSelected = new NumberPicker.OnValueChangeListener() {
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+            onInputChanged();
+        }
+    };
 
     protected void onInputChanged()
     {
         int hour = getSelectedHour();
+        int moment = getSelectedMoment();
         setIntArg(ARG_HOUR, hour);
+        setIntArg(ARG_MOMENT, moment);
         if (listener != null) {
-            listener.onItemSelected(hour);
+            listener.onItemSelected(hour, moment);
         }
         updateViews();
     }
@@ -118,12 +140,20 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         } else return 0;
     }
 
+    public int getSelectedMoment()
+    {
+        if (momentPicker != null) {
+            return momentPicker.getValue();
+        } else return 0;
+    }
+
     protected void onRestoreInstanceState(@NonNull Bundle savedState) { /* EMPTY */ }
 
     protected void updateViews()
     {
         boolean mode24 = getBoolArg(ARG_MODE24, DEF_MODE24);
         int hour = getIntArg(ARG_HOUR, DEF_HOUR);
+        int moment = getIntArg(ARG_MOMENT, DEF_MOMENT);
 
         if (hourPicker != null) {
             hourPicker.setValue(mode24 ? hour
@@ -133,6 +163,10 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         if (daynightPicker != null) {
             daynightPicker.setValue(mode24 ? 0
                     : (hour >= 12 ? 1 : 0));
+        }
+
+        if (momentPicker != null) {
+            momentPicker.setValue(moment);
         }
     }
 
@@ -165,7 +199,7 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
      */
     public interface FragmentListener
     {
-        void onItemSelected(int hour);
+        void onItemSelected(int hour, int moment);
     }
 
     protected FragmentListener listener = null;

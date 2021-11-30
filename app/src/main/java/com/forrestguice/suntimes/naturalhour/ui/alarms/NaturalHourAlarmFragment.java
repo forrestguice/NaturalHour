@@ -28,7 +28,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,6 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +58,9 @@ public class NaturalHourAlarmFragment extends Fragment
 
     public static final String ARG_HOUR = NaturalHourSelectFragment.ARG_HOUR;
     public static final int DEF_HOUR = NaturalHourSelectFragment.DEF_HOUR;
+
+    public static final String ARG_MOMENT = NaturalHourSelectFragment.ARG_MOMENT;
+    public static final int DEF_MOMENT = NaturalHourSelectFragment.DEF_MOMENT;
 
     public static final String ARG_TIME24 = "is24";
     public static final boolean DEF_TIME24 = true;
@@ -80,7 +81,7 @@ public class NaturalHourAlarmFragment extends Fragment
     }
 
     public String getAlarmID() {
-        return (NaturalHourProvider.naturalHourToAlarmID(getHourMode(), getHour(), 0));
+        return (NaturalHourProvider.naturalHourToAlarmID(getHourMode(), getHour(), getMoment()));
     }
     public void setAlarmID(String alarmID)
     {
@@ -88,6 +89,7 @@ public class NaturalHourAlarmFragment extends Fragment
         if (hour != null) {
             setHourMode(hour[0]);
             setHour(hour[1]);
+            setMoment(hour[2]);
         }
     }
 
@@ -118,6 +120,21 @@ public class NaturalHourAlarmFragment extends Fragment
         }
         if (alarmSelect != null) {
             alarmSelect.setIntArg(ARG_HOUR, hour);
+        }
+    }
+
+    public int getMoment() {
+        Bundle args = getArguments();
+        return args != null ? args.getInt(ARG_MOMENT, DEF_MOMENT) : DEF_MOMENT;
+    }
+    public void setMoment(int moment)
+    {
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putInt(ARG_MOMENT, moment);
+        }
+        if (alarmSelect != null) {
+            alarmSelect.setIntArg(ARG_MOMENT, moment);
         }
     }
 
@@ -208,6 +225,7 @@ public class NaturalHourAlarmFragment extends Fragment
         {
             alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
             alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOUR, getHour());
+            alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());
         }
     }
 
@@ -229,21 +247,20 @@ public class NaturalHourAlarmFragment extends Fragment
     private NaturalHourSelectFragment.FragmentListener onSelectionChanged = new NaturalHourSelectFragment.FragmentListener()
     {
         @Override
-        public void onItemSelected(int hour)
+        public void onItemSelected(int hour, int moment)
         {
             Bundle args = getArguments();
             if (args != null) {
                 args.putInt(ARG_HOUR, hour);
+                args.putInt(ARG_MOMENT, moment);
             }
             updateViews(getActivity());
             triggerAlarmSelected();
         }
     };
 
-    protected void updateViews(Context context)
-    {
-        String alarmID = NaturalHourProvider.naturalHourToAlarmID(getHourMode(), getHour(), 0);
-        updateTimeView(alarmID);
+    protected void updateViews(Context context) {
+        updateTimeView(getAlarmID());
     }
 
     protected void updateTimeView(String alarmID)

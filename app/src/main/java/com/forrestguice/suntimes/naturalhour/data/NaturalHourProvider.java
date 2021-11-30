@@ -373,7 +373,7 @@ public class NaturalHourProvider extends ContentProvider
         {
             Calendar now = AlarmHelper.getNowCalendar(selectionMap.get(EXTRA_ALARM_NOW));
             long nowMillis = now.getTimeInMillis();
-            float momentRatio = hour[2] / 39f;
+            float momentRatio = (float)hour[2] / 39f;
 
             String offsetString = selectionMap.get(EXTRA_ALARM_OFFSET);
             long offset = offsetString != null ? Long.parseLong(offsetString) : 0L;
@@ -395,8 +395,8 @@ public class NaturalHourProvider extends ContentProvider
                 altitude = Double.parseDouble(info.location[3]);
             }
 
-            //Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
-            //        + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude);
+            Log.d("DEBUG", "calculateAlarmTime: now: " + nowMillis + ", offset: " + offset + ", repeat: " + repeating + ", repeatDays: " + selectionMap.get(EXTRA_ALARM_REPEAT_DAYS)
+                    + ", latitude: " + latitude + ", longitude: " + longitude + ", altitude: " + altitude + " .. moment: " + momentRatio + " .. " + hour[2] + " .. " + alarmID);
 
             NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(hour[0]);
             calculator.setUseDefaultLocation(false);
