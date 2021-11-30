@@ -35,6 +35,7 @@
     <string name="timeformat_24hr">24-hour</string>
 
     <string name="action_select">Select</string>  <!-- TODO -->
+    <string name="action_alarms">Set Alarm</string>  <!-- TODO -->
     <string name="action_colors">Colors</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>

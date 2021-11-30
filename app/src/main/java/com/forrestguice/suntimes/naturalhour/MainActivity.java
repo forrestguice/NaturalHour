@@ -54,6 +54,7 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String DIALOG_ALARM = "alarmDialog";
     public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
@@ -317,6 +318,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_alarms:
+                showAlarmDialog();
+                return true;
+
             case R.id.action_colors:
                 showBottomSheet();
                 return true;
@@ -499,6 +504,11 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    protected void showAlarmDialog()
+    {
+        // TODO
     }
 
     protected void showHelp()
