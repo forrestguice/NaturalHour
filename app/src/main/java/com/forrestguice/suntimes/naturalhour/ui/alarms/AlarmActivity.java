@@ -20,7 +20,6 @@
 package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,7 +38,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
@@ -53,11 +51,8 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.TimeZone;
 
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_NOW;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
@@ -74,6 +69,7 @@ public class AlarmActivity extends AppCompatActivity
 
     protected ActionMode actionMode = null;
     protected AlarmActionsCompat alarmActions;
+    protected NaturalHourAlarmFragment fragment;
 
     @Override
     protected void attachBaseContext(Context context)
@@ -110,32 +106,18 @@ public class AlarmActivity extends AppCompatActivity
         initToolbar();
         alarmActions = new AlarmActionsCompat();
 
-        TextView text_time = (TextView)findViewById(R.id.text_time);
-        if (text_time != null)
-        {
-            text_time.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
-                {
-                    FragmentManager fragments = getSupportFragmentManager();
-                    NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
-                    if (fragment != null) {
-                        triggerActionMode(v, NaturalHourProvider.naturalHourToAlarmID(0, fragment.getSelectedHour(), 0));  // TODO: hourMode
-                    }
-                }
-            });
-        }
-
         FragmentManager fragments = getSupportFragmentManager();
-        NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
+        fragment = (NaturalHourAlarmFragment) fragments.findFragmentById(R.id.naturalhouralarm_fragment);
         if (fragment != null)
         {
-            fragment.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, false);  // TODO: from datasource
             if (param_naturalHour != null) {
-                fragment.setIntArg(NaturalHourSelectFragment.ARG_HOUR, param_naturalHour[1]);
+                fragment.setHourMode(param_naturalHour[0]);
+                fragment.setHour(param_naturalHour[1]);
             }
+            fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo));
+            fragment.setLocation(param_latitude, param_longitude, param_altitude);
             fragment.setFragmentListener(onAlarmSelectionChanged);
-            triggerActionMode(fragment.getView(), NaturalHourProvider.naturalHourToAlarmID(0, fragment.getSelectedHour(), 0));
+            triggerActionMode(fragment.getView(), fragment.getAlarmID());
         }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -162,6 +144,10 @@ public class AlarmActivity extends AppCompatActivity
                 param_longitude = longitude;
                 param_altitude = intent.getDoubleExtra(EXTRA_LOCATION_ALT, 0);
 
+                if (fragment != null) {
+                    fragment.setLocation(param_latitude, param_longitude, param_altitude);
+                }
+
             } else {
                 initLocation(suntimesInfo);
             }
@@ -177,44 +163,23 @@ public class AlarmActivity extends AppCompatActivity
             param_latitude = Double.parseDouble(info.location[1]);
             param_longitude = Double.parseDouble(info.location[2]);
             param_altitude = Double.parseDouble(info.location[3]);
+
+            if (fragment != null) {
+                fragment.setLocation(param_latitude, param_longitude, param_altitude);
+            }
         }
     }
 
-    private NaturalHourSelectFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourSelectFragment.FragmentListener()
+    private NaturalHourAlarmFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourAlarmFragment.FragmentListener()
     {
         @Override
-        public void onItemSelected(int hour)
+        public void onAlarmSelected(String alarmID)
         {
-            String alarmID = NaturalHourProvider.naturalHourToAlarmID(0, hour, 0);     // TODO: hourMode
-            Log.d("DEBUG", "on item selected: " + hour + " .. " + alarmID);
+            Log.d("DEBUG", "on item selected: " + alarmID);
             updateViews(AlarmActivity.this);
             triggerActionMode(null, alarmID);
         }
     };
-
-    protected void updateTimeView(String alarmID)
-    {
-        TextView text_time = (TextView)findViewById(R.id.text_time);
-        if (text_time != null)
-        {
-            Calendar now = Calendar.getInstance();
-            TimeZone timezone = TimeZone.getDefault();
-            boolean is24Hr = suntimesInfo.getOptions(AlarmActivity.this).time_is24;
-
-            HashMap<String, String> selectionMap = new HashMap<>();
-            selectionMap.put(EXTRA_ALARM_NOW, Long.toString(now.getTimeInMillis()));
-            selectionMap.put(EXTRA_LOCATION_LAT, param_latitude + "");
-            selectionMap.put(EXTRA_LOCATION_LON, param_longitude + "");
-            selectionMap.put(EXTRA_LOCATION_ALT, param_altitude + "");
-
-            long alarmTimeMillis = NaturalHourProvider.calculateAlarmTime(AlarmActivity.this, alarmID, selectionMap);
-            if (alarmTimeMillis >= 0) {
-                text_time.setText(DisplayStrings.formatTime(AlarmActivity.this, alarmTimeMillis, timezone, is24Hr));
-            } else {
-                text_time.setText("");
-            }
-        }
-    }
 
     protected void initToolbar()
     {
@@ -246,11 +211,10 @@ public class AlarmActivity extends AppCompatActivity
     protected void restoreDialogs()
     {
         final FragmentManager fragments = getSupportFragmentManager();
-        NaturalHourSelectFragment alarmSelect = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
-        if (alarmSelect != null)
-        {
-            alarmSelect.updateViews();
-            alarmSelect.setFragmentListener(onAlarmSelectionChanged);
+        NaturalHourAlarmFragment fragment = (NaturalHourAlarmFragment) fragments.findFragmentById(R.id.naturalhouralarm_fragment);
+        if (fragment != null) {
+            fragment.updateViews(AlarmActivity.this);
+            fragment.setFragmentListener(onAlarmSelectionChanged);
         }
     }
 
@@ -282,23 +246,14 @@ public class AlarmActivity extends AppCompatActivity
             toolbar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
         }
 
-        TimeZone timezone = TimeZone.getDefault();
         boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
-
-        FragmentManager fragments = getSupportFragmentManager();
-        NaturalHourSelectFragment fragment = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
-        if (fragment != null)
-        {
-            String alarmID = NaturalHourProvider.naturalHourToAlarmID(0, fragment.getSelectedHour(), 0);     // TODO: hourMode
-            updateTimeView(alarmID);
-        }
-
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
         if (timeformatText != null) {
             timeformatText.setText( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr );
             timeformatText.setVisibility(View.GONE);
         }
 
+        TimeZone timezone = TimeZone.getDefault();
         TextView timezoneText = (TextView) findViewById(R.id.bottombar_button1);
         if (timezoneText != null) {
             timezoneText.setText( timezone.getID() );
@@ -306,17 +261,13 @@ public class AlarmActivity extends AppCompatActivity
     }
 
     /*@Override
-    public void onSaveInstanceState( Bundle outState )
-    {
+    public void onSaveInstanceState( Bundle outState ) {
         super.onSaveInstanceState(outState);
     }*/
-
     /*@Override
-    public void onRestoreInstanceState(@NonNull Bundle savedState)
-    {
+    public void onRestoreInstanceState(@NonNull Bundle savedState) {
         super.onRestoreInstanceState(savedState);
     }*/
-
     /*@Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -425,10 +376,8 @@ public class AlarmActivity extends AppCompatActivity
         }
 
         @Override
-        public void onDestroyActionMode(ActionMode mode)
-        {
+        public void onDestroyActionMode(ActionMode mode) {
             actionMode = null;
-            //adapter.setSelectedIndex(-1);   // TODO
         }
 
         @Override
@@ -446,19 +395,6 @@ public class AlarmActivity extends AppCompatActivity
             }
             mode.finish();
             return false;
-        }
-    }
-
-    protected void scheduleAlarm(String alarmID)
-    {
-        String alarmUri = AlarmHelper.getAlarmInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID);
-        String label = NaturalHourProvider.getAlarmTitle(AlarmActivity.this, alarmID);
-        try {
-            TimeZone tz = TimeZone.getDefault();    // TODO: as configured
-            startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, tz, alarmUri));
-
-        } catch (ActivityNotFoundException e) {
-            Log.e(getClass().getSimpleName(), "Failed to schedule alarm: " + e);
         }
     }
 
