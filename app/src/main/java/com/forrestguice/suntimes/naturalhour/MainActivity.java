@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2021 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -48,7 +48,6 @@ import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmSheet;
-import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourSelectFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
@@ -129,6 +128,34 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("DEBUG", "onNewIntent");
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    protected void handleIntent(@Nullable Intent intent)
+    {
+        if (intent == null) {
+            return;
+        }
+
+        if (intent.hasExtra(AddonHelper.EXTRA_SHOW_DATE))
+        {
+            FragmentManager fragments = getSupportFragmentManager();
+            NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+            if (fragment != null) {
+                long param_dateMillis = intent.getLongExtra(AddonHelper.EXTRA_SHOW_DATE, -1L);
+                if (param_dateMillis != -1L) {
+                    fragment.showDate(param_dateMillis);
+                    Log.d("DEBUG", "handleIntent: dateMillis: " + param_dateMillis);
+                }
+            }
+        }
+        setIntent(null);
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
@@ -138,6 +165,7 @@ public class MainActivity extends AppCompatActivity
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
+            handleIntent(getIntent());
         }
     }
 

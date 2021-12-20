@@ -385,6 +385,10 @@ public class NaturalHourFragment extends Fragment
         scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[3]));
     }
 
+    public void showDate(long datemillis) {
+        scrollToPosition(cardAdapter.positionForDate(datemillis)-1);
+    }
+
     public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
     public void scrollToPosition(int position) {
         scrollToPosition(position, true);
