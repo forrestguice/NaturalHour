@@ -36,9 +36,9 @@ import android.widget.ImageButton;
 
 import com.forrestguice.suntimes.naturalhour.R;
 
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
 
 public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
 {

@@ -53,9 +53,9 @@ import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 
 import java.util.TimeZone;
 
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.EXTRA_LOCATION_LABEL;
 
 public class AlarmActivity extends AppCompatActivity
@@ -315,10 +315,10 @@ public class AlarmActivity extends AppCompatActivity
     {
         Intent result = new Intent();    // e.g. content://suntimes.naturalhour.provider/alarmInfo/0_6_0    .. hourMode:0, hour:6(noon), moment:0
         result.putExtra(NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER, NaturalHourProviderContract.AUTHORITY);
-        result.putExtra(NaturalHourProviderContract.COLUMN_ALARM_NAME, alarmID);
-        result.putExtra(NaturalHourProviderContract.COLUMN_ALARM_TITLE, NaturalHourProvider.getAlarmTitle(this, alarmID));
-        result.putExtra(NaturalHourProviderContract.COLUMN_ALARM_SUMMARY, NaturalHourProvider.getAlarmSummary(this, alarmID));
-        result.setData(Uri.parse(AlarmHelper.getAlarmInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID)));
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_NAME, alarmID);
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_TITLE, NaturalHourProvider.getAlarmTitle(this, alarmID));
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_SUMMARY, NaturalHourProvider.getAlarmSummary(this, alarmID));
+        result.setData(Uri.parse(AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID)));
         setResult(Activity.RESULT_OK, result);
         finish();
     }

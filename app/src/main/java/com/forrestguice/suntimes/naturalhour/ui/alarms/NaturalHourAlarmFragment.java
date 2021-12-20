@@ -46,10 +46,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_NOW;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_NOW;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
 
 public class NaturalHourAlarmFragment extends Fragment
 {
@@ -281,7 +281,7 @@ public class NaturalHourAlarmFragment extends Fragment
 
     public static void scheduleAlarm(Context context, String alarmID)
     {
-        String alarmUri = AlarmHelper.getAlarmInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID);
+        String alarmUri = AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID);
         String label = NaturalHourProvider.getAlarmTitle(context, alarmID);
         try {
             context.startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, TimeZone.getDefault(), alarmUri));

@@ -49,26 +49,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_NOW;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_OFFSET;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_REPEAT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_ALARM_REPEAT_DAYS;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_ALT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LAT;
-import static com.forrestguice.suntimes.alarm.AlarmHelper.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_NOW;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_OFFSET;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_REPEAT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_REPEAT_DAYS;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_ALT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LAT;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.AUTHORITY;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_ALARM_NAME;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_ALARM_SUMMARY;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_ALARM_TIMEMILLIS;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_ALARM_TITLE;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_NAME;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_SUMMARY;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_TIMEMILLIS;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_TITLE;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_APP_VERSION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_APP_VERSION_CODE;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER_VERSION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER_VERSION_CODE;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_ALARM_CALC;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_ALARM_CALC_PROJECTION;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_ALARM_INFO;
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_ALARM_INFO_PROJECTION;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_EVENT_CALC;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_EVENT_CALC_PROJECTION;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_EVENT_INFO;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_EVENT_INFO_PROJECTION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_CONFIG;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_CONFIG_PROJECTION;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.QUERY_WIDGET;
@@ -87,9 +87,9 @@ public class NaturalHourProvider extends ContentProvider
     {
         uriMatcher.addURI(AUTHORITY, QUERY_CONFIG, URIMATCH_CONFIG);
         uriMatcher.addURI(AUTHORITY, QUERY_WIDGET, URIMATCH_WIDGET);
-        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_INFO, URIMATCH_ALARM_INFO);
-        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_INFO + "/*", URIMATCH_ALARM_INFO_FOR_NAME);
-        uriMatcher.addURI(AUTHORITY, QUERY_ALARM_CALC + "/*", URIMATCH_ALARM_CALC_FOR_NAME);
+        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO, URIMATCH_ALARM_INFO);
+        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO + "/*", URIMATCH_ALARM_INFO_FOR_NAME);
+        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_CALC + "/*", URIMATCH_ALARM_CALC_FOR_NAME);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class NaturalHourProvider extends ContentProvider
     public Cursor queryAlarmInfo(@Nullable String alarmId, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
         //Log.d("DEBUG", "queryAlarmInfo: " + alarmId);
-        String[] columns = (projection != null ? projection : QUERY_ALARM_INFO_PROJECTION);
+        String[] columns = (projection != null ? projection : QUERY_EVENT_INFO_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
         Context context = getContext();
@@ -242,15 +242,15 @@ public class NaturalHourProvider extends ContentProvider
                 {
                     switch (columns[i])
                     {
-                        case COLUMN_ALARM_NAME:
+                        case COLUMN_EVENT_NAME:
                             row[i] = alarms[j];
                             break;
 
-                        case COLUMN_ALARM_TITLE:
+                        case COLUMN_EVENT_TITLE:
                             row[i] = getAlarmTitle(context, alarms[j]);
                             break;
 
-                        case COLUMN_ALARM_SUMMARY:
+                        case COLUMN_EVENT_SUMMARY:
                             row[i] = getAlarmSummary(context, alarms[j]);
                             break;
 
@@ -269,7 +269,7 @@ public class NaturalHourProvider extends ContentProvider
     public Cursor queryAlarmTime(@Nullable String alarmName, @NonNull Uri uri, @Nullable String[] projection, HashMap<String, String> selectionMap, @Nullable String sortOrder)
     {
         //Log.d("DEBUG", "queryAlarmTime: " + alarmName);
-        String[] columns = (projection != null ? projection : QUERY_ALARM_CALC_PROJECTION);
+        String[] columns = (projection != null ? projection : QUERY_EVENT_CALC_PROJECTION);
         MatrixCursor cursor = new MatrixCursor(columns);
 
         Context context = getContext();
@@ -280,11 +280,11 @@ public class NaturalHourProvider extends ContentProvider
             {
                 switch (columns[i])
                 {
-                    case COLUMN_ALARM_NAME:
+                    case COLUMN_EVENT_NAME:
                         row[i] = alarmName;
                         break;
 
-                    case COLUMN_ALARM_TIMEMILLIS:
+                    case COLUMN_EVENT_TIMEMILLIS:
                         row[i] = calculateAlarmTime(context, alarmName, selectionMap);
                         break;
 
