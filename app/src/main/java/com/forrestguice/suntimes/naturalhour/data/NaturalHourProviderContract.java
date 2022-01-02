@@ -68,6 +68,9 @@ public interface NaturalHourProviderContract
     String COLUMN_EVENT_NAME = AlarmEventContract.COLUMN_EVENT_NAME;              // String (alarm/event ID)
     String COLUMN_EVENT_TITLE = AlarmEventContract.COLUMN_EVENT_TITLE;            // String (display string)
     String COLUMN_EVENT_SUMMARY = AlarmEventContract.COLUMN_EVENT_SUMMARY;        // String (extended display string)
+    String COLUMN_EVENT_PHRASE = AlarmEventContract.COLUMN_EVENT_PHRASE;                         // String (noun / natural language phrase)
+    String COLUMN_EVENT_PHRASE_GENDER = AlarmEventContract.COLUMN_EVENT_PHRASE_GENDER;           // String (noun gender; SelectFormat param)
+    String COLUMN_EVENT_PHRASE_QUANTITY = AlarmEventContract.COLUMN_EVENT_PHRASE_QUANTITY;       // int (noun quantity; SelectFormat param)
     String COLUMN_EVENT_TIMEMILLIS = AlarmEventContract.COLUMN_EVENT_TIMEMILLIS;  // long (timestamp millis)
 
     String QUERY_EVENT_INFO = AlarmEventContract.QUERY_EVENT_INFO;

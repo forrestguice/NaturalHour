@@ -58,6 +58,9 @@ import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_NAME;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_PHRASE;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_PHRASE_GENDER;
+import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_PHRASE_QUANTITY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_SUMMARY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_TIMEMILLIS;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_TITLE;
@@ -254,6 +257,18 @@ public class NaturalHourProvider extends ContentProvider
                             row[i] = getAlarmSummary(context, alarms[j]);
                             break;
 
+                        case COLUMN_EVENT_PHRASE:
+                            row[i] = getAlarmPhrase(context, alarms[j]);
+                            break;
+
+                        case COLUMN_EVENT_PHRASE_GENDER:
+                            row[i] = getAlarmPhraseGender(context, alarms[j]);
+                            break;
+
+                        case COLUMN_EVENT_PHRASE_QUANTITY:
+                            row[i] = getAlarmPhraseQuantity(context, alarms[j]);
+                            break;
+
                         default:
                             row[i] = null;
                             break;
@@ -363,6 +378,22 @@ public class NaturalHourProvider extends ContentProvider
         if (alarmIdToNaturalHour(alarmID) != null) {
             return context.getString(R.string.alarm_summary_format);
         } else return null;
+    }
+
+    public static String getAlarmPhrase(Context context, @Nullable String alarmID) {
+        int[] hour = alarmIdToNaturalHour(alarmID);
+        if (hour != null) {
+            return NaturalHourFragment.naturalHourPhrase(context, hour[0], hour[1], hour[2]);
+        } else return null;
+    }
+    public static String getAlarmPhraseGender(Context context, @Nullable String alarmID) {
+        return context.getString(R.string.time_gender);
+    }
+    public static int getAlarmPhraseQuantity(Context context, @Nullable String alarmID) {
+        int[] hour = alarmIdToNaturalHour(alarmID);
+        if (hour != null) {
+            return 1 + (hour[1] % 12);
+        } else return 1;
     }
 
     public static long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap)

@@ -287,6 +287,7 @@
         <item>twenty-third&#160;hour of the day</item>
         <item>twenty-fourth&#160;hour of the day</item>
     </string-array>
+    <string name="time_gender">female</string>
 
     <string name="clockface_face">Face</string>
     <string name="clockface_plate">Plate</string>
