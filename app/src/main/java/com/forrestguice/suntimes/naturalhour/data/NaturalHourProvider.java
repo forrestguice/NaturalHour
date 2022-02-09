@@ -49,6 +49,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.COLUMN_EVENT_REQUIRES_LOCATION;
+import static com.forrestguice.suntimes.alarm.AlarmEventContract.COLUMN_EVENT_SUPPORTS_REPEATING;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_NOW;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_OFFSET;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_REPEAT;
@@ -255,6 +257,11 @@ public class NaturalHourProvider extends ContentProvider
 
                         case COLUMN_EVENT_SUMMARY:
                             row[i] = getAlarmSummary(context, alarms[j]);
+                            break;
+
+                        case COLUMN_EVENT_REQUIRES_LOCATION:
+                        case COLUMN_EVENT_SUPPORTS_REPEATING:
+                            row[i] = Boolean.toString(true);
                             break;
 
                         case COLUMN_EVENT_PHRASE:
