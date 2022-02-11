@@ -25,6 +25,13 @@
             android:defaultValue="3"
             android:summary="%s" />
 
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_actionmode"
+            android:title="@string/pref_title_action"
+            android:entries="@array/pref_action_display"
+            android:entryValues="@array/pref_action_values"
+            android:defaultValue="2"
+            android:summary="%s" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

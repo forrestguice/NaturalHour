@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2022 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -32,6 +32,7 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.TypedValue;
@@ -410,10 +411,22 @@ public class NaturalHourWidget extends AppWidgetProvider
 
     public PendingIntent getClickActionIntent(Context context, int appWidgetId, Class widgetClass)
     {
+        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
+        int actionMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_ACTION, AppSettings.ACTIONMODE_DEFAULT);
         Intent actionIntent = new Intent(context, widgetClass);
-        actionIntent.setAction(ACTION_WIDGET_CLICK_LAUNCHAPP);   // TODO: configurable
+        actionIntent.setAction(fromActionMode(actionMode));
         actionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         return PendingIntent.getBroadcast(context, appWidgetId, actionIntent, 0);
+    }
+
+    public static String fromActionMode(int mode)
+    {
+        switch (mode) {
+            case AppSettings.ACTIONMODE_NOTHING: return ACTION_WIDGET_CLICK_DONOTHING;
+            case AppSettings.ACTIONMODE_UPDATE: return ACTION_WIDGET_UPDATE;
+            case AppSettings.ACTIONMODE_RECONFIGURE: return ACTION_WIDGET_CLICK_RECONFIGURE;
+            case AppSettings.ACTIONMODE_LAUNCHAPP: default: return ACTION_WIDGET_CLICK_LAUNCHAPP;    // TODO: configurable
+        }
     }
 
     public boolean isClickAction(String action) {

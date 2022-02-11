@@ -133,6 +133,20 @@
         <item>1</item>
     </string-array>
 
+    <string name="pref_title_action">On Tap</string>
+    <string-array name="pref_action_display">
+        <item>Do Nothing</item>
+        <item>Update Widget</item>
+        <item>Reconfigure Widget</item>
+        <item>Launch App</item>
+    </string-array>
+    <string-array name="pref_action_values" translatable="false">  <!-- one-to-one with pref_action_display -->
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
     <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->
