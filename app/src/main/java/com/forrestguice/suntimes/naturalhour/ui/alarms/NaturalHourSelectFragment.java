@@ -19,6 +19,7 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -92,14 +93,26 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         momentPicker = (NumberPicker)content.findViewById(R.id.pick_moment);
         if (momentPicker != null)
         {
+            String[] displayValues = momentDisplayValues(getContext());
             momentPicker.setMinValue(0);
-            momentPicker.setMaxValue(39);
+            momentPicker.setMaxValue(displayValues.length-1);
+            momentPicker.setDisplayedValues(displayValues);
             momentPicker.setWrapSelectorWheel(false);
             momentPicker.setOnValueChangedListener(onMomentSelected);
         }
 
         updateViews();
         return content;
+    }
+
+    private String[] momentDisplayValues(Context context)
+    {
+        String[] values = new String[40];
+        values[0] = " ";
+        for (int i=1; i<values.length; i++) {    // TODO: i18n?
+            values[i] = i + "/" + values.length;
+        }
+        return values;
     }
 
     private NumberPicker.OnValueChangeListener onHourSelected = new NumberPicker.OnValueChangeListener() {
