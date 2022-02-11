@@ -32,7 +32,6 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.TypedValue;
@@ -211,7 +210,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void deleteWidgetPrefs(Context context, int appWidgetId)
     {
         deleteNextSuggestedUpdate(context, appWidgetId);
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
+        String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
         for (String key : NaturalHourClockBitmap.FLAGS) {
             AppSettings.deleteKey(context, widgetPrefix + key);
         }
@@ -219,6 +218,9 @@ public class NaturalHourWidget extends AppWidgetProvider
             AppSettings.deleteKey(context, widgetPrefix + key);
         }
         for (String key : AppSettings.VALUES) {
+            AppSettings.deleteKey(context, widgetPrefix + key);
+        }
+        for (String key : WidgetSettings.VALUES) {
             AppSettings.deleteKey(context, widgetPrefix + key);
         }
     }
@@ -283,7 +285,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         }
 
         ContentResolver resolver = context.getContentResolver();
-        NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
+        NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetSettings.widgetKeyPrefix(appWidgetId) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
         calculator.calculateData(resolver, data);
 
@@ -306,9 +308,8 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data, SuntimesInfo suntimesInfo)
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
-        int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
-        int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
+        int timeMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
+        int tzMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT);
         boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
@@ -316,6 +317,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         clockView.setTimeZone(timezone);
         clockView.set24HourMode(is24);
 
+        String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
         for (String key : NaturalHourClockBitmap.FLAGS) {
             String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
@@ -326,6 +328,11 @@ public class NaturalHourWidget extends AppWidgetProvider
             String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
                 clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
+            }
+        }
+        for (String key : WidgetSettings.VALUES) {
+            if (WidgetSettings.containsKey(context, appWidgetId, key)) {
+                clockView.setValue(key, WidgetSettings.getWidgetIntValue(context, appWidgetId, key));
             }
         }
 
@@ -411,22 +418,11 @@ public class NaturalHourWidget extends AppWidgetProvider
 
     public PendingIntent getClickActionIntent(Context context, int appWidgetId, Class widgetClass)
     {
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
-        int actionMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_ACTION, AppSettings.ACTIONMODE_DEFAULT);
+        int actionMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, WidgetSettings.KEY_MODE_ACTION, WidgetSettings.ACTIONMODE_DEFAULT);
         Intent actionIntent = new Intent(context, widgetClass);
-        actionIntent.setAction(fromActionMode(actionMode));
+        actionIntent.setAction(WidgetSettings.fromActionMode(actionMode));
         actionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         return PendingIntent.getBroadcast(context, appWidgetId, actionIntent, 0);
-    }
-
-    public static String fromActionMode(int mode)
-    {
-        switch (mode) {
-            case AppSettings.ACTIONMODE_NOTHING: return ACTION_WIDGET_CLICK_DONOTHING;
-            case AppSettings.ACTIONMODE_UPDATE: return ACTION_WIDGET_UPDATE;
-            case AppSettings.ACTIONMODE_RECONFIGURE: return ACTION_WIDGET_CLICK_RECONFIGURE;
-            case AppSettings.ACTIONMODE_LAUNCHAPP: default: return ACTION_WIDGET_CLICK_LAUNCHAPP;    // TODO: configurable
-        }
     }
 
     public boolean isClickAction(String action) {

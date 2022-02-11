@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2022 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -41,11 +41,6 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class WidgetPreferenceFragment extends PreferenceFragment
 {
-    public static final String KEY_PREFIX = "widget";
-    public static String widgetKeyPrefix(int appWidgetId) {
-        return KEY_PREFIX + "_" + appWidgetId + "_";
-    }
-
     /**
      * @return appWidgetId (apply as widget settings), or 0 if unset (apply as global settings)
      */
@@ -77,8 +72,8 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         int appWidgetId = getAppWidgetId();
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
         {
-            String widgetPrefix0 = widgetKeyPrefix(0);
-            String widgetPrefix = widgetKeyPrefix(appWidgetId);
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
             for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_0 to widget_i
@@ -95,6 +90,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                 String prefKey = widgetPrefix0 + AppSettings.VALUES[i];
                 String widgetKey = widgetPrefix + AppSettings.VALUES[i];
                 editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+            }
+            for (int i = 0; i<WidgetSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix0 + WidgetSettings.VALUES[i];
+                String widgetKey = widgetPrefix + WidgetSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, WidgetSettings.VALUES_DEF[i]));
             }
 
             editor.apply();
@@ -129,11 +129,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             int appWidgetId = getAppWidgetId();
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
             {
-                String widgetPrefix0 = widgetKeyPrefix(0);
+                String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
                 if (prefKey.startsWith(widgetPrefix0))
                 {
                     String key = prefKey.replace(widgetPrefix0, "");
-                    String widgetKey = widgetKeyPrefix(appWidgetId) + key;
+                    String widgetKey = WidgetSettings.widgetKeyPrefix(appWidgetId) + key;
 
                     Context context = getActivity();
                     SharedPreferences.Editor editor = prefs.edit();
@@ -158,6 +158,14 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                     {
                         if (AppSettings.VALUES[i].equals(key)) {
                             editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+                            editor.apply();
+                            return;
+                        }
+                    }
+                    for (int i = 0; i<WidgetSettings.VALUES.length; i++)
+                    {
+                        if (WidgetSettings.VALUES[i].equals(key)) {
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, WidgetSettings.VALUES_DEF[i]));
                             editor.apply();
                             return;
                         }
