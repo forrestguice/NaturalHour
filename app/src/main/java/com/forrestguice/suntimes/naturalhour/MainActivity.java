@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2021 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -46,14 +46,17 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmFragment;
+import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmSheet;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
 
-import java.lang.reflect.Method;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String DIALOG_ALARM = "alarmDialog";
     public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
@@ -125,6 +128,34 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("DEBUG", "onNewIntent");
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    protected void handleIntent(@Nullable Intent intent)
+    {
+        if (intent == null) {
+            return;
+        }
+
+        if (intent.hasExtra(AddonHelper.EXTRA_SHOW_DATE))
+        {
+            FragmentManager fragments = getSupportFragmentManager();
+            NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+            if (fragment != null) {
+                long param_dateMillis = intent.getLongExtra(AddonHelper.EXTRA_SHOW_DATE, -1L);
+                if (param_dateMillis != -1L) {
+                    fragment.showDate(param_dateMillis);
+                    Log.d("DEBUG", "handleIntent: dateMillis: " + param_dateMillis);
+                }
+            }
+        }
+        setIntent(null);
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
@@ -134,6 +165,7 @@ public class MainActivity extends AppCompatActivity
             recreate();
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
+            handleIntent(getIntent());
         }
     }
 
@@ -146,6 +178,11 @@ public class MainActivity extends AppCompatActivity
             sheetDialog.setColorCollection(naturalHour.getColorCollection());
             sheetDialog.updateViews();
             sheetDialog.setFragmentListener(colorSheetListener);
+        }
+
+        NaturalHourAlarmSheet alarmSheet = (NaturalHourAlarmSheet) fragments.findFragmentByTag(DIALOG_ALARM);
+        if (alarmSheet != null) {
+            alarmSheet.setFragmentListener(onAlarmDialog);
         }
     }
 
@@ -166,6 +203,10 @@ public class MainActivity extends AppCompatActivity
 
     protected CharSequence createSubTitle(SuntimesInfo info) {
         return (suntimesInfo != null) ? DisplayStrings.formatLocation(this, suntimesInfo) : "";
+    }
+
+    protected String[] getLocation() {
+        return suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4 ? suntimesInfo.location : new String[] {"", "0", "0", "0"};   // TODO: default/fallback value
     }
 
     protected void updateViews(Context context)
@@ -302,6 +343,16 @@ public class MainActivity extends AppCompatActivity
     protected boolean onPrepareOptionsPanel(View view, Menu menu)
     {
         Messages.forceActionBarIcons(menu);
+
+        MenuItem alarmItem = menu.findItem(R.id.action_alarms);
+        if (alarmItem != null)
+        {
+            int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
+            boolean itemEnabled = (suntimesInfo.appCode >= suntimesAlarms_minVersion);
+            alarmItem.setVisible(itemEnabled);
+            alarmItem.setEnabled(itemEnabled);
+        }
+
         return super.onPrepareOptionsPanel(view, menu);
     }
 
@@ -317,6 +368,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_alarms:
+                showAlarmDialog();
+                return true;
+
             case R.id.action_colors:
                 showBottomSheet();
                 return true;
@@ -501,20 +556,61 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    protected void showAlarmDialog()
+    {
+        int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
+        if (suntimesInfo.appCode >= suntimesAlarms_minVersion)
+        {
+            NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
+            if (suntimesInfo != null && suntimesInfo.appTheme != null) {
+                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            }
+
+            Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
+            args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo));
+            args.putInt(NaturalHourAlarmFragment.ARG_HOURMODE, AppSettings.getClockIntValue(MainActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
+            args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
+            args.putInt(NaturalHourAlarmFragment.ARG_MOMENT, 0);    // TODO: save/restore last selection
+            dialog.setArguments(args);
+
+            dialog.setLocation(getLocation());
+            dialog.setFragmentListener(onAlarmDialog);
+            dialog.show(getSupportFragmentManager(), DIALOG_ALARM);
+
+        } else {
+            String notSupportedMessage = DisplayStrings.fromHtml(getString(R.string.missing_dependency, getString(R.string.min_suntimes_alarms_version))).toString();
+            Toast.makeText(MainActivity.this, notSupportedMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+    private NaturalHourAlarmSheet.FragmentListener onAlarmDialog = new NaturalHourAlarmSheet.FragmentListener() {
+        @Override
+        public void onAlarmSelected(String alarmID) {}
+
+        @Override
+        public void onAddAlarmClicked(String alarmID) {
+            NaturalHourAlarmFragment.scheduleAlarm(MainActivity.this, alarmID);
+        }
+    };
+
     protected void showHelp()
+    {
+        HelpDialog dialog = createHelpDialog(this,suntimesInfo, R.array.help_topics);
+        dialog.show(getSupportFragmentManager(), DIALOG_HELP);
+    }
+    public static HelpDialog createHelpDialog(Context context, @Nullable SuntimesInfo suntimesInfo, int helpTopicsArrayRes)
     {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
             dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
         }
 
-        String[] help = getResources().getStringArray(R.array.help_topics);
+        String[] help = context.getResources().getStringArray(helpTopicsArrayRes);
         String helpContent = help[0];
         for (int i=1; i<help.length; i++) {
-            helpContent = getString(R.string.format_help, helpContent, help[i]);
+            helpContent = context.getString(R.string.format_help, helpContent, help[i]);
         }
         dialog.setContent(helpContent + "<br/>");
-        dialog.show(getSupportFragmentManager(), DIALOG_HELP);
+        return dialog;
     }
 
     protected void showAbout() {

@@ -30,12 +30,22 @@ import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 import java.util.Arrays;
 import java.util.Calendar;
 
-public class NaturalHourCalculator {
+public class NaturalHourCalculator
+{
+    protected boolean useDefaultLocation = true;
+    public void setUseDefaultLocation(boolean value) {
+        useDefaultLocation = value;
+    }
+
     /**
      * calculateData
      */
     public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data) {
-        if (queryData(resolver, data)) {
+        return calculateData(resolver, data, true, true);
+    }
+    public boolean calculateData(ContentResolver resolver, @NonNull NaturalHourData data, boolean includeTwilights, boolean includeSolsticeEquinox)
+    {
+        if (queryData(resolver, data, includeTwilights, includeSolsticeEquinox)) {
             if (data.dayStart > 0 && data.dayEnd > 0) {
                 long dayLength = (data.dayEnd - data.dayStart);
                 data.dayHourLength = dayLength / 12L;
@@ -65,18 +75,23 @@ public class NaturalHourCalculator {
     /**
      * queryData
      */
-    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data) {
+    public boolean queryData(ContentResolver resolver, @NonNull NaturalHourData data, boolean queryTwilights, boolean querySolsticeEquinox) {
         if (resolver != null) {
             try {
                 long date = data.getDateMillis();
-                data.twilightHours = queryTwilights(resolver, date);
+
+                if (queryTwilights) {
+                    data.twilightHours = queryTwilights(resolver, date, data);
+                }
 
                 long[] daylight = queryStartEndDay(resolver, date, data);
                 data.dayStart = daylight[0];
                 data.dayEnd = daylight[1];
 
-                solsticeEquinox = queryEquinoxSolsticeDates(resolver, date);
-                data.solsticeEquinox = solsticeEquinox;
+                if (querySolsticeEquinox) {
+                    solsticeEquinox = queryEquinoxSolsticeDates(resolver, date);
+                    data.solsticeEquinox = solsticeEquinox;
+                }
 
             } catch (SecurityException e) {
                 Log.e(getClass().getSimpleName(), "calculateData: Unable to access " + CalculatorProviderContract.AUTHORITY + "! " + e);
@@ -89,9 +104,13 @@ public class NaturalHourCalculator {
         return true;
     }
 
-    public long[] queryTwilights(ContentResolver resolver, long date)
+    public long[] queryTwilights(ContentResolver resolver, long date, NaturalHourData data)
     {
-        return queryTwilight(resolver, date, new String[] {
+        Double latitude = (useDefaultLocation ? null : data.latitude);
+        Double longitude = (useDefaultLocation ? null : data.longitude);
+        Double altitude = (useDefaultLocation ? null : data.altitude);
+
+        return queryTwilight(resolver, date, latitude, longitude, altitude, new String[] {
                 CalculatorProviderContract.COLUMN_SUN_ASTRO_RISE,     // 0
                 CalculatorProviderContract.COLUMN_SUN_NAUTICAL_RISE,  // 1
                 CalculatorProviderContract.COLUMN_SUN_CIVIL_RISE,     // 2
@@ -112,33 +131,47 @@ public class NaturalHourCalculator {
             return new long[] {data.twilightHours[3], data.twilightHours[4]};    // actual sunrise, actual sunset
 
         } else {
-            return querySunriseSunset(resolver, dateMillis);
+            Double latitude = (useDefaultLocation ? null : data.latitude);
+            Double longitude = (useDefaultLocation ? null : data.longitude);
+            Double altitude = (useDefaultLocation ? null : data.altitude);
+            return querySunriseSunset(resolver, dateMillis, latitude, longitude, altitude);
         }
     }
 
-    public long[] querySunriseSunset(ContentResolver resolver, long dateMillis) {
-        return queryTwilight(resolver, dateMillis, new String[] { CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE, CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET });
+    public long[] querySunriseSunset(ContentResolver resolver, long dateMillis, Double latitude, Double longitude, Double altitude) {
+        return queryTwilight(resolver, dateMillis, latitude, longitude, altitude, new String[] { CalculatorProviderContract.COLUMN_SUN_ACTUAL_RISE, CalculatorProviderContract.COLUMN_SUN_ACTUAL_SET });
     }
 
-    public long[] queryCivilTwilight(ContentResolver resolver, long date) {
-        return queryTwilight(resolver, date, new String[] { CalculatorProviderContract.COLUMN_SUN_CIVIL_RISE, CalculatorProviderContract.COLUMN_SUN_CIVIL_SET });
+    public long[] queryCivilTwilight(ContentResolver resolver, long date, Double latitude, Double longitude, Double altitude) {
+        return queryTwilight(resolver, date, latitude, longitude, altitude, new String[] { CalculatorProviderContract.COLUMN_SUN_CIVIL_RISE, CalculatorProviderContract.COLUMN_SUN_CIVIL_SET });
     }
 
-    public long[] queryNauticalTwilight(ContentResolver resolver, long date) {
-        return queryTwilight(resolver, date, new String[] { CalculatorProviderContract.COLUMN_SUN_NAUTICAL_RISE, CalculatorProviderContract.COLUMN_SUN_NAUTICAL_SET });
+    public long[] queryNauticalTwilight(ContentResolver resolver, long date, Double latitude, Double longitude, Double altitude) {
+        return queryTwilight(resolver, date, latitude, longitude, altitude, new String[] { CalculatorProviderContract.COLUMN_SUN_NAUTICAL_RISE, CalculatorProviderContract.COLUMN_SUN_NAUTICAL_SET });
     }
 
-    public long[] queryAstroTwilight(ContentResolver resolver, long date) {
-        return queryTwilight(resolver, date, new String[] { CalculatorProviderContract.COLUMN_SUN_ASTRO_RISE, CalculatorProviderContract.COLUMN_SUN_ASTRO_SET });
+    public long[] queryAstroTwilight(ContentResolver resolver, long date, Double latitude, Double longitude, Double altitude) {
+        return queryTwilight(resolver, date, latitude, longitude, altitude, new String[] { CalculatorProviderContract.COLUMN_SUN_ASTRO_RISE, CalculatorProviderContract.COLUMN_SUN_ASTRO_SET });
     }
 
-    public long[] queryTwilight(ContentResolver resolver, long date, String[] projection)
+    public long[] queryTwilight(ContentResolver resolver, long date, Double latitude, Double longitude, Double altitude, String[] projection)
     {
         long[] retValue = new long[projection.length];
         Arrays.fill(retValue, -1);
 
         Uri uri = Uri.parse("content://" + CalculatorProviderContract.AUTHORITY + "/" + CalculatorProviderContract.QUERY_SUN + "/" + date );
-        Cursor cursor = resolver.query(uri, projection, null, null, null);
+        String selection = null;
+        String[] selectionArgs = null;
+        if (latitude != null && longitude != null && altitude != null)
+        {
+            selection = CalculatorProviderContract.COLUMN_CONFIG_LATITUDE + "=? AND "
+                    + CalculatorProviderContract.COLUMN_CONFIG_LONGITUDE + "=? AND "
+                    + CalculatorProviderContract.COLUMN_CONFIG_ALTITUDE + "=?";
+            selectionArgs = new String[] { Double.toString(latitude), Double.toString(longitude), Double.toString(altitude) };
+            Log.d("DEBUG", "queryTwilight: selectionArgs: " + selection + " .. " + selectionArgs[0] + "," + selectionArgs[1] + " " + selectionArgs[2] );
+        }
+
+        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
         if (cursor != null)
         {
             cursor.moveToFirst();

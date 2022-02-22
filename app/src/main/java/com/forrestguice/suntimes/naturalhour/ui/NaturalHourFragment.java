@@ -283,6 +283,19 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
+    {
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        int hour = mode24 ? hourNum : (hourNum >= 12 ? hourNum-12 : hourNum);
+
+        Resources r = context.getResources();
+        String[] phrase = r.getStringArray((mode24 ? R.array.hour_24 : R.array.hour_12));
+        String[] phrase_of_day = r.getStringArray(R.array.phrase_of_day);
+        String phraseOfDay = phrase_of_day[mode24 ? 0 : (hourNum >= 12 ? 1 : 0)];
+        String hourPhrase = phrase[hour];
+        return context.getString(R.string.format_announcement_naturalhour, hourPhrase, phraseOfDay);
+    }
+
     public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24)
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
@@ -370,6 +383,10 @@ public class NaturalHourFragment extends Fragment
     {
         NaturalHourData data = cardAdapter.initData(NaturalHourCardAdapter.TODAY_POSITION);
         scrollToPosition(cardAdapter.positionForDate(data.getEquinoxSolsticeDates()[3]));
+    }
+
+    public void showDate(long datemillis) {
+        scrollToPosition(cardAdapter.positionForDate(datemillis)-1);
     }
 
     public static final int SMOOTHSCROLL_ITEMLIMIT = 28;

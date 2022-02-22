@@ -17,6 +17,7 @@
         <item name="icEdit">@drawable/ic_edit_light</item>
         <item name="icDelete">@drawable/ic_delete_light</item>
         <item name="icColors">@drawable/ic_palette_light</item>
+        <item name="icAlarms">@drawable/ic_alarm_light</item>
         <item name="icShare">@drawable/ic_share_light</item>
         <item name="icToday">@drawable/ic_today_light</item>
         <item name="icSettings">@drawable/ic_settings_light</item>
@@ -25,6 +26,7 @@
 
         <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
 
         <item name="colorDate">@color/colorDate_light</item>
         <item name="colorLabel">@color/colorLabel_light</item>
@@ -52,6 +54,8 @@
         <item name="clockColorAstro">@color/clockColorAstro_light</item>
         <item name="clockColorNautical">@color/clockColorNautical_light</item>
         <item name="clockColorCivil">@color/clockColorCivil_light</item>
+
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <!-- Dark theme -->
@@ -69,6 +73,7 @@
         <item name="icEdit">@drawable/ic_edit</item>
         <item name="icDelete">@drawable/ic_delete</item>
         <item name="icColors">@drawable/ic_palette</item>
+        <item name="icAlarms">@drawable/ic_alarm</item>
         <item name="icShare">@drawable/ic_share</item>
         <item name="icToday">@drawable/ic_today</item>
         <item name="icSettings">@drawable/ic_settings</item>
@@ -77,6 +82,7 @@
 
         <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
 
         <item name="colorDate">@color/colorDate_dark</item>
         <item name="colorLabel">@color/colorLabel_dark</item>
@@ -105,6 +111,7 @@
         <item name="clockColorNautical">@color/clockColorNautical_dark</item>
         <item name="clockColorCivil">@color/clockColorCivil_dark</item>
 
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -115,6 +122,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ThemeOverlay.NaturalHour.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+    </style>
 
     <style name="NaturalHourCardView" parent="Base.CardView" />
     <style name="NaturalHourCardView.Dark">

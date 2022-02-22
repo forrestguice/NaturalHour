@@ -53,7 +53,7 @@ public class NaturalHourData implements Parcelable
     protected long dayStart, dayEnd;
     protected long dayHourLength, nightHourLength;
     protected long[] twilightHours = new long[8];    // rising [0-3] (astro, nautical, civil, actual), setting [4-7] (actual, civil, nautical, astro)
-    protected long[] naturalHours = new long[24];    // 24 natural hours; 1 sunrise; 13 sunset
+    protected long[] naturalHours = new long[24];    // 24 natural hours; 0 sunrise; 12 sunset
     protected long[] solsticeEquinox = new long[4];  // spring, summer, autumn, winter
     protected boolean calculated = false;
 
@@ -308,6 +308,37 @@ public class NaturalHourData implements Parcelable
      */
     public long[] getNaturalHours() {
         return naturalHours;
+    }
+
+    /**
+     * @param hourNum index into array returned by getNaturalHours()
+     * @param moments [0,1]
+     * @return Calendar for natural hour or null if dne
+     */
+    public Calendar getNaturalHour(int hourNum, float moments)
+    {
+        if (hourNum < 0 || hourNum >= naturalHours.length) {
+            throw new IndexOutOfBoundsException("i must be [0," + naturalHours.length + "); " + hourNum);
+        }
+        if (moments < 0) {
+            moments = 0;
+        }
+        if (moments > 1) {
+            moments = 1;
+        }
+
+        if (calculated && naturalHours[hourNum] > 0)
+        {
+            float hourLength = (hourNum >= 12) ? (naturalHours[13] - naturalHours[12]) : (naturalHours[1] - naturalHours[0]);
+            long momentMillis = (long)(hourLength * moments);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(naturalHours[hourNum] + momentMillis);
+            return calendar;
+        }
+        return null;
+    }
+    public Calendar getNaturalHour(int i) {
+        return getNaturalHour(i, 0);
     }
 
     /**

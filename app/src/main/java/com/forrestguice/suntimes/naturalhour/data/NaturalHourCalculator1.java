@@ -39,7 +39,7 @@ public class NaturalHourCalculator1 extends NaturalHourCalculator
             return new long[] {data.twilightHours[2], data.twilightHours[5]};   // civil sunrise, civil sunset
 
         } else {
-            return queryCivilTwilight(resolver, dateMillis);
+            return queryCivilTwilight(resolver, dateMillis, data.latitude, data.longitude, data.altitude);
         }
     }
 

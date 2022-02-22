@@ -4,27 +4,6 @@
     tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
 
     <item
-        android:id="@+id/action_alarms"
-        android:orderInCategory="600"
-        android:icon="?attr/icAlarms"
-        android:title="@string/action_alarms"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_colors"
-        android:orderInCategory="600"
-        android:icon="?attr/icColors"
-        android:title="@string/action_colors"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="700"
-        android:icon="?attr/icSettings"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_help"
         android:orderInCategory="800"
         android:icon="?attr/icHelp"
