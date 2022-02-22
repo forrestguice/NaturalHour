@@ -22,7 +22,7 @@ Options for:
 * clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
 * clock colors (support for custom color schemes).
 
-<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot2" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" /> <img alt="screenshot3" src='fastlane/metadata/android/en-US/images/phoneScreenshots/3.png' width="280px" /> <img alt="screenshot4" src='fastlane/metadata/android/en-US/images/phoneScreenshots/4.png' width="280px" />
+<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot2" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
 
 ## Donations ##
 Do you find value in this software? Please pay as you feel.
