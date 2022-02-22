@@ -10,7 +10,7 @@ A 24-hour clock &amp; roman timekeeping add-on for Suntimes. It depends on [Sunt
 
 Features:
 * A 24-hr clock face with roman timekeeping divisions; hours, twilights, and night watches.
-* Repeating alarms and notifications (requires `Suntimes v0.14.0` or later).
+* Repeating alarms and notifications (requires Suntimes `v0.14.0` or later).
 * Home screen widgets (resizable 3x2, 4x3, and 5x3 clock widgets).
 * The app announces the current time (and roman hour) when the clock is clicked.
 * Quick navigation to the dates of the solstices and equinoxes.
@@ -22,7 +22,7 @@ Options for:
 * clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
 * clock colors (support for custom color schemes).
 
-<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
+<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot2" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" /> <img alt="screenshot3" src='fastlane/metadata/android/en-US/images/phoneScreenshots/3.png' width="280px" /> <img alt="screenshot4" src='fastlane/metadata/android/en-US/images/phoneScreenshots/4.png' width="280px" />
 
 ## Donations ##
 Do you find value in this software? Please pay as you feel.
