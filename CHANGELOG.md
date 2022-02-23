@@ -1,5 +1,11 @@
 ~
 
+### v0.2.0 (2022-02-22)
+* adds support for repeating alarms and notifications (#7); requires `Suntimes v0.14.0` or later.
+* adds alarm UI (NaturalHourSelectFragment, NaturalHourAlarmFragment, and AlarmActivity); responds to `suntimes.action.PICK_EVENT`; extends content-provider to implement `suntimes.action.ADDON_EVENT`. 
+* adds `EXTRA_SHOW_DATE`; the main activity now responds to `suntimes.action.SHOW_DATE`.
+* updates SuntimesAddon dependency (v0.2.0 -> v0.3.0).
+
 ### v0.1.0 (2020-01-01) [First Release]
 * an add-on app that uses the current Suntimes configuration (location, timezone, theme, locale, and UI options). The minimum Suntimes version is `v0.10.3` (but without access to UI options); the recommended version is `v0.12.6`.
 * provides an ActionBar that displays configured Location (lat, lon, alt), Suntimes icon (opens Suntimes activity), and overflow menu (Colors, Options, Help, and About).

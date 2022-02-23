@@ -10,6 +10,7 @@ A 24-hour clock &amp; roman timekeeping add-on for Suntimes. It depends on [Sunt
 
 Features:
 * A 24-hr clock face with roman timekeeping divisions; hours, twilights, and night watches.
+* Repeating alarms and notifications (requires Suntimes `v0.14.0` or later).
 * Home screen widgets (resizable 3x2, 4x3, and 5x3 clock widgets).
 * The app announces the current time (and roman hour) when the clock is clicked.
 * Quick navigation to the dates of the solstices and equinoxes.
@@ -21,7 +22,7 @@ Options for:
 * clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
 * clock colors (support for custom color schemes).
 
-<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
+<img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot2" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
 
 ## Donations ##
 Do you find value in this software? Please pay as you feel.
@@ -40,7 +41,7 @@ Natural Hour does not collect, store, or transmit personal user data. It contain
 __Natural Hour is an add-on for Suntimes.__ It uses the `suntimes.permission.READ_CALCULATOR` permission in order to access data provided by this app. https://github.com/forrestguice/SuntimesWidget/wiki/Privacy
 
 ## Legal Stuff
-Copyright (C) 2020 **Forrest Guice**
+Copyright (C) 2020-2022 **Forrest Guice**
 ```
 Natural Hour is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
