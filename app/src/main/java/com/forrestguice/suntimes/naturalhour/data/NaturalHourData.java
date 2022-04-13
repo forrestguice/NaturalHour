@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -288,11 +289,20 @@ public class NaturalHourData implements Parcelable
         {
             double hourAngle = i < 12 ? dayAngle : nightAngle;
             double a0 = simplifyAngle(data.getAngle(data.naturalHours[i], timezone));
-            double a1 = a0 + hourAngle;
-            if (timeAngle >= a0 && timeAngle < a1) {
-                return (i + 1);
+            double a1 = simplifyAngle(a0 + hourAngle);
+            //Log.d("DEBUG", "a0: " + a0 + ", a1: " + a1 + ", timeAngle: " + timeAngle);
+
+            if (a0 <= a1) {
+                if (timeAngle >= a0 && timeAngle < a1) {
+                    return (i + 1);
+                }
+            } else {
+                if (timeAngle >= a0 || timeAngle < a1) {
+                    return (i + 1);
+                }
             }
         }
+        Log.w("findNaturalHour", "failed! returning 0 for " + timeAngle);
         return 0;
     }
 
