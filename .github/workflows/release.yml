@@ -1,0 +1,44 @@
+name: Release Check
+
+on: 
+  push:
+    branches:
+      - 'release-**'
+  pull_request:
+    branches: 
+      - 'release-**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout Branch
+    - uses: actions/checkout@v3
+      with:
+        path: branch
+              
+    - name: Checkout Master
+      uses: actions/checkout@v3
+      with:
+        ref: 'master'
+        path: master
+        
+    - name: Get version from Master
+      id: versionReader0
+      uses: Devofure/version-reader-action@v1.0.0
+      with:
+        gradlePath: master/app/build.gradle          
+        
+    - name: Get version from Branch
+      id: versionReader1
+      uses: Devofure/version-reader-action@v1.0.0
+      with:
+        gradlePath: branch/app/build.gradle
+        
+    - name: Verify bump version
+      uses: jackbilestech/semver-compare@1.0.0
+      with:
+        head: ${{ steps.versionReader1.outputs.versionCode }}
+        base: ${{ steps.versionReader0.outputs.versionCode }}
+        operator: '>'
