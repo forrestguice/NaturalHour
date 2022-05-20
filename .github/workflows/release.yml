@@ -39,6 +39,6 @@ jobs:
     - name: Verify bump version
       uses: jackbilestech/semver-compare@b6b063c569b77bea4a0ab627192cbdabf75de3f5
       with:
-        head: "'0.${{ steps.versionReader1.outputs.versionCode }}.0'"
-        base: "'0.${{ steps.versionReader0.outputs.versionCode }}.0'"
+        head: '0.${{ steps.versionReader1.outputs.versionCode }}.0'
+        base: '0.${{ steps.versionReader0.outputs.versionCode }}.0'
         operator: '>'
