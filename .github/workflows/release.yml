@@ -36,9 +36,8 @@ jobs:
       with:
         gradlePath: branch/app/build.gradle
         
-    - run: chmod +x /entrypoint.sh      
     - name: Verify bump version
-      uses: jackbilestech/semver-compare@1.0.0
+      uses: jackbilestech/semver-compare@1.0.1
       with:
         head: ${{ steps.versionReader1.outputs.versionCode }}
         base: ${{ steps.versionReader0.outputs.versionCode }}
