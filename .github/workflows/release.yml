@@ -36,9 +36,16 @@ jobs:
       with:
         gradlePath: branch/app/build.gradle
         
-    - name: Verify bump version
+    - name: Verify bump versionCode
       uses: jackbilestech/semver-compare@b6b063c569b77bea4a0ab627192cbdabf75de3f5
       with:
         head: '0.${{ steps.versionReader1.outputs.versionCode }}.0'
         base: '0.${{ steps.versionReader0.outputs.versionCode }}.0'
+        operator: '>'
+
+    - name: Verify bump versionName
+      uses: jackbilestech/semver-compare@b6b063c569b77bea4a0ab627192cbdabf75de3f5
+      with:
+        head: '${{ steps.versionReader1.outputs.versionName }}'
+        base: '${{ steps.versionReader0.outputs.versionName }}'
         operator: '>'
