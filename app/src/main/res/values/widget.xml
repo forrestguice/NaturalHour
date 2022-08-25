@@ -1,4 +1,6 @@
 <resources>
+    <integer name="widget_update_period_millis">3600000</integer>  <!-- one hour (will wake the device); set 0 to disable (AlarmManager based updates only) -->
+
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_padding_left">2dp</dimen>
     <dimen name="widget_padding_right">4dp</dimen>
