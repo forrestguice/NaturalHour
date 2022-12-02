@@ -37,6 +37,7 @@ import android.view.View;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
@@ -69,10 +70,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
     }
 
-    private int getThemeResID(@NonNull String themeName) {
-        return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.NaturalHourAppTheme_Light : R.style.NaturalHourAppTheme_Dark;
-    }
-
     public int getAppWidgetId() {
         return appWidgetId;
     }
@@ -86,7 +83,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            setTheme(getThemeResID(suntimesInfo.appTheme));
+            AppSettings.setTheme(this, AppSettings.getThemeResID(suntimesInfo.appTheme));
         }
 
         Intent intent = getIntent();

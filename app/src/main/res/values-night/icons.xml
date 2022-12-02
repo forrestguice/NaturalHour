@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_back_ref">@drawable/ic_back</drawable>
+    <drawable name="ic_done_ref">@drawable/ic_done</drawable>
+    <drawable name="ic_add_ref">@drawable/ic_add</drawable>
+    <drawable name="ic_edit_ref">@drawable/ic_edit</drawable>
+    <drawable name="ic_delete_ref">@drawable/ic_delete</drawable>
+    <drawable name="ic_palette_ref">@drawable/ic_palette</drawable>
+    <drawable name="ic_alarm_ref">@drawable/ic_alarm</drawable>
+    <drawable name="ic_share_ref">@drawable/ic_share</drawable>
+    <drawable name="ic_today_ref">@drawable/ic_today</drawable>
+    <drawable name="ic_settings_ref">@drawable/ic_settings</drawable>
+    <drawable name="ic_help_ref">@drawable/ic_help</drawable>
+    <drawable name="ic_about_ref">@drawable/ic_about</drawable>
+</resources>

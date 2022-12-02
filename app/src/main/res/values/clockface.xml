@@ -84,6 +84,29 @@
     <color name="clockColorLabel1_dark">#FFFFFF</color>
     <color name="clockColorLabel2_dark">@color/grey_300</color>
 
+    <!-- system color theme -->
+
+    <color name="clockColorAstro">@color/clockColorAstro_light</color>
+    <color name="clockColorNautical">@color/clockColorNautical_light</color>
+    <color name="clockColorCivil">@color/clockColorCivil_light</color>
+    <color name="clockColorAM">@color/clockColorAM_light</color> <!-- aaffd500 -->
+    <color name="clockColorPM">@color/clockColorPM_light</color> <!-- #aaff9900 -->
+    <color name="clockColorDayBorder">@color/clockColorDayBorder_light</color>
+    <color name="clockColorDay">@color/clockColorDay_light</color>
+    <color name="clockColorDayLabel">@color/clockColorDayLabel_light</color>
+    <color name="clockColorDayFace">@color/clockColorDayFace_light</color>
+    <color name="clockColorNightBorder">@color/clockColorNightBorder_light</color>
+    <color name="clockColorNight">@color/clockColorNight_light</color>
+    <color name="clockColorNightLabel">@color/clockColorNightLabel_light</color>
+    <color name="clockColorNightFace">@color/clockColorNightFace_light</color>
+    <color name="clockColorFace">@color/clockColorFace_light</color>
+    <color name="clockColorPlate">@color/clockColorPlate_light</color>
+    <color name="clockColorFrame">@color/clockColorFrame_light</color>
+    <color name="clockColorCenter">@color/clockColorCenter_light</color>
+    <color name="clockColorHand">@color/clockColorHand_light</color>
+    <color name="clockColorLabel1">@color/clockColorLabel1_light</color>
+    <color name="clockColorLabel2">@color/clockColorLabel2_light</color>
+
     <string-array name="clockface_collection">     <!-- items should contain a json {} string; quote " characters must be escaped. -->
         <!--<item>{\"colorValuesID\":\"extra\",\"color_plate\":\"#ff212121\",\"color_face\":\"#ff212121\",\"color_frame\":\"#ffeeeeee\",\"color_center\":\"#ff80cbc4\",\"color_hand\":\"#ff80cbc4\",\"color_label0\":\"#ffffffff\",\"color_label1\":\"#ffe0e0e0\",\"color_ring_day\":\"#ff424242\",\"color_ring_day_label\":\"#ffffffff\",\"color_ring_day_stroke\":\"#ffffffff\",\"color_face_day\":\"#ffbdbdbd\",\"color_ring_night\":\"#ff000000\",\"color_ring_night_label\":\"#ffffffff\",\"color_ring_night_stroke\":\"#ff757575\",\"color_face_night\":\"#ff000000\",\"color_face_am\":\"#ff757575\",\"color_face_pm\":\"#ff666666\",\"color_face_astro\":\"#ff1a1a1a\",\"color_face_nautical\":\"#ff333333\",\"color_face_civil\":\"#ff4d4d4d\"}</item>-->
     </string-array>

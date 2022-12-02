@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="clockColorAstro">@color/clockColorAstro_dark</color>
+    <color name="clockColorNautical">@color/clockColorNautical_dark</color>
+    <color name="clockColorCivil">@color/clockColorCivil_dark</color>
+    <color name="clockColorAM">@color/clockColorAM_dark</color>
+    <color name="clockColorPM">@color/clockColorPM_dark</color>
+    <color name="clockColorDayBorder">@color/clockColorDayBorder_dark</color>
+    <color name="clockColorDay">@color/clockColorDay_dark</color>
+    <color name="clockColorDayLabel">@color/clockColorDayLabel_dark</color>
+    <color name="clockColorDayFace">@color/clockColorDayFace_dark</color>
+    <color name="clockColorNightBorder">@color/clockColorNightBorder_dark</color>
+    <color name="clockColorNight">@color/clockColorNight_dark</color>
+    <color name="clockColorNightLabel">@color/clockColorNightLabel_dark</color>
+    <color name="clockColorNightFace">@color/clockColorNightFace_dark</color>
+    <color name="clockColorFace">@color/clockColorFace_dark</color>
+    <color name="clockColorPlate">@color/clockColorPlate_dark</color>
+    <color name="clockColorFrame">@color/clockColorFrame_dark</color>
+    <color name="clockColorCenter">@color/clockColorCenter_dark</color>
+    <color name="clockColorHand">@color/clockColorHand_dark</color>
+    <color name="clockColorLabel1">@color/clockColorLabel1_dark</color>
+    <color name="clockColorLabel2">@color/clockColorLabel2_dark</color>
+</resources>

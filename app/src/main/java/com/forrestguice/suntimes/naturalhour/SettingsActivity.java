@@ -56,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            setTheme(MainActivity.getThemeResID(suntimesInfo.appTheme));
+            AppSettings.setTheme(this, AppSettings.getThemeResID(suntimesInfo.appTheme));
         }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
