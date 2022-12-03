@@ -3,7 +3,7 @@
                     xmlns:tools="http://schemas.android.com/tools"
                     tools:ignore="UnusedAttribute"
 
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="@integer/widget_update_period_millis"
     android:widgetCategory="home_screen|keyguard"
     android:previewImage="@mipmap/ic_launcher_round"
 

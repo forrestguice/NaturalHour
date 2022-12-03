@@ -36,8 +36,8 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.naturalhour.R;
 
 public class ColorValuesSelectFragment extends ColorValuesFragment

@@ -2,14 +2,90 @@
 
     <style name="AppTheme" parent="NaturalHourAppTheme.Dark" />
 
+    <!-- System theme -->
+    <style name="NaturalHourAppTheme.System.Base" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAction">@color/colorAction</item>
+        <item name="colorDisabled">@color/colorDisabled</item>
+
+        <item name="dialogBackground">@color/dialog_bg</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg</item>
+        <item name="snackbar_textColor">@color/snackbar_text_color</item>
+        <item name="snackbar_accentColor">?colorAccent</item>
+        <item name="snackbar_backgroundColor">?attr/colorPrimary</item>
+
+        <item name="icBack">@drawable/ic_back_ref</item>
+        <item name="icDone">@drawable/ic_done_ref</item>
+        <item name="icAdd">@drawable/ic_add_ref</item>
+        <item name="icEdit">@drawable/ic_edit_ref</item>
+        <item name="icDelete">@drawable/ic_delete_ref</item>
+        <item name="icColors">@drawable/ic_palette_ref</item>
+        <item name="icAlarms">@drawable/ic_alarm_ref</item>
+        <item name="icShare">@drawable/ic_share_ref</item>
+        <item name="icToday">@drawable/ic_today_ref</item>
+        <item name="icSettings">@drawable/ic_settings_ref</item>
+        <item name="icHelp">@drawable/ic_help_ref</item>
+        <item name="icAbout">@drawable/ic_about_ref</item>
+
+        <item name="colorDate">@color/colorDate</item>
+        <item name="colorLabel">@color/colorLabel</item>
+        <item name="colorTime">@color/colorTime</item>
+        <item name="colorValue">@color/colorValue</item>
+        <item name="colorBottomSheet">@color/colorBottomSheet</item>
+
+        <item name="clockColorFace">@color/clockColorFace</item>
+        <item name="clockColorPlate">@color/clockColorPlate</item>
+        <item name="clockColorFrame">@color/clockColorFrame</item>
+        <item name="clockColorCenter">@color/clockColorCenter</item>
+        <item name="clockColorHand">@color/clockColorHand</item>
+        <item name="clockColorLabel1">@color/clockColorLabel1</item>
+        <item name="clockColorLabel2">@color/clockColorLabel2</item>
+        <item name="clockColorDay">@color/clockColorDayFace</item>
+        <item name="clockColorDayBorder">@color/clockColorDayBorder</item>
+        <item name="clockColorDayFill">@color/clockColorDay</item>
+        <item name="clockColorDayText">@color/clockColorDayLabel</item>
+        <item name="clockColorNight">@color/clockColorNightFace</item>
+        <item name="clockColorNightBorder">@color/clockColorNightBorder</item>
+        <item name="clockColorNightFill">@color/clockColorNight</item>
+        <item name="clockColorNightText">@color/clockColorNightLabel</item>
+        <item name="clockColorAM">@color/clockColorAM</item>
+        <item name="clockColorPM">@color/clockColorPM</item>
+        <item name="clockColorAstro">@color/clockColorAstro</item>
+        <item name="clockColorNautical">@color/clockColorNautical</item>
+        <item name="clockColorCivil">@color/clockColorCivil</item>
+
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+    <style name="NaturalHourAppTheme.System" parent="NaturalHourAppTheme.System.Base">
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
+    </style>
+
     <!-- Light theme -->
-    <style name="NaturalHourAppTheme.Light" parent="SuntimesAddonTheme.Light">
-        <!-- Customize your theme here. -->
+    <style name="NaturalHourAppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary_light</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
         <item name="colorAccent">@color/colorAccent_light</item>
         <item name="colorAction">@color/colorAction_light</item>
         <item name="colorDisabled">@color/colorDisabled_light</item>
+
+        <item name="dialogBackground">@color/dialog_light</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_light</item>
+        <item name="snackbar_textColor">@color/snackbar_text_color_light</item>
+        <item name="snackbar_accentColor">?colorAccent</item>
+        <item name="snackbar_backgroundColor">?attr/colorPrimary</item>
+
+        <!--<item name="suntimesCardBackground">@color/card_light</item>
+        <item name="dialogFrame">@android:color/white</item>
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
+        <item name="fab_backgroundColor">@color/fab_background_light</item>
+        <item name="fab_rippleColor">@color/fab_ripple_light</item>-->
+
+
 
         <item name="icBack">@drawable/ic_back_light</item>
         <item name="icDone">@drawable/ic_done_light</item>
@@ -23,10 +99,6 @@
         <item name="icSettings">@drawable/ic_settings_light</item>
         <item name="icHelp">@drawable/ic_help_light</item>
         <item name="icAbout">@drawable/ic_about_light</item>
-
-        <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
 
         <item name="colorDate">@color/colorDate_light</item>
         <item name="colorLabel">@color/colorLabel_light</item>
@@ -55,17 +127,32 @@
         <item name="clockColorNautical">@color/clockColorNautical_light</item>
         <item name="clockColorCivil">@color/clockColorCivil_light</item>
 
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
+        <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
     <!-- Dark theme -->
-    <style name="NaturalHourAppTheme.Dark" parent="SuntimesAddonTheme.Dark">
-        <!-- Customize your theme here. -->
+    <style name="NaturalHourAppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary_dark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
         <item name="colorAccent">@color/colorAccent_dark</item>
         <item name="colorAction">@color/colorAction_dark</item>
         <item name="colorDisabled">@color/colorDisabled_dark</item>
+
+        <item name="dialogBackground">@color/dialog_dark</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_dark</item>
+        <item name="snackbar_textColor">@color/snackbar_text_color_dark</item>
+        <item name="snackbar_accentColor">?colorAccent</item>
+        <item name="snackbar_backgroundColor">?attr/colorPrimary</item>
+
+        <!--<item name="suntimesCardBackground">@color/card_dark</item>
+        <item name="dialogFrame">@color/grey_800</item>
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleDark</item>
+        <item name="fab_backgroundColor">@color/fab_background_dark</item>
+        <item name="fab_rippleColor">@color/fab_ripple_dark</item>
+        -->
 
         <item name="icBack">@drawable/ic_back</item>
         <item name="icDone">@drawable/ic_done</item>
@@ -79,10 +166,6 @@
         <item name="icSettings">@drawable/ic_settings</item>
         <item name="icHelp">@drawable/ic_help</item>
         <item name="icAbout">@drawable/ic_about</item>
-
-        <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
 
         <item name="colorDate">@color/colorDate_dark</item>
         <item name="colorLabel">@color/colorLabel_dark</item>
@@ -111,6 +194,9 @@
         <item name="clockColorNautical">@color/clockColorNautical_dark</item>
         <item name="clockColorCivil">@color/clockColorCivil_dark</item>
 
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleDark</item>
+        <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
@@ -146,6 +232,11 @@
         <item name="android:layout_margin">0dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ToastTextAppearance">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/colorPrimary_dark</color>
+    <color name="colorPrimaryDark">@color/colorPrimaryDark_dark</color>
+    <color name="colorAccent">@color/colorAccent_dark</color>
+    <color name="colorAction">@color/colorAction_dark</color>
+    <color name="colorDisabled">@color/colorDisabled_dark</color>
+
+    <color name="fab_background">@color/fab_background_dark</color>
+    <color name="fab_ripple">@color/fab_ripple_dark</color>
+
+    <color name="colorDate">@color/colorDate_dark</color>
+    <color name="colorLabel">@color/colorLabel_dark</color>
+    <color name="colorTime">@color/colorTime_dark</color>
+    <color name="colorValue">@color/colorValue_dark</color>
+    <color name="colorBottomSheet">@color/grey_900</color>
+
+    <color name="dialog_bg">@color/dialog_dark</color>
+    <color name="dialog_alt_bg">@color/dialog_alt_dark</color>
+    <color name="snackbar_text_color">@android:color/primary_text_dark</color>
+</resources>

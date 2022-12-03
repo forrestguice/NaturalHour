@@ -36,8 +36,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
@@ -72,16 +72,12 @@ public class MainActivity extends AppCompatActivity
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
     }
 
-    public static int getThemeResID(@NonNull String themeName) {
-        return themeName.equals(SuntimesInfo.THEME_LIGHT) ? R.style.NaturalHourAppTheme_Light : R.style.NaturalHourAppTheme_Dark;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            setTheme(getThemeResID(suntimesInfo.appTheme));
+            AppSettings.setTheme(this, AppSettings.getThemeResID(suntimesInfo.appTheme));
         }
         setContentView(R.layout.activity_main);
 
@@ -104,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
         sheetDialog = new ColorValuesSheetFragment();
         if (suntimesInfo.appTheme != null) {    // override the theme
-            sheetDialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            sheetDialog.setTheme(AppSettings.getThemeResID(suntimesInfo.appTheme));
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.app_bottomsheet, sheetDialog).commit();
 
@@ -563,7 +559,7 @@ public class MainActivity extends AppCompatActivity
         {
             NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
             if (suntimesInfo != null && suntimesInfo.appTheme != null) {
-                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+                dialog.setTheme(AppSettings.getThemeResID(suntimesInfo.appTheme));
             }
 
             Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
@@ -601,7 +597,7 @@ public class MainActivity extends AppCompatActivity
     {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
-            dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+            dialog.setTheme(AppSettings.getThemeResID(suntimesInfo.appTheme));
         }
 
         String[] help = context.getResources().getStringArray(helpTopicsArrayRes);
@@ -623,7 +619,7 @@ public class MainActivity extends AppCompatActivity
         if (suntimesInfo != null) {
             dialog.setVersion(suntimesInfo);
             if (suntimesInfo.appTheme != null) {
-                dialog.setTheme(getThemeResID(suntimesInfo.appTheme));
+                dialog.setTheme(AppSettings.getThemeResID(suntimesInfo.appTheme));
             }
         }
         return dialog;
