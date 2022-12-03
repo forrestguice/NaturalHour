@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="NaturalHourAppTheme.System" parent="NaturalHourAppTheme.System.Base">
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleDark</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
     </style>

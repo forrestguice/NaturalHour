@@ -15,9 +15,11 @@
     <color name="colorLabel">@color/colorLabel_light</color>
     <color name="colorTime">@color/colorTime_light</color>
     <color name="colorValue">@color/colorValue_light</color>
+    <color name="colorBottomSheet">@color/grey_200</color>
 
     <color name="dialog_bg">@color/dialog_light</color>
     <color name="dialog_alt_bg">@color/dialog_alt_light</color>
+    <color name="snackbar_text_color">@android:color/primary_text_light</color>
 
     <!-- light theme colors -->
 
@@ -32,6 +34,7 @@
     <color name="card_light_selected">@android:color/white</color>
     <color name="fab_background_light">@color/colorAction_light</color>
     <color name="fab_ripple_light">#971000</color>
+    <color name="snackbar_text_color_light">@android:color/primary_text_light</color>
 
     <color name="colorDate_light">#000000</color>
     <color name="colorLabel_light">#000000</color>
@@ -51,6 +54,7 @@
     <color name="card_dark_selected">@color/grey_600</color>
     <color name="fab_background_dark">@color/colorAction_dark</color>
     <color name="fab_ripple_dark">#c66a00</color>
+    <color name="snackbar_text_color_dark">@android:color/primary_text_dark</color>
 
     <color name="colorDate_dark">#FFFFFF</color>
     <color name="colorLabel_dark">#FFFFFF</color>
