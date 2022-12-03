@@ -3,18 +3,20 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".ui.NaturalHourFragment">
 
-    <TextView  android:layout_margin="8dp"
-        android:id="@+id/text_date" style="@style/TableHeadDateView" android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Today\nApril 1, 2016" />
+    <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/text_date" style="@style/TableHeadDateView" android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            tools:text="Today\nApril 1, 2016" />
+    </FrameLayout>
 
     <com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView
         android:id="@+id/clockface" android:background="?attr/selectableItemBackground"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp" android:layout_marginRight="8dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp" android:layout_marginRight="2dp"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
