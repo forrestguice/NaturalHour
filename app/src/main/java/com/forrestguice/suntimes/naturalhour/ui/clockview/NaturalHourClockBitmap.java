@@ -32,16 +32,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator2;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.data.TimeZoneWrapper;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -462,13 +465,16 @@ public class NaturalHourClockBitmap
             paintArcNightFill.setColor(colors.getColor(ClockColorValues.COLOR_RING_NIGHT));
             paintArcNightBorder.setColor(colors.getColor(ClockColorValues.COLOR_RING_NIGHT_STROKE));
 
+            TimeZone tz = TimeZoneHelper.ApparentSolarTime.TIMEZONEID.equals(timezone.getID()) ? timezone          // don't wrap ApparentSolarTime
+                    : new TimeZoneWrapper(timezone, timezone.inDaylightTime(new Date(naturalHours[0])));
+
             int hourmode = getValue(VALUE_HOURMODE);
             for (int i=0; i<naturalHours.length; i++)
             {
                 boolean isNight = (i >= 12);
                 double hourAngle = (isNight ? nightAngle : dayAngle);
 
-                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone), data);
+                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], tz), data);
                 canvas.drawArc(circle_mid, (float) Math.toDegrees(a), (float) Math.toDegrees(hourAngle), false, (isNight ? paintArcNightFill : paintArcDayFill));
                 drawRay(canvas, cX, cY, a, r_inner, r_outer, isNight ? paintArcNightBorder : paintArcDayBorder);
 
@@ -501,7 +507,7 @@ public class NaturalHourClockBitmap
                 double watchSweepAngle = nightAngle * hoursPerWatch;
                 for (int i = 12; i<naturalHours.length; i += hoursPerWatch)
                 {
-                    double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], timezone), data);
+                    double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], tz), data);
                     canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightFill);
                     canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightBorder);
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
