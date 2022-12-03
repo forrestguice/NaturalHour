@@ -1,0 +1,4 @@
+- adds support for system dark mode (night mode).
+- fixes bug "the widget does not update" (#15).
+- fixes bug "broken UI - missing first hour - watches" (#14).
+- fixes bug where the hour is sometimes announced incorrectly.

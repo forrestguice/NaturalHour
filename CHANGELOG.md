@@ -1,5 +1,13 @@
 ~
 
+### v0.2.1 (2022-12-05)
+* adds support for system dark mode (night mode).
+* fixes bug where Toast messages are unreadable on api33+.
+* fixes bug "the widget does not update" (#15).
+* fixes bug "broken UI - missing first hour - watches" (#14).
+* fixes bug where the hour is sometimes announced incorrectly.
+* misc layout tweaks (margins).
+
 ### v0.2.0 (2022-02-22)
 * adds support for repeating alarms and notifications (#7); requires `Suntimes v0.14.0` or later.
 * adds alarm UI (NaturalHourSelectFragment, NaturalHourAlarmFragment, and AlarmActivity); responds to `suntimes.action.PICK_EVENT`; extends content-provider to implement `suntimes.action.ADDON_EVENT`. 
