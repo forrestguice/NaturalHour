@@ -50,6 +50,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 import java.util.TimeZone;
 
@@ -114,6 +115,8 @@ public class AlarmActivity extends AppCompatActivity
                 fragment.setHourMode(param_naturalHour[0]);
                 fragment.setHour(param_naturalHour[1]);
                 fragment.setMoment(param_naturalHour[2]);
+            } else {
+                fragment.setHourMode(AppSettings.getClockIntValue(AlarmActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
             }
             fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo));
             fragment.setLocation(param_latitude, param_longitude, param_altitude);

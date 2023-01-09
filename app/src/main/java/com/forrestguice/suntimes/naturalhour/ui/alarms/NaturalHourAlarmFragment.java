@@ -105,6 +105,7 @@ public class NaturalHourAlarmFragment extends Fragment
         }
         if (alarmSelect != null) {
             alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
+            alarmSelect.initViews(alarmSelect.getView());
         }
     }
 
@@ -226,6 +227,7 @@ public class NaturalHourAlarmFragment extends Fragment
             alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
             alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOUR, getHour());
             alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());
+            alarmSelect.initViews(alarmSelect.getView());    // re-init views
         }
     }
 

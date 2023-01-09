@@ -67,7 +67,13 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }
+        initViews(content);
+        updateViews();
+        return content;
+    }
 
+    protected void initViews(View content)
+    {
         boolean mode24 = getBoolArg(ARG_MODE24, DEF_MODE24);
 
         hourPicker = (NumberPicker)content.findViewById(R.id.pick_hour);
@@ -100,9 +106,6 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
             momentPicker.setWrapSelectorWheel(false);
             momentPicker.setOnValueChangedListener(onMomentSelected);
         }
-
-        updateViews();
-        return content;
     }
 
     private String[] momentDisplayValues(Context context)
