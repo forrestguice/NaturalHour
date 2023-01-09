@@ -1,11 +1,12 @@
 ~
 
-### v0.2.1 (2022-12-05)
+### v0.2.1 (2023-01-09)
 * adds support for system dark mode (night mode).
 * fixes bug where Toast messages are unreadable on api33+.
 * fixes bug "the widget does not update" (#15).
 * fixes bug "broken UI - missing first hour - watches" (#14).
 * fixes bug where the hour is sometimes announced incorrectly.
+* fixes bug "unable to set alarm for all hours when using 'sunset (24)' (#21).
 * misc layout tweaks (margins).
 
 ### v0.2.0 (2022-02-22)
