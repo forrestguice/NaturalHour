@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.forrestguice.suntimes.naturalhour">
+    
+    <uses-feature android:name="android.software.app_widgets" android:required="false"/>   <!-- provides app widgets -->
 
     <uses-permission android:name="suntimes.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
 
