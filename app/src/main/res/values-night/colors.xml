@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- system colors -->
     <color name="colorPrimary">@color/colorPrimary_dark</color>
     <color name="colorPrimaryDark">@color/colorPrimaryDark_dark</color>
     <color name="colorAccent">@color/colorAccent_dark</color>
@@ -18,4 +19,26 @@
     <color name="dialog_bg">@color/dialog_dark</color>
     <color name="dialog_alt_bg">@color/dialog_alt_dark</color>
     <color name="snackbar_text_color">@android:color/primary_text_dark</color>
+
+    <!-- contrast colors -->
+    <color name="colorPrimary_contrast">@color/colorPrimary_contrast_dark</color>
+    <color name="colorPrimaryDark_contrast">@color/colorPrimaryDark_contrast_dark</color>
+    <color name="colorAccent_contrast">@color/colorAccent_contrast_dark</color>
+    <color name="colorAction_contrast">@color/colorAction_contrast_dark</color>
+    <color name="colorDisabled_contrast">@color/colorDisabled_contrast_dark</color>
+
+    <color name="dialog_alt_contrast">@color/dialog_alt_contrast_dark</color>
+    <color name="card_contrast">@color/card_contrast_dark</color>
+    <color name="card_contrast_selected">@color/card_contrast_selected_dark</color>
+    <color name="fab_background_contrast">@color/fab_background_contrast_dark</color>
+    <color name="fab_ripple_contrast">@color/fab_ripple_contrast_dark</color>
+    <color name="dialog_bg_contrast">@color/dialog_bg_contrast_dark</color>
+    <color name="dialog_alt_bg_contrast">@color/dialog_alt_bg_contrast_dark</color>
+    <color name="snackbar_text_color_contrast">@color/snackbar_text_color_contrast_dark</color>
+
+    <color name="colorDate_contrast">@color/colorDate_contrast_dark</color>
+    <color name="colorLabel_contrast">@color/colorLabel_contrast_dark</color>
+    <color name="colorTime_contrast">@color/colorTime_contrast_dark</color>
+    <color name="colorValue_contrast">@color/colorValue_contrast_dark</color>
+    <color name="colorBottomSheet_contrast">@color/colorBottomSheet_contrast_dark</color>
 </resources>

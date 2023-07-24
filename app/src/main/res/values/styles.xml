@@ -107,7 +107,19 @@
 
     <!-- (Contrast) System theme -->
     <style name="NaturalHourAppTheme.System1" parent="NaturalHourAppTheme.System">
-        <!-- TODO -->
+        <item name="colorPrimary">@color/colorPrimary_contrast</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_contrast</item>
+        <item name="colorAccent">@color/colorAccent_contrast</item>
+        <item name="colorAction">@color/colorAction_contrast</item>
+        <item name="colorDisabled">@color/colorDisabled_contrast</item>
+        <item name="dialogBackground">@color/dialog_bg_contrast</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg_contrast</item>
+        <item name="snackbar_textColor">@color/snackbar_text_color_contrast</item>
+        <item name="colorDate">@color/colorDate_contrast</item>
+        <item name="colorLabel">@color/colorLabel_contrast</item>
+        <item name="colorTime">@color/colorTime_contrast</item>
+        <item name="colorValue">@color/colorValue_contrast</item>
+        <item name="colorBottomSheet">@color/colorBottomSheet_contrast</item>
     </style>
     <style name="NaturalHourAppTheme.System1.Small" parent="NaturalHourAppTheme.System1">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -162,8 +174,6 @@
         <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
         <item name="fab_backgroundColor">@color/fab_background_light</item>
         <item name="fab_rippleColor">@color/fab_ripple_light</item>-->
-
-
 
         <item name="icBack">@drawable/ic_back_light</item>
         <item name="icDone">@drawable/ic_done_light</item>
@@ -256,7 +266,19 @@
 
     <!-- (Contrast) Light theme -->
     <style name="NaturalHourAppTheme.Light1" parent="NaturalHourAppTheme.Light">
-        <!-- TODO -->
+        <item name="colorPrimary">@color/colorPrimary_contrast_light</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_contrast_light</item>
+        <item name="colorAccent">@color/colorAccent_contrast_light</item>
+        <item name="colorAction">@color/colorAction_contrast_light</item>
+        <item name="colorDisabled">@color/colorDisabled_contrast_light</item>
+        <item name="dialogBackground">@color/dialog_bg_contrast_light</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg_contrast_light</item>
+        <item name="snackbar_textColor">@color/snackbar_text_color_contrast_light</item>
+        <item name="colorDate">@color/colorDate_contrast_light</item>
+        <item name="colorLabel">@color/colorLabel_contrast_light</item>
+        <item name="colorTime">@color/colorTime_contrast_light</item>
+        <item name="colorValue">@color/colorValue_contrast_light</item>
+        <item name="colorBottomSheet">@color/colorBottomSheet_contrast_light</item>
     </style>
     <style name="NaturalHourAppTheme.Light1.Small" parent="NaturalHourAppTheme.Light1">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -404,7 +426,19 @@
 
     <!-- (Contrast) Dark theme -->
     <style name="NaturalHourAppTheme.Dark1" parent="NaturalHourAppTheme.Dark">
-        <!-- TODO -->
+        <item name="colorPrimary">@color/colorPrimary_contrast_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_contrast_dark</item>
+        <item name="colorAccent">@color/colorAccent_contrast_dark</item>
+        <item name="colorAction">@color/colorAction_contrast_dark</item>
+        <item name="colorDisabled">@color/colorDisabled_contrast_dark</item>
+        <item name="dialogBackground">@color/dialog_bg_contrast_dark</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg_contrast_dark</item>
+        <item name="snackbar_textColor">@color/snackbar_text_color_contrast_dark</item>
+        <item name="colorDate">@color/colorDate_contrast_dark</item>
+        <item name="colorLabel">@color/colorLabel_contrast_dark</item>
+        <item name="colorTime">@color/colorTime_contrast_dark</item>
+        <item name="colorValue">@color/colorValue_contrast_dark</item>
+        <item name="colorBottomSheet">@color/colorBottomSheet_contrast_dark</item>
     </style>
     <style name="NaturalHourAppTheme.Dark1.Small" parent="NaturalHourAppTheme.Dark1">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
