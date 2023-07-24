@@ -45,4 +45,6 @@
     <attr name="clockColorNautical" format="reference" />
     <attr name="clockColorCivil" format="reference" />
 
+    <attr name="bottomBarSize" format="reference" />
+
 </resources>

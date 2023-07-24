@@ -68,6 +68,7 @@
         <item name="text_size_huge">@dimen/text_size_huge</item>
         <item name="text_size_enormous">@dimen/text_size_enormous</item>
         <item name="actionBarSize">@dimen/normal_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.System" parent="NaturalHourAppTheme.System.Base">
         <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
@@ -131,6 +132,7 @@
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
         <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.System1.Large" parent="NaturalHourAppTheme.System1">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -142,6 +144,7 @@
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
         <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.System1.XLarge" parent="NaturalHourAppTheme.System1">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -153,6 +156,7 @@
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
         <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <!-- Light theme -->
@@ -229,6 +233,7 @@
         <item name="text_size_huge">@dimen/text_size_huge</item>
         <item name="text_size_enormous">@dimen/text_size_enormous</item>
         <item name="actionBarSize">@dimen/normal_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Light.Small" parent="NaturalHourAppTheme.Light">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -240,6 +245,7 @@
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
         <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Light.Large" parent="NaturalHourAppTheme.Light">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -251,6 +257,7 @@
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
         <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Light.XLarge" parent="NaturalHourAppTheme.Light">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -262,6 +269,7 @@
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
         <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <!-- (Contrast) Light theme -->
@@ -290,6 +298,7 @@
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
         <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Light1.Large" parent="NaturalHourAppTheme.Light1">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -301,6 +310,7 @@
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
         <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Light1.XLarge" parent="NaturalHourAppTheme.Light1">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -312,6 +322,7 @@
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
         <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <!-- Dark theme -->
@@ -389,6 +400,7 @@
         <item name="text_size_huge">@dimen/text_size_huge</item>
         <item name="text_size_enormous">@dimen/text_size_enormous</item>
         <item name="actionBarSize">@dimen/normal_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/normal_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Dark.Small" parent="NaturalHourAppTheme.Dark">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -400,6 +412,7 @@
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
         <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Dark.Large" parent="NaturalHourAppTheme.Dark">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -411,6 +424,7 @@
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
         <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Dark.XLarge" parent="NaturalHourAppTheme.Dark">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -422,6 +436,7 @@
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
         <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <!-- (Contrast) Dark theme -->
@@ -450,6 +465,7 @@
         <item name="text_size_huge">@dimen/smalltext_size_huge</item>
         <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
         <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Dark1.Large" parent="NaturalHourAppTheme.Dark1">
         <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
@@ -461,6 +477,7 @@
         <item name="text_size_huge">@dimen/largetext_size_huge</item>
         <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
         <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
     </style>
     <style name="NaturalHourAppTheme.Dark1.XLarge" parent="NaturalHourAppTheme.Dark1">
         <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
@@ -472,6 +489,7 @@
         <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
         <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
         <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
