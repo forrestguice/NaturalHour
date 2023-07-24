@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            AppThemeInfo.setTheme(this, suntimesInfo.appTheme);
+            AppThemeInfo.setTheme(this, suntimesInfo);
         }
 
         setContentView(R.layout.activity_main);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         sheetDialog = new ColorValuesSheetFragment();
         if (suntimesInfo.appTheme != null) {    // override the theme
-            sheetDialog.setTheme(AppThemeInfo.themePrefToStyleId(MainActivity.this, suntimesInfo.appTheme));
+            sheetDialog.setTheme(AppThemeInfo.themePrefToStyleId(MainActivity.this, AppThemeInfo.themeNameFromInfo(suntimesInfo)));
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.app_bottomsheet, sheetDialog).commit();
 
@@ -562,7 +562,7 @@ public class MainActivity extends AppCompatActivity
         {
             NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
             if (suntimesInfo != null && suntimesInfo.appTheme != null) {
-                dialog.setTheme(AppThemeInfo.themePrefToStyleId(MainActivity.this, suntimesInfo.appTheme));
+                dialog.setTheme(AppThemeInfo.themePrefToStyleId(MainActivity.this, AppThemeInfo.themeNameFromInfo(suntimesInfo)));
             }
 
             Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
@@ -600,7 +600,7 @@ public class MainActivity extends AppCompatActivity
     {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
-            dialog.setTheme(AppThemeInfo.themePrefToStyleId(context, suntimesInfo.appTheme));
+            dialog.setTheme(AppThemeInfo.themePrefToStyleId(context, AppThemeInfo.themeNameFromInfo(suntimesInfo)));
         }
 
         String[] help = context.getResources().getStringArray(helpTopicsArrayRes);
@@ -622,7 +622,7 @@ public class MainActivity extends AppCompatActivity
         if (suntimesInfo != null) {
             dialog.setVersion(suntimesInfo);
             if (suntimesInfo.appTheme != null) {
-                dialog.setTheme(AppThemeInfo.themePrefToStyleId(dialog.getContext(), suntimesInfo.appTheme));
+                dialog.setTheme(AppThemeInfo.themePrefToStyleId(dialog.getContext(), AppThemeInfo.themeNameFromInfo(suntimesInfo)));
             }
         }
         return dialog;

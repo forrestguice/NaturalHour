@@ -88,7 +88,7 @@ public class AlarmActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            AppThemeInfo.setTheme(this, suntimesInfo.appTheme);
+            AppThemeInfo.setTheme(this, suntimesInfo);
         }
         setContentView(R.layout.activity_alarm);
         setResult(RESULT_CANCELED);
