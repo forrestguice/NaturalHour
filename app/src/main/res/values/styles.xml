@@ -58,11 +58,50 @@
 
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
         <item name="windowActionModeOverlay">true</item>
+
+        <item name="text_size_tiny">@dimen/text_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/text_size_xsmall</item>
+        <item name="text_size_small">@dimen/text_size_small</item>
+        <item name="text_size_medium">@dimen/text_size_medium</item>
+        <item name="text_size_large">@dimen/text_size_large</item>
+        <item name="text_size_xlarge">@dimen/text_size_xlarge</item>
+        <item name="text_size_huge">@dimen/text_size_huge</item>
+        <item name="text_size_enormous">@dimen/text_size_enormous</item>
     </style>
     <style name="NaturalHourAppTheme.System" parent="NaturalHourAppTheme.System.Base">
         <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
+    </style>
+    <style name="NaturalHourAppTheme.System.Small" parent="NaturalHourAppTheme.System">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.System.Large" parent="NaturalHourAppTheme.System">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.System.XLarge" parent="NaturalHourAppTheme.System">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
     </style>
 
     <!-- Light theme -->
@@ -131,6 +170,45 @@
         <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
         <item name="windowActionModeOverlay">true</item>
+
+        <item name="text_size_tiny">@dimen/text_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/text_size_xsmall</item>
+        <item name="text_size_small">@dimen/text_size_small</item>
+        <item name="text_size_medium">@dimen/text_size_medium</item>
+        <item name="text_size_large">@dimen/text_size_large</item>
+        <item name="text_size_xlarge">@dimen/text_size_xlarge</item>
+        <item name="text_size_huge">@dimen/text_size_huge</item>
+        <item name="text_size_enormous">@dimen/text_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.Light.Small" parent="NaturalHourAppTheme.Light">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.Light.Large" parent="NaturalHourAppTheme.Light">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.Light.XLarge" parent="NaturalHourAppTheme.Light">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
     </style>
 
     <!-- Dark theme -->
@@ -198,6 +276,45 @@
         <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
         <item name="windowActionModeOverlay">true</item>
+
+        <item name="text_size_tiny">@dimen/text_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/text_size_xsmall</item>
+        <item name="text_size_small">@dimen/text_size_small</item>
+        <item name="text_size_medium">@dimen/text_size_medium</item>
+        <item name="text_size_large">@dimen/text_size_large</item>
+        <item name="text_size_xlarge">@dimen/text_size_xlarge</item>
+        <item name="text_size_huge">@dimen/text_size_huge</item>
+        <item name="text_size_enormous">@dimen/text_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.Dark.Small" parent="NaturalHourAppTheme.Dark">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.Dark.Large" parent="NaturalHourAppTheme.Dark">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+    </style>
+    <style name="NaturalHourAppTheme.Dark.XLarge" parent="NaturalHourAppTheme.Dark">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

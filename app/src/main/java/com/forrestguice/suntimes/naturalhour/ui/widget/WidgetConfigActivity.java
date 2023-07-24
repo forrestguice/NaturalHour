@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
@@ -83,7 +84,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            AppSettings.setTheme(this, AppSettings.getThemeResID(suntimesInfo.appTheme));
+            AppThemeInfo.setTheme(this, suntimesInfo.appTheme);
         }
 
         Intent intent = getIntent();

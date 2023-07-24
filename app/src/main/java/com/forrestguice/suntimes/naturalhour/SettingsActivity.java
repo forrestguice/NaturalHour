@@ -31,6 +31,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
@@ -56,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         if (suntimesInfo.appTheme != null) {    // override the theme
-            AppSettings.setTheme(this, AppSettings.getThemeResID(suntimesInfo.appTheme));
+            AppThemeInfo.setTheme(this, suntimesInfo.appTheme);
         }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
