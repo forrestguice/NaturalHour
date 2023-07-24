@@ -31,9 +31,9 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
     private static final AppThemeInfo info_darkTheme = new DarkThemeInfo();
     private static final AppThemeInfo info_lightTheme = new LightThemeInfo();
     private static final AppThemeInfo info_systemTheme = new SystemThemeInfo();
-    private static final AppThemeInfo info_systemTheme_contrast = info_systemTheme;  // = new ContrastSystemThemeInfo(); // TODO
-    private static final AppThemeInfo info_darkTheme_contrast = info_darkTheme;  // = new ContrastDarkThemeInfo();  // TODO
-    private static final AppThemeInfo info_lightTheme_contrast = info_lightTheme;  // = new ContrastLightThemeInfo();  // TODO
+    private static final AppThemeInfo info_systemTheme_contrast = new ContrastSystemThemeInfo();
+    private static final AppThemeInfo info_darkTheme_contrast = new ContrastDarkThemeInfo();
+    private static final AppThemeInfo info_lightTheme_contrast = new ContrastLightThemeInfo();
     private static final AppThemeInfo info_defaultTheme = info_systemTheme;
 
     @Override
@@ -135,5 +135,72 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
             }
         }
     }
+
+    /* ContrastSystemThemeInfo */
+    public static class ContrastSystemThemeInfo extends AppThemeInfo
+    {
+        @Override
+        public String getThemeName() {
+            return SuntimesInfo.THEME_CONTRAST_SYSTEM;
+        }
+        @Override
+        public int getDefaultNightMode() {
+            return AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        }
+        @Override
+        public int getStyleId(Context context, TextSize size) {
+            switch (size) {
+                case SMALL: return R.style.NaturalHourAppTheme_System1_Small;
+                case LARGE: return R.style.NaturalHourAppTheme_System1_Large;
+                case XLARGE: return R.style.NaturalHourAppTheme_System1_XLarge;
+                case NORMAL: default: return R.style.NaturalHourAppTheme_System1;
+            }
+        }
+    }
+
+    /* ContrastLightThemeInfo */
+    public static class ContrastLightThemeInfo extends AppThemeInfo
+    {
+        @Override
+        public String getThemeName() {
+            return SuntimesInfo.THEME_CONTRAST_LIGHT;
+        }
+        @Override
+        public int getDefaultNightMode() {
+            return AppCompatDelegate.MODE_NIGHT_NO;
+        }
+        @Override
+        public int getStyleId(Context context, TextSize size) {
+            switch (size) {
+                case SMALL: return R.style.NaturalHourAppTheme_Light1_Small;
+                case LARGE: return R.style.NaturalHourAppTheme_Light1_Large;
+                case XLARGE: return R.style.NaturalHourAppTheme_Light1_XLarge;
+                case NORMAL: default: return R.style.NaturalHourAppTheme_Light1;
+            }
+        }
+    }
+
+    /* ConstrastDarkThemeInfo */
+    public static class ContrastDarkThemeInfo extends AppThemeInfo
+    {
+        @Override
+        public String getThemeName() {
+            return SuntimesInfo.THEME_CONTRAST_DARK;
+        }
+        @Override
+        public int getDefaultNightMode() {
+            return AppCompatDelegate.MODE_NIGHT_YES;
+        }
+        @Override
+        public int getStyleId(Context context, TextSize size) {
+            switch (size) {
+                case SMALL: return R.style.NaturalHourAppTheme_Dark1_Small;
+                case LARGE: return R.style.NaturalHourAppTheme_Dark1_Large;
+                case XLARGE: return R.style.NaturalHourAppTheme_Dark1_XLarge;
+                case NORMAL: default: return R.style.NaturalHourAppTheme_Dark1;
+            }
+        }
+    }
+
 
 }
