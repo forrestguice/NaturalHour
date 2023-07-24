@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2023 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -47,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     protected void attachBaseContext(Context context)
     {
+        AppThemeInfo.setFactory(new AppThemes());
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );

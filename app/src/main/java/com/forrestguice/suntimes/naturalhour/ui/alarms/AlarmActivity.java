@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2023 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -44,6 +44,7 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
+import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
@@ -76,6 +77,7 @@ public class AlarmActivity extends AppCompatActivity
     @Override
     protected void attachBaseContext(Context context)
     {
+        AppThemeInfo.setFactory(new AppThemes());
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );

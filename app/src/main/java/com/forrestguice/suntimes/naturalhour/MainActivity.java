@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void attachBaseContext(Context context)
     {
+        AppThemeInfo.setFactory(new AppThemes());
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
