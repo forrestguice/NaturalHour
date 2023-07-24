@@ -28,7 +28,7 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground">
 
-                    <TextView android:id="@+id/bottombar_title" android:textStyle="bold" android:textSize="12sp"
+                    <TextView android:id="@+id/bottombar_title" android:textStyle="bold" android:textSize="?attr/text_size_small"
                         android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
                         android:layout_marginRight="12dp" android:layout_marginLeft="12dp"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"

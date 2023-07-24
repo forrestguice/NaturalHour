@@ -25,7 +25,8 @@
         <TextView android:visibility="gone"
             android:id="@+id/text_debug" android:gravity="right|end"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            tools:text="debug" android:layout_margin="8dp" />
+            tools:text="debug" android:layout_margin="8dp"
+            android:textSize="?attr/text_size_small" />
 
     </LinearLayout>
 

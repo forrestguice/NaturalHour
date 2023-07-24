@@ -32,7 +32,7 @@
             android:id="@+id/text_time_debug" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            tools:text="debug" />
+            android:textSize="?attr/text_size_small" tools:text="debug" />
 
     </LinearLayout>
 

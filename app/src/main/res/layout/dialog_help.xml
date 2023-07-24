@@ -10,7 +10,8 @@
             android:id="@+id/help_content"
             android:layout_height="wrap_content" android:layout_width="wrap_content"
             android:layout_marginTop="10dp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginBottom="5dp"
-            tools:text="help content goes here" />
+            tools:text="help content goes here"
+            android:textSize="?attr/text_size_small" />
 
     </LinearLayout>
 </ScrollView>
