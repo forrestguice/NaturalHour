@@ -41,4 +41,5 @@
     <color name="colorTime_contrast">@color/colorTime_contrast_dark</color>
     <color name="colorValue_contrast">@color/colorValue_contrast_dark</color>
     <color name="colorBottomSheet_contrast">@color/colorBottomSheet_contrast_dark</color>
+    <color name="window_bg_contrast">@color/window_bg_contrast_dark</color>
 </resources>

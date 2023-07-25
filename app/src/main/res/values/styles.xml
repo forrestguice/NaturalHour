@@ -121,6 +121,7 @@
         <item name="colorTime">@color/colorTime_contrast</item>
         <item name="colorValue">@color/colorValue_contrast</item>
         <item name="colorBottomSheet">@color/colorBottomSheet_contrast</item>
+        <item name="android:windowBackground">@color/window_bg_contrast</item>
     </style>
     <style name="NaturalHourAppTheme.System1.Small" parent="NaturalHourAppTheme.System1">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -287,6 +288,7 @@
         <item name="colorTime">@color/colorTime_contrast_light</item>
         <item name="colorValue">@color/colorValue_contrast_light</item>
         <item name="colorBottomSheet">@color/colorBottomSheet_contrast_light</item>
+        <item name="android:windowBackground">@color/window_bg_contrast_light</item>
     </style>
     <style name="NaturalHourAppTheme.Light1.Small" parent="NaturalHourAppTheme.Light1">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -454,6 +456,7 @@
         <item name="colorTime">@color/colorTime_contrast_dark</item>
         <item name="colorValue">@color/colorValue_contrast_dark</item>
         <item name="colorBottomSheet">@color/colorBottomSheet_contrast_dark</item>
+        <item name="android:windowBackground">@color/window_bg_contrast_dark</item>
     </style>
     <style name="NaturalHourAppTheme.Dark1.Small" parent="NaturalHourAppTheme.Dark1">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>

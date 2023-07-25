@@ -25,7 +25,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <LinearLayout android:background="?attr/dialogBackground"
         android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:minHeight="250dp" android:orientation="vertical"
         android:id="@+id/alarmdialog_fragments" />
 
