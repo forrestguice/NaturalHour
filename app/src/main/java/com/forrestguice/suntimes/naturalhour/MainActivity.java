@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity
     {
         MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
         MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
-        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar)};
+        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar), menu.findItem(R.id.action_timezone_utc)};
 
         if (itemSystem != null) {
             String tzID = getString(R.string.action_timezone_system_format, TimeZone.getDefault().getID());
@@ -523,6 +523,7 @@ public class MainActivity extends AppCompatActivity
 
             switch (item.getItemId())
             {
+                case R.id.action_timezone_utc:
                 case R.id.action_timezone_system:
                 case R.id.action_timezone_suntimes:
                 case R.id.action_timezone_localmean:
@@ -542,6 +543,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_timezone_suntimes: return AppSettings.TZMODE_SUNTIMES;
             case R.id.action_timezone_localmean: return AppSettings.TZMODE_LOCALMEAN;
             case R.id.action_timezone_system: return AppSettings.TZMODE_SYSTEM;
+            case R.id.action_timezone_utc: return AppSettings.TZMODE_UTC;
             case R.id.action_timezone_apparentsolar: default: return AppSettings.TZMODE_APPARENTSOLAR;
         }
     }

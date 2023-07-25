@@ -42,7 +42,7 @@ public class AppSettings
     public static final int TIMEMODE_DEFAULT = TIMEMODE_24HR;
 
     public static final String KEY_MODE_TIMEZONE = "timezonemode";
-    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3;
+    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3, TZMODE_UTC = 4;
     public static final int TZMODE_DEFAULT = TZMODE_APPARENTSOLAR;
 
     public static final String[] VALUES = new String[] { AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.KEY_MODE_TIMEZONE };
@@ -135,6 +135,7 @@ public class AppSettings
     {
         boolean hasLocation = (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4);
         switch (mode) {
+            case TZMODE_UTC: return NaturalHourFragment.getUtcTZ();
             case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(context, suntimesInfo);

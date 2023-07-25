@@ -747,13 +747,21 @@ public class NaturalHourFragment extends Fragment
             return TimeZone.getTimeZone(info.timezone);
 
         } else if (info.timezoneMode.equals("SOLAR_TIME") && info.location != null && info.location.length >= 3) {
-            if (info.solartimeMode.equals("LOCAL_MEAN_TIME"))
+            if ("LOCAL_MEAN_TIME".equals(info.solartimeMode)) {
                 return getLocalMeanTZ(context, info.location[2]);
-            else return getApparantSolarTZ(context, info.location[2]);
+            } else if ("UTC".equals(info.solartimeMode)) {
+                return getUtcTZ();
+            } else {
+                return getApparantSolarTZ(context, info.location[2]);
+            }
 
         } else {
             return TimeZone.getDefault();
         }
+    }
+
+    public static TimeZone getUtcTZ() {
+        return TimeZone.getTimeZone("UTC");
     }
 
     public static TimeZone getLocalMeanTZ(Context context, String longitude) {

@@ -29,6 +29,12 @@
             android:title="@string/action_timezone_apparentsolar"
             app:showAsAction="never" />
 
+        <item
+            android:id="@+id/action_timezone_utc"
+            android:orderInCategory="500"
+            android:title="@string/action_timezone_utc"
+            app:showAsAction="never" />
+
     </group>
 
 </menu>

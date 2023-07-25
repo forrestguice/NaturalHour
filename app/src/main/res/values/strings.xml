@@ -23,8 +23,10 @@
     <string name="action_timezone_suntimes">Suntimes %s</string>
     <string name="action_timezone_localmean">@string/solartime_localmean</string>
     <string name="action_timezone_apparentsolar">@string/solartime_apparent</string>
+    <string name="action_timezone_utc">@string/solartime_utc</string>
     <string name="solartime_localmean">Local Mean Time</string>
     <string name="solartime_apparent">Apparent Solar Time</string>
+    <string name="solartime_utc">UTC</string>   <!-- TODO -->
 
     <string name="action_timeformat_system_format">(%s)</string>
     <string name="action_timeformat_system">System %s</string>
@@ -91,12 +93,14 @@
         <item>@string/action_timezone_suntimes</item>
         <item>@string/action_timezone_localmean</item>
         <item>@string/action_timezone_apparentsolar</item>
+        <item>@string/action_timezone_utc</item>
     </string-array>
     <string-array name="pref_tzmode_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string name="pref_title_nightwatch_type">Night Watch</string>
