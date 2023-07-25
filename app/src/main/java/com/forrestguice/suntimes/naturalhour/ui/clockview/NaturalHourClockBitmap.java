@@ -672,8 +672,15 @@ public class NaturalHourClockBitmap
             double dayAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[3], timezone), data);
             double nightAngle = getAdjustedAngle(startAngle, data.getAngle(twilightHours[4], timezone), data);
 
-            double daySpan = NaturalHourData.simplifyAngle(Math.max(nightAngle, dayAngle) - Math.min(nightAngle, dayAngle));
-            double nightSpan = 2 * Math.PI - daySpan;
+            double daySpan, nightSpan;
+            if (nightAngle > dayAngle)
+            {
+                daySpan = NaturalHourData.simplifyAngle(nightAngle - dayAngle);
+                nightSpan = 2 * Math.PI - daySpan;
+            } else {
+                nightSpan = NaturalHourData.simplifyAngle(dayAngle - nightAngle);
+                daySpan = 2 * Math.PI - nightSpan;
+            }
 
             paintFillNight.setColor(colors.getColor(ClockColorValues.COLOR_FACE_NIGHT));
             paintFillDay.setColor(colors.getColor(ClockColorValues.COLOR_FACE_DAY));
