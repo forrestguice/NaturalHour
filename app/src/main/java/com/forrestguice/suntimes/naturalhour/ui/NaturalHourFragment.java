@@ -37,6 +37,7 @@ import android.support.v7.widget.SnapHelper;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -346,7 +347,14 @@ public class NaturalHourFragment extends Fragment
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
             TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-            if (textView != null) {
+            if (textView != null)
+            {
+                int[] attrs = new int[] { R.attr.text_size_small };
+                TypedArray a = context.obtainStyledAttributes(attrs);
+                float textSizePx = context.getResources().getDimension(a.getResourceId(0, R.dimen.text_size_small));
+                a.recycle();
+
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizePx);
                 textView.setMaxLines(7);
                 textView.setText(announcement);
             }
