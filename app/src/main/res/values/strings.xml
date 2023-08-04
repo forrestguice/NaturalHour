@@ -26,7 +26,7 @@
     <string name="action_timezone_utc">@string/solartime_utc</string>
     <string name="solartime_localmean">Local Mean Time</string>
     <string name="solartime_apparent">Apparent Solar Time</string>
-    <string name="solartime_utc">UTC</string>   <!-- TODO -->
+    <string name="solartime_utc">UTC</string>
 
     <string name="action_timeformat_system_format">(%s)</string>
     <string name="action_timeformat_system">System %s</string>
@@ -36,8 +36,8 @@
     <string name="timeformat_12hr">12-hour</string>
     <string name="timeformat_24hr">24-hour</string>
 
-    <string name="action_select">Select</string>  <!-- TODO -->
-    <string name="action_alarms">Set Alarm</string>  <!-- TODO -->
+    <string name="action_select">Select</string>
+    <string name="action_alarms">Set Alarm</string>
     <string name="action_colors">Colors</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
@@ -188,8 +188,8 @@
         <item>♄</item> <!-- saturday -->
     </string-array>
 
-    <string name="phrase_of_day">of the day</string>  <!-- TODO -->
-    <string name="phrase_of_night">of the night</string>  <!-- TODO -->
+    <string name="phrase_of_day">of the day</string>
+    <string name="phrase_of_night">of the night</string>
     <string-array name="phrase_of_day">
         <item>@string/phrase_of_day</item>
         <item>@string/phrase_of_night</item>
@@ -322,8 +322,8 @@
     <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->
     <string name="msg_colors_imported">Imported colors %s</string>    <!-- toast -->
 
-    <string name="alarm_title_format">%s</string>  <!-- TODO -->
-    <string name="alarm_summary_format">@string/app_name</string>  <!-- TODO -->
+    <string name="alarm_title_format">%s</string>
+    <string name="alarm_summary_format">@string/app_name</string>
 
     <string name="min_suntimes_alarms_version" translatable="false">Suntimes v0.14.0</string>   <!-- should match version_code -->
     <integer name="min_suntimes_alarms_version_code" translatable="false">80</integer>                         <!-- TODO: set code -->
@@ -363,7 +363,7 @@
 
     <string name="app_legal1"><![CDATA[
         <b>Source Code:</b><br />
-        Copyright &#169 2020 Forrest Guice <br />
+        Copyright &#169 2020-2023 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
 
