@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity
         if (alarmItem != null)
         {
             int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
-            boolean itemEnabled = (suntimesInfo.appCode >= suntimesAlarms_minVersion);
+            boolean itemEnabled = (suntimesInfo != null && suntimesInfo.appCode != null && suntimesInfo.appCode >= suntimesAlarms_minVersion);
             alarmItem.setVisible(itemEnabled);
             alarmItem.setEnabled(itemEnabled);
         }
