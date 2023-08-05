@@ -680,20 +680,20 @@ public class NaturalHourFragment extends Fragment
         private NaturalHourAdapterListener adapterListener = new NaturalHourAdapterListener();
 
         private View.OnClickListener onClockClick(final int position) {
-            return new View.OnClickListener() {
+            return new ThrottledClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapterListener.onClockClick(position);
                 }
-            };
+            }, 1000);
         }
         private View.OnClickListener onDateClick(final int position) {
-            return new View.OnClickListener() {
+            return new ThrottledClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapterListener.onDateClick(position);
                 }
-            };
+            }, 1000);
         }
         private View.OnClickListener onCardClick(@NonNull final NaturalHourViewHolder holder) {
             return new View.OnClickListener() {

@@ -38,6 +38,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.AppThemeInfo;
+import com.forrestguice.suntimes.naturalhour.ui.ThrottledClickListener;
 import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.addon.LocaleHelper;
@@ -323,19 +324,19 @@ public class MainActivity extends AppCompatActivity
         public void onSlide(@NonNull View view, float v) {}
     };
 
-    private View.OnClickListener onTimeFormatClick = new View.OnClickListener() {
+    private final View.OnClickListener onTimeFormatClick = new ThrottledClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             showTimeFormatPopup(v);
         }
-    };
+    }, 1000);
 
-    private View.OnClickListener onTimeZoneClick = new View.OnClickListener() {
+    private final View.OnClickListener onTimeZoneClick = new ThrottledClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             showTimeZonePopup(v);
         }
-    };
+    }, 1000);
 
     @SuppressWarnings("RestrictedApi")
     @Override
