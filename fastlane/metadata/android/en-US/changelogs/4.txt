@@ -1,0 +1,4 @@
+- adds UTC to time zone settings.
+- adds themed app icon (api33+).
+- adds support for "text size" and "high contrast" app themes.
+- fixes bug "watch face shows broken daylight" (#22).
