@@ -1,5 +1,12 @@
 ~
 
+### v0.2.2 (2023-08-04)
+* adds UTC to time zone settings.
+* adds themed app icon (api33+).
+* adds support for "text size" and "high contrast" app themes.
+* fixes bug "watch face shows broken daylight" (#22).
+* updates SuntimesAddon dependency (v0.3.0 -> v0.4.0).
+
 ### v0.2.1 (2023-01-09)
 * adds support for system dark mode (night mode).
 * fixes bug where Toast messages are unreadable on api33+.
