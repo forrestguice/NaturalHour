@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity
     private BottomSheetBehavior<View> bottomSheet;
     private ColorValuesSheetFragment sheetDialog;
 
+    private int suntimesAlarms_minVersion = 80;
+
     @Override
     protected void attachBaseContext(Context context)
     {
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
+        suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
     }
 
     @Override
@@ -120,6 +123,7 @@ public class MainActivity extends AppCompatActivity
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
         {
+            Log.w("NaturalHour", "Check version failed! Displaying warning banner..");
             View view = getWindow().getDecorView().findViewById(android.R.id.content);
             if (!suntimesInfo.hasPermission)
                 Messages.showPermissionDeniedMessage(this, view);
@@ -347,7 +351,6 @@ public class MainActivity extends AppCompatActivity
         MenuItem alarmItem = menu.findItem(R.id.action_alarms);
         if (alarmItem != null)
         {
-            int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
             boolean itemEnabled = (suntimesInfo != null && suntimesInfo.appCode != null && suntimesInfo.appCode >= suntimesAlarms_minVersion);
             alarmItem.setVisible(itemEnabled);
             alarmItem.setEnabled(itemEnabled);
@@ -560,7 +563,6 @@ public class MainActivity extends AppCompatActivity
 
     protected void showAlarmDialog()
     {
-        int suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
         if (suntimesInfo.appCode >= suntimesAlarms_minVersion)
         {
             NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
