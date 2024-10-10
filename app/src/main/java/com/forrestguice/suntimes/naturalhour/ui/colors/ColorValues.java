@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -41,6 +42,9 @@ public abstract class ColorValues implements Parcelable
     public ColorValues(ColorValues other) {
         loadColorValues(other);
     }
+    public ColorValues(ContentValues values) {
+        loadColorValues(values);
+    }
     protected ColorValues(Parcel in) {
         loadColorValues(in);
     }
@@ -51,66 +55,122 @@ public abstract class ColorValues implements Parcelable
         loadColorValues(jsonString);
     }
 
-    public void loadColorValues(@NonNull Parcel in) {
+    public void loadColorValues(@NonNull Parcel in)
+    {
         setID(in.readString());
-        for (String key : getColorKeys()) {
+        setLabel(in.readString());
+        for (String key : getColorKeys())
+        {
             setColor(key, in.readInt());
+            setLabel(key, in.readString());
         }
     }
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeString(getID());
-        for (String key : getColorKeys()) {
+        dest.writeString(getLabel());
+        for (String key : getColorKeys())
+        {
             dest.writeInt(values.getAsInteger(key));
+            dest.writeString(values.getAsString(key + SUFFIX_LABEL));
         }
     }
 
     public void loadColorValues(@NonNull ColorValues other)
     {
         setID(other.getID());
-        for (String key : other.getColorKeys()) {
+        setLabel(other.getLabel());
+        for (String key : other.getColorKeys())
+        {
             setColor(key, other.getColor(key));
+            if (other.hasLabel(key)) {
+                setLabel(key, other.getLabel(key));
+            }
+        }
+    }
+
+    public void loadColorValues(@NonNull ContentValues values)
+    {
+        setID(values.getAsString(KEY_ID));
+        setLabel(values.getAsString(KEY_LABEL));
+        for (String key : getColorKeys())
+        {
+            setColor(key, values.getAsInteger(key));
+            if (values.containsKey(key + SUFFIX_LABEL)) {
+                setLabel(key, values.getAsString(key + SUFFIX_LABEL));
+            }
         }
     }
 
     public void loadColorValues(SharedPreferences prefs, String prefix)
     {
-        setID(prefs.getString(prefix + KEY_ID, null));
+        setID(loadColorValuesID(prefs, prefix));
+        setLabel(loadColorValuesLabel(prefs, prefix));
         for (String key : getColorKeys()) {
             setColor(key, prefs.getInt(prefix + key, getFallbackColor()));
         }
     }
+    public static String loadColorValuesID(SharedPreferences prefs, String prefix) {
+        return prefs.getString(prefix + KEY_ID, null);
+    }
+    public static String loadColorValuesLabel(SharedPreferences prefs, String prefix) {
+        return prefs.getString(prefix + KEY_LABEL, null);
+    }
+    public static int loadColorValuesColor(SharedPreferences prefs, String prefix, String key, int defaultColor) {
+        return prefs.getInt(prefix + key, defaultColor);
+    }
+    public static int[] loadColorValuesColors(SharedPreferences prefs, String prefix, int defaultColor, String... keys)
+    {
+        int[] retValue = new int[keys != null ? keys.length : 0];
+        if (keys != null) {
+            for (int i=0; i<retValue.length; i++) {
+                retValue[i] = prefs.getInt(prefix + keys[i], defaultColor);
+            }
+        }
+        return retValue;
+    }
 
-    public void loadColorValues(String jsonString)
+    public boolean loadColorValues(String jsonString)
     {
         try {
             JSONObject json = new JSONObject(jsonString);
             setID(json.getString(KEY_ID));
-            for (String key : getColorKeys()) {
+            setLabel(json.getString(KEY_LABEL));
+            for (String key : getColorKeys())
+            {
                 setColor(key, json.has(key) ? Color.parseColor(json.getString(key).trim()) : getFallbackColor());
+                if (json.has(key + SUFFIX_LABEL)) {
+                    setLabel(key, json.getString(key + SUFFIX_LABEL).trim());
+                }
             }
+            return json.has(KEY_ID);
+
         } catch (JSONException e) {
             Log.e("ColorValues", "fromJSON: " + e);
+            return false;
         }
     }
 
-    public void putColors(SharedPreferences prefs, String prefix)
+    public void putColorsInto(SharedPreferences prefs, String prefix)
     {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(prefix + KEY_ID, getID());
+        editor.putString(prefix + KEY_LABEL, getLabel());
         for (String key : getColorKeys()) {
             editor.putInt(prefix + key, values.getAsInteger(key));
         }
         editor.apply();
     }
-    public void putColors(ContentValues other) {
+    public void putColorsInto(ContentValues other) {
         other.putAll(values);
     }
 
-    public void removeColors(SharedPreferences prefs, String prefix)
+    public void removeColorsFrom(SharedPreferences prefs, String prefix)
     {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(prefix + KEY_ID);
+        editor.remove(prefix + KEY_LABEL);
         for (String key : getColorKeys()) {
             editor.remove(prefix + key);
         }
@@ -130,13 +190,60 @@ public abstract class ColorValues implements Parcelable
         return values.getAsString(KEY_ID);
     }
 
+    public static final String KEY_LABEL = "colorValuesLabel";
+    public void setLabel( String colorsLabel ) {
+        values.put(KEY_LABEL, colorsLabel);
+    }
+    public String getLabel()
+    {
+        String label = values.getAsString(KEY_LABEL);
+        return (label != null) ? label : getID();
+    }
+
     public static final String SUFFIX_LABEL = "_LABEL";
-    protected void setLabel(String key, String label) {
+    public void setLabel(String key, String label) {
         values.put(key + SUFFIX_LABEL, label);
     }
     public String getLabel(String key) {
         String label = values.getAsString(key + SUFFIX_LABEL);
         return (label != null ? label : key);
+    }
+    public boolean hasLabel(String key) {
+        return values.containsKey(key + SUFFIX_LABEL);
+    }
+
+    public static final int ROLE_UNKNOWN = 0;
+    public static final int ROLE_BACKGROUND = 100;
+    public static final int ROLE_BACKGROUND_PRIMARY = 125;
+    public static final int ROLE_BACKGROUND_INVERSE = 150;
+    public static final int ROLE_FOREGROUND = 200;
+    public static final int ROLE_TEXT = 300;
+    public static final int ROLE_TEXT_INVERSE = 325;
+    public static final int ROLE_TEXT_PRIMARY = 350;
+    public static final int ROLE_TEXT_PRIMARY_INVERSE = 375;
+    public static final int ROLE_ACCENT = 400;
+    public static final int ROLE_ACTION = 500;
+
+    public static final String SUFFIX_ROLE = "_ROLE";
+    public void setRole(String key, int role) {
+        values.put(key + SUFFIX_ROLE, role);
+    }
+    public int getRole(String key) {
+        Integer role = values.getAsInteger(key + SUFFIX_ROLE);
+        return (role != null ? role : ROLE_UNKNOWN);
+    }
+    public boolean hasRole(String key) {
+        return values.containsKey(key + SUFFIX_ROLE);
+    }
+    @Nullable
+    public String findColorWithRole(int role)
+    {
+        for (String key : values.keySet()) {
+            if (getRole(key) == role) {
+                return key;
+            }
+        }
+        return null;
     }
 
     public void setColor(String key, int color) {
@@ -185,13 +292,22 @@ public abstract class ColorValues implements Parcelable
         return toJSON();
     }
 
-    public String toJSON()
+    public String toJSON() {
+        return toJSON(false);
+    }
+
+    public String toJSON(boolean withLabels)
     {
         JSONObject result = new JSONObject();
         try {
             result.put(KEY_ID, getID());
-            for (String key : getColorKeys()) {
+            result.put(KEY_LABEL, getLabel());
+            for (String key : getColorKeys())
+            {
                 result.put(key, "#" + Integer.toHexString(getColor(key)));
+                if (withLabels && hasLabel(key)) {
+                    result.put(key + SUFFIX_LABEL, getLabel(key));
+                }
             }
         } catch (JSONException e) {
             Log.e("ColorValues", "toJSON: " + e);

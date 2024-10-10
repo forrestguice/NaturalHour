@@ -20,6 +20,9 @@
 package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
@@ -37,9 +40,29 @@ public class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCol
     public ClockColorValuesCollection(Context context) {
         super(context);
     }
+    protected ClockColorValuesCollection(Parcel in) {
+        super(in);
+    }
+
+    @Override
+    @NonNull
+    protected String getSharedPrefsPrefix() {
+        return "";
+    }
+
+    @NonNull
+    protected String getCollectionSharedPrefsPrefix() {
+        return "";
+    }
 
     @Override
     public String getSharedPrefsName() {
+        return PREFS_CLOCKCOLORS;
+    }
+
+    @Nullable
+    @Override
+    public String getCollectionSharedPrefsName() {
         return PREFS_CLOCKCOLORS;
     }
 
@@ -47,4 +70,15 @@ public class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCol
     public ColorValues getDefaultColors(Context context) {
         return new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context);
     }
+
+    public static final Creator<ClockColorValuesCollection> CREATOR = new Creator<ClockColorValuesCollection>()
+    {
+        public ClockColorValuesCollection createFromParcel(Parcel in) {
+            return new ClockColorValuesCollection<ColorValues>(in);
+        }
+        public ClockColorValuesCollection<ColorValues>[] newArray(int size) {
+            return new ClockColorValuesCollection[size];
+        }
+    };
+
 }
