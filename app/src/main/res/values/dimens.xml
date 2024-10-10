@@ -5,6 +5,7 @@
     <dimen name="card_margin_left">0dp</dimen>
     <dimen name="card_margin_right">0dp</dimen>
     <dimen name="colortext_margin">3dp</dimen>
+    <dimen name="chip_radius">6dp</dimen>
 
     <dimen name="small_bottombar_size">32sp</dimen>    <!-- bottom bar minimum height -->  <!-- TODO: move to SuntimesAddon -->
     <dimen name="normal_bottombar_size">34sp</dimen>

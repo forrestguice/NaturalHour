@@ -5,6 +5,7 @@
     <attr name="icDone" format="reference" />
     <attr name="icAdd" format="reference" />
     <attr name="icEdit" format="reference" />
+    <attr name="icSave" format="reference" />
     <attr name="icDelete" format="reference" />
     <attr name="icColors" format="reference" />
     <attr name="icShare" format="reference" />

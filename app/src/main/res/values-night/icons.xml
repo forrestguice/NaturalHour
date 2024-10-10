@@ -4,6 +4,7 @@
     <drawable name="ic_done_ref">@drawable/ic_done</drawable>
     <drawable name="ic_add_ref">@drawable/ic_add</drawable>
     <drawable name="ic_edit_ref">@drawable/ic_edit</drawable>
+    <drawable name="ic_save_ref">@drawable/ic_save</drawable>
     <drawable name="ic_delete_ref">@drawable/ic_delete</drawable>
     <drawable name="ic_palette_ref">@drawable/ic_palette</drawable>
     <drawable name="ic_alarm_ref">@drawable/ic_alarm</drawable>

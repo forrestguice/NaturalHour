@@ -20,6 +20,7 @@
         <item name="icDone">@drawable/ic_done_ref</item>
         <item name="icAdd">@drawable/ic_add_ref</item>
         <item name="icEdit">@drawable/ic_edit_ref</item>
+        <item name="icSave">@drawable/ic_save_ref</item>
         <item name="icDelete">@drawable/ic_delete_ref</item>
         <item name="icColors">@drawable/ic_palette_ref</item>
         <item name="icAlarms">@drawable/ic_alarm_ref</item>
@@ -190,6 +191,7 @@
         <item name="icDone">@drawable/ic_done_light</item>
         <item name="icAdd">@drawable/ic_add_light</item>
         <item name="icEdit">@drawable/ic_edit_light</item>
+        <item name="icSave">@drawable/ic_save_light</item>
         <item name="icDelete">@drawable/ic_delete_light</item>
         <item name="icColors">@drawable/ic_palette_light</item>
         <item name="icAlarms">@drawable/ic_alarm_light</item>
@@ -358,6 +360,7 @@
         <item name="icDone">@drawable/ic_done</item>
         <item name="icAdd">@drawable/ic_add</item>
         <item name="icEdit">@drawable/ic_edit</item>
+        <item name="icSave">@drawable/ic_save</item>
         <item name="icDelete">@drawable/ic_delete</item>
         <item name="icColors">@drawable/ic_palette</item>
         <item name="icAlarms">@drawable/ic_alarm</item>

@@ -4,6 +4,7 @@
     <drawable name="ic_done_ref">@drawable/ic_done_light</drawable>
     <drawable name="ic_add_ref">@drawable/ic_add_light</drawable>
     <drawable name="ic_edit_ref">@drawable/ic_edit_light</drawable>
+    <drawable name="ic_save_ref">@drawable/ic_save_light</drawable>
     <drawable name="ic_delete_ref">@drawable/ic_delete_light</drawable>
     <drawable name="ic_palette_ref">@drawable/ic_palette_light</drawable>
     <drawable name="ic_alarm_ref">@drawable/ic_alarm_light</drawable>
