@@ -50,6 +50,7 @@ import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmSheet;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
@@ -308,6 +309,12 @@ public class MainActivity extends AppCompatActivity
                     bottomSheet.setHideable(true);
                     break;
             }
+        }
+
+        @Nullable
+        @Override
+        public ColorValues getDefaultValues() {
+            return new ClockColorValues(MainActivity.this);
         }
     };
 

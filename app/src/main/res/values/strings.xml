@@ -332,11 +332,37 @@
 
     <string name="suggest_colorid">Custom</string>       <!-- edittext hint -->
     <string name="hint_colorid">ID</string>              <!-- edittext hint -->
+    <string name="hint_colorlabel">Label</string>        <!-- edittext hint -->   <!-- TODO -->
     <string name="error_colorid_empty">ID required</string>                  <!-- edittext error text -->
     <string name="error_colorid_spaces">ID may not contains spaces</string>   <!-- edittext error text -->
+    <string name="error_colorlabel_empty">Label required</string>           <!-- edittext error text -->    <!-- TODO -->
     <string name="msg_colors_saved">Saved %s</string>        <!-- toast -->
     <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->
     <string name="msg_colors_imported">Imported colors %s</string>    <!-- toast -->
+    <string name="msg_colors_import_failed">Failed to import colors!</string>    <!-- toast -->
+
+    <string name="configAction_colors">Colors</string>
+    <string name="configAction_filterColors">Filter</string>    <!-- checkbox label -->
+    <string name="configAction_addColors">Add</string>
+    <string name="configAction_editColors">Edit</string>
+    <string name="configAction_saveColors">Save</string>
+    <string name="configAction_deleteColors">Delete</string>
+    <string name="configAction_importColors">Import</string>
+    <string name="configAction_exportColors">Export</string>
+    <string name="configAction_overflow">More</string>
+
+    <string name="colorsimport_dialog_title">@string/configAction_importColors</string>
+    <string name="colorsimport_dialog_hint">Paste previously shared colors here.</string>
+    <string name="colorsimport_dialog_ok">@string/configAction_importColors</string>
+    <string name="colorsimport_dialog_cancel">@string/dialog_cancel</string>
+
+    <string name="colorsdelete_dialog_title">Remove Colors?</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_message">Are you sure you want to remove %s?</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_ok">Remove</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_cancel">@string/dialog_cancel</string>    <!-- toast -->
+
+    <string name="configLabel_ID">ID</string>
+    <string name="dialog_cancel">@android:string/cancel</string>
 
     <string name="alarm_title_format">%s</string>
     <string name="alarm_summary_format">@string/app_name</string>

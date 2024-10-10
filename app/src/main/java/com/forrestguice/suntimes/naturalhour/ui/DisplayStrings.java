@@ -20,6 +20,10 @@
 package com.forrestguice.suntimes.naturalhour.ui;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +33,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.ReplacementSpan;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
@@ -297,11 +302,68 @@ public class DisplayStrings
         return span;
     }
 
+    public static SpannableString createBoldColorSpan(SpannableString span, String text, String toBold, int color) {
+        return createColorSpan(createBoldSpan(span, text, toBold), text, toBold, color);
+    }
+
+    public static SpannableString createBoldSpan(SpannableString span, String text, String toBold)
+    {
+        if (span == null) {
+            span = new SpannableString(text);
+        }
+        int start = text.indexOf(toBold);
+        if (start >= 0)
+        {
+            int end = start + toBold.length();
+            span.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return span;
+    }
+
+    public static SpannableString createRoundedBackgroundColorSpan(SpannableString span, String text, String toColorize,
+                                                                   final int textColor, final boolean boldText,
+                                                                   final int backgroundColor, final float cornerRadiusPx, final float paddingPx)
+    {
+        ReplacementSpan replacementSpan = new ReplacementSpan()
+        {
+            @Override
+            public int getSize(@NonNull Paint p, CharSequence t, int start, int end, @Nullable Paint.FontMetricsInt fontMetrics) {
+                return (int) Math.ceil(p.measureText(t, start, end) + (2 * paddingPx));
+            }
+
+            @Override
+            public void draw(@NonNull Canvas c, CharSequence t, int start, int end, float x, int top, int y, int bottom, @NonNull Paint p)
+            {
+                p.setColor(backgroundColor);
+                RectF rect = new RectF(x, top, x + p.measureText(t, start, end) + (2 * paddingPx), bottom);
+                c.drawRoundRect(rect, cornerRadiusPx, cornerRadiusPx, p);
+
+                p.setColor(textColor);
+                p.setTypeface(boldText ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
+                c.drawText(t, start, end, x + paddingPx, y, p);
+            }
+        };
+
+        if (span == null) {
+            span = new SpannableString(text);
+        }
+        int start = text.indexOf(toColorize);
+        if (start >= 0)
+        {
+            int end = start + toColorize.length() + 1;  // 1 beyond last character
+            span.setSpan(replacementSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return span;
+    }
+
     public static Spanned fromHtml(String htmlString )
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             return Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY);
         else return Html.fromHtml(htmlString);
     }
+
+
+
 
 }
