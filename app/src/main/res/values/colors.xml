@@ -135,4 +135,7 @@
     <color name="colorBottomSheet_contrast_dark">@color/grey_900</color>
     <color name="window_bg_contrast_dark">@color/grey_999</color>
 
+
+    <color name="teal_a200">#FF64FFDA</color>
+
 </resources>
