@@ -44,10 +44,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 
+import com.forrestguice.suntimes.addon.AddonHelper;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.ThrottledClickListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -383,30 +386,23 @@ public class ColorValuesEditFragment extends ColorValuesFragment
 
     protected Intent pickColorIntent(String key, int requestCode)
     {
-        /*int color = colorValues.getColor(key);
+        int color = colorValues.getColor(key);
         viewModel.setColor(color);
 
         ArrayList<Integer> recentColors = new ArrayList<>(new LinkedHashSet<>(colorValues.getColors()));
         recentColors.add(0, color);
 
-        int[] colorOverUnder = getColorOverUnder(getActivity(), key);
-        viewModel.setColorOver(colorOverUnder[0]);
-        viewModel.setColorUnder(colorOverUnder[1]);
-
-        Intent intent = new Intent(getActivity(), ColorActivity.class);
-        intent.putExtra(ColorDialog.KEY_SHOWALPHA, viewModel.showAlpha());
-        intent.setData(Uri.parse("color://" + String.format("#%08X", color)));
-        intent.putExtra(ColorDialog.KEY_RECENT, recentColors);
-        intent.putExtra(ColorDialog.KEY_LABEL, colorValues.getLabel(key));
-        intent.putExtra(ColorDialog.KEY_COLOR_OVER, viewModel.getColorOver());
-        intent.putExtra(ColorDialog.KEY_COLOR_UNDER, viewModel.getColorUnder());
-        intent.putExtra(ColorDialog.KEY_PREVIEW_MODE, viewModel.getPreviewMode());
+        Intent intent = AddonHelper.intentForColorActivity(colorValues.getColor(key), viewModel.showAlpha(), colorValues.getColors());
+        intent.putExtra("recentColors", recentColors);
+        intent.putExtra("color_label", colorValues.getLabel(key));
+        intent.putExtra("color_over", viewModel.getColorOver());
+        intent.putExtra("color_under", viewModel.getColorUnder());
+        intent.putExtra("previewMode", viewModel.getPreviewMode());
 
         if (defaultValues != null) {
-            intent.putExtra(ColorDialog.KEY_SUGGESTED, defaultValues.getColor(key));
+            intent.putExtra("suggestedColor", defaultValues.getColor(key));
         }
-        return intent;*/
-        return null;
+        return intent;
     }
 
     protected void onPickColorResult(int requestCode, int resultCode, Intent data)
