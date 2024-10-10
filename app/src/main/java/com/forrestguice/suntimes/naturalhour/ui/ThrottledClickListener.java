@@ -31,6 +31,10 @@ public class ThrottledClickListener implements View.OnClickListener
     protected Long previousClickAt;
     protected View.OnClickListener listener;
 
+    public ThrottledClickListener(@NonNull View.OnClickListener listener) {
+        this(listener, 1000);
+    }
+
     public ThrottledClickListener(@NonNull View.OnClickListener listener, long delayMs)
     {
         this.delayMs = delayMs;

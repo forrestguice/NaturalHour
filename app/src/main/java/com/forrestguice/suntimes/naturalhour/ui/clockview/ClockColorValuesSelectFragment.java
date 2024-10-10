@@ -33,10 +33,4 @@ public class ClockColorValuesSelectFragment extends ColorValuesSelectFragment
     protected void onPrepareOverflowMenu(Context context, Menu menu) {
         Messages.forceActionBarIcons(menu);
     }
-
-    @Override
-    @Nullable
-    protected ColorValues createColorValues(String jsonString) {
-        return new ClockColorValues(jsonString);
-    }
 }

@@ -171,6 +171,11 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
         }
 
         @Override
+        public void onImportClicked() {
+            // TODO
+        }
+
+        @Override
         public void onAddClicked(@Nullable String colorsID)
         {
             //Log.d("DEBUG", "onAddClicked " + colorsID);
@@ -200,11 +205,16 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
         }
 
         @Override
+        public void onDeleteClicked(@Nullable String colorsID) {
+            // TODO
+        }
+
+        @Override
         public void onItemSelected(ColorValuesSelectFragment.ColorValuesItem item)
         {
             //Log.d("DEBUG", "onItemSelected " + item.colorsID);
             Context context = getActivity();
-            if (context != null) {
+            if (context != null && item != null) {
                 colorCollection.setSelectedColorsID(context, item.colorsID);
                 ColorValues selectedColors = colorCollection.getColors(context, item.colorsID);
                 onSelectColors(selectedColors);
