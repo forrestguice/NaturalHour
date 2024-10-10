@@ -204,7 +204,7 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         return false;
     }
 
-    private View.OnClickListener onCancelButtonClicked = new View.OnClickListener() {
+    private final View.OnClickListener onCancelButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             onCancelled();
@@ -216,7 +216,7 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         }
     }
 
-    private View.OnClickListener onOverflowButtonClicked = new View.OnClickListener() {
+    private final View.OnClickListener onOverflowButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             showOverflowMenu(getActivity(), v);
@@ -516,9 +516,9 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         {
             switch (item.getItemId())
             {
-                //case R.id.action_colors_copytheme:
-                //    importFromTheme(getActivity());
-                //    return true;
+                case R.id.action_colors_copytheme:
+                    importFromTheme(getActivity());
+                    return true;
 
                 case R.id.action_colors_import:
                     importColors(getActivity());

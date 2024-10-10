@@ -171,7 +171,7 @@ public abstract class ColorValuesCollection<T extends ColorValues> implements Pa
     public void removeColors(Context context, String colorsID) {
         colorValues.remove(colorsID);
         removeColors(context, getCollectionSharedPreferences(context), colorsID);
-        if (collection.remove(colorsID)) {
+        if (colorsID == null || collection.remove(colorsID)) {
             saveCollection(getCollectionSharedPreferences(context));
         }
     }
