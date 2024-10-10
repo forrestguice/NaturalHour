@@ -51,9 +51,10 @@ import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmFragment;
 import com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourAlarmSheet;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
 
 import java.util.TimeZone;
 
@@ -638,5 +639,13 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return dialog;
+    }
+
+    public static class ColorValuesSheetFragment extends com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment
+    {
+        @Override
+        protected ColorValuesEditFragment createColorValuesEditFragment() {
+            return new ClockColorValuesEditFragment();
+        }
     }
 }

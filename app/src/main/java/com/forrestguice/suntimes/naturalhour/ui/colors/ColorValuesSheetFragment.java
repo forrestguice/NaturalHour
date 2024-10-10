@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -35,7 +34,6 @@ import android.view.ViewGroup;
 
 import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.naturalhour.R;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment;
 
 import java.util.Locale;
 
@@ -89,6 +87,13 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
         return content;
     }
 
+    protected ColorValuesEditFragment createColorValuesEditFragment() {
+        return new ColorValuesEditFragment();
+    }
+    protected ColorValuesSelectFragment createColorValuesSelectFragment() {
+        return new ColorValuesSelectFragment();
+    }
+
     protected void initViews()
     {
         FragmentManager fragments = getChildFragmentManager();
@@ -97,7 +102,7 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
 
         if (listDialog == null)
         {
-            listDialog = new ColorValuesSelectFragment(); //(ColorValuesSelectFragment) fragments.findFragmentById(R.id.colorsCollectionFragment);
+            listDialog = createColorValuesSelectFragment();
             listDialog.setAppWidgetID(getAppWidgetID());
             listDialog.setColorTag(getColorTag());
             listDialog.setTheme(getThemeResID());
@@ -112,7 +117,7 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
         }
         if (editDialog == null)
         {
-            editDialog = new ColorValuesEditFragment();  // (ClockColorValuesEditFragment) fragments.findFragmentById(R.id.colorsFragment);
+            editDialog = createColorValuesEditFragment();
             editDialog.setTheme(getThemeResID());
             editDialog.setFilter(getFilter());
             editDialog.setApplyFilter(applyFilter());
