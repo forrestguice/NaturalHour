@@ -54,8 +54,8 @@ public class NaturalHourClockBitmap
     public static final double START_BOTTOM = Math.PI / 2d;
 
     public static final String VALUE_NIGHTWATCH_TYPE = "clockface_nightwatchType";
-    public static final int NIGHTWATCH_4 = 0;
-    public static final int NIGHTWATCH_3 = 1;
+    public static final int NIGHTWATCH_4 = 4;
+    public static final int NIGHTWATCH_3 = 3;
     public static final int NIGHTWATCH_DEFAULT = NIGHTWATCH_4;
 
     public static final String VALUE_HOURMODE = "clockface_hourmode";
@@ -499,15 +499,14 @@ public class NaturalHourClockBitmap
             if (flags.getAsBoolean(FLAG_SHOW_NIGHTWATCH))
             {
                 int type = getValue(VALUE_NIGHTWATCH_TYPE);
-                int numWatches = (type == NIGHTWATCH_3 ? 3 : 4);
-                int hoursPerWatch = 12 / numWatches;
+                int numWatches = getNumWatchesForNightWatchType(type);
+                double watchSweepAngle = (nightAngle * 12d) / numWatches;
 
                 int c = 1;
                 Path labelPath = new Path();
-                double watchSweepAngle = nightAngle * hoursPerWatch;
-                for (int i = 12; i<naturalHours.length; i += hoursPerWatch)
+                for (int i = 0; i<numWatches; i++)
                 {
-                    double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], tz), data);
+                    double a = sunsetAngle + (i * watchSweepAngle);
                     canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightFill);
                     canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightBorder);
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
@@ -538,12 +537,24 @@ public class NaturalHourClockBitmap
         }
     }
 
+    protected int getNumWatchesForNightWatchType(int type)
+    {
+        int n;
+        switch (type)
+        {
+            case 0: n = 4; break;    // legacy mapping
+            case 1: n = 3; break;    // legacy mapping
+            default: n = type; break;
+        }
+        return (n <= 1 ? NIGHTWATCH_DEFAULT : (Math.min(type, 11)));
+    }
+
     protected CharSequence formatNightWatchLabel(@NonNull Context context, int type, int num)
     {
         switch (type)
         {
             case NIGHTWATCH_3: return DisplayStrings.formatNightWatchLabel1(context, num);
-            case NIGHTWATCH_4: default: return DisplayStrings.formatNightWatchLabel0(context, num);
+            default: return DisplayStrings.formatNightWatchLabel0(context, num);
         }
     }
 

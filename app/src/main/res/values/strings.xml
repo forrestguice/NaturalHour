@@ -105,12 +105,22 @@
 
     <string name="pref_title_nightwatch_type">Night Watch</string>
     <string-array name="pref_nightwatch_display">
+        <item>2 watches</item>
         <item>3 watches</item>
         <item>4 watches</item>
+        <item>5 watches</item>
+        <item>6 watches</item>
+        <item>7 watches</item>
+        <item>8 watches</item>
     </string-array>
     <string-array name="pref_nightwatch_values" translatable="false">  <!-- one-to-one with pref_nightwatch_display -->
-        <item>1</item>
-        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
     </string-array>
 
     <string name="pref_title_numerals">Numerals</string>
@@ -170,6 +180,12 @@
         <item>second watch</item>
         <item>third watch</item>
         <item>fourth watch</item>
+        <item>fifth watch</item>
+        <item>sixth watch</item>
+        <item>seventh watch</item>
+        <item>eighth watch</item>
+        <item>ninth watch</item>
+        <item>tenth watch</item>
     </string-array>
     <string-array name="nightwatch_phrase1">
         <item>0</item>
