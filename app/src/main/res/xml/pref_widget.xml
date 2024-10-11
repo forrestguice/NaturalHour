@@ -77,6 +77,12 @@
         <CheckBoxPreference android:key="widget_0_clockface_showBackgroundNight"
             android:title="@string/pref_title_show_night" android:defaultValue="@bool/clockface_show_background_night" />
 
+        <CheckBoxPreference android:key="widget_0_clockface_showBackgroundMidnight"
+            android:title="@string/pref_title_show_midnight" android:defaultValue="@bool/clockface_show_background_midnight" />
+
+        <CheckBoxPreference android:key="widget_0_clockface_showBackgroundNoon"
+            android:title="@string/pref_title_show_noon" android:defaultValue="@bool/clockface_show_background_noon" />
+
         <CheckBoxPreference android:key="widget_0_clockface_showDate"
             android:title="@string/pref_title_show_date" android:defaultValue="@bool/clockface_show_date" />
 

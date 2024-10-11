@@ -89,12 +89,15 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_BACKGROUND_NIGHT = "clockface_showBackgroundNight";
     public static final String FLAG_SHOW_BACKGROUND_AMPM = "clockface_showBackgroundAmPm";
     public static final String FLAG_SHOW_BACKGROUND_TWILIGHTS = "clockface_showBackgroundTwilights";
+    public static final String FLAG_SHOW_BACKGROUND_MIDNIGHT = "clockface_showBackgroundMidnight";
+    public static final String FLAG_SHOW_BACKGROUND_NOON = "clockface_showBackgroundNoon";
     public static final String FLAG_SHOW_TICKS_15M = "clockface_showTick15m";
     public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
 
     public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_CENTER_NOON, FLAG_SHOW_NIGHTWATCH, FLAG_SHOW_TIMEZONE, FLAG_SHOW_LOCATION,
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
+            FLAG_SHOW_BACKGROUND_MIDNIGHT, FLAG_SHOW_BACKGROUND_NOON
     };
     public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NIGHTWATCH_TYPE };
 
@@ -116,6 +119,8 @@ public class NaturalHourClockBitmap
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_TWILIGHTS, context.getResources().getBoolean(R.bool.clockface_show_background_twilights));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_MIDNIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_midnight));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_NOON, context.getResources().getBoolean(R.bool.clockface_show_background_noon));
         setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
         setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
 
@@ -171,6 +176,8 @@ public class NaturalHourClockBitmap
             case FLAG_SHOW_BACKGROUND_DAY: return context.getResources().getBoolean(R.bool.clockface_show_background_day);
             case FLAG_SHOW_BACKGROUND_AMPM: return context.getResources().getBoolean(R.bool.clockface_show_background_ampm);
             case FLAG_SHOW_BACKGROUND_TWILIGHTS: return context.getResources().getBoolean(R.bool.clockface_show_background_twilights);
+            case FLAG_SHOW_BACKGROUND_MIDNIGHT: return context.getResources().getBoolean(R.bool.clockface_show_background_midnight);
+            case FLAG_SHOW_BACKGROUND_NOON: return context.getResources().getBoolean(R.bool.clockface_show_background_noon);
             case FLAG_SHOW_TICKS_5M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_5m);
             case FLAG_SHOW_TICKS_15M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_15m);
             case FLAG_SHOW_DATEYEAR:
@@ -766,6 +773,16 @@ public class NaturalHourClockBitmap
                 CharSequence location = DisplayStrings.formatLocation(context, data.getLatitude(), data.getLongitude(), 2);
                 canvas.drawTextOnPath(location.toString(), path, 0, textSmall/3f, paintLabel);
             }
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_MIDNIGHT)) {
+                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[18], timezone), data);
+                drawRay(canvas, cX, cY, a, 0, radiusInner(cX), paintArcNightBorder);
+            }
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NOON)) {
+                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[6], timezone), data);
+                drawRay(canvas, cX, cY, a, 0, radiusInner(cX), paintArcDayBorder);
+            }
         }
 
         if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE))
@@ -782,6 +799,7 @@ public class NaturalHourClockBitmap
             paintLabel.setTextSize(textSmall);
             canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
         }
+
     }
 
     private int getTwilightColor(int i)

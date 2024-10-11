@@ -14,6 +14,8 @@
     <bool name="clockface_show_background_night">true</bool>
     <bool name="clockface_show_background_ampm">true</bool>
     <bool name="clockface_show_background_twilights">true</bool>
+    <bool name="clockface_show_background_midnight">false</bool>
+    <bool name="clockface_show_background_noon">false</bool>
 
     <!-- values -->
     <integer name="clockface_hourmode">0</integer>
