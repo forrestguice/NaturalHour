@@ -19,6 +19,7 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
 
 import java.util.TimeZone;
@@ -108,6 +110,11 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.setBottomSheetCallback(bottomSheetCallback);
 
         sheetDialog = new ColorValuesSheetFragment();
+        //sheetDialog.setPreviewKeys(ClockColorValues.COLOR_FACE_NIGHT, ClockColorValues.COLOR_FRAME, ClockColorValues.COLOR_FACE_AM, ClockColorValues.COLOR_FACE_PM);
+
+        ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = ViewModelProviders.of(MainActivity.this).get(ColorValuesEditFragment.ColorValuesEditViewModel.class);
+        editViewModel.setShowAlpha(true);
+
         if (suntimesInfo.appTheme != null) {    // override the theme
             sheetDialog.setTheme(AppThemeInfo.themePrefToStyleId(MainActivity.this, AppThemeInfo.themeNameFromInfo(suntimesInfo)));
         }

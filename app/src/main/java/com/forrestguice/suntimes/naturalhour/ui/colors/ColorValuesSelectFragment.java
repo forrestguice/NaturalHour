@@ -21,6 +21,7 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -503,6 +504,10 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
 
         public static int[] getPreviewColors(Context context, @Nullable ColorValuesCollection<ColorValues> collection, @Nullable String colorsID, @Nullable String[] previewKeys)
         {
+            if (collection == null) {
+                return new int[] { Color.TRANSPARENT };
+            }
+
             if (colorsID == null)
             {
                 int[] colors = ((previewKeys != null) ? new int[previewKeys.length] : new int[0]);
@@ -516,7 +521,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
                 return colors;
 
             } else {
-                return collection.getColors(context, colorsID, ContextCompat.getColor(context, R.color.teal_a200), previewKeys);
+                return collection.getColors(context, colorsID, ContextCompat.getColor(context, R.color.transparent), previewKeys);
             }
         }
     }
@@ -607,7 +612,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
             }
 
             int[] previewColors = item.previewColors;
-            View[] previews = new View[] { view.findViewById(R.id.colorPreview0), view.findViewById(R.id.colorPreview1), view.findViewById(R.id.colorPreview2) };
+            View[] previews = new View[] { view.findViewById(R.id.colorPreview0), view.findViewById(R.id.colorPreview1), view.findViewById(R.id.colorPreview2), view.findViewById(R.id.colorPreview3) };
             if (previews[0] != null && previewColors != null && previewColors.length > 0)
             {
                 for (int i=0; i<previews.length; i++)

@@ -7,19 +7,25 @@
 
     <View
         android:id="@+id/colorPreview0"
-        android:layout_width="32dp" android:layout_height="match_parent"
+        android:layout_width="8dp" android:layout_height="16dp"
         android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
         android:background="@color/transparent" />
 
     <View
         android:id="@+id/colorPreview1"
-        android:layout_width="16dp" android:layout_height="match_parent"
+        android:layout_width="8dp" android:layout_height="16dp"
         android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
         android:background="@color/transparent" />
 
     <View
         android:id="@+id/colorPreview2"
-        android:layout_width="16dp" android:layout_height="match_parent"
+        android:layout_width="8dp" android:layout_height="16dp"
+        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+        android:background="@color/transparent" />
+
+    <View
+        android:id="@+id/colorPreview3"
+        android:layout_width="8dp" android:layout_height="16dp"
         android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
         android:background="@color/transparent" />
 
