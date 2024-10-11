@@ -24,13 +24,14 @@ import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 
 /**
  * ColorValuesCollection
  */
-public class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCollection
+public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorValues>
 {
     public static final String PREFS_CLOCKCOLORS = "prefs_clockcolors";
 
@@ -43,6 +44,16 @@ public class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCol
     protected ClockColorValuesCollection(Parcel in) {
         super(in);
     }
+
+    public static final Creator<ClockColorValuesCollection> CREATOR = new Creator<ClockColorValuesCollection>()
+    {
+        public ClockColorValuesCollection createFromParcel(Parcel in) {
+            return new ClockColorValuesCollection<ColorValues>(in);
+        }
+        public ClockColorValuesCollection<ColorValues>[] newArray(int size) {
+            return new ClockColorValuesCollection[size];
+        }
+    };
 
     @Override
     @NonNull
@@ -67,18 +78,57 @@ public class ClockColorValuesCollection<ClockColorValues> extends ColorValuesCol
     }
 
     @Override
+    protected String[] getDefaultColorIDs() {
+        return new String[] { ClockColorValues.COLOR_ID_DARK, ClockColorValues.COLOR_ID_LIGHT, ClockColorValuesSun.COLOR_ID_SUN};
+    }
+
+    @Override
     public ColorValues getDefaultColors(Context context) {
         return new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context);
     }
 
-    public static final Creator<ClockColorValuesCollection> CREATOR = new Creator<ClockColorValuesCollection>()
+    @Override
+    protected ColorValues getDefaultColors(Context context, @Nullable String colorsID)
     {
-        public ClockColorValuesCollection createFromParcel(Parcel in) {
-            return new ClockColorValuesCollection<ColorValues>(in);
+        if (colorsID == null) {
+            return getDefaultColors(context);
         }
-        public ClockColorValuesCollection<ColorValues>[] newArray(int size) {
-            return new ClockColorValuesCollection[size];
+
+        ColorValues v;
+        switch (colorsID)
+        {
+            case ClockColorValues.COLOR_ID_DARK:
+                v = new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context, true);
+                break;
+
+            case ClockColorValues.COLOR_ID_LIGHT:
+                v = new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context, false);
+                break;
+
+            case ClockColorValuesSun.COLOR_ID_SUN:
+                v = new ClockColorValuesSun(context, true);
+                break;
+
+            default:
+                v = getDefaultColors(context);
+                break;
         }
-    };
+        v.setID(colorsID);
+        v.setLabel(getDefaultLabel(context, colorsID));
+        return v;
+    }
+
+    public String getDefaultLabel(Context context, @Nullable String colorsID)
+    {
+        if (colorsID == null) {
+            return context.getString(R.string.defaultColors_name);
+        }
+        switch(colorsID) {
+            case ClockColorValues.COLOR_ID_DARK: return context.getString(R.string.defaultColors_name_dark);
+            case ClockColorValues.COLOR_ID_LIGHT: return context.getString(R.string.defaultColors_name_light);
+            case ClockColorValuesSun.COLOR_ID_SUN: return context.getString(R.string.defaultColors_name_az);
+            default: return colorsID;
+        }
+    }
 
 }

@@ -333,6 +333,7 @@
     <string name="defaultColors_name">Default</string>
     <string name="defaultColors_name_dark">Dark</string>
     <string name="defaultColors_name_light">Light</string>
+    <string name="defaultColors_name_az">Sun (Dark)</string>
 
     <string name="suggest_colorid">Custom</string>       <!-- edittext hint -->
     <string name="hint_colorid">ID</string>              <!-- edittext hint -->
