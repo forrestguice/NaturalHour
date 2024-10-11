@@ -45,11 +45,6 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
     }
 
     @Override
-    protected void onPickColorResult(String key, Intent data) {
-        setColor(key, AddonHelper.resultForColorActivity(data, colorValues.getColor(key)));
-    }
-
-    @Override
     protected void onPrepareOverflowMenu(Context context, Menu menu)
     {
         super.onPrepareOverflowMenu(context, menu);

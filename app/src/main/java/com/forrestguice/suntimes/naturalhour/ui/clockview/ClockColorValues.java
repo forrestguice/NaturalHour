@@ -31,12 +31,16 @@ import android.support.v4.graphics.ColorUtils;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ResourceColorValues;
 
 /**
  * ColorValues
  */
-public class ClockColorValues extends ColorValues implements Parcelable
+public class ClockColorValues extends ResourceColorValues implements Parcelable
 {
+    public static final String COLOR_ID_DARK = "dark";
+    public static final String COLOR_ID_LIGHT = "light";
+
     public static final String COLOR_PLATE = "color_plate";
     public static final String COLOR_FRAME = "color_frame";
     public static final String COLOR_HAND = "color_hand";
@@ -115,6 +119,36 @@ public class ClockColorValues extends ColorValues implements Parcelable
         return COLORS;
     }
 
+    @Override
+    public int[] getColorAttrs() {
+        return COLORS_ATTR;
+    }
+
+    @Override
+    public int[] getColorLabelsRes() {
+        return LABELS_RESID;
+    }
+
+    @Override
+    public int[] getColorRoles() {
+        return COLOR_ROLES;
+    }
+
+    @Override
+    public int[] getColorsResDark() {
+        return COLORS_RES_DARK;
+    }
+
+    @Override
+    public int[] getColorsResLight() {
+        return COLORS_RES_LIGHT;
+    }
+
+    @Override
+    public int[] getColorsFallback() {
+        return COLORS_FALLBACK;
+    }
+
     public ClockColorValues(ColorValues other) {
         super(other);
     }
@@ -124,35 +158,14 @@ public class ClockColorValues extends ColorValues implements Parcelable
     private ClockColorValues(Parcel in) {
         super(in);
     }
-    public ClockColorValues()
-    {
+    public ClockColorValues() {
         super();
-        if (BuildConfig.DEBUG && (COLORS.length != COLORS_FALLBACK.length)) {
-            throw new AssertionError("COLORS and COLORS_FALLBACK have different lengths! These arrays should be one-to-one.");
-        }
-        for (int i=0; i<COLORS.length; i++) {
-            setColor(COLORS[i], COLORS_FALLBACK[i]);
-            setLabel(COLORS[i], COLORS[i]);
-            setRole(COLORS[i], COLOR_ROLES[i]);
-        }
     }
     public ClockColorValues(Context context) {
         this(context, true);
     }
-    public ClockColorValues(Context context, boolean darkTheme)
-    {
-        super();
-        if (BuildConfig.DEBUG && (COLORS.length != COLORS_ATTR.length)) {
-            throw new AssertionError("COLORS and COLORS_ATTR have different lengths! These arrays should be one-to-one.");
-        }
-        int[] defaultResID = darkTheme ? COLORS_RES_DARK : COLORS_RES_LIGHT;
-        TypedArray a = context.obtainStyledAttributes(COLORS_ATTR);
-        for (int i=0; i<COLORS.length; i++) {
-            setColor(COLORS[i], ContextCompat.getColor(context, a.getResourceId(i, defaultResID[i])));
-            setLabel(COLORS[i], context.getString(LABELS_RESID[i]));
-            setRole(COLORS[i], COLOR_ROLES[i]);
-        }
-        a.recycle();
+    public ClockColorValues(Context context, boolean darkTheme) {
+        super(context, darkTheme);
     }
     public ClockColorValues(String jsonString) {
         super(jsonString);
@@ -178,9 +191,7 @@ public class ClockColorValues extends ColorValues implements Parcelable
             values.setRole(COLORS[i], COLOR_ROLES[i]);
         }
         values.setID(darkTheme ? COLOR_ID_DARK : COLOR_ID_LIGHT);
-        values.setLabel(darkTheme ? "Dark (default)" : "Light (default)");       // TODO: i18n
+        values.setLabel(darkTheme ? context.getString(R.string.defaultColors_name_dark) : context.getString(R.string.defaultColors_name_light));
         return values;
     }
-    public static final String COLOR_ID_DARK = "dark";
-    public static final String COLOR_ID_LIGHT = "light";
 }
