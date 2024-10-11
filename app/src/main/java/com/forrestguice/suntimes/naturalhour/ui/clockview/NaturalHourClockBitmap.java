@@ -693,15 +693,21 @@ public class NaturalHourClockBitmap
             boolean showDay = flags.getAsBoolean(FLAG_SHOW_BACKGROUND_DAY);
             if (showTwilights || showDay)
             {
-                double a0 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[0], timezone), data);
+                long time0 = (twilightHours[0] != -1) ? twilightHours[0] : naturalHours[18];
+                double a0 = getAdjustedAngle(startAngle, data.getAngle(time0, timezone), data);
+
                 for (int i=1; i<twilightHours.length; i++)
                 {
-                    double a1 = getAdjustedAngle(startAngle, data.getAngle(twilightHours[i], timezone), data);
+                    long time = (twilightHours[i] != -1) ? twilightHours[i] : naturalHours[18];
+                    double a1 = getAdjustedAngle(startAngle, data.getAngle(time, timezone), data);
+
                     if ((i == 4 && showDay) || i != 4 && showTwilights)
                     {
-                        double span = a1 - a0;
-                        paintFillDay.setColor(getTwilightColor(i-1));
-                        drawPie(canvas, cX, cY, radiusInner(cX), a0, span, paintFillDay);
+                        double span = NaturalHourData.simplifyAngle(a1 - a0);
+                        if (span != 0) {
+                            paintFillDay.setColor(getTwilightColor(i - 1));
+                            drawPie(canvas, cX, cY, radiusInner(cX), a0, span, paintFillDay);
+                        }
                     }
                     a0 = a1;
                 }
