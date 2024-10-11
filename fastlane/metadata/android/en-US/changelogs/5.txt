@@ -1,0 +1,2 @@
+- fixes bug where "twilight periods are drawn incorrectly in polar regions".
+- updates default color schemes.

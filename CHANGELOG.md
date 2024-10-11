@@ -1,5 +1,10 @@
 ~
 
+### v0.2.3 (2024-10-14)
+* fixes bug where "twilight periods are drawn incorrectly in polar regions".
+* fixes poor contrast in themed app icon (api33+).
+* updates default color schemes.
+
 ### v0.2.2 (2023-08-04)
 * adds UTC to time zone settings.
 * adds themed app icon (api33+).
