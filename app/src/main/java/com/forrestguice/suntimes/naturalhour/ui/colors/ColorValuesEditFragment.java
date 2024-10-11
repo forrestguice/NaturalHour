@@ -392,6 +392,10 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         ArrayList<Integer> recentColors = new ArrayList<>(new LinkedHashSet<>(colorValues.getColors()));
         recentColors.add(0, color);
 
+        int[] colorOverUnder = getColorOverUnder(getActivity(), key);
+        viewModel.setColorOver(colorOverUnder[0]);
+        viewModel.setColorUnder(colorOverUnder[1]);
+
         Intent intent = AddonHelper.intentForColorActivity(colorValues.getColor(key), viewModel.showAlpha(), colorValues.getColors());
         intent.putExtra("recentColors", recentColors);
         intent.putExtra("color_label", colorValues.getLabel(key));

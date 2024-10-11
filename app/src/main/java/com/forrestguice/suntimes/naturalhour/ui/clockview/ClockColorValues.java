@@ -95,6 +95,13 @@ public class ClockColorValues extends ColorValues implements Parcelable
             R.string.clockface_ring_night, R.string.clockface_ring_night_label, R.string.clockface_ring_night_stroke, R.string.clockface_face_night,
             R.string.clockface_face_am, R.string.clockface_face_pm, R.string.clockface_face_astro, R.string.clockface_face_nautical, R.string.clockface_face_civil
     };
+    public static final int[] COLOR_ROLES = new int[] {
+            ROLE_BACKGROUND, ROLE_BACKGROUND_PRIMARY, ROLE_FOREGROUND,
+            ROLE_FOREGROUND, ROLE_FOREGROUND, ROLE_TEXT, ROLE_TEXT,
+            ROLE_BACKGROUND, ROLE_TEXT, ROLE_FOREGROUND, ROLE_BACKGROUND,
+            ROLE_BACKGROUND, ROLE_TEXT, ROLE_FOREGROUND, ROLE_BACKGROUND,
+            ROLE_BACKGROUND, ROLE_BACKGROUND, ROLE_BACKGROUND, ROLE_BACKGROUND, ROLE_BACKGROUND
+    };
     protected static final int[] COLORS_FALLBACK = new int[] {
             Color.BLACK, Color.DKGRAY, Color.WHITE,
             Color.WHITE, Color.MAGENTA, Color.WHITE, Color.LTGRAY,
@@ -126,6 +133,7 @@ public class ClockColorValues extends ColorValues implements Parcelable
         for (int i=0; i<COLORS.length; i++) {
             setColor(COLORS[i], COLORS_FALLBACK[i]);
             setLabel(COLORS[i], COLORS[i]);
+            setRole(COLORS[i], COLOR_ROLES[i]);
         }
     }
     public ClockColorValues(Context context) {
@@ -142,6 +150,7 @@ public class ClockColorValues extends ColorValues implements Parcelable
         for (int i=0; i<COLORS.length; i++) {
             setColor(COLORS[i], ContextCompat.getColor(context, a.getResourceId(i, defaultResID[i])));
             setLabel(COLORS[i], context.getString(LABELS_RESID[i]));
+            setRole(COLORS[i], COLOR_ROLES[i]);
         }
         a.recycle();
     }
@@ -166,8 +175,12 @@ public class ClockColorValues extends ColorValues implements Parcelable
         for (int i=0; i<COLORS.length; i++) {
             values.setColor(COLORS[i], ContextCompat.getColor(context, defaultResID[i]));
             values.setLabel(COLORS[i], context.getString(LABELS_RESID[i]));
+            values.setRole(COLORS[i], COLOR_ROLES[i]);
         }
-        values.setID(darkTheme ? "dark" : "light");   // TODO: i18n
+        values.setID(darkTheme ? COLOR_ID_DARK : COLOR_ID_LIGHT);
+        values.setLabel(darkTheme ? "Dark (default)" : "Light (default)");       // TODO: i18n
         return values;
     }
+    public static final String COLOR_ID_DARK = "dark";
+    public static final String COLOR_ID_LIGHT = "light";
 }
