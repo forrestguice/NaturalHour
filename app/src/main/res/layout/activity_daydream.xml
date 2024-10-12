@@ -9,7 +9,7 @@
         android:layout_gravity="center"
         android:padding="16dp">
 
-        <com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView
+        <com.forrestguice.suntimes.naturalhour.ui.daydream.DaydreamClockView
             android:id="@+id/clock"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

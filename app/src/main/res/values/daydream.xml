@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer name="daydream_tzmode">0</integer>
+
+    <bool name="daydream_show_seconds">true</bool>
+
     <integer name="anim_daydream_alpha_duration_in">3750</integer>
     <integer name="anim_daydream_alpha_duration_in_pause">1000</integer>
     <integer name="anim_daydream_alpha_duration_out">3750</integer>

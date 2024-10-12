@@ -476,10 +476,10 @@ public class NaturalHourFragment extends Fragment
                 clockface.setColors(options.colors);
 
                 for (String key : NaturalHourClockBitmap.FLAGS) {
-                    clockface.setFlag(key, AppSettings.getClockFlag(context, key));
+                    clockface.setFlag(key, AppSettings.getClockFlag(context, key, clockface.getBitmapHelper()));
                 }
                 for (String key : NaturalHourClockBitmap.VALUES) {
-                    clockface.setValue(key, AppSettings.getClockIntValue(context, key));
+                    clockface.setValue(key, AppSettings.getClockIntValue(context, key, clockface.getBitmapHelper()));
                 }
 
             } else {

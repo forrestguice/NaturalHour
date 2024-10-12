@@ -55,7 +55,10 @@ public class AppSettings
         prefs.apply();
     }
     public static boolean getClockFlag(Context context, String key) {
-        return getClockFlag(context, key, NaturalHourClockBitmap.getDefaultFlag(context, key));
+        return getClockFlag(context, key, getBitmapHelper(context));
+    }
+    public static boolean getClockFlag(Context context, String key, NaturalHourClockBitmap helper) {
+        return getClockFlag(context, key, helper.getDefaultFlag(context, key));
     }
     public static boolean getClockFlag(Context context, String key, boolean defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -68,7 +71,10 @@ public class AppSettings
         prefs.apply();
     }
     public static int getClockIntValue(Context context, String key) {
-        return getClockIntValue(context, key, getClockDefaultValue(context, key));
+        return getClockIntValue(context, key, getBitmapHelper(context));
+    }
+    public static int getClockIntValue(Context context, String key, NaturalHourClockBitmap helper) {
+        return getClockIntValue(context, key, helper.getDefaultValue(context, key));
     }
     public static int getClockIntValue(Context context, String key, int defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -82,6 +88,15 @@ public class AppSettings
             default: return -1;
         }
     }
+
+    protected static NaturalHourClockBitmap getBitmapHelper(Context context)
+    {
+        if (bitmapHelper == null) {
+            bitmapHelper = new NaturalHourClockBitmap(context, 0);
+        }
+        return bitmapHelper;
+    }
+    private static NaturalHourClockBitmap bitmapHelper = null;
 
     public static boolean containsKey(Context context, String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).contains(key);

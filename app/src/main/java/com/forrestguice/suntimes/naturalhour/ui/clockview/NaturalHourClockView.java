@@ -36,7 +36,14 @@ import java.util.TimeZone;
 public class NaturalHourClockView extends View
 {
     protected NaturalHourData data;
+
     protected NaturalHourClockBitmap bitmap;
+    public NaturalHourClockBitmap getBitmapHelper() {
+        return bitmap;
+    }
+    protected NaturalHourClockBitmap createBitmapHelper() {
+        return new NaturalHourClockBitmap(getContext(), getWidth());
+    }
 
     public NaturalHourClockView(Context context) {
         super(context);
@@ -54,7 +61,7 @@ public class NaturalHourClockView extends View
     }
 
     protected void initView(Context context) {
-        bitmap = new NaturalHourClockBitmap(getContext(), getWidth());
+        bitmap = createBitmapHelper();
     }
 
     public void setData(NaturalHourData data) {
@@ -151,10 +158,10 @@ public class NaturalHourClockView extends View
     }
 
     public boolean getDefaultFlag(Context context, String key) {
-        return NaturalHourClockBitmap.getDefaultFlag(context, key);
+        return bitmap.getDefaultFlag(context, key);
     }
     public int getDefaultValue(Context context, String key) {
-        return NaturalHourClockBitmap.getDefaultValue(context, key);
+        return bitmap.getDefaultValue(context, key);
     }
 
     public ColorValues getColors() {

@@ -22,7 +22,7 @@
             android:title="@string/pref_title_tzmode"
             android:entries="@array/pref_tzmode_display"
             android:entryValues="@array/pref_tzmode_values"
-            android:defaultValue="3"
+            android:defaultValue="@integer/daydream_tzmode"
             android:summary="%s" />
 
     </PreferenceCategory>
@@ -42,7 +42,7 @@
         android:title="@string/pref_category_animation">
 
         <CheckBoxPreference android:key="widget_0_clockface_showSeconds"
-            android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/clockface_show_seconds" />
+            android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/daydream_show_seconds" />
 
     </PreferenceCategory>
 

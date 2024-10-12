@@ -18,11 +18,19 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.daydream;
 
+import android.content.Context;
+
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 
 public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
 {
+    @Override
+    protected NaturalHourClockBitmap createBitmapHelper(Context context) {
+        return new ClockDaydreamBitmap(context, 0);
+    }
+
     @Override
     public int getPreferenceResources() {
         return R.xml.pref_daydream;

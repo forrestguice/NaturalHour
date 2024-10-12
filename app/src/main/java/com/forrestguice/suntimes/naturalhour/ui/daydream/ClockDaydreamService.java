@@ -69,9 +69,21 @@ public class ClockDaydreamService extends DreamService
         }
     }
 
+    protected NaturalHourClockBitmap bitmapHelper = null;
+    protected NaturalHourClockBitmap getBitmapHelper(Context context)
+    {
+        if (bitmapHelper == null) {
+            bitmapHelper = createBitmapHelper(context);
+        }
+        return bitmapHelper;
+    }
+    protected NaturalHourClockBitmap createBitmapHelper(Context context) {
+        return new ClockDaydreamBitmap(context, 0);
+    }
+
     protected NaturalHourCalculator calculator;
     protected NaturalHourCalculator initCalculator() {
-        return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(getApplicationContext(), NaturalHourClockBitmap.VALUE_HOURMODE));
+        return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(getApplicationContext(), NaturalHourClockBitmap.VALUE_HOURMODE, getBitmapHelper(getApplicationContext())));
     }
 
     protected String[] getLocation() {
@@ -79,7 +91,7 @@ public class ClockDaydreamService extends DreamService
     }
     protected TimeZone getTimezone(Context context)
     {
-        int tzMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
+        int tzMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEZONE, context.getResources().getInteger(R.integer.daydream_tzmode));
         return AppSettings.fromTimeZoneMode(context, tzMode, info);
     }
     protected boolean is24(Context context)
@@ -125,16 +137,16 @@ public class ClockDaydreamService extends DreamService
             for (String key : NaturalHourClockBitmap.FLAGS) {
                 String widgetKey = widgetPrefix() + key;
                 if (AppSettings.containsKey(context, widgetKey)) {
-                    clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey));
+                    clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey, getBitmapHelper(context)));
+                    Log.d("DEBUG", "setFlag: " + key + " :: " + AppSettings.getClockFlag(context, widgetKey, getBitmapHelper(context)));
                 }
             }
             for (String key : NaturalHourClockBitmap.VALUES) {
                 String widgetKey = widgetPrefix() + key;
                 if (AppSettings.containsKey(context, widgetKey)) {
-                    clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
+                    clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey, getBitmapHelper(context)));
                 }
             }
-            clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS, true);
             clockView.setData(initData(context));
         }
         animation = new DreamAnimation(context);
