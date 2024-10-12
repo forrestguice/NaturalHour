@@ -60,7 +60,8 @@
     <color name="clockColorPlate_light">@color/grey_300</color>
     <color name="clockColorFrame_light">@color/grey_850</color>
     <color name="clockColorCenter_light">@color/grey_900</color>
-    <color name="clockColorHand_light">@color/colorAccent_dark</color>
+    <color name="clockColorHand_light">@color/deep_teal_200</color>
+    <color name="clockColorHand1_light">@color/deep_teal_500</color>
     <color name="clockColorLabel1_light">@color/grey_800</color>
     <color name="clockColorLabel2_light">@color/grey_600</color>
 
@@ -84,6 +85,7 @@
     <color name="clockColorFrame_dark">@color/teal_a200</color>
     <color name="clockColorCenter_dark">@color/deep_teal_200</color>
     <color name="clockColorHand_dark">@color/deep_teal_200</color>
+    <color name="clockColorHand1_dark">@color/deep_teal_500</color>
     <color name="clockColorLabel1_dark">#FFFFFF</color>
     <color name="clockColorLabel2_dark">@color/grey_300</color>
 
@@ -107,6 +109,7 @@
     <color name="clockColorFrame">@color/clockColorFrame_light</color>
     <color name="clockColorCenter">@color/clockColorCenter_light</color>
     <color name="clockColorHand">@color/clockColorHand_light</color>
+    <color name="clockColorHand1">@color/clockColorHand1_light</color>
     <color name="clockColorLabel1">@color/clockColorLabel1_light</color>
     <color name="clockColorLabel2">@color/clockColorLabel2_light</color>
 

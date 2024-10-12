@@ -320,7 +320,8 @@
     <string name="clockface_face_astro">Astronomical Twilight</string>
     <string name="clockface_face_nautical">Nautical Twilight</string>
     <string name="clockface_face_civil">Civil Twilight</string>
-    <string name="clockface_hand">Hand</string>
+    <string name="clockface_hand">Hour Hand</string>
+    <string name="clockface_hand1">Seconds Hand</string>
     <string name="clockface_center">Center</string>
     <string name="clockface_label">Label1</string>
     <string name="clockface_label1">Label2</string>
