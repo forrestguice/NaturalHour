@@ -49,4 +49,16 @@
 
     <attr name="bottomBarSize" format="reference" />   <!-- TODO: move to SuntimesAddon -->
 
+    <declare-styleable name="ColorCollectionPreference">
+        <attr name="colorTag" format="string" />
+        <attr name="appWidgetID" format="integer" />
+        <attr name="showAlpha" format="boolean" />
+        <attr name="previewKeys" format="reference" />
+        <attr name="previewMode" format="integer" />
+        <attr name="android:summary" />
+    </declare-styleable>
+    <integer name="colorpicker_preview_text">0</integer>        <!-- previewMode value -->
+    <integer name="colorpicker_preview_contrast">10</integer>   <!-- previewMode value -->
+    <integer name="colorpicker_preview_luminance">10</integer>  <!-- previewMode value -->
+
 </resources>
