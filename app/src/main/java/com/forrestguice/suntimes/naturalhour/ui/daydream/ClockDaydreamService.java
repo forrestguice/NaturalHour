@@ -31,6 +31,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
+import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
@@ -195,7 +196,6 @@ public class ClockDaydreamService extends DreamService
         protected float scale_value_max = 1.0f;
         protected float wander_value_x = 100f;
         protected float wander_value_y = 200f;
-
         protected float rotate_value_in = 15;
         protected float rotate_value_out = 15;
 
@@ -221,9 +221,9 @@ public class ClockDaydreamService extends DreamService
             option_wander = value;
         }
 
-        protected boolean option_flip = true;
-        public void setOption_flip(boolean value) {
-            option_flip = value;
+        protected boolean option_rotate = true;
+        public void setOption_rotate(boolean value) {
+            option_rotate = value;
         }
 
         public void startAnimation()
@@ -247,6 +247,9 @@ public class ClockDaydreamService extends DreamService
 
         protected void animateFadeIn(final View view)
         {
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "animateFadeIn");
+            }
             if (view != null)
             {
                 ViewPropertyAnimator animation = view.animate();
@@ -262,31 +265,22 @@ public class ClockDaydreamService extends DreamService
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
-                if (option_flip) {
+                if (option_rotate) {
                     view.setRotation(-rotate_value_in);
                     animation.rotation(0);
                 }
                 view.setAlpha(alpha_value_min);
                 animation.alpha(alpha_value_max)
-
-                        .setDuration(alpha_duration_in)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .setStartDelay(alpha_duration_in_pause)
-                        .setListener(new AnimatorListenerAdapter()
-                        {
-                            @Override
-                            public void onAnimationEnd(Animator animation)
-                            {
-                                super.onAnimationEnd(animation);
-                                if (isAnimated) {
-                                    animateFadeOut(view);
-                                }
-                            }
-                        });
+                        .setDuration(alpha_duration_in)
+                        .setListener(wanderWaitOrFade(view));
             }
         }
         protected void animateFadeOut(final View view)
         {
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "animateFadeOut");
+            }
             if (view != null)
             {
                 ViewPropertyAnimator animation = view.animate();
@@ -301,27 +295,76 @@ public class ClockDaydreamService extends DreamService
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
-                if (option_flip) {
+                if (option_rotate) {
                     view.setRotation(0);
                     animation.rotation(rotate_value_out);
                 }
                 view.setAlpha(alpha_value_max);
                 animation.alpha(alpha_value_min)
                         .setDuration(alpha_duration_out)
-                        .setStartDelay(alpha_duration_out_pause)
                         .setListener(new AnimatorListenerAdapter()
                         {
                             @Override
                             public void onAnimationEnd(Animator animation)
                             {
                                 super.onAnimationEnd(animation);
-                                if (isAnimated) {
-                                    setRandomViewPosition(view);
-                                    animateFadeIn(view);
-                                }
+                                view.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (isAnimated) {
+                                            setRandomViewPosition(view);
+                                            animateFadeIn(view);
+                                        }
+                                    }
+                                }, alpha_duration_in_pause);
                             }
                         });
             }
+        }
+
+        protected void animateWanderAway(final View view)
+        {
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "animateWanderAway");
+            }
+            if (view != null)
+            {
+                float[] translateBy = getRandomDiagonalTranslation(view);
+                view.animate()
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .translationXBy(translateBy[0])
+                        .translationYBy(translateBy[1])
+                        .setDuration(alpha_duration_in)
+                        .setListener(wanderWaitOrFade(view));
+            }
+        }
+
+        protected AnimatorListenerAdapter wanderWaitOrFade(final View view)
+        {
+            return new AnimatorListenerAdapter()
+            {
+                @Override
+                public void onAnimationEnd(Animator animation)
+                {
+                    super.onAnimationEnd(animation);
+                    if (isAnimated)
+                    {
+                        view.postDelayed(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                switch (new Random().nextInt(6))
+                                {
+                                    case 0: animateFadeOut(view); break;
+                                    case 1: view.postDelayed(this, alpha_duration_out_pause); break;
+                                    default: animateWanderAway(view); break;
+                                }
+                            }
+                        }, alpha_duration_out_pause);
+                    }
+                }
+            };
         }
 
         protected float[] getRandomDiagonalTranslation(View view)
