@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context=".ui.widget.WidgetConfigActivity">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="?attr/toolbarTheme"
+            app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+            app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+            app:title="@string/daydreamconfig_title"
+            app:popupTheme="?attr/actionBarPopupTheme" />
+
+        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesSelectFragment"
+            android:id="@+id/clockColorSelectorFragment"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment"
+            android:id="@+id/clockFlagsFragment"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

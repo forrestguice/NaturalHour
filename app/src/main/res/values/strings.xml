@@ -369,6 +369,8 @@
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
     <string name="widget_name">@string/app_name</string>
     <string name="widget_summary">Clock Widget (%s)</string>    <!-- e.g. Clock Widget (3x2) -->
+    <string name="daydream_name">@string/app_name</string>
+    <string name="daydreamconfig_title">Natural Hour Daydream</string>
     <string name="widgetconfig_title">Natural Hour Widget</string>   <!-- widget configuration activity title text -->
 
     <string name="app_support_url"><![CDATA[
