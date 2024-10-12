@@ -267,7 +267,7 @@ public class NaturalHourData implements Parcelable
     public static double getAngle(int seconds)
     {
         double twoPI = 2 * Math.PI;
-        return (-Math.PI / 2d) + ((seconds / 60d) * twoPI);
+        return Math.PI + ((seconds / 60d) * twoPI);
     }
 
     public static double simplifyAngle(double radians)

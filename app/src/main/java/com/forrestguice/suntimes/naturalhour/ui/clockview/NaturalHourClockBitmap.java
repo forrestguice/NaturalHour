@@ -424,6 +424,10 @@ public class NaturalHourClockBitmap
         return r - (2.05f * arcWidth);
     }
 
+    private float radiusInner1(float r) {
+        return radiusInner(r) - arcWidth;
+    }
+
     private float radiusOuter(float r) {
         return radiusInner(r) + arcWidth;
     }
@@ -873,7 +877,7 @@ public class NaturalHourClockBitmap
     }
 
     public void drawSecondsHand(Canvas canvas, NaturalHourData data) {
-        drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
+        drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner1(cX));
     }
 
     private Calendar t_secondsNow = null;
@@ -896,7 +900,7 @@ public class NaturalHourClockBitmap
 
         } else {
 
-            double handRadius = handWidth / 6d;
+            double handRadius = handWidth / 4d;
             double a0 = a1 - Math.PI/2;
             double x0 = cX + handRadius * Math.cos(a0);
             double y0 = cY + handRadius * Math.sin(a0);
