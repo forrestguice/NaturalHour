@@ -29,11 +29,13 @@ public class ClockColorValuesSun extends ClockColorValues
     public static final String COLOR_ID_SUN = "sun";
 
     public static String getJSON() {
-        return "{\"colorValuesID\":\"sun_dark\",\"colorValuesLabel\":\"Sun\",\"color_plate\":\"#ff212121\",\"color_face\":\"#ff263238\",\"color_frame\":\"#ffdd2c00\",\"color_center\":\"#ffdd2c00\",\"color_hand\":\"#ffff3d00\",\"color_label0\":\"#ffdd2c00\",\"color_label1\":\"#ffdd2c00\",\"color_ring_day\":\"#ff263238\",\"color_ring_day_label\":\"#ffffcc00\",\"color_ring_day_stroke\":\"#ffffd740\",\"color_face_day\":\"#ffffcc00\",\"color_ring_night\":\"#ff3e2723\",\"color_ring_night_label\":\"#ffffffff\",\"color_ring_night_stroke\":\"#ffff9100\",\"color_face_night\":\"#82212121\",\"color_face_am\":\"#ffffd500\",\"color_face_pm\":\"#ffffc400\",\"color_face_astro\":\"#ff000066\",\"color_face_nautical\":\"#ff003366\",\"color_face_civil\":\"#ff7ba3ff\"}";
+        return "{\"colorValuesID\":\"sun_dark\",\"colorValuesLabel\":\"Sun\",\"color_plate\":\"#ff212121\",\"color_face\":\"#ff263238\",\"color_frame\":\"#ffdd2c00\",\"color_center\":\"#ffdd2c00\",\"color_hand\":\"#ffff3d00\",\"color_hand1\":\"#ffff3d00\",\"color_label0\":\"#ffdd2c00\",\"color_label1\":\"#ffdd2c00\",\"color_ring_day\":\"#ff263238\",\"color_ring_day_label\":\"#ffffcc00\",\"color_ring_day_stroke\":\"#ffffd740\",\"color_face_day\":\"#ffffcc00\",\"color_ring_night\":\"#ff3e2723\",\"color_ring_night_label\":\"#ffffffff\",\"color_ring_night_stroke\":\"#ffff9100\",\"color_face_night\":\"#82212121\",\"color_face_am\":\"#ffffd500\",\"color_face_pm\":\"#ffffc400\",\"color_face_astro\":\"#ff000066\",\"color_face_nautical\":\"#ff003366\",\"color_face_civil\":\"#ff7ba3ff\"}";
     }
 
-    public ClockColorValuesSun(Context context, boolean fallbackDarkTheme) {
-        super(getJSON());
+    public ClockColorValuesSun(Context context, boolean fallbackDarkTheme)
+    {
+        super(context, fallbackDarkTheme);
+        loadColorValues(getJSON());
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ClockColorValuesSun extends ClockColorValues
     }
     @Override
     public int[] getColorsResDark() {
-        return getColorsResLight();
+        return new int[ getColorKeys().length ];
     }
     @Override
     public int[] getColorsResLight() {
