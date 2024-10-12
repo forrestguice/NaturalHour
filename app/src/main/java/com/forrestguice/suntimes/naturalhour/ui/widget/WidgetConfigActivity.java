@@ -23,7 +23,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,12 +37,13 @@ import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
-import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
@@ -58,7 +58,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Intent resultValue;
 
-    protected ClockColorValuesCollection colors;
+    protected ColorValuesCollection<ClockColorValues> colors;
     protected ColorValuesSelectFragment colorFragment;
     protected WidgetPreferenceFragment flagFragment;
 
@@ -132,7 +132,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        colors = new ClockColorValuesCollection(context);
+        colors = NaturalHourFragment.initClockColors(this);
         FragmentManager fragments = getSupportFragmentManager();
         colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
         if (colorFragment != null)
