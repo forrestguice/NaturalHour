@@ -37,8 +37,10 @@ import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 
@@ -48,7 +50,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
 
     protected SuntimesInfo info;
     protected int appWidgetId = ClockDaydreamService.APPWIDGET_ID;
-    protected ClockColorValuesCollection<ClockColorValues> colors;
+    protected ColorValuesCollection<ClockColorValues> colors;
     protected ColorValuesSelectFragment colorFragment;
     protected DaydreamPreferenceFragment flagFragment;
 
@@ -91,7 +93,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        colors = new ClockColorValuesCollection<ClockColorValues>(this);
+        colors = NaturalHourFragment.initClockColors(this);
 
         FragmentManager fragments = getSupportFragmentManager();
         colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
@@ -115,7 +117,8 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     public void onBackPressed()
     {
         if (colorFragment != null) {
-            colors.setSelectedColorsID(this, colorFragment.getSelectedID(), appWidgetId);
+            String colorsID = colorFragment.getSelectedID();
+            colors.setSelectedColorsID(this, colorsID, appWidgetId);
         }
         super.onBackPressed();
     }
