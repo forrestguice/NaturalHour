@@ -111,9 +111,9 @@ public class NaturalHourFragment extends Fragment
         return colorCollection;
     }
 
-    protected void initClockColors(Context context)
+    public static ColorValuesCollection<ClockColorValues> initClockColors(Context context)
     {
-        colorCollection = new ClockColorValuesCollection<>(context);
+        ColorValuesCollection<ClockColorValues> colorCollection = new ClockColorValuesCollection<ColorValues>(context);
         colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, true));
         colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, false));
 
@@ -121,6 +121,7 @@ public class NaturalHourFragment extends Fragment
         for (String json : defaults) {
             colorCollection.setColors(context, new ClockColorValues(json));
         }
+        return colorCollection;
     }
 
     public NaturalHourFragment() {
@@ -144,7 +145,7 @@ public class NaturalHourFragment extends Fragment
                 info = SuntimesInfo.queryInfo(context);
             }
             if (colorCollection == null) {
-                initClockColors(getActivity());
+                colorCollection = initClockColors(getActivity());
             }
             if (clockColors == null) {
                 clockColors = colorCollection.getSelectedColors(getActivity());
