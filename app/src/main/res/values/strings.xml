@@ -358,6 +358,7 @@
     <string name="configAction_deleteColors">Delete</string>
     <string name="configAction_importColors">Import</string>
     <string name="configAction_exportColors">Export</string>
+    <string name="configAction_chooseColor">Choose color</string>
     <string name="configAction_overflow">More</string>
 
     <string name="colorsimport_dialog_title">@string/configAction_importColors</string>
