@@ -50,7 +50,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     protected int appWidgetId = ClockDaydreamService.APPWIDGET_ID;
     protected ClockColorValuesCollection<ClockColorValues> colors;
     protected ColorValuesSelectFragment colorFragment;
-    protected WidgetPreferenceFragment flagFragment;
+    protected DaydreamPreferenceFragment flagFragment;
 
     public ClockDaydreamSettingsActivity() {
         super();
@@ -67,7 +67,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     public void onCreate(Bundle savedState)
     {
         super.onCreate(savedState);
-        setContentView(R.layout.layout_daydream_clock_settings);
+        setContentView(R.layout.activity_daydream_config);
         initViews();
         handleIntent(getIntent());
 
@@ -104,7 +104,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
             colorFragment.setColorCollection(colors);
         }
 
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (DaydreamPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
             flagFragment.setAppWidgetId(appWidgetId);

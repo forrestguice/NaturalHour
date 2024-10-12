@@ -57,6 +57,10 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         initWidgetDefaults();
     }
 
+    public int getPreferenceResources() {
+        return R.xml.pref_widget;
+    }
+
     public WidgetPreferenceFragment()
     {
         super();
@@ -66,7 +70,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_widget);
+        addPreferencesFromResource(getPreferenceResources());
         initWidgetDefaults();
         setHasOptionsMenu(false);
     }

@@ -59,7 +59,7 @@ public class ClockDaydreamService extends DreamService
     protected ColorValues clockAppearance;
 
     protected int getLayoutResID() {
-        return R.layout.layout_daydream_clock;
+        return R.layout.activity_daydream;
     }
 
     protected SuntimesInfo info;
