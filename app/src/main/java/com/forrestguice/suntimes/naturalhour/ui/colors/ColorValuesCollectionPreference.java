@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.preference.Preference;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -190,6 +191,11 @@ public class ColorValuesCollectionPreference extends Preference
         setRequestCode(requestCode);
         setOnPreferenceClickListener(createPreferenceOnClickListener(activity));
     }
+    public void initPreferenceOnClickListener(final android.app.Fragment fragment, int requestCode)
+    {
+        setRequestCode(requestCode);
+        setOnPreferenceClickListener(createPreferenceOnClickListener(fragment));
+    }
 
     protected OnPreferenceClickListener createPreferenceOnClickListener(final Activity activity)
     {
@@ -202,6 +208,23 @@ public class ColorValuesCollectionPreference extends Preference
                 {
                     Intent intent = createPreferenceOnClickIntent(activity, getCollection(), getAppWidgetID(), getColorTag(), getTitle(), showAlpha(), previewMode, previewKeys.toArray(new String[0]));
                     activity.startActivityForResult(intent, requestCode);
+                    //activity.overridePendingTransition(R.anim.transition_next_in, R.anim.transition_next_out);
+                }
+                return false;
+            }
+        };
+    }
+    protected OnPreferenceClickListener createPreferenceOnClickListener(final android.app.Fragment fragment)
+    {
+        return new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                if (fragment != null)
+                {
+                    Intent intent = createPreferenceOnClickIntent(fragment.getActivity(), getCollection(), getAppWidgetID(), getColorTag(), getTitle(), showAlpha(), previewMode, previewKeys.toArray(new String[0]));
+                    fragment.startActivityForResult(intent, requestCode);
                     //activity.overridePendingTransition(R.anim.transition_next_in, R.anim.transition_next_out);
                 }
                 return false;
