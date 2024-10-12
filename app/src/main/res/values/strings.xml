@@ -50,16 +50,19 @@
 
     <string name="pref_title_midnight_top">Midnight at top</string>
     <string name="pref_title_center_noon">Center on solar noon</string>
+    <string name="pref_title_show_noon">Show solar noon</string>
     <string name="pref_title_show_date">Show date</string>
     <string name="pref_title_show_timezone">Show time zone</string>
     <string name="pref_title_show_location">Show location</string>
     <string name="pref_title_show_night">Show night period</string>
+    <string name="pref_title_show_midnight">Show solar midnight</string>
     <string name="pref_title_show_twilights">Show twilight periods</string>
     <string name="pref_title_show_ampm">Show am/pm periods</string>
     <string name="pref_title_show_nightwatch">Show night watches</string>
     <string name="pref_title_show_ticks5m">Show ticks (5 minutes)</string>
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
+    <string name="pref_title_show_seconds">Show seconds hand</string>
 
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
