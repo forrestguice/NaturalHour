@@ -164,7 +164,7 @@ public class NaturalHourClockView extends View
         bitmap.setColors(values);
     }
 
-    public void startUpdateRunnable()
+    public void startUpdateTask()
     {
         if (bitmap.getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS))
         {
@@ -174,7 +174,7 @@ public class NaturalHourClockView extends View
             post(updateRunnable);
         }
     }
-    public void stopUpdateRunnable()
+    public void stopUpdateTask()
     {
         if (BuildConfig.DEBUG) {
             Log.d("DEBUG", "updateRunnable: stopping..");

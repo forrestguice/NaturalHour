@@ -543,7 +543,7 @@ public class NaturalHourFragment extends Fragment
             if (context != null)
             {
                 holder.onBindViewHolder(context, position, initData(position), options);
-                holder.clockface.startUpdateRunnable();
+                holder.clockface.startUpdateTask();
                 attachClickListeners(holder, position);
             }
         }
@@ -552,7 +552,7 @@ public class NaturalHourFragment extends Fragment
         public void onViewRecycled(@NonNull NaturalHourViewHolder holder)
         {
             detachClickListeners(holder);
-            holder.clockface.stopUpdateRunnable();
+            holder.clockface.stopUpdateTask();
             holder.clockface.invalidate();
             int position = holder.getAdapterPosition();
             if (position >= 0) {
