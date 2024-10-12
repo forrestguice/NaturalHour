@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -20,11 +20,14 @@
 package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
+import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
@@ -56,7 +59,7 @@ public class NaturalHourClockView extends View
 
     public void setData(NaturalHourData data) {
         this.data = data;
-        invalidate();
+        updateBase();
     }
 
     @Override
@@ -87,37 +90,50 @@ public class NaturalHourClockView extends View
         if (bitmap == null) {
             initView(getContext());
         }
-        bitmap.draw(getContext(), canvas, data);
+        if (baseBitmap == null) {
+            baseBitmap = bitmap.makeBitmap(getContext(), data);
+        }
+        canvas.drawBitmap(baseBitmap, 0, 0, bitmap.paint);
+        if (bitmap.getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS)) {
+            bitmap.drawSecondsHand(canvas, data);
+        }
+    }
+
+    private Bitmap baseBitmap;
+    public void updateBase()
+    {
+        baseBitmap = bitmap.makeBitmap(getContext(), data);
+        invalidate();
     }
 
     public void setTime(long millis) {
         bitmap.setTime(millis);
-        invalidate();
+        updateBase();
     }
 
     public void setTimeZone( TimeZone timezone) {
         bitmap.setTimeZone(timezone);
-        invalidate();
+        updateBase();
     }
 
     public void set24HourMode(boolean value) {
         bitmap.set24HourMode(value);
-        invalidate();
+        updateBase();
     }
 
     public void setStartAngle(double radianValue) {
         bitmap.setStartAngle(radianValue);
-        invalidate();
+        updateBase();
     }
 
     public void setShowMinorTickLabels(boolean value) {
         bitmap.setShowMinorTickLabels(value);
-        invalidate();
+        updateBase();
     }
 
     public void setShowTime(boolean value) {
         bitmap.setShowTime(value);
-        invalidate();
+        updateBase();
     }
 
     public void setFlag(String key, boolean value) {
@@ -147,4 +163,34 @@ public class NaturalHourClockView extends View
     public void setColors( ColorValues values ) {
         bitmap.setColors(values);
     }
+
+    public void startUpdateRunnable()
+    {
+        if (bitmap.getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS))
+        {
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "updateRunnable: starting..");
+            }
+            post(updateRunnable);
+        }
+    }
+    public void stopUpdateRunnable()
+    {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "updateRunnable: stopping..");
+        }
+        removeCallbacks(updateRunnable);
+    }
+    private final Runnable updateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "updateRunnable: tick");
+            }
+            invalidate();
+            postDelayed(updateRunnable, UPDATE_INTERVAL);
+        }
+    };
+    public static final long UPDATE_INTERVAL = 1000;
+
 }

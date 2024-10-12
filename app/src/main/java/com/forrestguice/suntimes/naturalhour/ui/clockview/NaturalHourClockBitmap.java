@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -93,11 +93,12 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_BACKGROUND_NOON = "clockface_showBackgroundNoon";
     public static final String FLAG_SHOW_TICKS_15M = "clockface_showTick15m";
     public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
+    public static final String FLAG_SHOW_SECONDS = "clockface_showSeconds";
 
     public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_CENTER_NOON, FLAG_SHOW_NIGHTWATCH, FLAG_SHOW_TIMEZONE, FLAG_SHOW_LOCATION,
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
-            FLAG_SHOW_BACKGROUND_MIDNIGHT, FLAG_SHOW_BACKGROUND_NOON
+            FLAG_SHOW_BACKGROUND_MIDNIGHT, FLAG_SHOW_BACKGROUND_NOON, FLAG_SHOW_SECONDS
     };
     public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NIGHTWATCH_TYPE };
 
@@ -123,6 +124,7 @@ public class NaturalHourClockBitmap
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_NOON, context.getResources().getBoolean(R.bool.clockface_show_background_noon));
         setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
         setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
+        setFlagIfUnset(FLAG_SHOW_SECONDS, context.getResources().getBoolean(R.bool.clockface_show_seconds));
 
         setFlagIfUnset(FLAG_CENTER_NOON, context.getResources().getBoolean(R.bool.clockface_center_noon));
         setFlagIfUnset(FLAG_START_AT_TOP, context.getResources().getBoolean(R.bool.clockface_start_at_top));
@@ -180,6 +182,7 @@ public class NaturalHourClockBitmap
             case FLAG_SHOW_BACKGROUND_NOON: return context.getResources().getBoolean(R.bool.clockface_show_background_noon);
             case FLAG_SHOW_TICKS_5M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_5m);
             case FLAG_SHOW_TICKS_15M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_15m);
+            case FLAG_SHOW_SECONDS: return context.getResources().getBoolean(R.bool.clockface_show_seconds);
             case FLAG_SHOW_DATEYEAR:
             default: return false;
         }
@@ -266,6 +269,7 @@ public class NaturalHourClockBitmap
 
         if (showTime) {
             drawHourHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
+            //drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
         }
     }
 
@@ -293,7 +297,7 @@ public class NaturalHourClockBitmap
     private int textSmall;
     private int textTiny;
 
-    private Paint paint, paintLabel, paintHand,
+    protected Paint paint, paintLabel, paintHand,
             paintTickHuge, paintTickLarge, paintTickMedium, paintTickSmall, paintTickTiny,
             paintArcDayFill, paintArcDayBorder, paintFillDay,
             paintArcNightFill, paintArcNightBorder, paintFillNight,
@@ -865,6 +869,48 @@ public class NaturalHourClockBitmap
         if (centerRadius > 0) {
             paintCenter.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
             canvas.drawCircle(cX, cY, centerRadius, paintCenter);
+        }
+    }
+
+    public void drawSecondsHand(Canvas canvas, NaturalHourData data) {
+        drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
+    }
+
+    private Calendar t_secondsNow = null;
+    protected void drawSecondsHand(NaturalHourData data, long nowMillis, Canvas canvas, float cX, float cY, float length)
+    {
+        if (t_secondsNow == null) {
+            t_secondsNow = Calendar.getInstance(timezone);
+        }
+        t_secondsNow.setTimeInMillis(nowMillis);
+        int seconds = t_secondsNow.get(Calendar.SECOND);
+
+        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(seconds), data);
+        double x1 = cX + length * Math.cos(a1);
+        double y1 = cY + length * Math.sin(a1);
+
+        paintHand.setColor(colors.getColor(ClockColorValues.COLOR_HAND));   // TODO: second hand color
+
+        if (flags.getAsBoolean(FLAG_SHOW_HAND_SIMPLE)) {
+            canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
+
+        } else {
+
+            double handRadius = handWidth / 6d;
+            double a0 = a1 - Math.PI/2;
+            double x0 = cX + handRadius * Math.cos(a0);
+            double y0 = cY + handRadius * Math.sin(a0);
+
+            double a2 = a1 + Math.PI/2;
+            double x2 = cX + handRadius * Math.cos(a2);
+            double y2 = cY + handRadius * Math.sin(a2);
+
+            Path path = new Path();
+            path.moveTo((float) x0, (float) y0);
+            path.lineTo((float) x1, (float) y1);
+            path.lineTo((float) x2, (float) y2);
+            path.close();
+            canvas.drawPath(path, paintHand);
         }
     }
 

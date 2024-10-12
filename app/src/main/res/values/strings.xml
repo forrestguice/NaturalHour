@@ -62,6 +62,7 @@
     <string name="pref_title_show_ticks5m">Show ticks (5 minutes)</string>
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
+    <string name="pref_title_show_seconds">Show seconds hand</string>
 
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
