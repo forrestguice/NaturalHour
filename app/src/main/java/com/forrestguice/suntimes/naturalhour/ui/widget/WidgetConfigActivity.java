@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2023 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -23,8 +23,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,13 +36,10 @@ import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
-import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
 {
@@ -58,8 +53,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Intent resultValue;
 
-    protected ClockColorValuesCollection colors;
-    protected ColorValuesSelectFragment colorFragment;
     protected WidgetPreferenceFragment flagFragment;
 
     public abstract Class getWidgetClass();
@@ -132,18 +125,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        colors = new ClockColorValuesCollection(context);
-        FragmentManager fragments = getSupportFragmentManager();
-        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
-        if (colorFragment != null)
-        {
-            colorFragment.setShowMenu(false);
-            colorFragment.setShowBack(false);
-            colorFragment.setAllowEdit(false);
-            colorFragment.setAppWidgetID(appWidgetId);;
-            colorFragment.setColorCollection(colors);
-        }
-
         flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
@@ -199,10 +180,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected boolean onDone()
     {
-        if (colorFragment != null) {
-            colors.setSelectedColorsID(WidgetConfigActivity.this, colorFragment.getSelectedID(), getAppWidgetId());
-        }
-
         updateWidgets(this);
         setResult(RESULT_OK, resultValue);
         finish();
