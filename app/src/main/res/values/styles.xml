@@ -546,4 +546,14 @@
         <item name="android:textSize">?attr/text_size_small</item>
     </style>
 
+    <style name="AppToolbarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:theme">?attr/toolbarTheme</item>
+        <item name="popupTheme">?attr/actionBarPopupTheme</item>
+        <item name="titleTextAppearance">@style/ToolbarTitleTextAppearance</item>
+        <item name="subtitleTextAppearance">@style/ToolbarSubtitleTextAppearance</item>
+    </style>
+
 </resources>
