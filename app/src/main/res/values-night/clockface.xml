@@ -18,6 +18,7 @@
     <color name="clockColorFrame">@color/clockColorFrame_dark</color>
     <color name="clockColorCenter">@color/clockColorCenter_dark</color>
     <color name="clockColorHand">@color/clockColorHand_dark</color>
+    <color name="clockColorHand1">@color/clockColorHand1_dark</color>
     <color name="clockColorLabel1">@color/clockColorLabel1_dark</color>
     <color name="clockColorLabel2">@color/clockColorLabel2_dark</color>
 </resources>

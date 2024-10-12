@@ -889,7 +889,7 @@ public class NaturalHourClockBitmap
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);
 
-        paintHand.setColor(colors.getColor(ClockColorValues.COLOR_HAND));   // TODO: second hand color
+        paintHand.setColor(colors.getColor(ClockColorValues.COLOR_HAND1));
 
         if (flags.getAsBoolean(FLAG_SHOW_HAND_SIMPLE)) {
             canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
