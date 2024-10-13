@@ -23,11 +23,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Parcel;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 
 /**
  * ColorValues

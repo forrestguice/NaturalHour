@@ -23,9 +23,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +41,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.naturalhour.ui.ThrottledClickListener;
-import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.naturalhour.R;
 
 import java.util.ArrayList;

@@ -22,7 +22,7 @@ package com.forrestguice.suntimes.naturalhour.data;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import java.util.Calendar;
