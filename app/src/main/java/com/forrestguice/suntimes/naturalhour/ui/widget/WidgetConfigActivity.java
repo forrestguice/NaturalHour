@@ -37,6 +37,7 @@ import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
@@ -112,6 +113,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
+        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
     }
 
     protected void initViews(Context context)
