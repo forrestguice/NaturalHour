@@ -40,6 +40,7 @@ import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
@@ -50,7 +51,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
 
     protected SuntimesInfo info;
     protected int appWidgetId = ClockDaydreamService.APPWIDGET_ID;
-    protected ColorValuesCollection<ClockColorValues> colors;
+    protected ColorValuesCollection<ColorValues> colors;
     protected ColorValuesSelectFragment colorFragment;
     protected DaydreamPreferenceFragment flagFragment;
 

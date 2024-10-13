@@ -41,9 +41,11 @@ import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3;
@@ -235,7 +237,7 @@ public class NaturalHourProvider extends ContentProvider
         MatrixCursor cursor = new MatrixCursor(columns);
         if (context != null)
         {
-            ClockColorValuesCollection<ColorValues> colorCollection = new ClockColorValuesCollection<>(context);   // TODO: initClockColors instead
+            ColorValuesCollection<ColorValues> colorCollection = NaturalHourFragment.initClockColors(context);
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
             for (int i=0; i<widgetClass.length; i++)
             {

@@ -111,9 +111,9 @@ public class NaturalHourFragment extends Fragment
         return colorCollection;
     }
 
-    public static ColorValuesCollection<ClockColorValues> initClockColors(Context context)
+    public static ColorValuesCollection<ColorValues> initClockColors(Context context)
     {
-        ColorValuesCollection<ClockColorValues> colorCollection = new ClockColorValuesCollection<ColorValues>(context);
+        ColorValuesCollection<ColorValues> colorCollection = new ClockColorValuesCollection<ColorValues>(context);
         colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, true));
         colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, false));
 
