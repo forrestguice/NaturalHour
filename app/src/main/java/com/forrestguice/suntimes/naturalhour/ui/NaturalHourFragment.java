@@ -347,7 +347,7 @@ public class NaturalHourFragment extends Fragment
 
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
-            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);   // android.support.design.R.id.snackbar_text
             if (textView != null)
             {
                 int[] attrs = new int[] { R.attr.text_size_small };
