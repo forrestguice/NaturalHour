@@ -143,7 +143,7 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
     {
         if (dialog != null) {
             BottomSheetDialog bottomSheet = (BottomSheetDialog) dialog;
-            FrameLayout layout = (FrameLayout) bottomSheet.findViewById(android.support.design.R.id.design_bottom_sheet);  // for AndroidX, resource is renamed to com.google.android.material.R.id.design_bottom_sheet
+            FrameLayout layout = (FrameLayout) bottomSheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);  // android.support.design.R.id.design_bottom_sheet
             if (layout != null) {
                 BottomSheetBehavior behavior = BottomSheetBehavior.from(layout);
                 behavior.setHideable(false);
