@@ -477,10 +477,10 @@ public class NaturalHourFragment extends Fragment
                 clockface.setColors(options.colors);
 
                 for (String key : NaturalHourClockBitmap.FLAGS) {
-                    clockface.setFlag(key, AppSettings.getClockFlag(context, key));
+                    clockface.setFlag(key, AppSettings.getClockFlag(context, key, clockface.getBitmapHelper()));
                 }
                 for (String key : NaturalHourClockBitmap.VALUES) {
-                    clockface.setValue(key, AppSettings.getClockIntValue(context, key));
+                    clockface.setValue(key, AppSettings.getClockIntValue(context, key, clockface.getBitmapHelper()));
                 }
 
             } else {
@@ -544,7 +544,7 @@ public class NaturalHourFragment extends Fragment
             if (context != null)
             {
                 holder.onBindViewHolder(context, position, initData(position), options);
-                holder.clockface.startUpdateRunnable();
+                holder.clockface.startUpdateTask();
                 attachClickListeners(holder, position);
             }
         }
@@ -553,7 +553,7 @@ public class NaturalHourFragment extends Fragment
         public void onViewRecycled(@NonNull NaturalHourViewHolder holder)
         {
             detachClickListeners(holder);
-            holder.clockface.stopUpdateRunnable();
+            holder.clockface.stopUpdateTask();
             holder.clockface.invalidate();
             int position = holder.getAdapterPosition();
             if (position >= 0) {

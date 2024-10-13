@@ -67,6 +67,10 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         initWidgetDefaults();
     }
 
+    public int getPreferenceResources() {
+        return R.xml.pref_widget;
+    }
+
     public WidgetPreferenceFragment()
     {
         super();
@@ -76,7 +80,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_widget);
+        addPreferencesFromResource(getPreferenceResources());
         initWidgetDefaults();
         setHasOptionsMenu(false);
     }
@@ -99,15 +103,18 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             String widgetPrefix = widgetKeyPrefix(appWidgetId);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
+
+            NaturalHourClockBitmap helper = getBitmapHelper(context);
+
             for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_0 to widget_i
                 String prefKey = widgetPrefix0 + key;
                 String widgetKey = widgetPrefix + key;
-                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, NaturalHourClockBitmap.getDefaultFlag(context, key)));
+                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, helper.getDefaultFlag(context, key)));
             }
             for (String key : NaturalHourClockBitmap.VALUES) {                    // copy values from widget_0 to widget_i
                 String prefKey = widgetPrefix0 + key;
                 String widgetKey = widgetPrefix + key;
-                editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
+                editor.putInt(widgetKey, prefs.getInt(prefKey, helper.getDefaultValue(context, key)));
             }
             for (int i = 0; i<AppSettings.VALUES.length; i++) {
                 String prefKey = widgetPrefix0 + AppSettings.VALUES[i];
@@ -139,6 +146,18 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         super.onPause();
     }
 
+    protected NaturalHourClockBitmap getBitmapHelper(Context context)
+    {
+        if (bitmapHelper == null) {
+            bitmapHelper = createBitmapHelper(context);
+        }
+        return bitmapHelper;
+    }
+    protected NaturalHourClockBitmap createBitmapHelper(Context context) {
+        return new NaturalHourClockBitmap(context, 0);
+    }
+    protected NaturalHourClockBitmap bitmapHelper = null;
+
     private SharedPreferences.OnSharedPreferenceChangeListener onWidgetPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
     {
         @Override
@@ -156,10 +175,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                     Context context = getActivity();
                     SharedPreferences.Editor editor = prefs.edit();
 
+                    NaturalHourClockBitmap helper = getBitmapHelper(context);
                     for (String boolPref : NaturalHourClockBitmap.FLAGS)
                     {
                         if (boolPref.equals(key)) {
-                            editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, NaturalHourClockBitmap.getDefaultFlag(context, key)));
+                            editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, helper.getDefaultFlag(context, key)));
                             editor.apply();
                             return;
                         }
@@ -167,7 +187,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                     for (String intPref : NaturalHourClockBitmap.VALUES)
                     {
                         if (intPref.equals(key)) {
-                            editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, helper.getDefaultValue(context, key)));
                             editor.apply();
                             return;
                         }

@@ -103,7 +103,7 @@ public class NaturalHourClockBitmap
     public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NIGHTWATCH_TYPE };
 
     protected ContentValues flags = new ContentValues();
-    private void initFlags(Context context)
+    protected void initFlags(Context context)
     {
         setValueIfUnset(VALUE_HOURMODE, context.getResources().getInteger(R.integer.clockface_hourmode));
         setValueIfUnset(VALUE_NUMERALS, context.getResources().getInteger(R.integer.clockface_numerals));
@@ -164,7 +164,7 @@ public class NaturalHourClockBitmap
         return flags.getAsInteger(key);
     }
 
-    public static boolean getDefaultFlag(Context context, String flag) {
+    public boolean getDefaultFlag(Context context, String flag) {
         switch (flag) {
             case FLAG_CENTER_NOON: return context.getResources().getBoolean(R.bool.clockface_center_noon);
             case FLAG_START_AT_TOP: return context.getResources().getBoolean(R.bool.clockface_start_at_top);
@@ -187,7 +187,8 @@ public class NaturalHourClockBitmap
             default: return false;
         }
     }
-    public static int getDefaultValue(Context context, String key) {
+
+    public int getDefaultValue(Context context, String key) {
         switch (key)
         {
             case VALUE_HOURMODE: return HOURMODE_DEFAULT;
@@ -422,6 +423,10 @@ public class NaturalHourClockBitmap
 
     private float radiusInner(float r) {
         return r - (2.05f * arcWidth);
+    }
+
+    private float radiusInner1(float r) {
+        return radiusInner(r) - arcWidth;
     }
 
     private float radiusOuter(float r) {
@@ -873,7 +878,7 @@ public class NaturalHourClockBitmap
     }
 
     public void drawSecondsHand(Canvas canvas, NaturalHourData data) {
-        drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
+        drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner1(cX));
     }
 
     private Calendar t_secondsNow = null;
@@ -896,7 +901,7 @@ public class NaturalHourClockBitmap
 
         } else {
 
-            double handRadius = handWidth / 6d;
+            double handRadius = handWidth / 4d;
             double a0 = a1 - Math.PI/2;
             double x0 = cX + handRadius * Math.cos(a0);
             double y0 = cY + handRadius * Math.sin(a0);

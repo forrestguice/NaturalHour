@@ -318,13 +318,13 @@ public class NaturalHourWidget extends AppWidgetProvider
         for (String key : NaturalHourClockBitmap.FLAGS) {
             String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
-                clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey));
+                clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey, clockView));
             }
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
             String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
-                clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
+                clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey, clockView));
             }
         }
 
