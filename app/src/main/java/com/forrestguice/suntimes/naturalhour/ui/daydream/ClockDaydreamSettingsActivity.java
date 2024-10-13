@@ -51,8 +51,6 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
 
     protected SuntimesInfo info;
     protected int appWidgetId = ClockDaydreamService.APPWIDGET_ID;
-    protected ColorValuesCollection<ColorValues> colors;
-    protected ColorValuesSelectFragment colorFragment;
     protected DaydreamPreferenceFragment flagFragment;
 
     public ClockDaydreamSettingsActivity() {
@@ -94,19 +92,6 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        colors = NaturalHourFragment.initClockColors(this);
-
-        FragmentManager fragments = getSupportFragmentManager();
-        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
-        if (colorFragment != null)
-        {
-            colorFragment.setShowMenu(false);
-            colorFragment.setShowBack(false);
-            colorFragment.setAllowEdit(false);
-            colorFragment.setAppWidgetID(appWidgetId);;
-            colorFragment.setColorCollection(colors);
-        }
-
         flagFragment = (DaydreamPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
@@ -115,12 +100,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if (colorFragment != null) {
-            String colorsID = colorFragment.getSelectedID();
-            colors.setSelectedColorsID(this, colorsID, appWidgetId);
-        }
+    public void onBackPressed() {
         super.onBackPressed();
     }
 

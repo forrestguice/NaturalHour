@@ -1,4 +1,16 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_theme">
+
+        <com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference
+            android:key="widget_0_colors" android:persistent="false"
+            android:title="@string/action_colors" app:appWidgetID="-100"
+            android:summary="%s"
+            app:showAlpha="true" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_category_general">
