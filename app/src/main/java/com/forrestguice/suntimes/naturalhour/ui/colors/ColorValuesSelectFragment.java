@@ -172,7 +172,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
     public String getSelectedID() {
         if (selector != null) {
             ColorValuesItem item = (ColorValuesItem) selector.getSelectedItem();
-            return item.colorsID;
+            return (item != null ? item.colorsID : null);
         } else return null;
     }
 

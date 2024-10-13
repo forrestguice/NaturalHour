@@ -23,6 +23,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,10 @@ import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
 {
@@ -124,7 +129,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        
         flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
