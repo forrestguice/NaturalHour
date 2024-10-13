@@ -163,4 +163,8 @@
 
     </application>
 
+    <queries>
+        <package android:name="com.forrestguice.suntimeswidget" />    <!-- package visibility api 30+ -->
+    </queries>
+
 </manifest>
