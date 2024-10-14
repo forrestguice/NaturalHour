@@ -36,6 +36,7 @@
         <item name="colorBottomSheet">@color/colorBottomSheet</item>
 
         <item name="clockColorBackground">@color/clockColorBackground</item>
+        <item name="clockColorBackgroundAlt">@color/clockColorBackgroundAlt</item>
         <item name="clockColorFace">@color/clockColorFace</item>
         <item name="clockColorPlate">@color/clockColorPlate</item>
         <item name="clockColorFrame">@color/clockColorFrame</item>
@@ -208,6 +209,7 @@
         <item name="colorBottomSheet">@color/grey_200</item>
 
         <item name="clockColorBackground">@color/clockColorBackground_light</item>
+        <item name="clockColorBackgroundAlt">@color/clockColorBackgroundAlt_light</item>
         <item name="clockColorFace">@color/clockColorFace_light</item>
         <item name="clockColorPlate">@color/clockColorPlate_light</item>
         <item name="clockColorFrame">@color/clockColorFrame_light</item>
@@ -378,6 +380,7 @@
         <item name="colorBottomSheet">@color/grey_900</item>
 
         <item name="clockColorBackground">@color/clockColorBackground_dark</item>
+        <item name="clockColorBackgroundAlt">@color/clockColorBackgroundAlt_dark</item>
         <item name="clockColorFace">@color/clockColorFace_dark</item>
         <item name="clockColorPlate">@color/clockColorPlate_dark</item>
         <item name="clockColorFrame">@color/clockColorFrame_dark</item>
