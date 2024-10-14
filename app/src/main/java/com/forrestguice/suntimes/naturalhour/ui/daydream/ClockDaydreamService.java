@@ -26,7 +26,6 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Build;
 import android.service.dreams.DreamService;
 import android.util.Log;
@@ -206,50 +205,45 @@ public class ClockDaydreamService extends DreamService
      */
     protected class DreamAnimation
     {
-        protected long background_pulse_duration = 15000;
-        protected long alpha_duration_in = 7500;
-        protected long alpha_duration_in_pause = 1000;
-        protected long alpha_duration_out = 7500;
-        protected long alpha_duration_out_pause = 14000;
-        protected float alpha_value_min = 0.02f;
-        protected float alpha_value_max = 1.0f;
-        protected float scale_value_min = 0.60f;
-        protected float scale_value_max = 1.0f;
+        protected boolean option_scale, option_wander, option_rotate;
+        protected boolean option_background_pulse;
+        protected long option_background_pulse_duration;
+        protected long hide_duration_min, hide_duration_max;
+        protected long wait_duration_min,wait_duration_max;
+        protected long fade_duration_in, fade_duration_out;
+        protected float alpha_value_min, alpha_value_max;
+        protected float scale_value_min, scale_value_max;
+        protected float rotate_value_in, rotate_value_out;
         protected float wander_value_x = 100f;
         protected float wander_value_y = 200f;
-        protected float rotate_value_in = 15;
-        protected float rotate_value_out = 15;
-
-        public DreamAnimation() {
-        }
+        protected int option_rotate_chance = 2;
 
         public DreamAnimation(Context context)
         {
             Resources r = context.getResources();
-            alpha_duration_in = r.getInteger(R.integer.anim_daydream_alpha_duration_in);
-            alpha_duration_in_pause = r.getInteger(R.integer.anim_daydream_alpha_duration_in_pause);
-            alpha_duration_out = r.getInteger(R.integer.anim_daydream_alpha_duration_out);
-            alpha_duration_out_pause = r.getInteger(R.integer.anim_daydream_alpha_duration_out_pause);
-        }
+            option_scale = r.getBoolean(R.bool.anim_daydream_option_scale);
+            option_wander = r.getBoolean(R.bool.anim_daydream_option_wander);
+            option_rotate = r.getBoolean(R.bool.anim_daydream_option_rotate);
+            option_background_pulse = r.getBoolean(R.bool.anim_daydream_option_background_pulse);
+            option_background_pulse_duration = r.getInteger(R.integer.anim_daydream_background_pulse_duration);
 
-        protected boolean option_scale = true;
-        public void setOption_scale(boolean value) {
-            option_scale = value;
-        }
+            scale_value_min = Float.parseFloat(r.getString(R.string.anim_daydream_scale_value_min));
+            scale_value_max = Float.parseFloat(r.getString(R.string.anim_daydream_scale_value_max));
 
-        protected boolean option_wander = true;
-        public void setOption_wander(boolean value) {
-            option_wander = value;
-        }
+            rotate_value_in = Float.parseFloat(r.getString(R.string.anim_daydream_rotate_value_in));
+            rotate_value_out = Float.parseFloat(r.getString(R.string.anim_daydream_rotate_value_out));
 
-        protected boolean option_rotate = true;
-        public void setOption_rotate(boolean value) {
-            option_rotate = value;
-        }
+            alpha_value_min = Float.parseFloat(r.getString(R.string.anim_daydream_alpha_value_min));
+            alpha_value_max = Float.parseFloat(r.getString(R.string.anim_daydream_alpha_value_max));
 
-        protected boolean option_background_pulse = true;
-        public void setOption_backgroundPulse(boolean value) {
-            option_background_pulse = value;
+            fade_duration_in = r.getInteger(R.integer.anim_daydream_fadein_duration);
+            fade_duration_out = r.getInteger(R.integer.anim_daydream_fadeout_duration);
+
+            hide_duration_min = r.getInteger(R.integer.anim_daydream_hide_duration_min);
+            hide_duration_max = r.getInteger(R.integer.anim_daydream_hide_duration_max);
+
+            wait_duration_min = r.getInteger(R.integer.anim_daydream_wait_duration_min);
+            wait_duration_max = r.getInteger(R.integer.anim_daydream_wait_duration_max);
         }
 
         public void startAnimation()
@@ -259,7 +253,7 @@ public class ClockDaydreamService extends DreamService
             {
                 int[] bgColors = new int[]{ clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND),
                                             clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND_ALT) };
-                startAnimateBackground(bgColors, background_pulse_duration, new AccelerateInterpolator());
+                startAnimateBackground(bgColors, option_background_pulse_duration, new AccelerateInterpolator());
             }
             animateFadeIn(clockLayout);
         }
@@ -298,14 +292,19 @@ public class ClockDaydreamService extends DreamService
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
-                if (option_rotate) {
-                    view.setRotation(-rotate_value_in);
-                    animation.rotation(0);
+                if (option_rotate)
+                {
+                    if (option_rotate_chance <= 1 || random(0, option_rotate_chance) == 0) {
+                        view.setRotation(-rotate_value_in);
+                        animation.rotation(0);
+                    } else {
+                        view.setRotation(0);
+                    }
                 }
                 view.setAlpha(alpha_value_min);
                 animation.alpha(alpha_value_max)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .setDuration(alpha_duration_in)
+                        .setDuration(fade_duration_in)
                         .setListener(wanderWaitOrFade(view));
             }
         }
@@ -328,13 +327,16 @@ public class ClockDaydreamService extends DreamService
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
-                if (option_rotate) {
-                    view.setRotation(0);
-                    animation.rotation(rotate_value_out);
+                if (option_rotate)
+                {
+                    if (option_rotate_chance <= 1 || random(0, option_rotate_chance) == 0) {
+                        view.setRotation(0);
+                        animation.rotation(rotate_value_out);
+                    }
                 }
                 view.setAlpha(alpha_value_max);
                 animation.alpha(alpha_value_min)
-                        .setDuration(alpha_duration_out)
+                        .setDuration(fade_duration_out)
                         .setListener(new AnimatorListenerAdapter()
                         {
                             @Override
@@ -349,7 +351,7 @@ public class ClockDaydreamService extends DreamService
                                             animateFadeIn(view);
                                         }
                                     }
-                                }, alpha_duration_in_pause);
+                                }, random(hide_duration_min, hide_duration_max));
                             }
                         });
             }
@@ -367,7 +369,7 @@ public class ClockDaydreamService extends DreamService
                         .setInterpolator(new AccelerateDecelerateInterpolator())
                         .translationXBy(translateBy[0])
                         .translationYBy(translateBy[1])
-                        .setDuration(alpha_duration_in)
+                        .setDuration(fade_duration_in)
                         .setListener(wanderWaitOrFade(view));
             }
         }
@@ -387,17 +389,24 @@ public class ClockDaydreamService extends DreamService
                             @Override
                             public void run()
                             {
-                                switch (new Random().nextInt(6))
+                                switch (random(0,6))
                                 {
                                     case 0: animateFadeOut(view); break;
-                                    case 1: view.postDelayed(this, alpha_duration_out_pause); break;
+                                    case 1: view.postDelayed(this, random(wait_duration_min, wait_duration_max)); break;
                                     default: animateWanderAway(view); break;
                                 }
                             }
-                        }, alpha_duration_out_pause);
+                        }, random(wait_duration_min, wait_duration_max));
                     }
                 }
             };
+        }
+
+        protected long random(long min, long max) {
+            return (long) ((Math.random() * (max - min)) + min);
+        }
+        protected int random(int min, int max) {
+            return (int) ((Math.random() * (max - min)) + min);
         }
 
         protected float[] getRandomDiagonalTranslation(View view)
