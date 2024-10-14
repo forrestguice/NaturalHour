@@ -21,6 +21,7 @@
     <attr name="colorValue" format="reference" />
     <attr name="colorBottomSheet" format="reference" />
 
+    <attr name="clockColorBackground" format="reference" />
     <attr name="clockColorFace" format="reference" />
     <attr name="clockColorPlate" format="reference" />
     <attr name="clockColorFrame" format="reference" />

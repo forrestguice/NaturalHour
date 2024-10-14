@@ -334,6 +334,7 @@
     <string name="clockface_ring_day_stroke">Day Hours (stroke)</string>
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
+    <string name="clockface_background">Background</string>
 
     <string name="suggest_colorid">Custom</string>       <!-- edittext hint -->
     <string name="hint_colorid">ID</string>              <!-- edittext hint -->

@@ -56,6 +56,7 @@
     <color name="clockColorNight_light">#3F51B5</color>
     <color name="clockColorNightLabel_light">@color/grey_200</color>
     <color name="clockColorNightFace_light">#000000</color>
+    <color name="clockColorBackground_light">@android:color/white</color>
     <color name="clockColorFace_light">@color/grey_300</color>
     <color name="clockColorPlate_light">@color/grey_300</color>
     <color name="clockColorFrame_light">@color/grey_850</color>
@@ -80,6 +81,7 @@
     <color name="clockColorNight_dark">#000000</color>
     <color name="clockColorNightLabel_dark">#FFFFFF</color>
     <color name="clockColorNightFace_dark">#000000</color>
+    <color name="clockColorBackground_dark">@android:color/black</color>
     <color name="clockColorFace_dark">@color/grey_900</color>
     <color name="clockColorPlate_dark">@color/grey_900</color>
     <color name="clockColorFrame_dark">@color/teal_a200</color>
@@ -104,6 +106,7 @@
     <color name="clockColorNight">@color/clockColorNight_light</color>
     <color name="clockColorNightLabel">@color/clockColorNightLabel_light</color>
     <color name="clockColorNightFace">@color/clockColorNightFace_light</color>
+    <color name="clockColorBackground">@color/clockColorBackground_light</color>
     <color name="clockColorFace">@color/clockColorFace_light</color>
     <color name="clockColorPlate">@color/clockColorPlate_light</color>
     <color name="clockColorFrame">@color/clockColorFrame_light</color>

@@ -133,6 +133,7 @@ public class ClockDaydreamService extends DreamService
             ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);
             clockAppearance = colors.getSelectedColors(context, appWidgetId);
             clockView.setColors(clockAppearance);
+            mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
 
             for (String key : NaturalHourClockBitmap.FLAGS) {
                 String widgetKey = widgetPrefix() + key;

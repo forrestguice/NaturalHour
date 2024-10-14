@@ -41,7 +41,6 @@ public class ClockDaydreamBitmap extends NaturalHourClockBitmap
     @Override
     public boolean getDefaultFlag(Context context, String flag)
     {
-        Log.d("DEBUG", "getDefaultFlag (override): " + flag);
         switch (flag) {
             case FLAG_SHOW_SECONDS: return context.getResources().getBoolean(R.bool.daydream_show_seconds);
             default: return super.getDefaultFlag(context, flag);
