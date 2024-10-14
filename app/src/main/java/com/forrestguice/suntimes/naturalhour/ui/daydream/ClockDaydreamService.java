@@ -19,17 +19,24 @@ package com.forrestguice.suntimes.naturalhour.ui.daydream;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Build;
 import android.service.dreams.DreamService;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.annotation.Nullable;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
@@ -199,6 +206,7 @@ public class ClockDaydreamService extends DreamService
      */
     protected class DreamAnimation
     {
+        protected long background_pulse_duration = 15000;
         protected long alpha_duration_in = 7500;
         protected long alpha_duration_in_pause = 1000;
         protected long alpha_duration_out = 7500;
@@ -239,9 +247,20 @@ public class ClockDaydreamService extends DreamService
             option_rotate = value;
         }
 
+        protected boolean option_background_pulse = true;
+        public void setOption_backgroundPulse(boolean value) {
+            option_background_pulse = value;
+        }
+
         public void startAnimation()
         {
             isAnimated = true;
+            if (option_background_pulse)
+            {
+                int[] bgColors = new int[]{ clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND),
+                                            clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND_ALT) };
+                startAnimateBackground(bgColors, background_pulse_duration, new AccelerateInterpolator());
+            }
             animateFadeIn(clockLayout);
         }
 
@@ -251,6 +270,7 @@ public class ClockDaydreamService extends DreamService
             if (clockLayout != null) {
                 clockLayout.clearAnimation();
             }
+            stopAnimateBackground();
         }
 
         protected boolean isAnimated = false;
@@ -404,6 +424,95 @@ public class ClockDaydreamService extends DreamService
                 view.setX((float)(Math.random() * (mainLayout.getWidth() - view.getWidth())));
                 view.setY((float)(Math.random() * (mainLayout.getHeight() - view.getHeight())));
             }
+        }
+
+        protected Object backgroundAnimation;
+        protected Object startAnimateBackground(int[] animColors, long duration, TimeInterpolator interpolator)
+        {
+            stopAnimateBackground();
+            return animateColors(animColors, duration, true, interpolator, new ColorableView<>(mainLayout));
+        }
+
+        protected void stopAnimateBackground()
+        {
+            if (backgroundAnimation != null)
+            {
+                ValueAnimator animator = (ValueAnimator) backgroundAnimation;
+                animator.cancel();
+                backgroundAnimation = null;
+            }
+        }
+    }
+
+    /**
+     * Colorable
+     */
+    public interface Colorable {
+        void setColor(int color);
+    }
+    public static class ColorableView<T extends View> implements Colorable
+    {
+        protected final T view;
+        public ColorableView(T v) {
+            view = v;
+        }
+        public void setColor(int color) {
+            if (view != null) {
+                view.setBackgroundColor(color);
+            }
+        }
+        public T getView() {
+            return view;
+        }
+    }
+
+    @Nullable
+    private static ValueAnimator animateColors(int[] colors, long duration, boolean repeat, @Nullable TimeInterpolator interpolator, final Colorable... views) {
+        return animateColors(colors, duration, repeat, interpolator, null, views);
+    }
+
+    @Nullable
+    private static ValueAnimator animateColors(int[] colors, long duration, boolean repeat, @Nullable TimeInterpolator interpolator, @Nullable final ValueAnimator.AnimatorUpdateListener listener, final Colorable... views)
+    {
+        if (views != null && views.length > 0)
+        {
+            final ValueAnimator animation = getColorValueAnimator(colors);
+            animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animator)
+                {
+                    for (Colorable v : views) {
+                        if (v != null) {
+                            v.setColor((int) animator.getAnimatedValue());
+                        }
+                    }
+                    if (listener != null) {
+                        listener.onAnimationUpdate(animator);
+                    }
+                }
+            });
+            if (repeat) {
+                animation.setRepeatCount(ValueAnimator.INFINITE);
+                animation.setRepeatMode(ValueAnimator.REVERSE);
+            }
+            if (interpolator != null) {
+                animation.setInterpolator(interpolator);
+            }
+            animation.setDuration(duration);
+            animation.start();
+            return animation;
+        }
+        return null;
+    }
+
+    private static ValueAnimator getColorValueAnimator(int... colors)
+    {
+        if (Build.VERSION.SDK_INT >= 21) {
+            return ValueAnimator.ofArgb(colors);
+        } else {
+            ValueAnimator animator = new ValueAnimator();
+            animator.setIntValues(colors);
+            animator.setEvaluator(new ArgbEvaluator());
+            return animator;
         }
     }
 
