@@ -33,6 +33,10 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.annotation.Nullable;
@@ -60,7 +64,7 @@ public class ClockDaydreamService extends DreamService
     protected int appWidgetId = APPWIDGET_ID;
     protected View mainLayout;
     protected View clockLayout;
-    protected DreamAnimation animation;
+    protected DreamAnimationInterface animation;
     protected NaturalHourClockView clockView;
     protected ColorValues clockAppearance;
 
@@ -145,7 +149,7 @@ public class ClockDaydreamService extends DreamService
                 String widgetKey = widgetPrefix() + key;
                 if (AppSettings.containsKey(context, widgetKey)) {
                     clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey, getBitmapHelper(context)));
-                    Log.d("DEBUG", "setFlag: " + key + " :: " + AppSettings.getClockFlag(context, widgetKey, getBitmapHelper(context)));
+                    //Log.d("DEBUG", "setFlag: " + key + " :: " + AppSettings.getClockFlag(context, widgetKey, getBitmapHelper(context)));
                 }
             }
             for (String key : NaturalHourClockBitmap.VALUES) {
@@ -156,7 +160,30 @@ public class ClockDaydreamService extends DreamService
             }
             clockView.setData(initData(context));
         }
-        animation = new DreamAnimation(context);
+        animation = new WanderingDreamAnimation(context)
+        {
+            @Override
+            protected TimeInterpolator getFadeInInterpolator() {
+                switch (random(0, 3)) {
+                    case 0: return new BounceInterpolator();
+                    default: return new AccelerateDecelerateInterpolator();
+                }
+            }
+
+            @Override
+            protected TimeInterpolator getFadeOutInterpolator() {
+                return new AccelerateDecelerateInterpolator();
+            }
+
+            @Override
+            protected TimeInterpolator getWanderingInterpolator() {
+                switch (random(0, 6)) {
+                    case 0: return new BounceInterpolator();
+                    case 1: return new AnticipateOvershootInterpolator();
+                    default: return new AccelerateDecelerateInterpolator();
+                }
+            }
+        };
     }
 
     @Override
@@ -201,15 +228,28 @@ public class ClockDaydreamService extends DreamService
     }
 
     /**
+     * DreamAnimationInterface
+     */
+    public interface DreamAnimationInterface
+    {
+        void startAnimation();
+        void stopAnimation();
+        boolean isAnimated();
+    }
+
+    /**
      * DreamAnimation
      */
-    protected class DreamAnimation
+    protected class WanderingDreamAnimation implements DreamAnimationInterface
     {
-        protected boolean option_scale, option_wander, option_rotate;
+        protected boolean option_wander;
+        protected boolean option_randomPosition;
+        protected boolean option_fade_scale, option_fade_wander, option_fade_rotate;
         protected boolean option_background_pulse;
+
         protected long option_background_pulse_duration;
         protected long hide_duration_min, hide_duration_max;
-        protected long wait_duration_min,wait_duration_max;
+        protected long wait_duration_min, wait_duration_max;
         protected long fade_duration_in, fade_duration_out;
         protected float alpha_value_min, alpha_value_max;
         protected float scale_value_min, scale_value_max;
@@ -218,12 +258,14 @@ public class ClockDaydreamService extends DreamService
         protected float wander_value_y = 200f;
         protected int option_rotate_chance = 2;
 
-        public DreamAnimation(Context context)
+        public WanderingDreamAnimation(Context context)
         {
             Resources r = context.getResources();
-            option_scale = r.getBoolean(R.bool.anim_daydream_option_scale);
+            option_randomPosition = r.getBoolean(R.bool.anim_daydream_option_randomPosition);
             option_wander = r.getBoolean(R.bool.anim_daydream_option_wander);
-            option_rotate = r.getBoolean(R.bool.anim_daydream_option_rotate);
+            option_fade_scale = r.getBoolean(R.bool.anim_daydream_option_fade_scale);
+            option_fade_wander = r.getBoolean(R.bool.anim_daydream_option_fade_wander);
+            option_fade_rotate = r.getBoolean(R.bool.anim_daydream_option_fade_rotate);
             option_background_pulse = r.getBoolean(R.bool.anim_daydream_option_background_pulse);
             option_background_pulse_duration = r.getInteger(R.integer.anim_daydream_background_pulse_duration);
 
@@ -280,19 +322,19 @@ public class ClockDaydreamService extends DreamService
             if (view != null)
             {
                 ViewPropertyAnimator animation = view.animate();
-                if (option_scale)
+                if (option_fade_scale)
                 {
                     view.setScaleX(scale_value_min);
                     view.setScaleY(scale_value_min);
                     animation.scaleY(scale_value_max).scaleX(scale_value_max);
                 }
-                if (option_wander)
+                if (option_fade_wander)
                 {
                     float[] translateBy = getRandomDiagonalTranslation(view);
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
-                if (option_rotate)
+                if (option_fade_rotate)
                 {
                     if (option_rotate_chance <= 1 || random(0, option_rotate_chance) == 0) {
                         view.setRotation(-rotate_value_in);
@@ -303,7 +345,7 @@ public class ClockDaydreamService extends DreamService
                 }
                 view.setAlpha(alpha_value_min);
                 animation.alpha(alpha_value_max)
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setInterpolator(getFadeInInterpolator())
                         .setDuration(fade_duration_in)
                         .setListener(wanderWaitOrFade(view));
             }
@@ -316,18 +358,18 @@ public class ClockDaydreamService extends DreamService
             if (view != null)
             {
                 ViewPropertyAnimator animation = view.animate();
-                if (option_scale) {
+                if (option_fade_scale) {
                     view.setScaleX(scale_value_max);
                     view.setScaleY(scale_value_max);
                     animation.scaleY(scale_value_min).scaleX(scale_value_min);
                 }
-                if (option_wander)
+                if (option_fade_wander)
                 {
                     float[] translateBy = getRandomDiagonalTranslation(view);
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
-                if (option_rotate)
+                if (option_fade_rotate)
                 {
                     if (option_rotate_chance <= 1 || random(0, option_rotate_chance) == 0) {
                         view.setRotation(0);
@@ -336,6 +378,7 @@ public class ClockDaydreamService extends DreamService
                 }
                 view.setAlpha(alpha_value_max);
                 animation.alpha(alpha_value_min)
+                        .setInterpolator(getFadeOutInterpolator())
                         .setDuration(fade_duration_out)
                         .setListener(new AnimatorListenerAdapter()
                         {
@@ -347,7 +390,9 @@ public class ClockDaydreamService extends DreamService
                                     @Override
                                     public void run() {
                                         if (isAnimated) {
-                                            setRandomViewPosition(view);
+                                            if (option_randomPosition)
+                                                setRandomViewPosition(view);
+                                            else centerViewPosition(view);
                                             animateFadeIn(view);
                                         }
                                     }
@@ -366,12 +411,22 @@ public class ClockDaydreamService extends DreamService
             {
                 float[] translateBy = getRandomDiagonalTranslation(view);
                 view.animate()
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setInterpolator(getWanderingInterpolator())
                         .translationXBy(translateBy[0])
                         .translationYBy(translateBy[1])
                         .setDuration(fade_duration_in)
                         .setListener(wanderWaitOrFade(view));
             }
+        }
+
+        protected TimeInterpolator getFadeInInterpolator() {
+            return new AccelerateDecelerateInterpolator();
+        }
+        protected TimeInterpolator getFadeOutInterpolator() {
+            return new AccelerateDecelerateInterpolator();
+        }
+        protected TimeInterpolator getWanderingInterpolator() {
+            return new AccelerateDecelerateInterpolator();
         }
 
         protected AnimatorListenerAdapter wanderWaitOrFade(final View view)
@@ -393,7 +448,11 @@ public class ClockDaydreamService extends DreamService
                                 {
                                     case 0: animateFadeOut(view); break;
                                     case 1: view.postDelayed(this, random(wait_duration_min, wait_duration_max)); break;
-                                    default: animateWanderAway(view); break;
+                                    default:
+                                        if (option_wander)
+                                            animateWanderAway(view);
+                                        else animateFadeOut(view);
+                                        break;
                                 }
                             }
                         }, random(wait_duration_min, wait_duration_max));
@@ -432,6 +491,15 @@ public class ClockDaydreamService extends DreamService
             {
                 view.setX((float)(Math.random() * (mainLayout.getWidth() - view.getWidth())));
                 view.setY((float)(Math.random() * (mainLayout.getHeight() - view.getHeight())));
+            }
+        }
+
+        protected void centerViewPosition(View view)
+        {
+            if (view != null)
+            {
+                view.setX((float)((mainLayout.getWidth() / 2 - view.getWidth() / 2)));
+                view.setY((float)((mainLayout.getHeight() / 2 - view.getHeight() / 2)));
             }
         }
 

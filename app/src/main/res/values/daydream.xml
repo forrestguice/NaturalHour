@@ -5,9 +5,11 @@
 
     <bool name="daydream_show_seconds">true</bool>
 
-    <bool name="anim_daydream_option_scale">true</bool>
     <bool name="anim_daydream_option_wander">true</bool>
-    <bool name="anim_daydream_option_rotate">true</bool>
+    <bool name="anim_daydream_option_randomPosition">true</bool>
+    <bool name="anim_daydream_option_fade_scale">true</bool>
+    <bool name="anim_daydream_option_fade_wander">true</bool>
+    <bool name="anim_daydream_option_fade_rotate">true</bool>
     <bool name="anim_daydream_option_background_pulse">true</bool>
 
     <integer name="anim_daydream_option_rotate_chance">2</integer>            <!-- 1:chance -->
