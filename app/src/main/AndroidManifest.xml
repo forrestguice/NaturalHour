@@ -132,6 +132,18 @@
             android:exported="true" />
 
         <!-- Quick Settings Tile -->
+        <service
+            android:name=".ui.tiles.NaturalHourTileService"
+            android:label="@string/tile_name"
+            android:icon="@drawable/ic_alarm"
+            android:enabled="@bool/api_post_24"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
+        <!--<activity android:name=".tiles.NaturalHourTileConfigActivity"
+            android:enabled="@bool/api_post_24" />-->  <!-- TODO -->
         <activity android:name=".ui.tiles.TileLockScreenActivity" android:theme="@style/LockScreenActivityStyle"
             android:enabled="@bool/api_post_24" />
 
