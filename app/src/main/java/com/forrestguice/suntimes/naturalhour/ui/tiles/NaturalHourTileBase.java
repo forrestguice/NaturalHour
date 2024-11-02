@@ -19,17 +19,29 @@
 package com.forrestguice.suntimes.naturalhour.ui.tiles;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 
+import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class NaturalHourTileBase extends SuntimesTileBase
 {
@@ -69,22 +81,28 @@ public class NaturalHourTileBase extends SuntimesTileBase
     }
 
     @Override
-    protected void initDefaults(Context context)
-    {
+    protected void initDefaults(Context context) {
         super.initDefaults(context);
-        // TODO: configurable
     }
 
     @Override
     public SpannableStringBuilder formatDialogTitle(Context context)
     {
-        //Calendar now = now(context);
-        //WidgetSettings.TimeFormatMode formatMode = WidgetSettings.loadTimeFormatModePref(context, appWidgetId());
-        //String timeString = utils.calendarTimeShortDisplayString(context, now, false, formatMode).toString();
-        //SpannableString timeDisplay = SuntimesUtils.createBoldSpan(null, timeString, timeString);
-        //timeDisplay = SuntimesUtils.createRelativeSpan(timeDisplay, timeString, timeString, 1.25f);
+        Calendar now = now(context);
+        NaturalHourData data = initData(context);
 
-        SpannableStringBuilder title = new SpannableStringBuilder("TODO");
+        int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+
+        int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
+        int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
+        if (mode24) {
+            currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+        }
+
+        int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
+        String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
+        SpannableStringBuilder title = new SpannableStringBuilder(numeralString);
         //title.append(timeDisplay);
         return title;
     }
@@ -92,34 +110,92 @@ public class NaturalHourTileBase extends SuntimesTileBase
     @Override
     public SpannableStringBuilder formatDialogMessage(Context context)
     {
-        //TimeZone timezone = timezone(context);
-        //Location location = location(context);
-        //String tzDisplay = WidgetTimezones.getTimeZoneDisplay(context, timezone);
-        //boolean isLocalTime = SuntimesTileBase.isLocalTime(timezone.getID());
-
-        //String dateString = utils.calendarDateDisplayString(context, now(context), true).toString();
-        //SpannableString dateDisplay = SuntimesUtils.createBoldSpan(null, dateString, dateString);
-        //dateDisplay = SuntimesUtils.createRelativeSpan(dateDisplay, dateString, dateString, 1.25f);
-
-        //SpannableStringBuilder message = new SpannableStringBuilder(tzDisplay);
-        SpannableStringBuilder message = new SpannableStringBuilder("TODO");
-        //message.append((isLocalTime ? "\n" + location.getLabel() : ""));
-        message.append("\n\n");
-        //message.append(dateDisplay);
-        return message;
+        Calendar now = now(context);
+        NaturalHourData data = initData(context);
+        int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
+        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, is24(context));
+        return new SpannableStringBuilder(announcement);
     }
 
     @Override
     public Drawable getDialogIcon(Context context)
     {
         ContextThemeWrapper contextWrapper = new ContextThemeWrapper(context, R.style.NaturalHourAppTheme_System);
-        //TimeZone timezone = timezone(context);
-        //boolean isLocalTime = SuntimesTileBase.isLocalTime(timezone.getID());
-
-        //int[] attrs = { R.attr.ic };
-        //TypedArray a = contextWrapper.obtainStyledAttributes(attrs);
-        //int icon = a.getResourceId(isLocalTime ? 1 : 0, R.drawable.ic_action_time);
-        //a.recycle();
-        return ContextCompat.getDrawable(context, R.drawable.ic_alarm);    // TODO
+        return ContextCompat.getDrawable(contextWrapper, R.drawable.ic_time);
     }
+
+    //////////////////////////////////////////////////
+
+    protected SuntimesInfo info;
+    protected NaturalHourData data;
+    protected NaturalHourCalculator calculator;
+
+    protected SuntimesInfo initSuntimesInfo(Context context)
+    {
+        if (info == null) {
+            info = SuntimesInfo.queryInfo(context);
+        }
+        return info;
+    }
+    protected NaturalHourData initData(Context context)
+    {
+        initSuntimesInfo(context);
+        if (data == null) {
+            data = createData(context);
+        }
+        return data;
+    }
+    public NaturalHourCalculator initCalculator(Context context)
+    {
+        if (calculator == null) {
+            calculator = createCalculator(context);
+        }
+        return calculator;
+    }
+
+    protected NaturalHourData createData(Context context)
+    {
+        Calendar date = Calendar.getInstance(getTimeZone(context));
+        date.set(Calendar.HOUR_OF_DAY, 12);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+
+        String[] location = getLocation(context);
+        return calculateData(context, initCalculator(context), new NaturalHourData(date.getTimeInMillis(), location[1], location[2], location[3]));
+    }
+
+    protected Calendar now(Context context) {
+        return Calendar.getInstance(getTimeZone(context));
+    }
+
+    protected TimeZone getTimeZone(Context context) {
+        return AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), initSuntimesInfo(context));
+    }
+
+    protected boolean is24(Context context) {
+        return AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), initSuntimesInfo(context));
+    }
+
+    protected String[] getLocation(Context context)
+    {
+        SuntimesInfo info = initSuntimesInfo(context);
+        return info != null && info.location != null && info.location.length >= 4 ? info.location : new String[] {"", "0", "0", "0"};
+    }
+
+    public NaturalHourCalculator createCalculator(Context context) {
+        return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE));
+    }
+
+    private NaturalHourData calculateData(@NonNull Context context, @NonNull NaturalHourCalculator calculator, NaturalHourData naturalHourData)
+    {
+        ContentResolver resolver;
+        if (context != null && calculator != null && (resolver = context.getContentResolver()) != null) {
+            calculator.calculateData(resolver, naturalHourData);
+
+        } else {
+            Log.e(getClass().getSimpleName(), "createData: null context, calculator, or contextResolver!");
+        }
+        return naturalHourData;
+    }
+
 }

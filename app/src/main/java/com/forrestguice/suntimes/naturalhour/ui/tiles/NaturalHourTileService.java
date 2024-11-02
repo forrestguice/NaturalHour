@@ -20,7 +20,14 @@ package com.forrestguice.suntimes.naturalhour.ui.tiles;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.drawable.Icon;
 import android.service.quicksettings.Tile;
+import android.text.SpannableStringBuilder;
+
+import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+
+import java.util.TimeZone;
 
 @TargetApi(24)
 public class NaturalHourTileService extends SuntimesTileService
@@ -39,9 +46,27 @@ public class NaturalHourTileService extends SuntimesTileService
     protected void updateTile(Context context)
     {
         Tile tile = getQsTile();
-        tile.setLabel("TODO");
-        //tile.setIcon(Icon.createWithResource(this, R.drawable.ic_action_time);
+        tile.setLabel(getLabel(context));
+        tile.setIcon(getIcon(context));
         updateTileState(context, tile).updateTile();
+    }
+
+    protected Icon getIcon(Context context) {
+        return Icon.createWithResource(context, R.drawable.ic_time);
+    }
+
+    protected CharSequence getLabel(Context context)
+    {
+        NaturalHourTileBase b = ((NaturalHourTileBase) base);
+        TimeZone timezone = b.getTimeZone(context);
+        String timeString = DisplayStrings.formatTime(context, b.now(context).getTimeInMillis(), timezone, b.is24(context)).toString();
+        String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
+        String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
+
+        SpannableStringBuilder label = new SpannableStringBuilder(base.formatDialogTitle(context));
+        label.append(" ");
+        label.append(clockTimeString);
+        return label;
     }
 
 }
