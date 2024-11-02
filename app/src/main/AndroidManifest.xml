@@ -142,8 +142,8 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
         </service>
-        <!--<activity android:name=".tiles.NaturalHourTileConfigActivity"
-            android:enabled="@bool/api_post_24" />-->  <!-- TODO -->
+        <activity android:name=".ui.tiles.NaturalHourTileConfigActivity"
+            android:enabled="@bool/api_post_24" />
         <activity android:name=".ui.tiles.TileLockScreenActivity" android:theme="@style/LockScreenActivityStyle"
             android:enabled="@bool/api_post_24" />
 

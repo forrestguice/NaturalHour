@@ -66,9 +66,13 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_widget);
+        addPreferencesFromResource(getPreferenceResources());
         initWidgetDefaults();
         setHasOptionsMenu(false);
+    }
+
+    protected int getPreferenceResources() {
+        return R.xml.pref_widget;
     }
 
     protected void initWidgetDefaults()

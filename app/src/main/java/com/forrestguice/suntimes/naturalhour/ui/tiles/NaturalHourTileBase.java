@@ -39,6 +39,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -58,7 +59,9 @@ public class NaturalHourTileBase extends SuntimesTileBase
 
     @Override
     public Intent getConfigIntent(Context context) {
-        return null;   // TODO: configurable
+        Intent intent = new Intent(context, NaturalHourTileConfigActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
     }
 
     @NonNull
@@ -100,8 +103,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
             currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
         }
 
-        int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
-        String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
+        String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType(context), currentHourOf);
         SpannableStringBuilder title = new SpannableStringBuilder(numeralString);
         //title.append(timeDisplay);
         return title;
@@ -120,8 +122,9 @@ public class NaturalHourTileBase extends SuntimesTileBase
     @Override
     public Drawable getDialogIcon(Context context)
     {
-        ContextThemeWrapper contextWrapper = new ContextThemeWrapper(context, R.style.NaturalHourAppTheme_System);
-        return ContextCompat.getDrawable(contextWrapper, R.drawable.ic_time);
+        return null;
+        //ContextThemeWrapper contextWrapper = new ContextThemeWrapper(context, R.style.NaturalHourAppTheme_System);
+        //return ContextCompat.getDrawable(contextWrapper, R.drawable.ic_time);
     }
 
     //////////////////////////////////////////////////
@@ -168,12 +171,18 @@ public class NaturalHourTileBase extends SuntimesTileBase
         return Calendar.getInstance(getTimeZone(context));
     }
 
-    protected TimeZone getTimeZone(Context context) {
-        return AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), initSuntimesInfo(context));
+    protected TimeZone getTimeZone(Context context)
+    {
+        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
+        int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT);
+        return AppSettings.fromTimeZoneMode(context, tzMode, initSuntimesInfo(context));
     }
 
     protected boolean is24(Context context) {
-        return AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), initSuntimesInfo(context));
+
+        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
+        int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
+        return AppSettings.fromTimeFormatMode(context, timeMode, initSuntimesInfo(context));
     }
 
     protected String[] getLocation(Context context)
@@ -183,7 +192,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
     }
 
     public NaturalHourCalculator createCalculator(Context context) {
-        return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE));
+        return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
     }
 
     private NaturalHourData calculateData(@NonNull Context context, @NonNull NaturalHourCalculator calculator, NaturalHourData naturalHourData)
@@ -196,6 +205,12 @@ public class NaturalHourTileBase extends SuntimesTileBase
             Log.e(getClass().getSimpleName(), "createData: null context, calculator, or contextResolver!");
         }
         return naturalHourData;
+    }
+
+    protected int numeralType(Context context)
+    {
+        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
+        return AppSettings.getClockIntValue(context, widgetPrefix + NaturalHourClockBitmap.VALUE_NUMERALS);
     }
 
 }
