@@ -254,7 +254,7 @@ public class ClockDaydreamService extends DreamService
         protected float alpha_value_min, alpha_value_max;
         protected float scale_value_min, scale_value_max;
         protected float rotate_value_in, rotate_value_out;
-        protected float wander_value_x = 100f;
+        protected float wander_value_x = 200f;
         protected float wander_value_y = 200f;
         protected int option_rotate_chance = 2;
 
@@ -330,7 +330,7 @@ public class ClockDaydreamService extends DreamService
                 }
                 if (option_fade_wander)
                 {
-                    float[] translateBy = getRandomDiagonalTranslation(view);
+                    float[] translateBy = getRandomDiagonalTranslation(view, (int) wander_value_x, (int) wander_value_y);
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
@@ -365,7 +365,7 @@ public class ClockDaydreamService extends DreamService
                 }
                 if (option_fade_wander)
                 {
-                    float[] translateBy = getRandomDiagonalTranslation(view);
+                    float[] translateBy = getRandomDiagonalTranslation(view, (int) wander_value_x, (int) wander_value_y);
                     animation.translationXBy(translateBy[0]);
                     animation.translationYBy(translateBy[1]);
                 }
@@ -409,7 +409,7 @@ public class ClockDaydreamService extends DreamService
             }
             if (view != null)
             {
-                float[] translateBy = getRandomDiagonalTranslation(view);
+                float[] translateBy = getRandomDiagonalTranslation(view, null, null);
                 view.animate()
                         .setInterpolator(getWanderingInterpolator())
                         .translationXBy(translateBy[0])
@@ -468,19 +468,32 @@ public class ClockDaydreamService extends DreamService
             return (int) ((Math.random() * (max - min)) + min);
         }
 
-        protected float[] getRandomDiagonalTranslation(View view)
+        protected float[] getRandomDiagonalTranslation(View view, @Nullable Integer byX, @Nullable Integer byY)
+        {
+            if (byX == null) {
+                byX = view.getWidth();
+            }
+            if (byY == null) {
+                byY = view.getHeight();
+            }
+            return getRandomDiagonalTranslation(view, (int) wander_value_x, byX, (int) wander_value_y, byY);
+        }
+
+        protected float[] getRandomDiagonalTranslation(View view, int xMin, int xMax, int yMin, int yMax)
         {
             Random random = new Random();
             float[] result = new float[2];
+            int byX = (xMin != xMax) ? random(xMin, xMax) : xMin;
+            int byY = (yMin != yMax) ? random(yMin, yMax) : yMin;
 
             float x = view.getX();
             float right_max = mainLayout.getWidth() - (x + view.getWidth());
-            result[0] = (random.nextBoolean() ? 1 : -1) * wander_value_x;
+            result[0] = (random.nextBoolean() ? 1 : -1) * byX;
             result[0] = result[0] > 0 ? Math.min(result[0], right_max) : Math.max(result[0], -x);
 
             float y = view.getY();
             float bottom_max = mainLayout.getHeight() - (y + view.getHeight());
-            result[1] = (random.nextBoolean() ? 1 : -1) * wander_value_y;
+            result[1] = (random.nextBoolean() ? 1 : -1) * byY;
             result[1] = result[1] > 0 ? Math.min(result[1], bottom_max) : Math.max(result[1], -y);
             return result;
         }
