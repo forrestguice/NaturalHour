@@ -12,4 +12,6 @@
     <drawable name="ic_settings_ref">@drawable/ic_settings</drawable>
     <drawable name="ic_help_ref">@drawable/ic_help</drawable>
     <drawable name="ic_about_ref">@drawable/ic_about</drawable>
+
+    <drawable name="tilecard_bg_ref">@drawable/tilecard_bg_dark</drawable>
 </resources>

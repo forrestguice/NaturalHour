@@ -131,6 +131,10 @@
             android:launchMode="singleTop"
             android:exported="true" />
 
+        <!-- Quick Settings Tile -->
+        <activity android:name=".ui.tiles.TileLockScreenActivity" android:theme="@style/LockScreenActivityStyle"
+            android:enabled="@bool/api_post_24" />
+
     </application>
 
 </manifest>
