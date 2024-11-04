@@ -115,7 +115,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         Calendar now = now(context);
         NaturalHourData data = initData(context);
         int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, is24(context));
+        SpannableString announcement = NaturalHourFragment.announceTime(context, now, hourMode(context), currentHour, is24(context), numeralType(context));
         return new SpannableStringBuilder(announcement);
     }
 
@@ -192,7 +192,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
     }
 
     public NaturalHourCalculator createCalculator(Context context) {
-        return NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
+        return NaturalHourClockBitmap.getCalculator(hourMode(context));
     }
 
     private NaturalHourData calculateData(@NonNull Context context, @NonNull NaturalHourCalculator calculator, NaturalHourData naturalHourData)
@@ -207,10 +207,12 @@ public class NaturalHourTileBase extends SuntimesTileBase
         return naturalHourData;
     }
 
-    protected int numeralType(Context context)
-    {
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
-        return AppSettings.getClockIntValue(context, widgetPrefix + NaturalHourClockBitmap.VALUE_NUMERALS);
+    protected int hourMode(Context context) {
+        return AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT);
+    }
+
+    protected int numeralType(Context context) {
+        return AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_NUMERALS);
     }
 
 }

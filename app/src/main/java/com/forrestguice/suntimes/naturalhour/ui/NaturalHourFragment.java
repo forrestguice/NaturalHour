@@ -302,8 +302,12 @@ public class NaturalHourFragment extends Fragment
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        return announceTime(context, now, hourMode, currentHour, timeFormat24, numeralType);
+    }
 
+    public static SpannableString announceTime(Context context, Calendar now, int hourMode, int currentHour, boolean timeFormat24, int numeralType)
+    {
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
         int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
         if (mode24) {
             currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
