@@ -208,7 +208,7 @@ public abstract class SuntimesTileBase
      */
     protected void unlockAndRun(final Activity activity, final Runnable r)
     {
-        if (activity != null)
+        if (activity != null && getLaunchIntentNeedsUnlock())
         {
             KeyguardManager keyguardManager = (KeyguardManager) activity.getSystemService(Context.KEYGUARD_SERVICE);
             if (keyguardManager != null && isKeyguardSecure(keyguardManager)) {
@@ -249,6 +249,10 @@ public abstract class SuntimesTileBase
         if (Build.VERSION.SDK_INT >= 16) {
             return keyguardManager.isKeyguardSecure();
         } else return false;
+    }
+
+    protected boolean getLaunchIntentNeedsUnlock() {
+        return true;
     }
 
     @NonNull

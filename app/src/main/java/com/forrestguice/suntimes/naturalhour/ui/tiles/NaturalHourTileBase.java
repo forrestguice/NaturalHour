@@ -25,11 +25,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
@@ -62,6 +60,11 @@ public class NaturalHourTileBase extends SuntimesTileBase
         Intent intent = new Intent(context, NaturalHourTileConfigActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
+    }
+
+    @Override
+    protected boolean getLaunchIntentNeedsUnlock() {
+        return false;
     }
 
     @NonNull
