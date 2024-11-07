@@ -10,6 +10,8 @@
     <attr name="icColors" format="reference" />
     <attr name="icShare" format="reference" />
     <attr name="icAlarms" format="reference" />
+    <attr name="icFullscreenOn" format="reference" />
+    <attr name="icFullscreenOff" format="reference" />
 
     <attr name="icToday" format="reference" />
     <attr name="icSettings" format="reference" />

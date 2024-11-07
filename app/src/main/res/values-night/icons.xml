@@ -7,6 +7,8 @@
     <drawable name="ic_delete_ref">@drawable/ic_delete</drawable>
     <drawable name="ic_palette_ref">@drawable/ic_palette</drawable>
     <drawable name="ic_alarm_ref">@drawable/ic_alarm</drawable>
+    <drawable name="ic_fullscreenon_ref">@drawable/ic_fullscreen_on</drawable>
+    <drawable name="ic_fullscreenoff_ref">@drawable/ic_fullscreen_off</drawable>
     <drawable name="ic_share_ref">@drawable/ic_share</drawable>
     <drawable name="ic_today_ref">@drawable/ic_today</drawable>
     <drawable name="ic_settings_ref">@drawable/ic_settings</drawable>

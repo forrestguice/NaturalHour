@@ -24,6 +24,8 @@
         <item name="icDelete">@drawable/ic_delete_ref</item>
         <item name="icColors">@drawable/ic_palette_ref</item>
         <item name="icAlarms">@drawable/ic_alarm_ref</item>
+        <item name="icFullscreenOn">@drawable/ic_fullscreenon_ref</item>
+        <item name="icFullscreenOff">@drawable/ic_fullscreenoff_ref</item>
         <item name="icShare">@drawable/ic_share_ref</item>
         <item name="icToday">@drawable/ic_today_ref</item>
         <item name="icSettings">@drawable/ic_settings_ref</item>
@@ -194,6 +196,8 @@
         <item name="icDelete">@drawable/ic_delete_light</item>
         <item name="icColors">@drawable/ic_palette_light</item>
         <item name="icAlarms">@drawable/ic_alarm_light</item>
+        <item name="icFullscreenOn">@drawable/ic_fullscreen_on_light</item>
+        <item name="icFullscreenOff">@drawable/ic_fullscreen_off_light</item>
         <item name="icShare">@drawable/ic_share_light</item>
         <item name="icToday">@drawable/ic_today_light</item>
         <item name="icSettings">@drawable/ic_settings_light</item>
@@ -363,6 +367,8 @@
         <item name="icDelete">@drawable/ic_delete</item>
         <item name="icColors">@drawable/ic_palette</item>
         <item name="icAlarms">@drawable/ic_alarm</item>
+        <item name="icFullscreenOn">@drawable/ic_fullscreen_on</item>
+        <item name="icFullscreenOff">@drawable/ic_fullscreen_off</item>
         <item name="icShare">@drawable/ic_share</item>
         <item name="icToday">@drawable/ic_today</item>
         <item name="icSettings">@drawable/ic_settings</item>
