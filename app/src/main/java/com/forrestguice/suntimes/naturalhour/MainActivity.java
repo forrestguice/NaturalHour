@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResumeFragments();
         Log.d("DEBUG", "onResumeFragments");
-        updateViews(MainActivity.this);
+        updateViews(MainActivity.this, false);
         restoreDialogs();
     }
 
@@ -262,7 +262,10 @@ public class MainActivity extends AppCompatActivity
         return suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4 ? suntimesInfo.location : new String[] {"", "0", "0", "0"};   // TODO: default/fallback value
     }
 
-    protected void updateViews(Context context)
+    protected void updateViews(Context context) {
+        updateViews(context, true);
+    }
+    protected void updateViews(Context context, boolean animate)
     {
         boolean isFullscreen = isFullscreen();
         boolean isLocked = isDeviceLocked();
@@ -281,11 +284,11 @@ public class MainActivity extends AppCompatActivity
             actionBar.setHomeButtonEnabled(!isLocked);
         }
         if (toolbar != null) {
-            setVisibility(context, toolbar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, true);
+            setVisibility(context, toolbar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, true, animate);
         }
         if (bottomBar != null)
         {
-            setVisibility(context, bottomBar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, false);
+            setVisibility(context, bottomBar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, false, animate);
             bottomBar.setEnabled(!isLocked);
         }
 
@@ -341,18 +344,25 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.setState(sheetState);
     }
 
-    protected static void setVisibility(Context context, View v, int visibility, boolean upward)
+    protected static void setVisibility(Context context, View v, int visibility, boolean upward, boolean animate)
     {
-        switch (visibility)
+        if (animate)
         {
-            case View.VISIBLE:
-                slideViewIn(context, v, upward);
-                break;
+            switch (visibility)
+            {
+                case View.VISIBLE:
+                    if (animate) {
+                        slideViewIn(context, v, upward);
+                    }
+                    break;
 
-            case View.INVISIBLE:
-            case View.GONE:
-                slideViewOut(context, v, upward);
-                break;
+                case View.INVISIBLE:
+                case View.GONE:
+                    slideViewOut(context, v, upward);
+                    break;
+            }
+        } else {
+            v.setVisibility(visibility);
         }
     }
 
