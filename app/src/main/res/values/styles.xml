@@ -17,6 +17,10 @@
         <item name="snackbar_accentColor">?colorAccent</item>
         <item name="snackbar_backgroundColor">?attr/colorPrimary</item>
 
+        <item name="fab_foregroundColor">@color/fab_foreground</item>
+        <item name="fab_backgroundColor">@color/fab_background</item>
+        <item name="fab_rippleColor">@color/fab_ripple</item>
+
         <item name="icBack">@drawable/ic_back_ref</item>
         <item name="icDone">@drawable/ic_done_ref</item>
         <item name="icAdd">@drawable/ic_add_ref</item>
@@ -183,11 +187,13 @@
         <item name="snackbar_accentColor">?colorAccent</item>
         <item name="snackbar_backgroundColor">?attr/colorPrimary</item>
 
+        <item name="fab_foregroundColor">@color/fab_foreground_light</item>
+        <item name="fab_backgroundColor">@color/fab_background_light</item>
+        <item name="fab_rippleColor">@color/fab_ripple_light</item>
+
         <!--<item name="suntimesCardBackground">@color/card_light</item>
         <item name="dialogFrame">@android:color/white</item>
-        <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
-        <item name="fab_backgroundColor">@color/fab_background_light</item>
-        <item name="fab_rippleColor">@color/fab_ripple_light</item>-->
+        <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>-->
 
         <item name="icBack">@drawable/ic_back_light</item>
         <item name="icDone">@drawable/ic_done_light</item>
@@ -353,11 +359,13 @@
         <item name="snackbar_accentColor">?colorAccent</item>
         <item name="snackbar_backgroundColor">?attr/colorPrimary</item>
 
+        <item name="fab_foregroundColor">@color/fab_foreground_dark</item>
+        <item name="fab_backgroundColor">@color/fab_background_dark</item>
+        <item name="fab_rippleColor">@color/fab_ripple_dark</item>
+
         <!--<item name="suntimesCardBackground">@color/card_dark</item>
         <item name="dialogFrame">@color/grey_800</item>
         <item name="actionBarPopupTheme">@style/PopupMenuStyleDark</item>
-        <item name="fab_backgroundColor">@color/fab_background_dark</item>
-        <item name="fab_rippleColor">@color/fab_ripple_dark</item>
         -->
 
         <item name="icBack">@drawable/ic_back</item>
