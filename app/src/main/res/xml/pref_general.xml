@@ -91,4 +91,7 @@
 
     </PreferenceCategory>
 
+    <CheckBoxPreference android:key="useWallpaper"
+        android:title="@string/pref_title_useWallpaper" android:defaultValue="false" />
+
 </PreferenceScreen>

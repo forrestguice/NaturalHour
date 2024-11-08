@@ -45,6 +45,9 @@ public class AppSettings
     public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3, TZMODE_UTC = 4;
     public static final int TZMODE_DEFAULT = TZMODE_APPARENTSOLAR;
 
+    public static final String KEY_USE_WALLPAPER = "useWallpaper";
+    public static final boolean DEF_USE_WALLPAPER = false;
+
     public static final String[] VALUES = new String[] { AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.KEY_MODE_TIMEZONE };
     public static final int[] VALUES_DEF = new int[] { AppSettings.TIMEMODE_DEFAULT, AppSettings.TZMODE_DEFAULT };
 
@@ -111,6 +114,16 @@ public class AppSettings
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_DEFAULT);
+    }
+
+    public static void setUseWallpaper(Context context, boolean value) {
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        prefs.putBoolean(KEY_USE_WALLPAPER, value);
+        prefs.apply();
+    }
+    public static boolean getUseWallpaper(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(KEY_USE_WALLPAPER, DEF_USE_WALLPAPER);
     }
 
     /**
