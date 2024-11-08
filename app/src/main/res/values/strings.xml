@@ -39,6 +39,8 @@
     <string name="action_select">Select</string>
     <string name="action_alarms">Set Alarm</string>
     <string name="action_colors">Colors</string>
+    <string name="action_fullscreen">Fullscreen</string>
+    <string name="action_fullscreen_off">Disable Fullscreen</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
@@ -65,6 +67,8 @@
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
     <string name="pref_title_show_seconds">Show seconds hand</string>
+
+    <string name="pref_title_useWallpaper">Show home screen wallpaper</string>
 
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
@@ -335,6 +339,8 @@
     <string name="clockface_ring_day_stroke">Day Hours (stroke)</string>
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
+    <string name="clockface_background">Background</string>
+    <string name="clockface_backgroundAlt">Background (alternate)</string>
 
     <string name="defaultColors_name">Default</string>
     <string name="defaultColors_name_dark">Dark</string>
@@ -401,6 +407,8 @@
     <string name="app_desc">A 24-hour clock &amp; roman timekeeping add-on for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
+    <string name="tile_name">@string/app_name</string>
+    <string name="tileconfig_title">Natural Hour Tile</string>   <!-- tile configuration activity title text -->
     <string name="widget_name">@string/app_name</string>
     <string name="widget_summary">Clock Widget (%s)</string>    <!-- e.g. Clock Widget (3x2) -->
     <string name="daydream_name">@string/app_name</string>
