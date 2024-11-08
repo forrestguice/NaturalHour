@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="api_post_24">false</bool>
 
     <attr name="icBack" format="reference" />
     <attr name="icDone" format="reference" />
@@ -10,6 +11,8 @@
     <attr name="icColors" format="reference" />
     <attr name="icShare" format="reference" />
     <attr name="icAlarms" format="reference" />
+    <attr name="icFullscreenOn" format="reference" />
+    <attr name="icFullscreenOff" format="reference" />
 
     <attr name="icToday" format="reference" />
     <attr name="icSettings" format="reference" />
@@ -46,6 +49,8 @@
     <attr name="clockColorAstro" format="reference" />
     <attr name="clockColorNautical" format="reference" />
     <attr name="clockColorCivil" format="reference" />
+
+    <attr name="tileCardBackground" format="reference" />
 
     <attr name="bottomBarSize" format="reference" />   <!-- TODO: move to SuntimesAddon -->
 

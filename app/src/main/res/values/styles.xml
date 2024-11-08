@@ -10,6 +10,7 @@
         <item name="colorAction">@color/colorAction</item>
         <item name="colorDisabled">@color/colorDisabled</item>
 
+        <item name="tileCardBackground">@drawable/tilecard_bg_ref</item>
         <item name="dialogBackground">@color/dialog_bg</item>
         <item name="dialogBackgroundAlt">@color/dialog_alt_bg</item>
         <item name="snackbar_textColor">@color/snackbar_text_color</item>
@@ -24,6 +25,8 @@
         <item name="icDelete">@drawable/ic_delete_ref</item>
         <item name="icColors">@drawable/ic_palette_ref</item>
         <item name="icAlarms">@drawable/ic_alarm_ref</item>
+        <item name="icFullscreenOn">@drawable/ic_fullscreenon_ref</item>
+        <item name="icFullscreenOff">@drawable/ic_fullscreenoff_ref</item>
         <item name="icShare">@drawable/ic_share_ref</item>
         <item name="icToday">@drawable/ic_today_ref</item>
         <item name="icSettings">@drawable/ic_settings_ref</item>
@@ -196,6 +199,8 @@
         <item name="icDelete">@drawable/ic_delete_light</item>
         <item name="icColors">@drawable/ic_palette_light</item>
         <item name="icAlarms">@drawable/ic_alarm_light</item>
+        <item name="icFullscreenOn">@drawable/ic_fullscreen_on_light</item>
+        <item name="icFullscreenOff">@drawable/ic_fullscreen_off_light</item>
         <item name="icShare">@drawable/ic_share_light</item>
         <item name="icToday">@drawable/ic_today_light</item>
         <item name="icSettings">@drawable/ic_settings_light</item>
@@ -230,6 +235,7 @@
         <item name="clockColorNautical">@color/clockColorNautical_light</item>
         <item name="clockColorCivil">@color/clockColorCivil_light</item>
 
+        <item name="tileCardBackground">@drawable/tilecard_bg_light</item>
         <item name="actionBarPopupTheme">@style/PopupMenuStyleLight</item>
         <item name="cardViewStyle">@style/NaturalHourCardView.Light</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
@@ -366,6 +372,8 @@
         <item name="icDelete">@drawable/ic_delete</item>
         <item name="icColors">@drawable/ic_palette</item>
         <item name="icAlarms">@drawable/ic_alarm</item>
+        <item name="icFullscreenOn">@drawable/ic_fullscreen_on</item>
+        <item name="icFullscreenOff">@drawable/ic_fullscreen_off</item>
         <item name="icShare">@drawable/ic_share</item>
         <item name="icToday">@drawable/ic_today</item>
         <item name="icSettings">@drawable/ic_settings</item>
@@ -400,6 +408,7 @@
         <item name="clockColorNautical">@color/clockColorNautical_dark</item>
         <item name="clockColorCivil">@color/clockColorCivil_dark</item>
 
+        <item name="tileCardBackground">@drawable/tilecard_bg_dark</item>
         <item name="actionBarPopupTheme">@style/PopupMenuStyleDark</item>
         <item name="cardViewStyle">@style/NaturalHourCardView.Dark</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NaturalHour.BottomSheetDialog</item>
@@ -554,6 +563,31 @@
         <item name="popupTheme">?attr/actionBarPopupTheme</item>
         <item name="titleTextAppearance">@style/ToolbarTitleTextAppearance</item>
         <item name="subtitleTextAppearance">@style/ToolbarSubtitleTextAppearance</item>
+    </style>
+
+    <style name="LockScreenActivityStyleBase" parent="NaturalHourAppTheme.System">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/LockScreenDialogAnimation</item>
+    </style>
+    <style name="LockScreenActivityStyle" parent="LockScreenActivityStyleBase">
+        <item name="text_size_tiny">@dimen/text_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/text_size_xsmall</item>
+        <item name="text_size_small">@dimen/text_size_small</item>
+        <item name="text_size_medium">@dimen/text_size_medium</item>
+        <item name="text_size_large">@dimen/text_size_large</item>
+        <item name="text_size_xlarge">@dimen/text_size_xlarge</item>
+        <item name="text_size_huge">@dimen/text_size_huge</item>
+        <item name="text_size_enormous">@dimen/text_size_enormous</item>
+    </style>
+    <style name="LockScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/LockScreenDialogAnimation</item>
+        <item name="android:windowBackground">?attr/tileCardBackground</item>
+    </style>
+    <style name="LockScreenDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>

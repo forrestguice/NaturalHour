@@ -1,0 +1,43 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_general">
+
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
+            android:key="widget_0_clockface_hourmode"
+            android:title="@string/pref_title_hourdef"
+            android:entries="@array/pref_hourdef_display"
+            android:entryValues="@array/pref_hourdef_values"
+            android:defaultValue="0"
+            android:summary="%s" />
+
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_timeformatmode"
+            android:title="@string/pref_title_timeformat"
+            android:entries="@array/pref_timeformat_display"
+            android:entryValues="@array/pref_timeformat_values"
+            android:defaultValue="3"
+            android:summary="%s" />
+
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_timezonemode"
+            android:title="@string/pref_title_tzmode"
+            android:entries="@array/pref_tzmode_display"
+            android:entryValues="@array/pref_tzmode_values"
+            android:defaultValue="3"
+            android:summary="%s" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_clockface">
+
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
+            android:key="widget_0_clockface_numerals"
+            android:title="@string/pref_title_numerals"
+            android:entries="@array/pref_numerals_display"
+            android:entryValues="@array/pref_numerals_values"
+            android:defaultValue="0"
+            android:summary="%s" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

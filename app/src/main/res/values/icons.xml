@@ -8,9 +8,13 @@
     <drawable name="ic_delete_ref">@drawable/ic_delete_light</drawable>
     <drawable name="ic_palette_ref">@drawable/ic_palette_light</drawable>
     <drawable name="ic_alarm_ref">@drawable/ic_alarm_light</drawable>
+    <drawable name="ic_fullscreenon_ref">@drawable/ic_fullscreen_on_light</drawable>
+    <drawable name="ic_fullscreenoff_ref">@drawable/ic_fullscreen_off_light</drawable>
     <drawable name="ic_share_ref">@drawable/ic_share_light</drawable>
     <drawable name="ic_today_ref">@drawable/ic_today_light</drawable>
     <drawable name="ic_settings_ref">@drawable/ic_settings_light</drawable>
     <drawable name="ic_help_ref">@drawable/ic_help_light</drawable>
     <drawable name="ic_about_ref">@drawable/ic_about_light</drawable>
+
+    <drawable name="tilecard_bg_ref">@drawable/tilecard_bg_light</drawable>
 </resources>

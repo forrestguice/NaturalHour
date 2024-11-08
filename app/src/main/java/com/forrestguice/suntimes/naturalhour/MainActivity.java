@@ -35,6 +35,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -363,6 +365,16 @@ public class MainActivity extends AppCompatActivity
     {
         Messages.forceActionBarIcons(menu);
 
+        boolean isFullscreen = isFullscreen();
+        MenuItem fullscreenOnItem = menu.findItem(R.id.action_fullscreen);
+        if (fullscreenOnItem != null) {
+            fullscreenOnItem.setVisible(!isFullscreen);
+        }
+        MenuItem fullscreenOffItem = menu.findItem(R.id.action_fullscreen_off);
+        if (fullscreenOffItem != null) {
+            fullscreenOffItem.setVisible(isFullscreen);
+        }
+
         MenuItem alarmItem = menu.findItem(R.id.action_alarms);
         if (alarmItem != null)
         {
@@ -386,6 +398,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_fullscreen:
+            case R.id.action_fullscreen_off:
+                toggleFullscreen();
+                invalidateOptionsMenu();
+                return true;
+
             case R.id.action_alarms:
                 showAlarmDialog();
                 return true;
@@ -565,6 +583,42 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_timezone_utc: return AppSettings.TZMODE_UTC;
             case R.id.action_timezone_apparentsolar: default: return AppSettings.TZMODE_APPARENTSOLAR;
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected Intent initIntent()
+    {
+        if (getIntent() == null) {
+            setIntent(new Intent());
+        }
+        return getIntent();
+    }
+
+    public static final String PARAM_FULLSCREEN = "fullscreen";
+    public boolean isFullscreen() {
+        return initIntent().getBooleanExtra(PARAM_FULLSCREEN, false);
+    }
+
+    public void toggleFullscreen()
+    {
+        boolean toggledValue = !isFullscreen();
+        setFullscreen(toggledValue);
+        onFullscreenChanged(toggledValue);
+    }
+
+    public void setFullscreen(boolean value)
+    {
+        getIntent().putExtra(PARAM_FULLSCREEN, value);
+        if (value) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
+
+    protected void onFullscreenChanged(boolean fullscreen) {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

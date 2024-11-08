@@ -4,6 +4,20 @@
     tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
 
     <item
+        android:id="@+id/action_fullscreen"
+        android:orderInCategory="600"
+        android:icon="?attr/icFullscreenOn"
+        android:title="@string/action_fullscreen"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_fullscreen_off"
+        android:orderInCategory="600"
+        android:icon="?attr/icFullscreenOff"
+        android:title="@string/action_fullscreen_off"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_alarms"
         android:orderInCategory="600"
         android:icon="?attr/icAlarms"

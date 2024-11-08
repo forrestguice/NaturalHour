@@ -245,7 +245,7 @@ public class NaturalHourProvider extends ContentProvider
                 for (int appWidgetID : widgetIDs)
                 {
                     ColorValues colors = colorCollection.getSelectedColors(context, appWidgetID);
-                    String label = (colors != null ? colors.getLabel() : null);
+                    String label = (colors != null ? colors.getID() : null);
                     String formatString = summary[i] + " (%s)";
                     String summary0 = (label != null ? String.format(formatString, label) : summary[i]);
 

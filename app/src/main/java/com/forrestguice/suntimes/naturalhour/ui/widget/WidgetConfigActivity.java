@@ -55,7 +55,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     protected SuntimesInfo suntimesInfo = null;
     protected boolean reconfigure = false;
 
-    protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    protected int appWidgetId = getDefaultAppWidgetId();
     private Intent resultValue;
 
     protected WidgetPreferenceFragment flagFragment;
@@ -69,6 +69,10 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
+    }
+
+    public int getDefaultAppWidgetId() {
+        return AppWidgetManager.INVALID_APPWIDGET_ID;
     }
 
     public int getAppWidgetId() {
@@ -106,7 +110,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             return;
         }
 
-        setContentView(R.layout.activity_widget);
+        setContentView(getActivityLayoutResID());
         initViews(this);
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -116,6 +120,10 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
+    }
+
+    protected int getActivityLayoutResID() {
+        return R.layout.activity_widget;
     }
 
     protected void initViews(Context context)
