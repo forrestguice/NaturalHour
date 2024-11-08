@@ -28,7 +28,7 @@ public class TilePreferenceFragment extends WidgetPreferenceFragment
     }
 
     @Override
-    protected int getPreferenceResources() {
+    public int getPreferenceResources() {
         return R.xml.pref_tile;
     }
 }

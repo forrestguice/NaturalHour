@@ -85,10 +85,6 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         setHasOptionsMenu(false);
     }
 
-    protected int getPreferenceResources() {
-        return R.xml.pref_widget;
-    }
-
     protected void initWidgetDefaults()
     {
         Context context = getActivity();
