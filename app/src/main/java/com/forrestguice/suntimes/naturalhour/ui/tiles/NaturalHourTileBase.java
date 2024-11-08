@@ -23,13 +23,14 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.annotation.NonNull;
+import com.forrestguice.suntimes.annotation.Nullable;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;

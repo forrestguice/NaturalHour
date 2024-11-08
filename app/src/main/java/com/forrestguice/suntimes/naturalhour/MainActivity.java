@@ -19,6 +19,7 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -63,6 +64,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFr
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.TimeZone;
 
