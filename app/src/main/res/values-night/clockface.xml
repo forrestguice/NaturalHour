@@ -13,6 +13,8 @@
     <color name="clockColorNight">@color/clockColorNight_dark</color>
     <color name="clockColorNightLabel">@color/clockColorNightLabel_dark</color>
     <color name="clockColorNightFace">@color/clockColorNightFace_dark</color>
+    <color name="clockColorBackground">@color/clockColorBackground_dark</color>
+    <color name="clockColorBackgroundAlt">@color/clockColorBackgroundAlt_dark</color>
     <color name="clockColorFace">@color/clockColorFace_dark</color>
     <color name="clockColorPlate">@color/clockColorPlate_dark</color>
     <color name="clockColorFrame">@color/clockColorFrame_dark</color>

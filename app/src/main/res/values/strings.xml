@@ -339,6 +339,8 @@
     <string name="clockface_ring_day_stroke">Day Hours (stroke)</string>
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
+    <string name="clockface_background">Background</string>
+    <string name="clockface_backgroundAlt">Background (alternate)</string>
 
     <string name="defaultColors_name">Default</string>
     <string name="defaultColors_name_dark">Dark</string>
