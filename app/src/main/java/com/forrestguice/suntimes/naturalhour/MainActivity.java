@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2021 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -19,22 +19,36 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -84,8 +98,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setShowWhenLocked();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
+
         if (suntimesInfo.appTheme != null) {    // override the theme
             AppThemeInfo.setTheme(this, suntimesInfo);
+        }
+
+        if (AppSettings.getUseWallpaper(this)) {
+            getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.transparent));
         }
 
         setContentView(R.layout.activity_main);
@@ -121,6 +142,11 @@ public class MainActivity extends AppCompatActivity
         View timezoneButton = findViewById(R.id.bottombar_button_layout1);
         if (timezoneButton != null) {
             timezoneButton.setOnClickListener(onTimeZoneClick);
+        }
+
+        FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
+        if (fab_toggleFullscreen != null) {
+            fab_toggleFullscreen.setOnClickListener(onFabClick_toggleFullscreen);
         }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -217,10 +243,28 @@ public class MainActivity extends AppCompatActivity
 
     protected void updateViews(Context context)
     {
-        ActionBar toolbar = getSupportActionBar();
-        if (toolbar != null) {
-            toolbar.setTitle(createTitle(suntimesInfo));
-            toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
+        boolean isFullscreen = isFullscreen();
+        boolean isLocked = isDeviceLocked();
+        if (isLocked) {
+            setFullscreen(true, false);
+        }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setVisibility(isLocked || isFullscreen ? View.GONE : View.VISIBLE);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(createTitle(suntimesInfo));
+            actionBar.setSubtitle(isLocked ? context.getString(R.string.app_name)
+                                           : DisplayStrings.formatLocation(this, suntimesInfo));
+            actionBar.setHomeButtonEnabled(!isLocked);
+        }
+
+        View bottomBar = findViewById(R.id.bottombar);
+        if (bottomBar != null)
+        {
+            bottomBar.setVisibility(isLocked || isFullscreen ? View.GONE : View.VISIBLE);
+            bottomBar.setEnabled(!isLocked);
         }
 
         FragmentManager fragments = getSupportFragmentManager();
@@ -231,14 +275,30 @@ public class MainActivity extends AppCompatActivity
                     AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));
         }
 
-        TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
-        if (timeformatText != null && fragment != null) {
-            timeformatText.setText( getString( fragment.is24() ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
+        TextView timeformatView = (TextView) findViewById(R.id.bottombar_button0);
+        if (timeformatView != null)
+        {
+            CharSequence timeformatText = (fragment != null ? getString(fragment.is24() ? R.string.timeformat_24hr : R.string.timeformat_12hr) : "");
+            timeformatView.setText(timeformatText);
+            timeformatView.setEnabled(!isLocked);
         }
 
-        TextView timezoneText = (TextView) findViewById(R.id.bottombar_button1);
-        if (timezoneText != null && fragment != null) {
-            timezoneText.setText( fragment.getTimeZone().getID() );
+        TextView timezoneView = (TextView) findViewById(R.id.bottombar_button1);
+        if (timezoneView != null)
+        {
+            CharSequence timezoneText = (fragment != null ? fragment.getTimeZone().getID() : "");
+            timezoneView.setText(timezoneText);
+            timezoneView.setEnabled(!isLocked);
+        }
+
+        FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
+        if (fab_toggleFullscreen != null)
+        {
+            if (isFullscreen || isLocked) {
+                fab_toggleFullscreen.show();
+            } else {
+                fab_toggleFullscreen.hide();
+            }
         }
     }
 
@@ -247,12 +307,14 @@ public class MainActivity extends AppCompatActivity
     {
         super.onSaveInstanceState(outState);
         outState.putInt("bottomSheet", bottomSheet.getState());
+        outState.putBoolean(PARAM_FULLSCREEN, isFullscreen);
     }
 
     @Override
     public void onRestoreInstanceState(@NonNull Bundle savedState)
     {
         super.onRestoreInstanceState(savedState);
+        setFullscreen(savedState.getBoolean(PARAM_FULLSCREEN, false), false);
         int sheetState = savedState.getInt("bottomSheet", BottomSheetBehavior.STATE_HIDDEN);
         bottomSheet.setState(sheetState);
     }
@@ -357,7 +419,7 @@ public class MainActivity extends AppCompatActivity
         }
         MenuItem fullscreenOffItem = menu.findItem(R.id.action_fullscreen_off);
         if (fullscreenOffItem != null) {
-            fullscreenOffItem.setVisible(isFullscreen);
+            fullscreenOffItem.setVisible(false);   // false; uses action button instead   //isFullscreen);
         }
 
         MenuItem alarmItem = menu.findItem(R.id.action_alarms);
@@ -386,7 +448,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_fullscreen:
             case R.id.action_fullscreen_off:
                 toggleFullscreen();
-                invalidateOptionsMenu();
                 return true;
 
             case R.id.action_alarms:
@@ -583,27 +644,100 @@ public class MainActivity extends AppCompatActivity
 
     public static final String PARAM_FULLSCREEN = "fullscreen";
     public boolean isFullscreen() {
-        return initIntent().getBooleanExtra(PARAM_FULLSCREEN, false);
+        return isFullscreen;
     }
+    private boolean isFullscreen = false;
 
     public void toggleFullscreen()
     {
         boolean toggledValue = !isFullscreen();
         setFullscreen(toggledValue);
-        onFullscreenChanged(toggledValue);
     }
 
-    public void setFullscreen(boolean value)
+    public void setFullscreen(boolean value) {
+        setFullscreen(value, true);
+    }
+    public void setFullscreen(boolean value, boolean updateViews)
     {
-        getIntent().putExtra(PARAM_FULLSCREEN, value);
+        isFullscreen = value;
         if (value) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+        if (updateViews) {
+            invalidateOptionsMenu();
+            updateViews(this);
+        }
     }
 
-    protected void onFullscreenChanged(boolean fullscreen) {
+    private final View.OnClickListener onFabClick_toggleFullscreen = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            if (keyguardManager != null && isDeviceLocked(keyguardManager))
+            {
+                requestDismissKeyguard(MainActivity.this, keyguardManager, new Runnable()
+                {
+                    @Override
+                    public void run() {
+                        setFullscreen(false);
+                    }
+                });
+            } else {
+                setFullscreen(false);
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected void setShowWhenLocked()
+    {
+        if (Build.VERSION.SDK_INT >= 27) {
+            setShowWhenLocked(true);
+        } else {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        }
+    }
+
+    protected boolean isDeviceLocked()
+    {
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        if (keyguardManager != null) {
+            return isDeviceLocked(keyguardManager);
+        } else return false;
+    }
+    protected boolean isDeviceLocked(@NonNull KeyguardManager keyguardManager)
+    {
+        if (Build.VERSION.SDK_INT >= 22) {
+            return keyguardManager.isDeviceLocked();
+        } else return false;
+    }
+
+    protected void requestDismissKeyguard(@NonNull Activity activity, @NonNull KeyguardManager keyguardManager, @Nullable final Runnable r)
+    {
+        if (Build.VERSION.SDK_INT >= 26)
+        {
+            keyguardManager.requestDismissKeyguard(activity, new KeyguardManager.KeyguardDismissCallback()
+            {
+                @Override
+                public void onDismissSucceeded() {
+                    if (r != null) {
+                        r.run();
+                    }
+                }
+            });
+
+        } else {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+            if (r != null) {
+                r.run();  // TODO: run only on success; how?
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
