@@ -21,16 +21,10 @@ package com.forrestguice.suntimes.naturalhour;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -93,6 +87,33 @@ public class MainActivity extends AppCompatActivity
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
         suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
     }
+
+    /*
+    protected void animateFadeIn(Context context, @NonNull Drawable d)
+    {
+        if (Build.VERSION.SDK_INT >= 19)
+        {
+            ObjectAnimator animator = ObjectAnimator
+                    .ofPropertyValuesHolder(d, PropertyValuesHolder.ofInt("alpha", 0, 255));
+            animator.setDuration(context.getResources().getInteger(R.integer.anim_fadein_duration));
+            animator.start();
+        } else {
+            d.setAlpha(255);
+        }
+    }
+    protected void animateFadeOut(Context context, @NonNull Drawable d)
+    {
+        if (Build.VERSION.SDK_INT >= 19)
+        {
+            ObjectAnimator animator = ObjectAnimator
+                .ofPropertyValuesHolder(d, PropertyValuesHolder.ofInt("alpha", 255, 0));
+            animator.setDuration(context.getResources().getInteger(R.integer.anim_fadeout_duration));
+            animator.start();
+        } else {
+            d.setAlpha(0);
+        }
+    }
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -249,21 +270,22 @@ public class MainActivity extends AppCompatActivity
             setFullscreen(true, false);
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setVisibility(isLocked || isFullscreen ? View.GONE : View.VISIBLE);
-
         ActionBar actionBar = getSupportActionBar();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        View bottomBar = findViewById(R.id.bottombar);
+
         if (actionBar != null) {
             actionBar.setTitle(createTitle(suntimesInfo));
             actionBar.setSubtitle(isLocked ? context.getString(R.string.app_name)
                                            : DisplayStrings.formatLocation(this, suntimesInfo));
             actionBar.setHomeButtonEnabled(!isLocked);
         }
-
-        View bottomBar = findViewById(R.id.bottombar);
+        if (toolbar != null) {
+            setVisibility(context, toolbar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, true);
+        }
         if (bottomBar != null)
         {
-            bottomBar.setVisibility(isLocked || isFullscreen ? View.GONE : View.VISIBLE);
+            setVisibility(context, bottomBar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, false);
             bottomBar.setEnabled(!isLocked);
         }
 
@@ -317,6 +339,56 @@ public class MainActivity extends AppCompatActivity
         setFullscreen(savedState.getBoolean(PARAM_FULLSCREEN, false), false);
         int sheetState = savedState.getInt("bottomSheet", BottomSheetBehavior.STATE_HIDDEN);
         bottomSheet.setState(sheetState);
+    }
+
+    protected static void setVisibility(Context context, View v, int visibility, boolean upward)
+    {
+        switch (visibility)
+        {
+            case View.VISIBLE:
+                slideViewIn(context, v, upward);
+                break;
+
+            case View.INVISIBLE:
+            case View.GONE:
+                slideViewOut(context, v, upward);
+                break;
+        }
+    }
+
+    public static void slideViewIn(Context context, final View v, boolean upward)
+    {
+        if (v.getVisibility() != View.VISIBLE)
+        {
+            int direction = (upward ? 1 : -1);
+            int duration = context.getResources().getInteger(R.integer.anim_fadein_duration);
+            v.animate()
+                    .alpha(1F)
+                    .translationYBy(direction * v.getHeight())
+                    .setDuration(duration).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    v.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+    public static void slideViewOut(Context context, final View v, boolean upward)
+    {
+        if (v.getVisibility() == View.VISIBLE)
+        {
+            int direction = (upward ? -1 : 1);
+            int duration = context.getResources().getInteger(R.integer.anim_fadeout_duration);
+            v.animate()
+                    .alpha(0F)
+                    .translationYBy(direction * v.getHeight())
+                    .setDuration(duration).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    v.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     protected void showBottomSheet()
