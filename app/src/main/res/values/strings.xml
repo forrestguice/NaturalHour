@@ -68,6 +68,8 @@
     <string name="pref_title_show_plate">Show background plate</string>
     <string name="pref_title_show_seconds">Show seconds hand</string>
 
+    <string name="pref_title_useWallpaper">Show home screen wallpaper</string>
+
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
         <item>at sunrise &amp; sunset&#160;(12)</item>

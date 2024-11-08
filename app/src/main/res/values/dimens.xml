@@ -7,6 +7,9 @@
     <dimen name="colortext_margin">3dp</dimen>
     <dimen name="chip_radius">6dp</dimen>
 
+    <integer name="anim_fadein_duration">@android:integer/config_longAnimTime</integer>
+    <integer name="anim_fadeout_duration">@android:integer/config_longAnimTime</integer>
+
     <dimen name="small_bottombar_size">32sp</dimen>    <!-- bottom bar minimum height -->  <!-- TODO: move to SuntimesAddon -->
     <dimen name="normal_bottombar_size">34sp</dimen>
     <dimen name="large_bottombar_size">36sp</dimen>
