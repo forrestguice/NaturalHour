@@ -49,6 +49,8 @@ import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarmType;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
@@ -102,7 +104,7 @@ public class AlarmActivity extends AppCompatActivity
             {
                 Uri alarmUri = Uri.parse(alarmUriString);
                 String alarmID = alarmUri.getLastPathSegment();
-                param_naturalHour = NaturalHourProvider.alarmIdToNaturalHour(alarmID);
+                param_naturalHour = NaturalHourAlarm0.alarmIdToNaturalHour(alarmID);
             }
             intent.removeExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
         }
@@ -319,11 +321,12 @@ public class AlarmActivity extends AppCompatActivity
 
     protected void onDone(String alarmID)
     {
+        NaturalHourAlarmType alarmInfo = NaturalHourProvider.getAlarmInfo(alarmID);
         Intent result = new Intent();    // e.g. content://suntimes.naturalhour.provider/alarmInfo/0_6_0    .. hourMode:0, hour:6(noon), moment:0
         result.putExtra(NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER, NaturalHourProviderContract.AUTHORITY);
         result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_NAME, alarmID);
-        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_TITLE, NaturalHourProvider.getAlarmTitle(this, alarmID));
-        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_SUMMARY, NaturalHourProvider.getAlarmSummary(this, alarmID));
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_TITLE, alarmInfo.getAlarmTitle(this, alarmID));
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_SUMMARY, alarmInfo.getAlarmSummary(this, alarmID));
         result.setData(Uri.parse(AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID)));
         setResult(Activity.RESULT_OK, result);
         finish();
@@ -353,7 +356,7 @@ public class AlarmActivity extends AppCompatActivity
         alarmActions.setSelection(alarmID);
         actionMode = startSupportActionMode(alarmActions);
         if (actionMode != null) {
-            actionMode.setTitle(NaturalHourProvider.getAlarmTitle(this, alarmID));
+            actionMode.setTitle(NaturalHourProvider.getAlarmInfo(alarmID).getAlarmTitle(this, alarmID));
         }
     }
 

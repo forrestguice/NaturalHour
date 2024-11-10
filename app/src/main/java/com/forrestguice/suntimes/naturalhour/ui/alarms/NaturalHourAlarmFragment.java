@@ -39,6 +39,8 @@ import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarmType;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
@@ -81,11 +83,11 @@ public class NaturalHourAlarmFragment extends Fragment
     }
 
     public String getAlarmID() {
-        return (NaturalHourProvider.naturalHourToAlarmID(getHourMode(), getHour(), getMoment()));
+        return (NaturalHourAlarm0.naturalHourToAlarmID(getHourMode(), getHour(), getMoment()));
     }
     public void setAlarmID(String alarmID)
     {
-        int[] hour = NaturalHourProvider.alarmIdToNaturalHour(alarmID);
+        int[] hour = NaturalHourAlarm0.alarmIdToNaturalHour(alarmID);
         if (hour != null) {
             setHourMode(hour[0]);
             setHour(hour[1]);
@@ -276,7 +278,7 @@ public class NaturalHourAlarmFragment extends Fragment
             selectionMap.put(EXTRA_LOCATION_LAT, location[0] + "");
             selectionMap.put(EXTRA_LOCATION_LON, location[1] + "");
             selectionMap.put(EXTRA_LOCATION_ALT, location[2] + "");
-            long alarmTimeMillis = NaturalHourProvider.calculateAlarmTime(context, alarmID, selectionMap);   // TODO: optimize
+            long alarmTimeMillis = NaturalHourProvider.getAlarmInfo(alarmID).calculateAlarmTime(context, alarmID, selectionMap);   // TODO: optimize
             text_time.setText(alarmTimeMillis >= 0 ? DisplayStrings.formatTime(context, alarmTimeMillis, getTimeZone(), is24()) : "");
         }
     }
@@ -284,7 +286,7 @@ public class NaturalHourAlarmFragment extends Fragment
     public static void scheduleAlarm(Context context, String alarmID)
     {
         String alarmUri = AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID);
-        String label = NaturalHourProvider.getAlarmTitle(context, alarmID);
+        String label = NaturalHourProvider.getAlarmInfo(alarmID).getAlarmTitle(context, alarmID);
         try {
             context.startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, TimeZone.getDefault(), alarmUri));
         } catch (ActivityNotFoundException e) {
