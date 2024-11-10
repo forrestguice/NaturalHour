@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -544,6 +544,7 @@ public class NaturalHourFragment extends Fragment
             if (context != null)
             {
                 holder.onBindViewHolder(context, position, initData(position), options);
+                holder.clockface.startUpdateRunnable();
                 attachClickListeners(holder, position);
             }
         }
@@ -552,6 +553,7 @@ public class NaturalHourFragment extends Fragment
         public void onViewRecycled(@NonNull NaturalHourViewHolder holder)
         {
             detachClickListeners(holder);
+            holder.clockface.stopUpdateRunnable();
             holder.clockface.invalidate();
             int position = holder.getAdapterPosition();
             if (position >= 0) {

@@ -119,14 +119,14 @@ public class DisplayStrings
     public static CharSequence formatNightWatchLabel0(@NonNull Context context, int num)
     {
         String[] phrase = context.getResources().getStringArray(R.array.nightwatch_phrase0);
-        if (num >= 1 && num <= 4) {
+        if (num >= 1 && num <= phrase.length) {
             return phrase[num];
         } else return "";
     }
     public static CharSequence formatNightWatchLabel1(@NonNull Context context, int num)
     {
         String[] phrase = context.getResources().getStringArray(R.array.nightwatch_phrase1);
-        if (num >= 1 && num <= 3) {
+        if (num >= 1 && num <= phrase.length) {
             return phrase[num];
         } else return "";
     }

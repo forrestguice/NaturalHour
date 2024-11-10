@@ -50,16 +50,19 @@
 
     <string name="pref_title_midnight_top">Midnight at top</string>
     <string name="pref_title_center_noon">Center on solar noon</string>
+    <string name="pref_title_show_noon">Show solar noon</string>
     <string name="pref_title_show_date">Show date</string>
     <string name="pref_title_show_timezone">Show time zone</string>
     <string name="pref_title_show_location">Show location</string>
     <string name="pref_title_show_night">Show night period</string>
+    <string name="pref_title_show_midnight">Show solar midnight</string>
     <string name="pref_title_show_twilights">Show twilight periods</string>
     <string name="pref_title_show_ampm">Show am/pm periods</string>
     <string name="pref_title_show_nightwatch">Show night watches</string>
     <string name="pref_title_show_ticks5m">Show ticks (5 minutes)</string>
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
+    <string name="pref_title_show_seconds">Show seconds hand</string>
 
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
@@ -105,12 +108,22 @@
 
     <string name="pref_title_nightwatch_type">Night Watch</string>
     <string-array name="pref_nightwatch_display">
+        <item>2 watches</item>
         <item>3 watches</item>
         <item>4 watches</item>
+        <item>5 watches</item>
+        <item>6 watches</item>
+        <item>7 watches</item>
+        <item>8 watches</item>
     </string-array>
     <string-array name="pref_nightwatch_values" translatable="false">  <!-- one-to-one with pref_nightwatch_display -->
-        <item>1</item>
-        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
     </string-array>
 
     <string name="pref_title_numerals">Numerals</string>
@@ -170,6 +183,12 @@
         <item>second watch</item>
         <item>third watch</item>
         <item>fourth watch</item>
+        <item>fifth watch</item>
+        <item>sixth watch</item>
+        <item>seventh watch</item>
+        <item>eighth watch</item>
+        <item>ninth watch</item>
+        <item>tenth watch</item>
     </string-array>
     <string-array name="nightwatch_phrase1">
         <item>0</item>
@@ -301,7 +320,8 @@
     <string name="clockface_face_astro">Astronomical Twilight</string>
     <string name="clockface_face_nautical">Nautical Twilight</string>
     <string name="clockface_face_civil">Civil Twilight</string>
-    <string name="clockface_hand">Hand</string>
+    <string name="clockface_hand">Hour Hand</string>
+    <string name="clockface_hand1">Seconds Hand</string>
     <string name="clockface_center">Center</string>
     <string name="clockface_label">Label1</string>
     <string name="clockface_label1">Label2</string>

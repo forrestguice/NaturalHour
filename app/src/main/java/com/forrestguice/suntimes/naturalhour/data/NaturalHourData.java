@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -262,6 +262,12 @@ public class NaturalHourData implements Parcelable
                 ((hour / 24d) * twoPI) +
                 ((minute / (60d * 24d)) * twoPI) +
                 ((second / (60d * 60d * 24d)) * twoPI);
+    }
+
+    public static double getAngle(int seconds)
+    {
+        double twoPI = 2 * Math.PI;
+        return Math.PI + ((seconds / 60d) * twoPI);
     }
 
     public static double simplifyAngle(double radians)
