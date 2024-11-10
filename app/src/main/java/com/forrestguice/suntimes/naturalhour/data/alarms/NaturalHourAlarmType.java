@@ -23,6 +23,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
+
+import java.util.Calendar;
 import java.util.HashMap;
 
 public interface NaturalHourAlarmType
@@ -44,4 +47,12 @@ public interface NaturalHourAlarmType
     boolean getSupportsRepeating(@Nullable String alarmID);
 
     long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap);
+
+    /**
+     * @param alarmID alarmID
+     * @return int[] params
+     */
+    int[] fromAlarmID(String alarmID);
+    Calendar getEventTime(NaturalHourData data, int[] params);
+
 }

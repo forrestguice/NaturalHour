@@ -26,14 +26,15 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
-import java.util.HashMap;
+import java.util.Calendar;
 
 /**
  * Alarm at night watch i of n.
  */
-public class NaturalHourAlarm1 implements NaturalHourAlarmType
+public class NaturalHourAlarm1 extends NaturalHourAlarm0
 {
     public static final String TYPE_PREFIX = "N";
 
@@ -51,7 +52,8 @@ public class NaturalHourAlarm1 implements NaturalHourAlarmType
      * @param alarmID alarmID; N_hourMode_nightWatchNumber_numNightWatches
      * @return null if alarmID is invalid; or int[3] .. [CalculatorMode, nightWatchNumber, numNightWatches]
      */
-    public static int[] fromAlarmID(@Nullable String alarmID)
+    @Override
+    public int[] fromAlarmID(@Nullable String alarmID)
     {
         String[] parts = alarmID != null ? alarmID.split("_") : new String[0];
         if (parts.length == 3 || parts.length == 4)
@@ -140,10 +142,8 @@ public class NaturalHourAlarm1 implements NaturalHourAlarmType
     }
 
     @Override
-    public long calculateAlarmTime(@NonNull Context context, @Nullable String alarmID, HashMap<String, String> selectionMap)
-    {
-        int[] nightwatch = fromAlarmID(alarmID);
-        return -1L;    // TODO
+    public Calendar getEventTime(NaturalHourData data, int[] params) {
+        return data.getNightWatch(params[1], params[2]);
     }
 
 }

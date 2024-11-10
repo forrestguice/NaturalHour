@@ -351,6 +351,11 @@ public class NaturalHourData implements Parcelable
         return getNaturalHour(i, 0);
     }
 
+    public Calendar getNightWatch(int i, int n)
+    {
+        return Calendar.getInstance();   // TODO
+    }
+
     /**
      * @return long[4]; spring, summer, fall, winter
      */
