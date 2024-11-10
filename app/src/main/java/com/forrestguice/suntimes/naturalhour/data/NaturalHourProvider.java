@@ -352,7 +352,15 @@ public class NaturalHourProvider extends ContentProvider
      * @param alarmId id of some type
      * @return NaturalHourAlarmType implementation / typeInfo
      */
-    public static NaturalHourAlarmType getAlarmInfo(@Nullable String alarmId) {
+    public static NaturalHourAlarmType getAlarmInfo(@Nullable String alarmId)
+    {
+        if (alarmId != null) {
+            for (NaturalHourAlarmType type : getAlarmTypes()) {
+                if (type.isOfType(alarmId)) {
+                    return type;
+                }
+            }
+        }
         return new NaturalHourAlarm0();
     }
 

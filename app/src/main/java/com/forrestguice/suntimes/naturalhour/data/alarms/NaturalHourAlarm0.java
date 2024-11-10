@@ -53,6 +53,13 @@ import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_
  */
 public class NaturalHourAlarm0 implements NaturalHourAlarmType
 {
+    public static final String TYPE_PREFIX = "H";
+
+    @Override
+    public boolean isOfType(@Nullable String alarmID) {
+        return alarmID == null || alarmID.startsWith(TYPE_PREFIX);
+    }
+
     /**
      * @param alarmID alarmID; hourMode_hourNum or hourMode_hourNum_momentNum
      * @return null if alarmID is invalid; or int[3] .. [CalculatorMode, hourNum, momentNum], where hourNum [0,24) and momentNum [0,40)
@@ -60,12 +67,12 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
     public static int[] alarmIdToNaturalHour(@Nullable String alarmID)
     {
         String[] parts = alarmID != null ? alarmID.split("_") : new String[0];
-        if (parts.length == 2 || parts.length == 3)
+        if (parts.length == 3 || parts.length == 4)
         {
             try {
-                int momentNum = (parts.length == 3) ? Integer.parseInt(parts[2]) : 0;
-                int hourNum = Integer.parseInt(parts[1]);
-                int hourMode = Integer.parseInt(parts[0]);
+                int momentNum = (parts.length == 4) ? Integer.parseInt(parts[3]) : 0;
+                int hourNum = Integer.parseInt(parts[2]);
+                int hourMode = Integer.parseInt(parts[1]);
 
                 if (hourNum >= 0 && hourNum < 24) {
                     return new int[] { hourMode, hourNum, momentNum };
@@ -88,7 +95,7 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
         if (momentNum < 0 || momentNum >= 40) {
             throw new IndexOutOfBoundsException("momentNum [0,40); " + momentNum);
         }
-        return hourMode + "_" + hourNum + "_" + momentNum;
+        return TYPE_PREFIX + "_" + hourMode + "_" + hourNum + "_" + momentNum;
     }
 
     @Override

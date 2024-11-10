@@ -27,6 +27,8 @@ import java.util.HashMap;
 
 public interface NaturalHourAlarmType
 {
+    boolean isOfType(@Nullable String alarmID);
+
     /**
      * @return an array of [alarmID, ...] (that should be listed by the UI)
      */
