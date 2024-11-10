@@ -61,7 +61,7 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
     }
 
     /**
-     * @param alarmID alarmID; hourMode_hourNum or hourMode_hourNum_momentNum
+     * @param alarmID alarmID; H_hourMode_hourNum or H_hourMode_hourNum_momentNum
      * @return null if alarmID is invalid; or int[3] .. [CalculatorMode, hourNum, momentNum], where hourNum [0,24) and momentNum [0,40)
      */
     public static int[] alarmIdToNaturalHour(@Nullable String alarmID)

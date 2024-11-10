@@ -39,6 +39,7 @@ import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm1;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarmType;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
@@ -365,7 +366,7 @@ public class NaturalHourProvider extends ContentProvider
     }
 
     public static NaturalHourAlarmType[] getAlarmTypes() {
-        return new NaturalHourAlarmType[] { new NaturalHourAlarm0() };
+        return new NaturalHourAlarmType[] { new NaturalHourAlarm0(), new NaturalHourAlarm1() };
     }
 
     public static String[] getAlarmList(Context context)
