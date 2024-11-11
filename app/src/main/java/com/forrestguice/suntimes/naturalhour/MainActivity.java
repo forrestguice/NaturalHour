@@ -573,8 +573,8 @@ public class MainActivity extends AppCompatActivity
             Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
             args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo));
             args.putInt(NaturalHourAlarmFragment.ARG_HOURMODE, AppSettings.getClockIntValue(MainActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
-            args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
-            args.putInt(NaturalHourAlarmFragment.ARG_MOMENT, 0);    // TODO: save/restore last selection
+            //args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
+            //args.putInt(NaturalHourAlarmFragment.ARG_MOMENT, 0);    // TODO: save/restore last selection
             dialog.setArguments(args);
 
             dialog.setLocation(getLocation());

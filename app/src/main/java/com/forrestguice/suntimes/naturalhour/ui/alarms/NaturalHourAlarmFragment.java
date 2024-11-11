@@ -39,8 +39,6 @@ import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
-import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
-import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarmType;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
@@ -58,12 +56,6 @@ public class NaturalHourAlarmFragment extends Fragment
     public static final String ARG_HOURMODE = "hourmode";
     public static final int DEF_HOURMODE = NaturalHourClockBitmap.HOURMODE_SUNRISE;
 
-    public static final String ARG_HOUR = NaturalHourSelectFragment.ARG_HOUR;
-    public static final int DEF_HOUR = NaturalHourSelectFragment.DEF_HOUR;
-
-    public static final String ARG_MOMENT = NaturalHourSelectFragment.ARG_MOMENT;
-    public static final int DEF_MOMENT = NaturalHourSelectFragment.DEF_MOMENT;
-
     public static final String ARG_TIME24 = "is24";
     public static final boolean DEF_TIME24 = true;
 
@@ -71,7 +63,7 @@ public class NaturalHourAlarmFragment extends Fragment
     public static final String DEF_TIMEZONE = null;
 
     protected TextView text_time;
-    protected NaturalHourSelectFragment alarmSelect;
+    protected AlarmSelectFragment alarmSelect;
 
     public NaturalHourAlarmFragment()
     {
@@ -83,16 +75,33 @@ public class NaturalHourAlarmFragment extends Fragment
     }
 
     public String getAlarmID() {
-        return (NaturalHourAlarm0.naturalHourToAlarmID(getHourMode(), getHour(), getMoment()));
+        return alarmSelect.getSelectedEventID();
     }
+
     public void setAlarmID(String alarmID)
     {
-        int[] hour = NaturalHourAlarm0.alarmIdToNaturalHour(alarmID);
-        if (hour != null) {
-            setHourMode(hour[0]);
-            setHour(hour[1]);
-            setMoment(hour[2]);
-        }
+        alarmSelect.setSelectedEventID(alarmID);
+
+        /*NaturalHourAlarmType alarmType = NaturalHourProvider.getAlarmInfo(alarmID);
+        switch (alarmType.getTypeID())
+        {
+            // TODO
+            case NaturalHourAlarm1.TYPE_PREFIX:
+                alarmSelect.setSelectedEventID(alarmID);
+
+            case NaturalHourAlarm0.TYPE_PREFIX:
+            default:
+                alarmSelect.setSelectedEventID(alarmID);
+                break;
+        }*/
+
+        /*int[] params = NaturalHourProvider.getAlarmInfo(alarmID).fromAlarmID(alarmID);
+        if (params != null)
+        {
+            setHourMode(params[0]);
+            setHour(params[1]);
+            setMoment(params[2]);
+        }*/
     }
 
     public int getHourMode() {
@@ -106,38 +115,9 @@ public class NaturalHourAlarmFragment extends Fragment
             args.putInt(ARG_HOURMODE, mode);
         }
         if (alarmSelect != null) {
+            alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOURMODE, getHourMode());
             alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
             alarmSelect.initViews(alarmSelect.getView());
-        }
-    }
-
-    public int getHour() {
-        Bundle args = getArguments();
-        return args != null ? args.getInt(ARG_HOUR, DEF_HOUR) : DEF_HOUR;
-    }
-    public void setHour(int hour)
-    {
-        Bundle args = getArguments();
-        if (args != null) {
-            args.putInt(ARG_HOUR, hour);
-        }
-        if (alarmSelect != null) {
-            alarmSelect.setIntArg(ARG_HOUR, hour);
-        }
-    }
-
-    public int getMoment() {
-        Bundle args = getArguments();
-        return args != null ? args.getInt(ARG_MOMENT, DEF_MOMENT) : DEF_MOMENT;
-    }
-    public void setMoment(int moment)
-    {
-        Bundle args = getArguments();
-        if (args != null) {
-            args.putInt(ARG_MOMENT, moment);
-        }
-        if (alarmSelect != null) {
-            alarmSelect.setIntArg(ARG_MOMENT, moment);
         }
     }
 
@@ -226,9 +206,12 @@ public class NaturalHourAlarmFragment extends Fragment
         alarmSelect = (NaturalHourSelectFragment) fragments.findFragmentById(R.id.naturalhourselect_fragment);
         if (alarmSelect != null)
         {
+            alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOURMODE, getHourMode());
             alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
-            alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOUR, getHour());
-            alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());
+
+            //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOUR, getHour());
+            //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());
+
             alarmSelect.initViews(alarmSelect.getView());    // re-init views
         }
     }
@@ -248,16 +231,16 @@ public class NaturalHourAlarmFragment extends Fragment
         updateViews(getActivity());
     }
 
-    private NaturalHourSelectFragment.FragmentListener onSelectionChanged = new NaturalHourSelectFragment.FragmentListener()
+    private final NaturalHourSelectFragment.FragmentListener onSelectionChanged = new NaturalHourSelectFragment.FragmentListener()
     {
         @Override
-        public void onItemSelected(int hour, int moment)
+        public void onItemSelected(int[] values)
         {
-            Bundle args = getArguments();
-            if (args != null) {
-                args.putInt(ARG_HOUR, hour);
-                args.putInt(ARG_MOMENT, moment);
-            }
+            //Bundle args = getArguments();
+            //if (args != null) {
+            //    args.putInt(ARG_HOUR, values[0]);
+            //    args.putInt(ARG_MOMENT, values[1]);
+            //}
             updateViews(getActivity());
             triggerAlarmSelected();
         }

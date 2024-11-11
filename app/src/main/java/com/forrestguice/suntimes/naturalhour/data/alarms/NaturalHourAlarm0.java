@@ -47,6 +47,7 @@ import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_REP
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
+import static com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap.HOURMODE_SUNSET;
 
 /**
  * Alarm at Hour and Moment.
@@ -56,8 +57,13 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
     public static final String TYPE_PREFIX = "H";
 
     @Override
+    public String getTypeID() {
+        return NaturalHourAlarm0.TYPE_PREFIX;
+    }
+
+    @Override
     public boolean isOfType(@Nullable String alarmID) {
-        return alarmID == null || alarmID.startsWith(TYPE_PREFIX);
+        return alarmID == null || alarmID.startsWith(NaturalHourAlarm0.TYPE_PREFIX);
     }
 
     /**
@@ -95,7 +101,7 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
         if (momentNum < 0 || momentNum >= 40) {
             throw new IndexOutOfBoundsException("momentNum [0,40); " + momentNum);
         }
-        return TYPE_PREFIX + "_" + hourMode + "_" + hourNum + "_" + momentNum;
+        return NaturalHourAlarm0.TYPE_PREFIX + "_" + hourMode + "_" + hourNum + "_" + momentNum;
     }
 
     @Override
@@ -199,7 +205,7 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
             Calendar day = Calendar.getInstance();
             NaturalHourData data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
             calculator.calculateData(resolver, data, false, false);
-            eventTime = getEventTime(data, params);
+            eventTime = getEventTime(params[0], data, params);
             if (eventTime != null)
             {
                 eventTime.set(Calendar.SECOND, 0);
@@ -221,7 +227,7 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
                 calculator.calculateData(resolver, data, false, false);
-                eventTime = getEventTime(data, params);
+                eventTime = getEventTime(params[0], data, params);
                 if (eventTime != null)
                 {
                     eventTime.set(Calendar.SECOND, 0);
@@ -242,12 +248,16 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
         return alarmIdToNaturalHour(alarmID);
     }
 
+    @Override
+    public String toAlarmID(int[] params) {
+        return naturalHourToAlarmID(params[0], params[1], params[2]);
+    }
 
     @Override
-    public Calendar getEventTime(NaturalHourData data, int[] params)
+    public Calendar getEventTime(int hourMode, NaturalHourData data, int[] params)
     {
         float momentRatio = (float)params[2] / 39f;
-        return data.getNaturalHour(params[1], momentRatio);
+        return data.getNaturalHour(params[1], momentRatio, NaturalHourClockBitmap.modeIs24(hourMode));
     }
 
 }

@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 public interface NaturalHourAlarmType
 {
+    String getTypeID();
     boolean isOfType(@Nullable String alarmID);
 
     /**
@@ -53,6 +54,8 @@ public interface NaturalHourAlarmType
      * @return int[] params
      */
     int[] fromAlarmID(String alarmID);
-    Calendar getEventTime(NaturalHourData data, int[] params);
+    String toAlarmID(int[] params);
+
+    Calendar getEventTime(int hourMode, NaturalHourData data, int[] params);
 
 }

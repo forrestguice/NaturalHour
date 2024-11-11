@@ -49,7 +49,6 @@ import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
-import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarmType;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
@@ -96,15 +95,12 @@ public class AlarmActivity extends AppCompatActivity
         setResult(RESULT_CANCELED);
 
         Intent intent = getIntent();
-        int[] param_naturalHour = null;
+        String param_alarmID = null;
         if (intent.hasExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT))
         {
             String alarmUriString = intent.getStringExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
-            if (alarmUriString != null)
-            {
-                Uri alarmUri = Uri.parse(alarmUriString);
-                String alarmID = alarmUri.getLastPathSegment();
-                param_naturalHour = NaturalHourAlarm0.alarmIdToNaturalHour(alarmID);
+            if (alarmUriString != null) {
+                param_alarmID = Uri.parse(alarmUriString).getLastPathSegment();
             }
             intent.removeExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
         }
@@ -116,10 +112,8 @@ public class AlarmActivity extends AppCompatActivity
         fragment = (NaturalHourAlarmFragment) fragments.findFragmentById(R.id.naturalhouralarm_fragment);
         if (fragment != null)
         {
-            if (param_naturalHour != null) {
-                fragment.setHourMode(param_naturalHour[0]);
-                fragment.setHour(param_naturalHour[1]);
-                fragment.setMoment(param_naturalHour[2]);
+            if (param_alarmID != null) {
+                fragment.setAlarmID(param_alarmID);
             } else {
                 fragment.setHourMode(AppSettings.getClockIntValue(AlarmActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
             }
@@ -179,7 +173,7 @@ public class AlarmActivity extends AppCompatActivity
         }
     }
 
-    private NaturalHourAlarmFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourAlarmFragment.FragmentListener()
+    private final NaturalHourAlarmFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourAlarmFragment.FragmentListener()
     {
         @Override
         public void onAlarmSelected(String alarmID)
@@ -268,19 +262,6 @@ public class AlarmActivity extends AppCompatActivity
             timezoneText.setText( timezone.getID() );
         }
     }
-
-    /*@Override
-    public void onSaveInstanceState( Bundle outState ) {
-        super.onSaveInstanceState(outState);
-    }*/
-    /*@Override
-    public void onRestoreInstanceState(@NonNull Bundle savedState) {
-        super.onRestoreInstanceState(savedState);
-    }*/
-    /*@Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }*/
 
     @SuppressWarnings("RestrictedApi")
     @Override

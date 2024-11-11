@@ -38,6 +38,11 @@ public class NaturalHourAlarm1 extends NaturalHourAlarm0
 {
     public static final String TYPE_PREFIX = "N";
 
+    @Override
+    public String getTypeID() {
+        return NaturalHourAlarm1.TYPE_PREFIX;
+    }
+
     /**
      * @param hourMode mode
      * @param i [1, n]
@@ -70,13 +75,18 @@ public class NaturalHourAlarm1 extends NaturalHourAlarm0
         }
         return null;
     }
-    public static String toAlarmID(int hourMode, int nightWatchNumber, int numNightWatches) {
-        return TYPE_PREFIX + "_" + hourMode + "_" + nightWatchNumber + "_" + numNightWatches;
+
+    @Override
+    public String toAlarmID(int[] params) {
+        return toAlarmID(params[0], params[1], params[2]);
+    }
+    public String toAlarmID(int hourMode, int nightWatchNumber, int numNightWatches) {
+        return NaturalHourAlarm1.TYPE_PREFIX + "_" + hourMode + "_" + nightWatchNumber + "_" + numNightWatches;
     }
 
     @Override
     public boolean isOfType(@Nullable String alarmID) {
-        return alarmID == null || alarmID.startsWith(TYPE_PREFIX);
+        return alarmID == null || alarmID.startsWith(NaturalHourAlarm1.TYPE_PREFIX);
     }
 
     @Override
@@ -142,8 +152,8 @@ public class NaturalHourAlarm1 extends NaturalHourAlarm0
     }
 
     @Override
-    public Calendar getEventTime(NaturalHourData data, int[] params) {
-        return data.getNightWatch(params[1], params[2]);
+    public Calendar getEventTime(int hourMode, NaturalHourData data, int[] params) {
+        return data.getNightWatch(params[1], params[2], NaturalHourClockBitmap.modeIs24(hourMode));
     }
 
 }

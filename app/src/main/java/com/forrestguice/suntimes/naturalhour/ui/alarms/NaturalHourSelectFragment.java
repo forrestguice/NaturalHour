@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -21,20 +21,16 @@ package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import com.forrestguice.suntimes.naturalhour.R;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesFragment;
+import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
-public class NaturalHourSelectFragment extends ColorValuesFragment
+public class NaturalHourSelectFragment extends AlarmSelectFragmentBase implements AlarmSelectFragment
 {
-    public static final String ARG_MODE24 = "mode_24";
-    public static final Boolean DEF_MODE24 = false;
-
     public static final String ARG_HOUR = "hour";
     public static final int DEF_HOUR = 0;
 
@@ -47,33 +43,38 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
 
     public NaturalHourSelectFragment()
     {
-        setHasOptionsMenu(false);
-
-        Bundle args = new Bundle();
+        super();
+        Bundle args = initArgs();
         args.putInt(ARG_HOUR, DEF_HOUR);           // selected hour; [0,23]
         args.putInt(ARG_MOMENT, DEF_MOMENT);       // selected moment; [0,39]
-        args.putBoolean(ARG_MODE24, DEF_MODE24);
         setArguments(args);
     }
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Override
+    public String getSelectedEventID() {
+        return NaturalHourAlarm0.naturalHourToAlarmID(getIntArg(ARG_HOURMODE, DEF_HOURMODE), getSelectedHour(), getSelectedMoment());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState)
+    public void setSelectedEventID(String eventID)
     {
-        View content = inflater.inflate(R.layout.fragment_naturalhour_selector, container, false);
-        if (savedState != null) {
-            onRestoreInstanceState(savedState);
+        int[] params = NaturalHourProvider.getAlarmInfo(eventID).fromAlarmID(eventID);
+        if (params != null)
+        {
+            setIntArg(ARG_HOURMODE, params[0]);
+            setBoolArg(ARG_MODE24, (params[0] == NaturalHourClockBitmap.HOURMODE_SUNSET));
+            setIntArg(ARG_HOUR, params[1]);
+            setIntArg(ARG_MOMENT, params[2]);
         }
-        initViews(content);
-        updateViews();
-        return content;
     }
 
-    protected void initViews(View content)
+    @Override
+    public void initViews(View content)
     {
+        if (content == null) {
+            return;
+        }
+
         boolean mode24 = getBoolArg(ARG_MODE24, DEF_MODE24);
 
         hourPicker = (NumberPicker)content.findViewById(R.id.pick_hour);
@@ -118,19 +119,19 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         return values;
     }
 
-    private NumberPicker.OnValueChangeListener onHourSelected = new NumberPicker.OnValueChangeListener() {
+    private final NumberPicker.OnValueChangeListener onHourSelected = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             onInputChanged();
         }
     };
-    private NumberPicker.OnValueChangeListener onDayNightSelected = new NumberPicker.OnValueChangeListener() {
+    private final NumberPicker.OnValueChangeListener onDayNightSelected = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             onInputChanged();
         }
     };
-    private NumberPicker.OnValueChangeListener onMomentSelected = new NumberPicker.OnValueChangeListener() {
+    private final NumberPicker.OnValueChangeListener onMomentSelected = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             onInputChanged();
@@ -144,7 +145,7 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         setIntArg(ARG_HOUR, hour);
         setIntArg(ARG_MOMENT, moment);
         if (listener != null) {
-            listener.onItemSelected(hour, moment);
+            listener.onItemSelected(new int[] {hour, moment});
         }
         updateViews();
     }
@@ -163,9 +164,8 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         } else return 0;
     }
 
-    protected void onRestoreInstanceState(@NonNull Bundle savedState) { /* EMPTY */ }
-
-    protected void updateViews()
+    @Override
+    public void updateViews()
     {
         boolean mode24 = getBoolArg(ARG_MODE24, DEF_MODE24);
         int hour = getIntArg(ARG_HOUR, DEF_HOUR);
@@ -186,40 +186,8 @@ public class NaturalHourSelectFragment extends ColorValuesFragment
         }
     }
 
-    protected void setIntArg(String key, int value) {
-        Bundle args = getArguments();
-        if (args != null) {
-            args.putInt(key, value);
-            updateViews();
-        }
-    }
-    protected int getIntArg(String key, int defValue) {
-        Bundle args = getArguments();
-        return args != null ? args.getInt(key, defValue) : defValue;
-    }
-
-    protected void setBoolArg(String key, boolean value) {
-        Bundle args = getArguments();
-        if (args != null) {
-            args.putBoolean(key, value);
-            updateViews();
-        }
-    }
-    protected boolean getBoolArg(String key, boolean defValue) {
-        Bundle args = getArguments();
-        return args != null ? args.getBoolean(key, defValue) : defValue;
-    }
-
-    /**
-     * FragmentListener
-     */
-    public interface FragmentListener
-    {
-        void onItemSelected(int hour, int moment);
-    }
-
-    protected FragmentListener listener = null;
-    public void setFragmentListener(FragmentListener l) {
-        listener = l;
+    @Override
+    protected int getLayoutResourceID() {
+        return R.layout.fragment_naturalhour_selector;
     }
 }
