@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -19,6 +19,8 @@
 
 package com.forrestguice.suntimes.naturalhour.data;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -26,18 +28,22 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.forrestguice.suntimes.ContextCompat;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_3x2;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_4x3;
 import com.forrestguice.suntimes.naturalhour.ui.widget.NaturalHourWidget_5x3;
@@ -221,7 +227,32 @@ public class NaturalHourProvider extends ContentProvider
         String[] summary = (context == null) ? new String[] {"Clock Widget (3x2)", "Clock Widget (4x3)", "Clock Widget (5x3)"}
                 : new String[] { context.getString(R.string.widget_summary, "3x2"), context.getString(R.string.widget_summary, "4x3"), context.getString(R.string.widget_summary, "5x3") };
         int[] icons = new int[] { R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round };
-        return WidgetListHelper.createWidgetListCursor(getContext(), columns, widgetClass, summary, icons);
+        return createWidgetListCursor(getContext(), columns, widgetClass, summary, icons);
+    }
+
+    public static MatrixCursor createWidgetListCursor(Context context, String[] columns, Class[] widgetClass, String[] summary, int[] iconResID)
+    {
+        MatrixCursor cursor = new MatrixCursor(columns);
+        if (context != null)
+        {
+            ClockColorValuesCollection<ColorValues> colorCollection = new ClockColorValuesCollection<>(context);   // TODO: initClockColors instead
+            AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+            for (int i=0; i<widgetClass.length; i++)
+            {
+                int[] widgetIDs = widgetManager.getAppWidgetIds(new ComponentName(context, widgetClass[i]));
+                for (int appWidgetID : widgetIDs)
+                {
+                    ColorValues colors = colorCollection.getSelectedColors(context, appWidgetID);
+                    String label = (colors != null ? colors.getID() : null);
+                    String formatString = summary[i] + " (%s)";
+                    String summary0 = (label != null ? String.format(formatString, label) : summary[i]);
+
+                    Drawable icon = ContextCompat.getDrawable(context, iconResID[i]);
+                    cursor.addRow(WidgetListHelper.createWidgetListRow(context, widgetManager, columns, appWidgetID, widgetClass[i].getName(), summary0, icon));
+                }
+            }
+        }
+        return cursor;
     }
 
     /**
@@ -445,7 +476,12 @@ public class NaturalHourProvider extends ContentProvider
             Calendar day = Calendar.getInstance();
             NaturalHourData data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
             calculator.calculateData(resolver, data, false, false);
-            eventTime = data.getNaturalHour(hour[1], momentRatio);
+
+            int i = hour[1];
+            int j = (hour[0] != NaturalHourClockBitmap.HOURMODE_SUNSET) ? i
+                    : (i >= 12) ? i - 12 : i + 12;
+
+            eventTime = data.getNaturalHour(j, momentRatio);
             if (eventTime != null)
             {
                 eventTime.set(Calendar.SECOND, 0);
@@ -467,7 +503,7 @@ public class NaturalHourProvider extends ContentProvider
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
                 calculator.calculateData(resolver, data, false, false);
-                eventTime = data.getNaturalHour(hour[1], momentRatio);
+                eventTime = data.getNaturalHour(j, momentRatio);
                 if (eventTime != null)
                 {
                     eventTime.set(Calendar.SECOND, 0);

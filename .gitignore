@@ -1,7 +1,15 @@
 # Built application files
-*.apk
 *.ap_
 *.aab
+
+*.apk
+*.apk.asc
+
+*.tar.gz
+*.tar.gz.asc
+
+*.zip
+*.zip.asc
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -15,6 +23,8 @@ gen/
 out/
 #  Uncomment the following line in case you need and you don't have the release build type files in your app
 # release/
+
+app/release/output.json
 
 # Gradle files
 .gradle/
@@ -37,6 +47,9 @@ captures/
 
 # IntelliJ
 *.iml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/misc.xml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -51,8 +64,8 @@ captures/
 
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
-#*.jks
-#*.keystore
+*.jks
+*.keystore
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
