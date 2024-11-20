@@ -43,7 +43,7 @@ Natural Hour does not collect, store, or transmit personal user data. It contain
 __Natural Hour is an add-on for Suntimes.__ It uses the `suntimes.permission.READ_CALCULATOR` permission in order to access data provided by this app. https://github.com/forrestguice/SuntimesWidget/wiki/Privacy
 
 ## Legal Stuff
-Copyright (C) 2020-2023 **Forrest Guice**
+Copyright (C) 2020-2024 **Forrest Guice**
 ```
 Natural Hour is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
