@@ -286,7 +286,9 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     public static boolean isMode24(int hourMode) {
-        return (hourMode == NaturalHourClockBitmap.HOURMODE_SUNRISE_24) || (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
+        return (hourMode == NaturalHourClockBitmap.HOURMODE_SUNRISE_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_NOON_24);
     }
 
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
@@ -316,6 +318,10 @@ public class NaturalHourFragment extends Fragment
 
             case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
                 currentHourOf = currentHour;    // [1,24]
+                break;
+
+            case NaturalHourClockBitmap.HOURMODE_NOON_24:
+                currentHourOf = (((currentHour - 1 - 6) + 24) % 24) + 1;
                 break;
 
             default:
