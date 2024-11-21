@@ -61,7 +61,7 @@ public class NaturalHourClockBitmap
     public static final String VALUE_HOURMODE = "clockface_hourmode";
     public static final int HOURMODE_SUNRISE = 0;
     public static final int HOURMODE_CIVILRISE = 1;
-    public static final int HOURMODE_SUNSET = 2;
+    public static final int HOURMODE_SUNSET_24 = 2;
     public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
     public static final String VALUE_NUMERALS = "clockface_numerals";
@@ -502,7 +502,7 @@ public class NaturalHourClockBitmap
                 paint.setTextSize(textSmall);
 
 
-                int j = (hourmode == HOURMODE_SUNSET) ? (i >= 12) ? i - 12 + 1 : i + 12 + 1
+                int j = (hourmode == HOURMODE_SUNSET_24) ? (i >= 12) ? i - 12 + 1 : i + 12 + 1
                                                       : ((i % 12) + 1);  //i + 1;
 
                 canvas.drawText(getNumeral(context, j), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
@@ -958,7 +958,7 @@ public class NaturalHourClockBitmap
     {
         switch (hourmode) {
             case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
-            case HOURMODE_SUNSET: return new NaturalHourCalculator2();
+            case HOURMODE_SUNSET_24: return new NaturalHourCalculator2();
             case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
         }
     }

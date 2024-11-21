@@ -478,7 +478,7 @@ public class NaturalHourProvider extends ContentProvider
             calculator.calculateData(resolver, data, false, false);
 
             int i = hour[1];
-            int j = (hour[0] != NaturalHourClockBitmap.HOURMODE_SUNSET) ? i
+            int j = (hour[0] != NaturalHourClockBitmap.HOURMODE_SUNSET_24) ? i
                     : (i >= 12) ? i - 12 : i + 12;
 
             eventTime = data.getNaturalHour(j, momentRatio);

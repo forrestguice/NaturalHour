@@ -287,7 +287,7 @@ public class NaturalHourFragment extends Fragment
 
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
     {
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
         int hour = mode24 ? hourNum : (hourNum >= 12 ? hourNum-12 : hourNum);
 
         Resources r = context.getResources();
@@ -302,7 +302,7 @@ public class NaturalHourFragment extends Fragment
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
 
         int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
         if (mode24) {
