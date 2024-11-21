@@ -285,9 +285,13 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static boolean isMode24(int hourMode) {
+        return (hourMode == NaturalHourClockBitmap.HOURMODE_SUNRISE_24) || (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
+    }
+
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
     {
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
+        boolean mode24 = isMode24(hourMode);
         int hour = mode24 ? hourNum : (hourNum >= 12 ? hourNum-12 : hourNum);
 
         Resources r = context.getResources();
@@ -302,13 +306,24 @@ public class NaturalHourFragment extends Fragment
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
 
-        int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
-        if (mode24) {
-            currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+        int currentHourOf;
+        switch (hourMode)
+        {
+            case NaturalHourClockBitmap.HOURMODE_SUNSET_24:
+                currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+                break;
+
+            case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
+                currentHourOf = currentHour;    // [1,24]
+                break;
+
+            default:
+                currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
+                break;
         }
 
+        boolean mode24 = isMode24(hourMode);
         String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
 
         TimeZone timezone = now.getTimeZone();
