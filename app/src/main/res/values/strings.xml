@@ -24,6 +24,9 @@
     <string name="action_timezone_localmean">@string/solartime_localmean</string>
     <string name="action_timezone_apparentsolar">@string/solartime_apparent</string>
     <string name="action_timezone_utc">@string/solartime_utc</string>
+    <string name="action_timezone_italian">Italian</string>
+    <string name="action_timezone_babylonian">Babylonian</string>
+    <string name="action_timezone_julian">Julian</string>
     <string name="solartime_localmean">Local Mean Time</string>
     <string name="solartime_apparent">Apparent Solar Time</string>
     <string name="solartime_utc">UTC</string>

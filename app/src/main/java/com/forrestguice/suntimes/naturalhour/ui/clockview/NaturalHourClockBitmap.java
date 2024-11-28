@@ -34,6 +34,7 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator2;
@@ -635,7 +636,8 @@ public class NaturalHourClockBitmap
         paintTickLarge.setColor(frameColor);
         paintTickHuge.setColor(frameColor);
 
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -671,7 +673,13 @@ public class NaturalHourClockBitmap
         float rHugeTick = r0 - tickLength_huge;
         float rLargeTick = r0 - tickLength_large;
         float rMediumTick = r0 - tickLength_medium;
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        if (EquinoctialHours.is24(timezone.getID(), null) != null) {
+            is24 = true;
+        }
+
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
