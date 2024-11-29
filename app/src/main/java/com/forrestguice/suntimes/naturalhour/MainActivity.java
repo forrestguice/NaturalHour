@@ -55,6 +55,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetFragment;
 
+import java.util.HashMap;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
@@ -448,9 +449,6 @@ public class MainActivity extends AppCompatActivity
     private void updateTimeFormatPopupMenu(Menu menu)
     {
         MenuItem itemSystem = menu.findItem(R.id.action_timeformat_system);
-        MenuItem itemSuntimes = menu.findItem(R.id.action_timeformat_suntimes);
-        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timeformat_12hr), menu.findItem(R.id.action_timeformat_24hr), menu.findItem(R.id.action_timeformat_6hr)};    // AppSettings.TIMEFORMAT_* is used as an index into this array; it must be the same size and same relative order
-
         if (itemSystem != null)
         {
             int timeFormatMode = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SYSTEM, suntimesInfo);
@@ -460,6 +458,7 @@ public class MainActivity extends AppCompatActivity
             itemSystem.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
         }
 
+        MenuItem itemSuntimes = menu.findItem(R.id.action_timeformat_suntimes);
         if (itemSuntimes != null)
         {
             int timeFormatMode = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SUNTIMES, suntimesInfo);
@@ -469,7 +468,17 @@ public class MainActivity extends AppCompatActivity
             itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
         }
 
-        items[AppSettings.getTimeFormatMode(MainActivity.this)].setChecked(true);
+        HashMap<Integer, MenuItem> items = new HashMap<>();
+        items.put(AppSettings.TIMEMODE_SYSTEM, itemSystem);
+        items.put(AppSettings.TIMEMODE_SUNTIMES, itemSuntimes);
+        items.put(AppSettings.TIMEMODE_6HR, menu.findItem(R.id.action_timeformat_6hr));
+        items.put(AppSettings.TIMEMODE_12HR, menu.findItem(R.id.action_timeformat_12hr));
+        items.put(AppSettings.TIMEMODE_24HR, menu.findItem(R.id.action_timeformat_24hr));
+
+        MenuItem item = items.get(AppSettings.getTimeFormatMode(MainActivity.this));
+        if (item != null) {
+            item.setChecked(true);
+        }
     }
     private final PopupMenu.OnMenuItemClickListener onTimeFormatPopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
     {
