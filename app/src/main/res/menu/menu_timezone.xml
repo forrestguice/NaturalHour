@@ -42,6 +42,12 @@
             app:showAsAction="never" />
 
         <item
+            android:id="@+id/action_timezone_italian_civil"
+            android:orderInCategory="600"
+            android:title="@string/action_timezone_italian_civil"
+            app:showAsAction="never" />
+
+        <item
             android:id="@+id/action_timezone_babylonian"
             android:orderInCategory="700"
             android:title="@string/action_timezone_babylonian"

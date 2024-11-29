@@ -516,8 +516,8 @@ public class MainActivity extends AppCompatActivity
         MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
         MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
         MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar),
-                menu.findItem(R.id.action_timezone_utc), menu.findItem(R.id.action_timezone_italian), menu.findItem(R.id.action_timezone_babylonian),
-                menu.findItem(R.id.action_timezone_julian) };
+                menu.findItem(R.id.action_timezone_utc), menu.findItem(R.id.action_timezone_italian), menu.findItem(R.id.action_timezone_italian_civil),
+                menu.findItem(R.id.action_timezone_babylonian), menu.findItem(R.id.action_timezone_julian) };
 
         if (itemSystem != null) {
             String tzID = getString(R.string.action_timezone_system_format, TimeZone.getDefault().getID());
@@ -543,6 +543,7 @@ public class MainActivity extends AppCompatActivity
             {
                 case R.id.action_timezone_julian:
                 case R.id.action_timezone_italian:
+                case R.id.action_timezone_italian_civil:
                 case R.id.action_timezone_babylonian:
                 case R.id.action_timezone_utc:
                 case R.id.action_timezone_system:
@@ -567,6 +568,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_timezone_utc: return AppSettings.TZMODE_UTC;
             case R.id.action_timezone_julian: return AppSettings.TZMODE_JULIAN;
             case R.id.action_timezone_italian: return AppSettings.TZMODE_ITALIAN;
+            case R.id.action_timezone_italian_civil: return AppSettings.TZMODE_ITALIAN_CIVIL;
             case R.id.action_timezone_babylonian: return AppSettings.TZMODE_BABYLONIAN;
             case R.id.action_timezone_apparentsolar: default: return AppSettings.TZMODE_APPARENTSOLAR;
         }

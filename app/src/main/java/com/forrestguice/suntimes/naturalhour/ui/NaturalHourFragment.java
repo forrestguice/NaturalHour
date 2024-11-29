@@ -812,6 +812,10 @@ public class NaturalHourFragment extends Fragment
         return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.ITALIAN_HOURS);
     }
 
+    public static TimeZone getItalianCivilHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.ITALIAN_CIVIL_HOURS);
+    }
+
     public static TimeZone getBabylonianHoursTZ(Context context, String longitude) {
         return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.BABYLONIAN_HOURS);
     }

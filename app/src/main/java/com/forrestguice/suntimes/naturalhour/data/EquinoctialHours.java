@@ -22,9 +22,10 @@ import java.util.TimeZone;
 
 public class EquinoctialHours
 {
-    public static final String JULIAN_HOURS = "Julian";           // starts at noon
-    public static final String BABYLONIAN_HOURS = "Babylonian";   // starts at sunrise
-    public static final String ITALIAN_HOURS = "Italian";         // starts at sunset
+    public static final String JULIAN_HOURS = "Julian";                 // starts at noon
+    public static final String BABYLONIAN_HOURS = "Babylonian";         // starts at sunrise
+    public static final String ITALIAN_HOURS = "Italic";                // starts at sunset
+    public static final String ITALIAN_CIVIL_HOURS = "Italian Civil";   // starts at civil dusk
 
     public static Boolean is24(String id, Boolean defaultValue)
     {
@@ -33,6 +34,7 @@ public class EquinoctialHours
             case JULIAN_HOURS:
             case BABYLONIAN_HOURS:
             case ITALIAN_HOURS:
+            case ITALIAN_CIVIL_HOURS:
                 return true;
 
             default:
@@ -61,6 +63,9 @@ public class EquinoctialHours
 
             case ITALIAN_HOURS:
                 return startAngle0 + data.getAngle(data.getTwilightTimes()[4], timezone);
+
+            case ITALIAN_CIVIL_HOURS:
+                return startAngle0 + data.getAngle(data.getTwilightTimes()[5], timezone);
 
             default:
                 return defaultValue;
