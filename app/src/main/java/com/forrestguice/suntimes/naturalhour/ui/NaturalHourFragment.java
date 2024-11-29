@@ -290,7 +290,8 @@ public class NaturalHourFragment extends Fragment
         return (hourMode == NaturalHourClockBitmap.HOURMODE_SUNRISE_24)
                 || (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24)
                 || (hourMode == NaturalHourClockBitmap.HOURMODE_NOON_24
-                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILSET_24));
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILSET_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILRISE_24));
     }
 
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
@@ -319,6 +320,7 @@ public class NaturalHourFragment extends Fragment
                 currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
                 break;
 
+            case NaturalHourClockBitmap.HOURMODE_CIVILRISE_24:
             case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
                 currentHourOf = currentHour;    // [1,24]
                 break;

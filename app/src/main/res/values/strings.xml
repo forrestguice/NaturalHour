@@ -73,6 +73,7 @@
         <item>at sunrise &amp; sunset&#160;(12)</item>
         <item>at civil&#160;dawn &amp; civil&#160;dusk&#160;(12)</item>
         <item>at sunrise&#160;(24)</item>
+        <item>at civil&#160;dawn(24)</item>
         <item>at noon&#160;(24)</item>
         <item>at sunset&#160;(24)</item>
         <item>at civil&#160;dusk&#160;(24)</item>
@@ -81,6 +82,7 @@
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
         <item>3</item>
+        <item>6</item>
         <item>4</item>
         <item>2</item>
         <item>5</item>

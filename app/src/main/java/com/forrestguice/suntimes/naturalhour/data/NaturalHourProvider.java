@@ -492,6 +492,7 @@ public class NaturalHourProvider extends ContentProvider
                     j = (((i + 6) + 24) % 24);
                     break;
 
+                case NaturalHourClockBitmap.HOURMODE_CIVILRISE_24:
                 case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
                 case NaturalHourClockBitmap.HOURMODE_SUNRISE:
                 default:
