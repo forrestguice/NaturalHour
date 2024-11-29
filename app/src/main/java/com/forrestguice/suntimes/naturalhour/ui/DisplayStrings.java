@@ -172,14 +172,19 @@ public class DisplayStrings
         }
     }
 
-    public static String timeFormatLabel(@NonNull Context context, boolean is24) {
-        return context.getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+    public static String timeFormatLabel(@NonNull Context context, int timeFormat)
+    {
+        switch (timeFormat) {
+            case 6: return context.getString(R.string.timeformat_6hr);
+            case 12: return context.getString(R.string.timeformat_12hr);
+            case 24: default: return context.getString(R.string.timeformat_24hr);
+        }
     }
-    public static String timeFormatTag(@NonNull Context context, boolean is24) {
-        return context.getString(R.string.action_timeformat_system_format, timeFormatLabel(context, is24));
+    public static String timeFormatTag(@NonNull Context context, int timeFormat) {
+        return context.getString(R.string.action_timeformat_system_format, timeFormatLabel(context, timeFormat));
     }
-    public static CharSequence formatTimeFormatLabel(Context context, String labelFormat, boolean is24) {
-        String tag = DisplayStrings.timeFormatTag(context, is24);
+    public static CharSequence formatTimeFormatLabel(Context context, String labelFormat, int timeFormat) {
+        String tag = DisplayStrings.timeFormatTag(context, timeFormat);
         String label = String.format(labelFormat, tag);
         return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
     }

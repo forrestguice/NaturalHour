@@ -308,12 +308,12 @@ public class NaturalHourWidget extends AppWidgetProvider
         String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
         int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
         int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
-        boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
+        int timeFormat = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
         clockView.setTimeZone(timezone);
-        clockView.set24HourMode(is24);
+        clockView.setTimeFormat(timeFormat);
 
         for (String key : NaturalHourClockBitmap.FLAGS) {
             String widgetKey = widgetPrefix + key;
@@ -334,7 +334,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         if (Build.VERSION.SDK_INT >= 15)
         {
             Calendar now = Calendar.getInstance(timezone);
-            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), is24, data));
+            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), timeFormat, data));
         }
         //views.setTextViewText(R.id.text_title, "title");
     }
