@@ -31,12 +31,12 @@ public class EquinoctialHours
     {
         switch (id)
         {
-            case JULIAN_HOURS:
+            /*case JULIAN_HOURS:
             case BABYLONIAN_HOURS:
-            case ITALIAN_HOURS:
-            case ITALIAN_CIVIL_HOURS:
                 return true;
 
+            case ITALIAN_HOURS:
+            case ITALIAN_CIVIL_HOURS:*/
             default:
                 return defaultValue;
         }
