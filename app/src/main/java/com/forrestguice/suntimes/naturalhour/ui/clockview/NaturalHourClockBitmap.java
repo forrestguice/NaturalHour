@@ -65,6 +65,7 @@ public class NaturalHourClockBitmap
     public static final int HOURMODE_SUNSET_24 = 2;
     public static final int HOURMODE_SUNRISE_24 = 3;
     public static final int HOURMODE_NOON_24 = 4;
+    public static final int HOURMODE_CIVILSET_24 = 5;
     public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
     public static final String VALUE_NUMERALS = "clockface_numerals";
@@ -512,6 +513,7 @@ public class NaturalHourClockBitmap
                         j = i + 1;
                         break;
 
+                    case HOURMODE_CIVILSET_24:
                     case HOURMODE_SUNSET_24:
                         j = (i >= 12) ? i - 12 + 1 : i + 12 + 1;
                         break;
@@ -984,6 +986,7 @@ public class NaturalHourClockBitmap
     public static NaturalHourCalculator getCalculator(int hourmode)
     {
         switch (hourmode) {
+            case HOURMODE_CIVILSET_24:
             case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
             case HOURMODE_SUNSET_24: return new NaturalHourCalculator2();
             case HOURMODE_NOON_24:

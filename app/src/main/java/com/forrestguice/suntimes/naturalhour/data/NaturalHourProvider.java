@@ -483,6 +483,7 @@ public class NaturalHourProvider extends ContentProvider
 
             switch (hour[0])
             {
+                case NaturalHourClockBitmap.HOURMODE_CIVILSET_24:
                 case NaturalHourClockBitmap.HOURMODE_SUNSET_24:
                     j = (i >= 12) ? i - 12 : i + 12;
                     break;
