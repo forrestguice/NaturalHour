@@ -7,11 +7,12 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 28
-        versionCode 4
-        versionName "0.2.2"
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        versionCode 5
+        versionName "0.2.3"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
+        missingDimensionStrategy 'version', 'supportlib'
     }
 
     buildTypes {
@@ -33,7 +34,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.0'
-    implementation 'com.github.forrestguice:SuntimesAddon:v0.4.0'
+    implementation project(path: ":SuntimesAddon")  //implementation 'com.github.forrestguice:SuntimesAddon:v0.4.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
     testImplementation 'junit:junit:4.12'

@@ -476,7 +476,12 @@ public class NaturalHourProvider extends ContentProvider
             Calendar day = Calendar.getInstance();
             NaturalHourData data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
             calculator.calculateData(resolver, data, false, false);
-            eventTime = data.getNaturalHour(hour[1], momentRatio);
+
+            int i = hour[1];
+            int j = (hour[0] != NaturalHourClockBitmap.HOURMODE_SUNSET) ? i
+                    : (i >= 12) ? i - 12 : i + 12;
+
+            eventTime = data.getNaturalHour(j, momentRatio);
             if (eventTime != null)
             {
                 eventTime.set(Calendar.SECOND, 0);
@@ -498,7 +503,7 @@ public class NaturalHourProvider extends ContentProvider
                 day.add(Calendar.DAY_OF_YEAR, 1);
                 data = new NaturalHourData(day.getTimeInMillis(), latitude, longitude, altitude);
                 calculator.calculateData(resolver, data, false, false);
-                eventTime = data.getNaturalHour(hour[1], momentRatio);
+                eventTime = data.getNaturalHour(j, momentRatio);
                 if (eventTime != null)
                 {
                     eventTime.set(Calendar.SECOND, 0);
