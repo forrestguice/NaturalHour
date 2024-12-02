@@ -34,6 +34,7 @@ import android.util.Log;
 
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator2;
@@ -61,7 +62,11 @@ public class NaturalHourClockBitmap
     public static final String VALUE_HOURMODE = "clockface_hourmode";
     public static final int HOURMODE_SUNRISE = 0;
     public static final int HOURMODE_CIVILRISE = 1;
-    public static final int HOURMODE_SUNSET = 2;
+    public static final int HOURMODE_SUNSET_24 = 2;
+    public static final int HOURMODE_SUNRISE_24 = 3;
+    public static final int HOURMODE_NOON_24 = 4;
+    public static final int HOURMODE_CIVILSET_24 = 5;
+    public static final int HOURMODE_CIVILRISE_24 = 6;
     public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
     public static final String VALUE_NUMERALS = "clockface_numerals";
@@ -503,8 +508,27 @@ public class NaturalHourClockBitmap
                 paint.setTextSize(textSmall);
 
 
-                int j = (hourmode == HOURMODE_SUNSET) ? (i >= 12) ? i - 12 + 1 : i + 12 + 1
-                                                      : ((i % 12) + 1);  //i + 1;
+                int j;
+                switch (hourmode)
+                {
+                    case HOURMODE_CIVILRISE_24:
+                    case HOURMODE_SUNRISE_24:
+                        j = i + 1;
+                        break;
+
+                    case HOURMODE_CIVILSET_24:
+                    case HOURMODE_SUNSET_24:
+                        j = (i >= 12) ? i - 12 + 1 : i + 12 + 1;
+                        break;
+
+                    case HOURMODE_NOON_24:
+                        j = (((i - 6) + 24) % 24) + 1;
+                        break;
+
+                    default:
+                        j = ((i % 12) + 1);  //i + 1;
+                        break;
+                }
 
                 canvas.drawText(getNumeral(context, j), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
@@ -617,7 +641,8 @@ public class NaturalHourClockBitmap
         paintTickLarge.setColor(frameColor);
         paintTickHuge.setColor(frameColor);
 
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -653,7 +678,13 @@ public class NaturalHourClockBitmap
         float rHugeTick = r0 - tickLength_huge;
         float rLargeTick = r0 - tickLength_large;
         float rMediumTick = r0 - tickLength_medium;
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        if (EquinoctialHours.is24(timezone.getID(), null) != null) {
+            is24 = true;
+        }
+
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -958,9 +989,11 @@ public class NaturalHourClockBitmap
     public static NaturalHourCalculator getCalculator(int hourmode)
     {
         switch (hourmode) {
+            case HOURMODE_CIVILRISE_24: case HOURMODE_CIVILSET_24:
             case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
-            case HOURMODE_SUNSET: return new NaturalHourCalculator2();
-            case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
+            case HOURMODE_SUNSET_24: return new NaturalHourCalculator2();
+            case HOURMODE_NOON_24:
+            case HOURMODE_SUNRISE_24: case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
         }
     }
 

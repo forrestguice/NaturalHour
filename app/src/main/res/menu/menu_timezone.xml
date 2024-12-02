@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.forrestguice.suntimes.naturalhour.MainActivity">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_primary"
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/action_timezone_system"
@@ -33,6 +34,37 @@
             android:id="@+id/action_timezone_utc"
             android:orderInCategory="500"
             android:title="@string/action_timezone_utc"
+            app:showAsAction="never" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/group_other"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_timezone_babylonian"
+            android:orderInCategory="550"
+            android:title="@string/action_timezone_babylonian"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_timezone_italian"
+            android:orderInCategory="600"
+            android:title="@string/action_timezone_italian"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_timezone_italian_civil"
+            android:orderInCategory="600"
+            android:title="@string/action_timezone_italian_civil"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_timezone_julian"
+            android:orderInCategory="800"
+            android:title="@string/action_timezone_julian"
             app:showAsAction="never" />
 
     </group>

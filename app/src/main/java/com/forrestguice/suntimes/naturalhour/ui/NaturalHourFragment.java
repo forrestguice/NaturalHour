@@ -54,6 +54,7 @@ import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
@@ -285,9 +286,17 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static boolean isMode24(int hourMode) {
+        return (hourMode == NaturalHourClockBitmap.HOURMODE_SUNRISE_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_NOON_24
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILSET_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILRISE_24));
+    }
+
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
     {
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        boolean mode24 = isMode24(hourMode);
         int hour = mode24 ? hourNum : (hourNum >= 12 ? hourNum-12 : hourNum);
 
         Resources r = context.getResources();
@@ -298,25 +307,40 @@ public class NaturalHourFragment extends Fragment
         return context.getString(R.string.format_announcement_naturalhour, hourPhrase, phraseOfDay);
     }
 
-    public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24)
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24, NaturalHourData data)
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-        return announceTime(context, now, hourMode, currentHour, timeFormat24, numeralType);
-    }
+        int currentHourOf;
+        switch (hourMode)
+        {
+            case NaturalHourClockBitmap.HOURMODE_CIVILSET_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNSET_24:
+                currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+                break;
 
-    public static SpannableString announceTime(Context context, Calendar now, int hourMode, int currentHour, boolean timeFormat24, int numeralType)
-    {
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
-        int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
-        if (mode24) {
-            currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+            case NaturalHourClockBitmap.HOURMODE_CIVILRISE_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
+                currentHourOf = currentHour;    // [1,24]
+                break;
+
+            case NaturalHourClockBitmap.HOURMODE_NOON_24:
+                currentHourOf = (((currentHour - 1 - 6) + 24) % 24) + 1;
+                break;
+
+            default:
+                currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
+                break;
         }
 
+        boolean mode24 = isMode24(hourMode);
         String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
 
         TimeZone timezone = now.getTimeZone();
-        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, timeFormat24).toString();
+        long timeOffset = EquinoctialHours.getTimeOffset(timezone, data, 0, getStartAngle(context));
+        boolean forceFormat24 = (EquinoctialHours.is24(timezone.getID(), false));
+        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, timeFormat24 || forceFormat24).toString();
+
         String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
         String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
         String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
@@ -337,6 +361,12 @@ public class NaturalHourFragment extends Fragment
         return announcement;
     }
 
+    protected static double getStartAngle(Context context)
+    {
+        boolean startAtTop = AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_START_AT_TOP);
+        return (startAtTop ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
+    }
+
     public void announceTime()
     {
         Context context = getActivity();
@@ -347,7 +377,7 @@ public class NaturalHourFragment extends Fragment
             NaturalHourData data = cardAdapter.initData(position);
 
             int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-            SpannableString announcement = announceTime(context, now, currentHour, is24);
+            SpannableString announcement = announceTime(context, now, currentHour, is24, data);
 
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
@@ -777,6 +807,22 @@ public class NaturalHourFragment extends Fragment
 
     public static TimeZone getUtcTZ() {
         return TimeZone.getTimeZone("UTC");
+    }
+
+    public static TimeZone getItalianHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.ITALIAN_HOURS);
+    }
+
+    public static TimeZone getItalianCivilHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.ITALIAN_CIVIL_HOURS);
+    }
+
+    public static TimeZone getBabylonianHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.BABYLONIAN_HOURS);
+    }
+
+    public static TimeZone getJulianHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.JULIAN_HOURS);
     }
 
     public static TimeZone getLocalMeanTZ(Context context, String longitude) {

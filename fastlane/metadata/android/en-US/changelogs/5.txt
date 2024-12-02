@@ -1,0 +1,3 @@
+- fixes bug where "twilight periods are drawn incorrectly".
+- fixes bug where "alarms times are incorrect when using hours begin at sunset (24)".
+- updates default color schemes.

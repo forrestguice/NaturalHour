@@ -1,5 +1,12 @@
 ~
 
+### v0.2.3 (2024-11-20)
+* fixes bug where "twilight periods are drawn incorrectly" (#30).
+* fixes bug where "alarms times are incorrect when using hours begin at sunset (24)" (#28).
+* fixes ANR when the Suntimes content-provider fails to respond.
+* fixes poor contrast in themed app icon (api33+).
+* updates default color schemes.
+
 ### v0.2.2 (2023-08-04)
 * adds UTC to time zone settings.
 * adds themed app icon (api33+).
