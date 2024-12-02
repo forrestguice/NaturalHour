@@ -12,7 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
-        missingDimensionStrategy 'version', 'supportlib'
+        missingDimensionStrategy 'version', 'androidx'
     }
 
     buildTypes {
