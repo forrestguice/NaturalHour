@@ -47,6 +47,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.AppThemeInfo;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.ui.ThrottledClickListener;
 import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.addon.AddonHelper;
@@ -307,12 +308,20 @@ public class MainActivity extends AppCompatActivity
                     AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));
         }
 
-        TextView timeformatView = (TextView) findViewById(R.id.bottombar_button0);
-        if (timeformatView != null)
+        TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
+        if (timeformatText != null && fragment != null)
         {
-            CharSequence timeformatText = (fragment != null ? getString(fragment.is24() ? R.string.timeformat_24hr : R.string.timeformat_12hr) : "");
-            timeformatView.setText(timeformatText);
-            timeformatView.setEnabled(!isLocked);
+            String tzID = fragment.getTimeZone().getID();
+            Boolean is24 = EquinoctialHours.is24(tzID, fragment.is24());
+            timeformatText.setText( getString( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
+
+            View timeformatButton = findViewById(R.id.bottombar_button_layout0);
+            if (timeformatButton != null)
+            {
+                boolean enabled = (EquinoctialHours.is24(tzID, null) == null);
+                timeformatButton.setEnabled(enabled);
+                timeformatText.setEnabled(enabled);
+            }
         }
 
         TextView timezoneView = (TextView) findViewById(R.id.bottombar_button1);
@@ -671,13 +680,16 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.menu_timezone, popup.getMenu());
         updateTimeZonePopupMenu(popup.getMenu());
         popup.setOnMenuItemClickListener(onTimeZonePopupMenuItemSelected);
+        MenuCompat.setGroupDividerEnabled(popup.getMenu(), true);
         popup.show();
     }
     private void updateTimeZonePopupMenu(Menu menu)
     {
         MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
         MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
-        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar), menu.findItem(R.id.action_timezone_utc)};
+        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar),
+                menu.findItem(R.id.action_timezone_utc), menu.findItem(R.id.action_timezone_italian), menu.findItem(R.id.action_timezone_italian_civil),
+                menu.findItem(R.id.action_timezone_babylonian), menu.findItem(R.id.action_timezone_julian) };
 
         if (itemSystem != null) {
             String tzID = getString(R.string.action_timezone_system_format, TimeZone.getDefault().getID());
@@ -701,6 +713,10 @@ public class MainActivity extends AppCompatActivity
 
             switch (item.getItemId())
             {
+                case R.id.action_timezone_julian:
+                case R.id.action_timezone_italian:
+                case R.id.action_timezone_italian_civil:
+                case R.id.action_timezone_babylonian:
                 case R.id.action_timezone_utc:
                 case R.id.action_timezone_system:
                 case R.id.action_timezone_suntimes:
@@ -722,6 +738,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_timezone_localmean: return AppSettings.TZMODE_LOCALMEAN;
             case R.id.action_timezone_system: return AppSettings.TZMODE_SYSTEM;
             case R.id.action_timezone_utc: return AppSettings.TZMODE_UTC;
+            case R.id.action_timezone_julian: return AppSettings.TZMODE_JULIAN;
+            case R.id.action_timezone_italian: return AppSettings.TZMODE_ITALIAN;
+            case R.id.action_timezone_italian_civil: return AppSettings.TZMODE_ITALIAN_CIVIL;
+            case R.id.action_timezone_babylonian: return AppSettings.TZMODE_BABYLONIAN;
             case R.id.action_timezone_apparentsolar: default: return AppSettings.TZMODE_APPARENTSOLAR;
         }
     }

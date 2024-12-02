@@ -99,7 +99,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         NaturalHourData data = initData(context);
 
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24);
 
         int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
         int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
@@ -119,7 +119,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         Calendar now = now(context);
         NaturalHourData data = initData(context);
         int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-        SpannableString announcement = NaturalHourFragment.announceTime(context, now, hourMode(context), currentHour, is24(context), numeralType(context));
+        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, is24(context), data);
         return new SpannableStringBuilder(announcement);
     }
 
