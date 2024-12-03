@@ -4,8 +4,11 @@
     tools:context=".ui.NaturalHourFragment">
 
     <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
-        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginTop="8dp" android:layout_marginLeft="8dp" android:layout_marginRight="8dp"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+        android:background="?attr/tileCardBackground"
+        android:paddingTop="8dp" android:paddingBottom="8dp"
+        android:paddingLeft="12dp" android:paddingRight="12dp">
         <TextView
             android:id="@+id/text_date" style="@style/TableHeadDateView" android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content" android:layout_height="wrap_content"

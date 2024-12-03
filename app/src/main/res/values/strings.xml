@@ -24,6 +24,10 @@
     <string name="action_timezone_localmean">@string/solartime_localmean</string>
     <string name="action_timezone_apparentsolar">@string/solartime_apparent</string>
     <string name="action_timezone_utc">@string/solartime_utc</string>
+    <string name="action_timezone_italian">Italic</string>
+    <string name="action_timezone_italian_civil">Italian Civil</string>
+    <string name="action_timezone_babylonian">Babylonian</string>
+    <string name="action_timezone_julian">Julian</string>
     <string name="solartime_localmean">Local Mean Time</string>
     <string name="solartime_apparent">Apparent Solar Time</string>
     <string name="solartime_utc">UTC</string>
@@ -39,6 +43,8 @@
     <string name="action_select">Select</string>
     <string name="action_alarms">Set Alarm</string>
     <string name="action_colors">Colors</string>
+    <string name="action_fullscreen">Fullscreen</string>
+    <string name="action_fullscreen_off">Disable Fullscreen</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
@@ -66,16 +72,26 @@
     <string name="pref_title_show_plate">Show background plate</string>
     <string name="pref_title_show_seconds">Show seconds hand</string>
 
+    <string name="pref_title_useWallpaper">Show home screen wallpaper</string>
+
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
         <item>at sunrise &amp; sunset&#160;(12)</item>
         <item>at civil&#160;dawn &amp; civil&#160;dusk&#160;(12)</item>
+        <item>at sunrise&#160;(24)</item>
+        <item>at civil&#160;dawn(24)</item>
+        <item>at noon&#160;(24)</item>
         <item>at sunset&#160;(24)</item>
+        <item>at civil&#160;dusk&#160;(24)</item>
     </string-array>
     <string-array name="pref_hourdef_values" translatable="false">  <!-- one-to-one with pref_hourdef_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
+        <item>3</item>
+        <item>6</item>
+        <item>4</item>
         <item>2</item>
+        <item>5</item>
     </string-array>
 
     <string name="pref_title_timeformat">Time Format</string>
@@ -335,6 +351,8 @@
     <string name="clockface_ring_day_stroke">Day Hours (stroke)</string>
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
+    <string name="clockface_background">Background</string>
+    <string name="clockface_backgroundAlt">Background (alternate)</string>
 
     <string name="defaultColors_name">Default</string>
     <string name="defaultColors_name_dark">Dark</string>
@@ -385,22 +403,42 @@
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
         <item>@string/help_general</item>
+        <item>@string/help_general1</item>
     </string-array>
-    <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
-    <string name="help_general"><![CDATA[<h4>Natural Hour</h4>
-    Daytime, the period between sunrise and sunset, is divided evenly into 12 natural hours.
+    <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location is configured from Suntimes.]]></string>
+    <string name="help_general"><![CDATA[<h4>Roman Hours</h4>
+    The outer dial displays <b>hours of unequal length</b>. These are known as Roman hours, temporal hours, or seasonal hours.
+    <br/><br/>
+    Daytime, the period between sunrise and sunset, is divided evenly into 12 hours.
     The first hour (I) <em>of the day</em> begins with sunrise, while the twelfth hour (XII) ends at sunset.
     <br/><br/>
     Similarly, nighttime is also divided into 12 hours.
     The first hour (I) <em>of the night</em> begins with sunset, and the twelfth hour (XII) ends at sunrise.
     <br/><br/>
-    These daytime and nighttime hours are not the same, with length depending on latitude and varying with the seasons. For example, in the winter the daytime hours are shorter (and nighttime hours longer), and vice versa in the summer.
+    These daytime and nighttime hours are not the same, with length depending on latitude and varying with the seasons. For example, in the winter the daytime hours are shorter and nighttime hours longer, and vice versa in the summer.
+    ]]></string>
+
+    <string name="help_general1"><![CDATA[
+        <h4>Equinoctial Hours</h4>
+        The inner dial displays <b>hours of equal length</b>. These include solar time, the system time, and time zones configured from Suntimes, counted from midnight.
+        <br/><br/>
+        Others include:
+        <br/>
+        <b>Babylonian:</b> equal-length hours counted from sunrise.
+        <br/>
+        <b>Italic:</b> equal-length hours counted from sunset.
+        <br/>
+        <b>Italian Civil:</b> equal-length hours counted from civil dusk.
+        <br/>
+        <b>Julian:</b> equal-length hours counted from solar noon.
     ]]></string>
 
     <string name="app_name">Natural Hour</string>
     <string name="app_desc">A 24-hour clock &amp; roman timekeeping add-on for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
+    <string name="tile_name">@string/app_name</string>
+    <string name="tileconfig_title">Natural Hour Tile</string>   <!-- tile configuration activity title text -->
     <string name="widget_name">@string/app_name</string>
     <string name="widget_summary">Clock Widget (%s)</string>    <!-- e.g. Clock Widget (3x2) -->
     <string name="daydream_name">@string/app_name</string>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2021 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -19,9 +19,16 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuCompat;
 import androidx.lifecycle.ViewModelProviders;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,15 +37,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.AppThemeInfo;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.ui.ThrottledClickListener;
 import com.forrestguice.suntimes.naturalhour.ui.Toast;
 import com.forrestguice.suntimes.addon.AddonHelper;
@@ -56,6 +66,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFr
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.TimeZone;
 
@@ -81,12 +92,46 @@ public class MainActivity extends AppCompatActivity
         suntimesAlarms_minVersion = getResources().getInteger(R.integer.min_suntimes_alarms_version_code);
     }
 
+    /*
+    protected void animateFadeIn(Context context, @NonNull Drawable d)
+    {
+        if (Build.VERSION.SDK_INT >= 19)
+        {
+            ObjectAnimator animator = ObjectAnimator
+                    .ofPropertyValuesHolder(d, PropertyValuesHolder.ofInt("alpha", 0, 255));
+            animator.setDuration(context.getResources().getInteger(R.integer.anim_fadein_duration));
+            animator.start();
+        } else {
+            d.setAlpha(255);
+        }
+    }
+    protected void animateFadeOut(Context context, @NonNull Drawable d)
+    {
+        if (Build.VERSION.SDK_INT >= 19)
+        {
+            ObjectAnimator animator = ObjectAnimator
+                .ofPropertyValuesHolder(d, PropertyValuesHolder.ofInt("alpha", 255, 0));
+            animator.setDuration(context.getResources().getInteger(R.integer.anim_fadeout_duration));
+            animator.start();
+        } else {
+            d.setAlpha(0);
+        }
+    }
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setShowWhenLocked();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
+
         if (suntimesInfo.appTheme != null) {    // override the theme
             AppThemeInfo.setTheme(this, suntimesInfo);
+        }
+
+        if (AppSettings.getUseWallpaper(this)) {
+            getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.transparent));
         }
 
         setContentView(R.layout.activity_main);
@@ -127,6 +172,11 @@ public class MainActivity extends AppCompatActivity
         View timezoneButton = findViewById(R.id.bottombar_button_layout1);
         if (timezoneButton != null) {
             timezoneButton.setOnClickListener(onTimeZoneClick);
+        }
+
+        FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
+        if (fab_toggleFullscreen != null) {
+            fab_toggleFullscreen.setOnClickListener(onFabClick_toggleFullscreen);
         }
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -204,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResumeFragments();
         Log.d("DEBUG", "onResumeFragments");
-        updateViews(MainActivity.this);
+        updateViews(MainActivity.this, false);
         restoreDialogs();
     }
 
@@ -222,12 +272,34 @@ public class MainActivity extends AppCompatActivity
         return suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4 ? suntimesInfo.location : new String[] {"", "0", "0", "0"};   // TODO: default/fallback value
     }
 
-    protected void updateViews(Context context)
+    protected void updateViews(Context context) {
+        updateViews(context, true);
+    }
+    protected void updateViews(Context context, boolean animate)
     {
-        ActionBar toolbar = getSupportActionBar();
+        boolean isFullscreen = isFullscreen();
+        boolean isLocked = isDeviceLocked();
+        if (isLocked) {
+            setFullscreen(true, false);
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        View bottomBar = findViewById(R.id.bottombar);
+
+        if (actionBar != null) {
+            actionBar.setTitle(createTitle(suntimesInfo));
+            actionBar.setSubtitle(isLocked ? context.getString(R.string.app_name)
+                                           : DisplayStrings.formatLocation(this, suntimesInfo));
+            actionBar.setHomeButtonEnabled(!isLocked);
+        }
         if (toolbar != null) {
-            toolbar.setTitle(createTitle(suntimesInfo));
-            toolbar.setSubtitle(DisplayStrings.formatLocation(this, suntimesInfo));
+            setVisibility(context, toolbar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, true, animate);
+        }
+        if (bottomBar != null)
+        {
+            setVisibility(context, bottomBar, isLocked || isFullscreen ? View.GONE : View.VISIBLE, false, animate);
+            bottomBar.setEnabled(!isLocked);
         }
 
         FragmentManager fragments = getSupportFragmentManager();
@@ -239,13 +311,37 @@ public class MainActivity extends AppCompatActivity
         }
 
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
-        if (timeformatText != null && fragment != null) {
-            timeformatText.setText( getString( fragment.is24() ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
+        if (timeformatText != null && fragment != null)
+        {
+            String tzID = fragment.getTimeZone().getID();
+            Boolean is24 = EquinoctialHours.is24(tzID, fragment.is24());
+            timeformatText.setText( getString( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
+
+            View timeformatButton = findViewById(R.id.bottombar_button_layout0);
+            if (timeformatButton != null)
+            {
+                boolean enabled = (EquinoctialHours.is24(tzID, null) == null);
+                timeformatButton.setEnabled(enabled);
+                timeformatText.setEnabled(enabled);
+            }
         }
 
-        TextView timezoneText = (TextView) findViewById(R.id.bottombar_button1);
-        if (timezoneText != null && fragment != null) {
-            timezoneText.setText( fragment.getTimeZone().getID() );
+        TextView timezoneView = (TextView) findViewById(R.id.bottombar_button1);
+        if (timezoneView != null)
+        {
+            CharSequence timezoneText = (fragment != null ? fragment.getTimeZone().getID() : "");
+            timezoneView.setText(timezoneText);
+            timezoneView.setEnabled(!isLocked);
+        }
+
+        FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
+        if (fab_toggleFullscreen != null)
+        {
+            if (isFullscreen || isLocked) {
+                fab_toggleFullscreen.show();
+            } else {
+                fab_toggleFullscreen.hide();
+            }
         }
     }
 
@@ -254,14 +350,73 @@ public class MainActivity extends AppCompatActivity
     {
         super.onSaveInstanceState(outState);
         outState.putInt("bottomSheet", bottomSheet.getState());
+        outState.putBoolean(PARAM_FULLSCREEN, isFullscreen);
     }
 
     @Override
     public void onRestoreInstanceState(@NonNull Bundle savedState)
     {
         super.onRestoreInstanceState(savedState);
+        setFullscreen(savedState.getBoolean(PARAM_FULLSCREEN, false), false);
         int sheetState = savedState.getInt("bottomSheet", BottomSheetBehavior.STATE_HIDDEN);
         bottomSheet.setState(sheetState);
+    }
+
+    protected static void setVisibility(Context context, View v, int visibility, boolean upward, boolean animate)
+    {
+        if (animate)
+        {
+            switch (visibility)
+            {
+                case View.VISIBLE:
+                    if (animate) {
+                        slideViewIn(context, v, upward);
+                    }
+                    break;
+
+                case View.INVISIBLE:
+                case View.GONE:
+                    slideViewOut(context, v, upward);
+                    break;
+            }
+        } else {
+            v.setVisibility(visibility);
+        }
+    }
+
+    public static void slideViewIn(Context context, final View v, boolean upward)
+    {
+        if (v.getVisibility() != View.VISIBLE)
+        {
+            int direction = (upward ? 1 : -1);
+            int duration = context.getResources().getInteger(R.integer.anim_fadein_duration);
+            v.animate()
+                    .alpha(1F)
+                    .translationYBy(direction * v.getHeight())
+                    .setDuration(duration).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    v.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+    public static void slideViewOut(Context context, final View v, boolean upward)
+    {
+        if (v.getVisibility() == View.VISIBLE)
+        {
+            int direction = (upward ? -1 : 1);
+            int duration = context.getResources().getInteger(R.integer.anim_fadeout_duration);
+            v.animate()
+                    .alpha(0F)
+                    .translationYBy(direction * v.getHeight())
+                    .setDuration(duration).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    v.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     protected void showBottomSheet()
@@ -363,6 +518,16 @@ public class MainActivity extends AppCompatActivity
     {
         Messages.forceActionBarIcons(menu);
 
+        boolean isFullscreen = isFullscreen();
+        MenuItem fullscreenOnItem = menu.findItem(R.id.action_fullscreen);
+        if (fullscreenOnItem != null) {
+            fullscreenOnItem.setVisible(!isFullscreen);
+        }
+        MenuItem fullscreenOffItem = menu.findItem(R.id.action_fullscreen_off);
+        if (fullscreenOffItem != null) {
+            fullscreenOffItem.setVisible(false);   // false; uses action button instead   //isFullscreen);
+        }
+
         MenuItem alarmItem = menu.findItem(R.id.action_alarms);
         if (alarmItem != null)
         {
@@ -386,6 +551,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.action_fullscreen:
+            case R.id.action_fullscreen_off:
+                toggleFullscreen();
+                return true;
+
             case R.id.action_alarms:
                 showAlarmDialog();
                 return true;
@@ -512,13 +682,16 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.menu_timezone, popup.getMenu());
         updateTimeZonePopupMenu(popup.getMenu());
         popup.setOnMenuItemClickListener(onTimeZonePopupMenuItemSelected);
+        MenuCompat.setGroupDividerEnabled(popup.getMenu(), true);
         popup.show();
     }
     private void updateTimeZonePopupMenu(Menu menu)
     {
         MenuItem itemSystem = menu.findItem(R.id.action_timezone_system);
         MenuItem itemSuntimes = menu.findItem(R.id.action_timezone_suntimes);
-        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar), menu.findItem(R.id.action_timezone_utc)};
+        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timezone_localmean), menu.findItem(R.id.action_timezone_apparentsolar),
+                menu.findItem(R.id.action_timezone_utc), menu.findItem(R.id.action_timezone_italian), menu.findItem(R.id.action_timezone_italian_civil),
+                menu.findItem(R.id.action_timezone_babylonian), menu.findItem(R.id.action_timezone_julian) };
 
         if (itemSystem != null) {
             String tzID = getString(R.string.action_timezone_system_format, TimeZone.getDefault().getID());
@@ -542,6 +715,10 @@ public class MainActivity extends AppCompatActivity
 
             switch (item.getItemId())
             {
+                case R.id.action_timezone_julian:
+                case R.id.action_timezone_italian:
+                case R.id.action_timezone_italian_civil:
+                case R.id.action_timezone_babylonian:
                 case R.id.action_timezone_utc:
                 case R.id.action_timezone_system:
                 case R.id.action_timezone_suntimes:
@@ -563,7 +740,120 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_timezone_localmean: return AppSettings.TZMODE_LOCALMEAN;
             case R.id.action_timezone_system: return AppSettings.TZMODE_SYSTEM;
             case R.id.action_timezone_utc: return AppSettings.TZMODE_UTC;
+            case R.id.action_timezone_julian: return AppSettings.TZMODE_JULIAN;
+            case R.id.action_timezone_italian: return AppSettings.TZMODE_ITALIAN;
+            case R.id.action_timezone_italian_civil: return AppSettings.TZMODE_ITALIAN_CIVIL;
+            case R.id.action_timezone_babylonian: return AppSettings.TZMODE_BABYLONIAN;
             case R.id.action_timezone_apparentsolar: default: return AppSettings.TZMODE_APPARENTSOLAR;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected Intent initIntent()
+    {
+        if (getIntent() == null) {
+            setIntent(new Intent());
+        }
+        return getIntent();
+    }
+
+    public static final String PARAM_FULLSCREEN = "fullscreen";
+    public boolean isFullscreen() {
+        return isFullscreen;
+    }
+    private boolean isFullscreen = false;
+
+    public void toggleFullscreen()
+    {
+        boolean toggledValue = !isFullscreen();
+        setFullscreen(toggledValue);
+    }
+
+    public void setFullscreen(boolean value) {
+        setFullscreen(value, true);
+    }
+    public void setFullscreen(boolean value, boolean updateViews)
+    {
+        isFullscreen = value;
+        if (value) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        if (updateViews) {
+            invalidateOptionsMenu();
+            updateViews(this);
+        }
+    }
+
+    private final View.OnClickListener onFabClick_toggleFullscreen = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            if (keyguardManager != null && isDeviceLocked(keyguardManager))
+            {
+                requestDismissKeyguard(MainActivity.this, keyguardManager, new Runnable()
+                {
+                    @Override
+                    public void run() {
+                        setFullscreen(false);
+                    }
+                });
+            } else {
+                setFullscreen(false);
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected void setShowWhenLocked()
+    {
+        if (Build.VERSION.SDK_INT >= 27) {
+            setShowWhenLocked(true);
+        } else {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        }
+    }
+
+    protected boolean isDeviceLocked()
+    {
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        if (keyguardManager != null) {
+            return isDeviceLocked(keyguardManager);
+        } else return false;
+    }
+    protected boolean isDeviceLocked(@NonNull KeyguardManager keyguardManager)
+    {
+        if (Build.VERSION.SDK_INT >= 22) {
+            return keyguardManager.isDeviceLocked();
+        } else return false;
+    }
+
+    protected void requestDismissKeyguard(@NonNull Activity activity, @NonNull KeyguardManager keyguardManager, @Nullable final Runnable r)
+    {
+        if (Build.VERSION.SDK_INT >= 26)
+        {
+            keyguardManager.requestDismissKeyguard(activity, new KeyguardManager.KeyguardDismissCallback()
+            {
+                @Override
+                public void onDismissSucceeded() {
+                    if (r != null) {
+                        r.run();
+                    }
+                }
+            });
+
+        } else {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+            if (r != null) {
+                r.run();  // TODO: run only on success; how?
+            }
         }
     }
 

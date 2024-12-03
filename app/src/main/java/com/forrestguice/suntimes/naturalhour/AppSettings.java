@@ -45,8 +45,13 @@ public class AppSettings
     public static final int TIMEMODE_DEFAULT = TIMEMODE_24HR;
 
     public static final String KEY_MODE_TIMEZONE = "timezonemode";
-    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1, TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3, TZMODE_UTC = 4;
+    public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1,
+                            TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3, TZMODE_UTC = 4,
+                            TZMODE_ITALIAN = 5, TZMODE_ITALIAN_CIVIL = 6, TZMODE_BABYLONIAN = 7, TZMODE_JULIAN = 8;
     public static final int TZMODE_DEFAULT = TZMODE_APPARENTSOLAR;
+
+    public static final String KEY_USE_WALLPAPER = "useWallpaper";
+    public static final boolean DEF_USE_WALLPAPER = false;
 
     public static final String[] VALUES = new String[] { AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.KEY_MODE_TIMEZONE };
     public static final int[] VALUES_DEF = new int[] { AppSettings.TIMEMODE_DEFAULT, AppSettings.TZMODE_DEFAULT };
@@ -131,6 +136,16 @@ public class AppSettings
         return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_DEFAULT);
     }
 
+    public static void setUseWallpaper(Context context, boolean value) {
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        prefs.putBoolean(KEY_USE_WALLPAPER, value);
+        prefs.apply();
+    }
+    public static boolean getUseWallpaper(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(KEY_USE_WALLPAPER, DEF_USE_WALLPAPER);
+    }
+
     /**
      * @param mode TIMEMODE_12HR, TIMEMODE_24HR, TIMEMODE_SUNTIMES, TIMEMODE_SYSTEM
      * @return true 24hr format, false 12hr format
@@ -152,7 +167,12 @@ public class AppSettings
     public static TimeZone fromTimeZoneMode(@NonNull Context context, int mode, @Nullable SuntimesInfo suntimesInfo)
     {
         boolean hasLocation = (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4);
-        switch (mode) {
+        switch (mode)
+        {
+            case TZMODE_ITALIAN: return NaturalHourFragment.getItalianHoursTZ(context, suntimesInfo.location[2]);
+            case TZMODE_ITALIAN_CIVIL: return NaturalHourFragment.getItalianCivilHoursTZ(context, suntimesInfo.location[2]);
+            case TZMODE_BABYLONIAN: return NaturalHourFragment.getBabylonianHoursTZ(context, suntimesInfo.location[2]);
+            case TZMODE_JULIAN: return NaturalHourFragment.getJulianHoursTZ(context, suntimesInfo.location[2]);
             case TZMODE_UTC: return NaturalHourFragment.getUtcTZ();
             case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");

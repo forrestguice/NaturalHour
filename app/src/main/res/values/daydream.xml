@@ -5,10 +5,31 @@
 
     <bool name="daydream_show_seconds">true</bool>
 
-    <integer name="anim_daydream_alpha_duration_in">3750</integer>
-    <integer name="anim_daydream_alpha_duration_in_pause">1000</integer>
-    <integer name="anim_daydream_alpha_duration_out">3750</integer>
-    <integer name="anim_daydream_alpha_duration_out_pause">21500</integer>
+    <bool name="anim_daydream_option_wander">true</bool>
+    <bool name="anim_daydream_option_randomPosition">true</bool>
+    <bool name="anim_daydream_option_fade_scale">true</bool>
+    <bool name="anim_daydream_option_fade_wander">true</bool>
+    <bool name="anim_daydream_option_fade_rotate">true</bool>
+    <bool name="anim_daydream_option_background_pulse">true</bool>
+
+    <integer name="anim_daydream_option_rotate_chance">2</integer>            <!-- 1:chance -->
+    <integer name="anim_daydream_background_pulse_duration">15000</integer>   <!-- ms -->
+    <integer name="anim_daydream_wander_duration">7500</integer>              <!-- ms -->
+    <integer name="anim_daydream_wait_duration_min">12000</integer>           <!-- ms -->
+    <integer name="anim_daydream_wait_duration_max">18000</integer>           <!-- ms -->
+    <integer name="anim_daydream_hide_duration_min">1500</integer>            <!-- ms -->
+    <integer name="anim_daydream_hide_duration_max">3000</integer>            <!-- ms -->
+    <integer name="anim_daydream_fadein_duration">3750</integer>            <!-- ms -->
+    <integer name="anim_daydream_fadeout_duration">3750</integer>           <!-- ms -->
+
+    <string name="anim_daydream_alpha_value_min">0.02f</string>    <!-- float [0,1] -->
+    <string name="anim_daydream_alpha_value_max">1.0f</string>     <!-- float [0,1] -->
+    <string name="anim_daydream_scale_value_min">0.60f</string>    <!-- float [0,1] -->
+    <string name="anim_daydream_scale_value_max">1.0f</string>     <!-- float [0,1] -->
+    <string name="anim_daydream_wander_value_x">100f</string>      <!-- float pixels -->
+    <string name="anim_daydream_wander_value_y">200f</string>      <!-- float pixels -->
+    <string name="anim_daydream_rotate_value_in">15f</string>      <!-- float degrees -->
+    <string name="anim_daydream_rotate_value_out">15f</string>     <!-- float degrees -->
 
     <color name="daydream_bg">@color/daydream_bg_dark</color>
     <color name="daydream_bg_dark">@android:color/black</color>

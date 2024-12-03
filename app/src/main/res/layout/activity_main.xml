@@ -15,6 +15,17 @@
 
     </LinearLayout>
 
+    <androidx.appcompat.widget.FloatingActionButton
+        android:id="@+id/fab_togglefullscreen"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
+        app:fabSize="mini"  android:scaleType="center"
+        android:src="?attr/icFullscreenOff"
+        android:tint="?attr/fab_foregroundColor"
+        app:backgroundTint="?attr/fab_backgroundColor"
+        app:rippleColor="?attr/fab_rippleColor"
+        android:contentDescription="@string/action_fullscreen_off" />
+
     <androidx.appcompat.widget.LinearLayoutCompat android:id="@+id/app_bottomsheet"
         android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
         app:layout_insetEdge="bottom" app:behavior_hideable="true" app:behavior_peekHeight="0dp"
@@ -26,7 +37,7 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <!--<android.support.design.bottomappbar.BottomAppBar
+    <!--<androidx.appcompat.widget.BottomAppBar
         android:id="@+id/bottombar"
         android:layout_width="match_parent" android:layout_height="32dp"
         android:layout_gravity="bottom"
