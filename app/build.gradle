@@ -37,6 +37,9 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.0'
     implementation project(path: ":SuntimesAddon")  //implementation 'com.github.forrestguice:SuntimesAddon:v0.4.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:1.1.0'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
