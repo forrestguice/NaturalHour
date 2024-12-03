@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.naturalhour;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuCompat;
 import androidx.lifecycle.ViewModelProviders;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
