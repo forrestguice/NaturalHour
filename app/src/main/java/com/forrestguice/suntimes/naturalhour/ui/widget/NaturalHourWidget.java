@@ -334,7 +334,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         if (Build.VERSION.SDK_INT >= 15)
         {
             Calendar now = Calendar.getInstance(timezone);
-            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), is24));
+            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), is24, data));
         }
         //views.setTextViewText(R.id.text_title, "title");
     }

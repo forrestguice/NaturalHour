@@ -40,6 +40,7 @@ import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class NaturalHourAlarmFragment extends Fragment
         }
         if (alarmSelect != null) {
             alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOURMODE, getHourMode());
-            alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
+            alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, NaturalHourFragment.isMode24(getHourMode()));
             alarmSelect.initViews(alarmSelect.getView());
         }
     }
@@ -207,11 +208,10 @@ public class NaturalHourAlarmFragment extends Fragment
         if (alarmSelect != null)
         {
             alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOURMODE, getHourMode());
-            alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, (getHourMode() == NaturalHourClockBitmap.HOURMODE_SUNSET));
+            alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, NaturalHourFragment.isMode24(getHourMode()));
 
             //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOUR, getHour());
             //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());
-
             alarmSelect.initViews(alarmSelect.getView());    // re-init views
         }
     }
