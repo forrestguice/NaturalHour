@@ -62,7 +62,7 @@ public class NaturalHourSelectFragment extends AlarmSelectFragmentBase implement
         if (params != null)
         {
             setIntArg(ARG_HOURMODE, params[0]);
-            setBoolArg(ARG_MODE24, (params[0] == NaturalHourClockBitmap.HOURMODE_SUNSET));
+            setBoolArg(ARG_MODE24, (params[0] == NaturalHourClockBitmap.HOURMODE_SUNSET_24));
             setIntArg(ARG_HOUR, params[1]);
             setIntArg(ARG_MOMENT, params[2]);
         }

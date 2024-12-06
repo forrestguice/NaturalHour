@@ -63,7 +63,7 @@ public class NightWatchSelectFragment extends AlarmSelectFragmentBase implements
         if (params != null)
         {
             setIntArg(ARG_HOURMODE, params[0]);
-            setBoolArg(ARG_MODE24, (params[0] == NaturalHourClockBitmap.HOURMODE_SUNSET));
+            setBoolArg(ARG_MODE24, (params[0] == NaturalHourClockBitmap.HOURMODE_SUNSET_24));
             setIntArg(ARG_WATCH_I, params[1]);
             setIntArg(ARG_WATCH_N, params[2]);
         }

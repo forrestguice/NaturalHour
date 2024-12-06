@@ -153,7 +153,7 @@ public class NaturalHourAlarm1 extends NaturalHourAlarm0
 
     @Override
     public Calendar getEventTime(int hourMode, NaturalHourData data, int[] params) {
-        return data.getNightWatch(params[1], params[2], NaturalHourClockBitmap.modeIs24(hourMode));
+        return data.getNightWatch(params[1], params[2]);
     }
 
 }

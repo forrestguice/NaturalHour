@@ -47,7 +47,6 @@ import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_REP
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_ALT;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LAT;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_LOCATION_LON;
-import static com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap.HOURMODE_SUNSET;
 
 /**
  * Alarm at Hour and Moment.
@@ -256,8 +255,30 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
     @Override
     public Calendar getEventTime(int hourMode, NaturalHourData data, int[] params)
     {
-        float momentRatio = (float)params[2] / 39f;
-        return data.getNaturalHour(params[1], momentRatio, NaturalHourClockBitmap.modeIs24(hourMode));
-    }
+        int i = params[1];
+        int j; // = (hour[0] != NaturalHourClockBitmap.HOURMODE_SUNSET_24) ? i
+        // : (i >= 12) ? i - 12 : i + 12;
 
+        switch (params[0])
+        {
+            case NaturalHourClockBitmap.HOURMODE_CIVILSET_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNSET_24:
+                j = (i >= 12) ? i - 12 : i + 12;
+                break;
+
+            case NaturalHourClockBitmap.HOURMODE_NOON_24:
+                j = (((i + 6) + 24) % 24);
+                break;
+
+            case NaturalHourClockBitmap.HOURMODE_CIVILRISE_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNRISE:
+            default:
+                j = i;
+                break;
+        }
+
+        float momentRatio = (float)params[2] / 39f;
+        return data.getNaturalHour(j, momentRatio);
+    }
 }
