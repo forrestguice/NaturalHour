@@ -50,7 +50,7 @@ public class NaturalHourAlarm1 extends NaturalHourAlarm0
      * @return natural sounding phrase
      */
     private String nightWatchPhrase(Context context, int hourMode, int i, int n) {
-        return "Night watch " + i + " of " + n;    // Night watch 2 of 3    // TODO: i18n
+        return context.getString(R.string.nightwatch_phrase2, "" + i, "" + n);
     }
 
     /**
