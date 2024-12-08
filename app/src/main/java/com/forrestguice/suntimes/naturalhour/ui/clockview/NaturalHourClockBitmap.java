@@ -69,6 +69,10 @@ public class NaturalHourClockBitmap
     public static final int HOURMODE_CIVILRISE_24 = 6;
     public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
 
+    public static final int TIMEFORMAT_6 = 6;
+    public static final int TIMEFORMAT_12 = 12;
+    public static final int TIMEFORMAT_24 = 24;
+
     public static final String VALUE_NUMERALS = "clockface_numerals";
     public static final int NUMERALS_ROMAN = 0;
     public static final int NUMERALS_ARABIC = 1;
@@ -213,9 +217,9 @@ public class NaturalHourClockBitmap
         this.timezone = timezone;
     }
 
-    protected boolean is24 = true;
-    public void set24HourMode(boolean value) {
-        is24 = value;
+    protected int timeFormat = TIMEFORMAT_24;
+    public void setTimeFormat(int value) {
+        timeFormat = value;
     }
 
     protected Double startAngle = null;
@@ -267,8 +271,8 @@ public class NaturalHourClockBitmap
 
         drawBackground(context, data, canvas, cX, cY);
         drawTimeArcs(context, data, canvas, cX, cY);
-        drawTicks(data, canvas, cX, cY, is24);
-        drawTickLabels(data, canvas, cX, cY, is24);
+        drawTicks(data, canvas, cX, cY, timeFormat);
+        drawTickLabels(data, canvas, cX, cY, timeFormat);
 
         paintTickLarge.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
@@ -621,7 +625,7 @@ public class NaturalHourClockBitmap
         canvas.drawPath(path, paint);
     }
 
-    protected void drawTicks(NaturalHourData data, Canvas canvas, float cX, float cY, boolean is24)
+    protected void drawTicks(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
         float r0 = radiusInner(cX);
         float rHugeTick = r0 - tickLength_huge;
@@ -670,7 +674,7 @@ public class NaturalHourClockBitmap
         }
     }
 
-    protected void drawTickLabels(NaturalHourData data, Canvas canvas, float cX, float cY, boolean is24)
+    protected void drawTickLabels(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
         paint.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
 
@@ -681,7 +685,7 @@ public class NaturalHourClockBitmap
 
         double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
         if (EquinoctialHours.is24(timezone.getID(), null) != null) {
-            is24 = true;
+            timeFormat = TIMEFORMAT_24;
         }
 
         double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
@@ -703,8 +707,28 @@ public class NaturalHourClockBitmap
                     i % 3 == 0 ? textMedium : textSmall;
             paint.setTextSize(textSize);
 
-            int j = is24 ? i : (i == 24 || i == 12 ? 12 : (i % 12));
-            String label = is24 ? (i < 10 ? "0" + j : "" + j) : "" + j;
+            int j;
+            String label;
+            switch (timeFormat)
+            {
+                case TIMEFORMAT_6:
+                    j = (i == 24 || i == 18 || i == 12 || i == 6 ? 6 : (i % 6));
+                    label = "" + j;
+                    break;
+
+                case TIMEFORMAT_12:
+                    j = (i == 24 || i == 12 ? 12 : (i % 12));
+                    label = "" + j;
+                    break;
+
+                case TIMEFORMAT_24:
+                default:
+                    j = i;
+                    label = (i < 10) ? "0" + j : "" + j;
+                    break;
+            }
+            //int j = is24 ? i : (i == 24 || i == 12 ? 12 : (i % 12));
+            //String label = is24 ? (i < 10 ? "0" + j : "" + j) : "" + j;
 
             if (!isMinorTick || showMinorTickLabels) {
                 canvas.drawText(label, (float)(lx), (float)(ly) + (textSize * 0.25f), paint);

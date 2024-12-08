@@ -35,8 +35,10 @@
     <string name="action_timeformat_system_format">(%s)</string>
     <string name="action_timeformat_system">System %s</string>
     <string name="action_timeformat_suntimes">Suntimes %s</string>
+    <string name="action_timeformat_6hr">@string/timeformat_6hr</string>
     <string name="action_timeformat_12hr">@string/timeformat_12hr</string>
     <string name="action_timeformat_24hr">@string/timeformat_24hr</string>
+    <string name="timeformat_6hr">6-hour</string>
     <string name="timeformat_12hr">12-hour</string>
     <string name="timeformat_24hr">24-hour</string>
 

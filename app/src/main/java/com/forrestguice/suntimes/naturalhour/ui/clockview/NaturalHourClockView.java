@@ -123,8 +123,8 @@ public class NaturalHourClockView extends View
         updateBase();
     }
 
-    public void set24HourMode(boolean value) {
-        bitmap.set24HourMode(value);
+    public void setTimeFormat(int value) {
+        bitmap.setTimeFormat(value);
         updateBase();
     }
 

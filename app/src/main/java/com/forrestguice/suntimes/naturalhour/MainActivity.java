@@ -70,6 +70,7 @@ import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
 
+import java.util.HashMap;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity
@@ -315,8 +316,12 @@ public class MainActivity extends AppCompatActivity
         if (timeformatText != null && fragment != null)
         {
             String tzID = fragment.getTimeZone().getID();
-            Boolean is24 = EquinoctialHours.is24(tzID, fragment.is24());
-            timeformatText.setText( getString( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr ) );
+
+            int timeFormat = fragment.getTimeFormat();
+            if (EquinoctialHours.is24(tzID, null) != null) {
+                timeFormat = NaturalHourClockBitmap.TIMEFORMAT_24;
+            }
+            timeformatText.setText(DisplayStrings.timeFormatLabel(this, timeFormat));
 
             View timeformatButton = findViewById(R.id.bottombar_button_layout0);
             if (timeformatButton != null)
@@ -618,30 +623,38 @@ public class MainActivity extends AppCompatActivity
     private void updateTimeFormatPopupMenu(Menu menu)
     {
         MenuItem itemSystem = menu.findItem(R.id.action_timeformat_system);
-        MenuItem itemSuntimes = menu.findItem(R.id.action_timeformat_suntimes);
-        MenuItem[] items = new MenuItem[] {itemSystem, itemSuntimes, menu.findItem(R.id.action_timeformat_12hr), menu.findItem(R.id.action_timeformat_24hr)};
-
         if (itemSystem != null)
         {
-            boolean is24 = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SYSTEM, suntimesInfo);
-            CharSequence timeFormat = DisplayStrings.timeFormatLabel(MainActivity.this, is24);
+            int timeFormatMode = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SYSTEM, suntimesInfo);
+            CharSequence timeFormat = DisplayStrings.timeFormatLabel(this, timeFormatMode);
             String displayTag = getString(R.string.action_timeformat_system_format, timeFormat);
             String displayString = getString(R.string.action_timeformat_system, displayTag);
             itemSystem.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
         }
 
+        MenuItem itemSuntimes = menu.findItem(R.id.action_timeformat_suntimes);
         if (itemSuntimes != null)
         {
-            boolean is24 = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SUNTIMES, suntimesInfo);
-            CharSequence timeFormat = DisplayStrings.timeFormatLabel(MainActivity.this, is24);
+            int timeFormatMode = AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.TIMEMODE_SUNTIMES, suntimesInfo);
+            CharSequence timeFormat = DisplayStrings.timeFormatLabel(this, timeFormatMode);
             String displayTag = getString(R.string.action_timeformat_system_format, timeFormat);
             String displayString = getString(R.string.action_timeformat_suntimes, displayTag);
             itemSuntimes.setTitle(DisplayStrings.createRelativeSpan(null, displayString, displayTag, 0.65f));
         }
 
-        items[AppSettings.getTimeFormatMode(MainActivity.this)].setChecked(true);
+        HashMap<Integer, MenuItem> items = new HashMap<>();
+        items.put(AppSettings.TIMEMODE_SYSTEM, itemSystem);
+        items.put(AppSettings.TIMEMODE_SUNTIMES, itemSuntimes);
+        items.put(AppSettings.TIMEMODE_6HR, menu.findItem(R.id.action_timeformat_6hr));
+        items.put(AppSettings.TIMEMODE_12HR, menu.findItem(R.id.action_timeformat_12hr));
+        items.put(AppSettings.TIMEMODE_24HR, menu.findItem(R.id.action_timeformat_24hr));
+
+        MenuItem item = items.get(AppSettings.getTimeFormatMode(MainActivity.this));
+        if (item != null) {
+            item.setChecked(true);
+        }
     }
-    private PopupMenu.OnMenuItemClickListener onTimeFormatPopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
+    private final PopupMenu.OnMenuItemClickListener onTimeFormatPopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
     {
         @Override
         public boolean onMenuItemClick(MenuItem item)
@@ -651,6 +664,7 @@ public class MainActivity extends AppCompatActivity
             {
                 case R.id.action_timeformat_system:
                 case R.id.action_timeformat_suntimes:
+                case R.id.action_timeformat_6hr:
                 case R.id.action_timeformat_12hr:
                 case R.id.action_timeformat_24hr:
                     item.setChecked(true);
@@ -669,6 +683,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_timeformat_suntimes: return AppSettings.TIMEMODE_SUNTIMES;
             case R.id.action_timeformat_12hr: return AppSettings.TIMEMODE_12HR;
             case R.id.action_timeformat_system: return AppSettings.TIMEMODE_SYSTEM;
+            case R.id.action_timeformat_6hr: return AppSettings.TIMEMODE_6HR;
             case R.id.action_timeformat_24hr: default: return AppSettings.TIMEMODE_24HR;
         }
     }
@@ -877,7 +892,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             Bundle args = dialog.getArguments() != null ? dialog.getArguments() : new Bundle();
-            args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo));
+            args.putBoolean(NaturalHourAlarmFragment.ARG_TIME24, AppSettings.fromTimeFormatMode(MainActivity.this, AppSettings.getTimeFormatMode(MainActivity.this), suntimesInfo) == 24);    // TODO: timeformat
             args.putInt(NaturalHourAlarmFragment.ARG_HOURMODE, AppSettings.getClockIntValue(MainActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
             //args.putInt(NaturalHourAlarmFragment.ARG_HOUR, 0);    // TODO: save/restore last selection
             //args.putInt(NaturalHourAlarmFragment.ARG_MOMENT, 0);    // TODO: save/restore last selection

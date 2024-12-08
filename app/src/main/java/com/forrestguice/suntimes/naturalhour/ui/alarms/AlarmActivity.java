@@ -117,7 +117,7 @@ public class AlarmActivity extends AppCompatActivity
             } else {
                 fragment.setHourMode(AppSettings.getClockIntValue(AlarmActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
             }
-            fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo));
+            fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo) == 24);   // TODO: timeformat
             fragment.setLocation(param_latitude, param_longitude, param_altitude);
             fragment.addFragmentListener(onAlarmSelectionChanged);
             triggerActionMode(fragment.getView(), fragment.getAlarmID());
@@ -249,7 +249,7 @@ public class AlarmActivity extends AppCompatActivity
             toolbar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
         }
 
-        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
+        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo) == NaturalHourClockBitmap.TIMEFORMAT_24;   // TODO: timeformat
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
         if (timeformatText != null) {
             timeformatText.setText( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr );
