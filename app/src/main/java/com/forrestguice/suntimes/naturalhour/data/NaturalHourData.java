@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.naturalhour.data;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -355,6 +356,14 @@ public class NaturalHourData implements Parcelable
     }
     public Calendar getNaturalHour(int i) {
         return getNaturalHour(i, 0);
+    }
+
+    public Calendar getNightWatch(int i, int n)
+    {
+        double watchLength = (getNightHourLength() * 12d) / n;
+        Calendar event = getNaturalHour(12);
+        event.setTimeInMillis(event.getTimeInMillis() + (long)((i-1) * watchLength));
+        return event;
     }
 
     /**

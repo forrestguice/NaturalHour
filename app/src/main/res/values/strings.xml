@@ -207,6 +207,7 @@
         <item>eighth watch</item>
         <item>ninth watch</item>
         <item>tenth watch</item>
+        <item>eleventh watch</item>
     </string-array>
     <string-array name="nightwatch_phrase1">
         <item>0</item>
@@ -214,6 +215,7 @@
         <item>Middle watch</item>
         <item>Morning watch</item>
     </string-array>
+    <string name="nightwatch_phrase2">Night watch %1$s of %2$s</string>
 
     <string-array name="week_symbols">
         <item>☉</item>  <!-- sunday -->

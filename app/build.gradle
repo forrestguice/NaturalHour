@@ -13,6 +13,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
         missingDimensionStrategy 'version', 'supportlib'
+        missingDimensionStrategy 'api', 'api28'
     }
 
     buildTypes {
