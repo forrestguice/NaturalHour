@@ -142,6 +142,9 @@ public class ClockDaydreamService extends DreamService
 
             ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);
             clockAppearance = colors.getSelectedColors(context, appWidgetId);
+            if (clockAppearance == null) {
+                clockAppearance = colors.getDefaultColors(context);
+            }
             clockView.setColors(clockAppearance);
             mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
 
