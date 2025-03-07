@@ -272,6 +272,9 @@ public class NaturalHourClockBitmap
         drawBackground(context, data, canvas, cX, cY);
         drawTimeArcs(context, data, canvas, cX, cY);
         drawTicks(data, canvas, cX, cY, timeFormat);
+        if (getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS)) {
+            drawTicksSeconds(data, canvas, cX, cY, timeFormat);
+        }
         drawTickLabels(data, canvas, cX, cY, timeFormat);
 
         paintTickLarge.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
@@ -435,7 +438,11 @@ public class NaturalHourClockBitmap
     }
 
     private float radiusInner1(float r) {
-        return radiusInner(r) - arcWidth;
+        return radiusInner(r) - 2 * arcWidth - 2 * tickLength_tiny;
+        //return radiusInner(r) - 2 * arcWidth;
+    }
+    private float radiusInner2(float r) {
+        return radiusInner(r) - 2*arcWidth;
     }
 
     private float radiusOuter(float r) {
@@ -613,6 +620,31 @@ public class NaturalHourClockBitmap
         canvas.drawLine((float) x0, (float) y0, (float) x1, (float) y1, paint);
     }
 
+    protected void drawRayPointCircle(Canvas canvas, double cX, double cY, double angle, double radius_inner, double radius_outer, Paint paint)
+    {
+        double cosA = Math.cos(angle);
+        double sinA = Math.sin(angle);
+        double x0 = cX + radius_inner * cosA;
+        double y0 = cY + radius_inner * sinA;
+        double x1 = cX + radius_outer * cosA;
+        double y1 = cY + radius_outer * sinA;
+        canvas.drawCircle((float)(x0 + x1)/2f, (float)(y0 + y1)/2f, (float)(radius_inner - radius_outer), paint);
+    }
+    protected void drawRayPointSquare(Canvas canvas, double cX, double cY, double angle, double radius_inner, double radius_outer, Paint paint)
+    {
+        double cosA = Math.cos(angle);
+        double sinA = Math.sin(angle);
+        double x0 = cX + radius_inner * cosA;
+        double y0 = cY + radius_inner * sinA;
+        double x1 = cX + radius_outer * cosA;
+        double y1 = cY + radius_outer * sinA;
+
+        float x = (float)(x0 + x1)/2f;
+        float y = (float)(y0 + y1)/2f;
+        float l = (float)(radius_inner - radius_outer);
+        canvas.drawRect(x-l, y-l, x+l, y+l, paint);
+    }
+
     protected void drawPie(Canvas canvas, double cX, double cY, double radius, double startRadians, double angleRadians, Paint paint)
     {
         final RectF circle_inner = new RectF((float)(cX - radius), (float)(cY - radius), (float)(cX + radius), (float)(cY + radius));
@@ -623,6 +655,30 @@ public class NaturalHourClockBitmap
         path.lineTo((float) cX, (float) cY);
         path.close();
         canvas.drawPath(path, paint);
+    }
+
+    protected void drawTicksSeconds(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
+    {
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
+        paintTickTiny.setStyle(Paint.Style.FILL);
+
+        float r0 = radiusInner1(cX);
+        float rTinyTick = r0 - (0.5f * tickLength_tiny);
+        float rSmallTick = r0 - tickLength_tiny;
+
+        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+        drawRayPointSquare(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
+
+        for (int i=1; i<60; i++)
+        {
+            a += ((2 * Math.PI) / 60f);
+            if ((i % 5) == 0 && (i % 2 == 0)) {
+                drawRayPointCircle(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
+            } else if (i % 2 == 0) {
+                drawRayPointCircle(canvas, cX, cY, a, r0, rTinyTick, paintTickTiny);
+            }
+        }
+        paintTickTiny.setStyle(Paint.Style.STROKE);
     }
 
     protected void drawTicks(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
