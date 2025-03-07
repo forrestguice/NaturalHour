@@ -666,7 +666,8 @@ public class NaturalHourClockBitmap
         float rTinyTick = r0 - (0.5f * tickLength_tiny);
         float rSmallTick = r0 - tickLength_tiny;
 
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         drawRayPointSquare(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
 
         for (int i=1; i<60; i++)
@@ -1001,7 +1002,8 @@ public class NaturalHourClockBitmap
         t_secondsNow.setTimeInMillis(nowMillis);
         int seconds = t_secondsNow.get(Calendar.SECOND);
 
-        double a1 = getAdjustedAngle(startAngle, NaturalHourData.getAngle(seconds), data);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double a1 = getAdjustedAngle(startAngle + offset, NaturalHourData.getAngle(seconds), data);
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);
 
@@ -1011,7 +1013,6 @@ public class NaturalHourClockBitmap
             canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
 
         } else {
-
             double handRadius = handWidth / 4d;
             double a0 = a1 - Math.PI/2;
             double x0 = cX + handRadius * Math.cos(a0);
