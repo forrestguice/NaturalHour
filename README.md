@@ -9,18 +9,24 @@ A 24-hour clock &amp; roman timekeeping add-on for Suntimes. It depends on [Sunt
 * [Legal Stuff](#legal-stuff)
 
 Features:
-* A 24-hr clock face with roman timekeeping divisions; hours, twilights, and night watches.
+* A 24-hr clock face with roman timekeeping divisions; hours, twilight, and night watches.
 * Repeating alarms and notifications (requires Suntimes `v0.14.0` or later).
 * Home screen widgets (resizable 3x2, 4x3, and 5x3 clock widgets).
-* The app announces the current time (and roman hour) when the clock is clicked.
+* Quick settings tile (shows a dialog over the lock screen).
+* Daydream / screensaver (shows a "wandering clock").
 * Quick navigation to the dates of the solstices and equinoxes.
+* The app announces the current time (and roman hour) when the clock is clicked.
 
 Options for:
-* hour definitions; the day begins at sunrise/sunset (12), at sunset (24), etc.
-* time zone (support for solar time), and time format (12hr / 24hr)
+* time zone (local mean time, apparent solar time, UTC, system, or app time zone), and time format (24hr, 12hr, or 6hr).
+* other equinoctial hours; Babylonian, Italic, Italian Civil, or Julian.
+* temporal hours; the day begins at sunrise/sunset (12), dawn/dusk (12), dawn (24), sunrise (24), noon (24), sunset (24), or dusk (24).
+* clock colors (custom color schemes), and other customizations.
 * clock orientation; show "midnight at top", "center on noon".
 * clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
-* clock colors (support for custom color schemes).
+* night watches; 2, 3, 4, or more divisions.
+* seconds; a "seconds dial" and animated "seconds hand".
+* fullscreen mode (over the home screen wallpaper).
 
 <img alt="screenshot1" src='fastlane/metadata/android/en-US/images/phoneScreenshots/1.png' width="280px" /> <img alt="screenshot2" src='fastlane/metadata/android/en-US/images/phoneScreenshots/2.png' width="280px" />
 
@@ -43,7 +49,7 @@ Natural Hour does not collect, store, or transmit personal user data. It contain
 __Natural Hour is an add-on for Suntimes.__ It uses the `suntimes.permission.READ_CALCULATOR` permission in order to access data provided by this app. https://github.com/forrestguice/SuntimesWidget/wiki/Privacy
 
 ## Legal Stuff
-Copyright (C) 2020-2024 **Forrest Guice**
+Copyright (C) 2020-2025 **Forrest Guice**
 ```
 Natural Hour is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
