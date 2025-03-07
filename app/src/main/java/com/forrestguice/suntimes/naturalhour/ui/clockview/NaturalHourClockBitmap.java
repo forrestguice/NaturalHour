@@ -912,21 +912,9 @@ public class NaturalHourClockBitmap
             }
         }
 
-        if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE))
-        {
-            float r = (radiusInner(cX) - (2.65f * arcWidth));
-            final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
-
-            Path path = new Path();
-            boolean alongBottom = alongBottom(startAngle);
-            double arcAngle = NaturalHourData.simplifyAngle(startAngle + (alongBottom ? Math.PI/2d : -Math.PI/2));
-            double sweepAngle = alongBottom ? -Math.PI : Math.PI;
-            path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-            paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL1));
-            paintLabel.setTextSize(textSmall);
-            canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
+        if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE)) {
+            drawTimeZoneLabel(timezone.getID(), canvas, paintLabel);
         }
-
     }
 
     private int getTwilightColor(int i)
@@ -1029,6 +1017,23 @@ public class NaturalHourClockBitmap
             path.close();
             canvas.drawPath(path, paintHand);
         }
+    }
+
+    protected void drawTimeZoneLabel(String text, Canvas canvas, Paint p)
+    {
+        boolean alongBottom = alongBottom(startAngle);
+        float offsetR = (alongBottom ? 2.7f : 3f);
+        float r = (radiusInner(cX) - (offsetR * arcWidth));
+        final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
+
+        Path path = new Path();
+        double arcAngleOffset = 0; //Math.PI/6;
+        double arcAngle = NaturalHourData.simplifyAngle(startAngle + (alongBottom ? Math.PI/2d - arcAngleOffset : -Math.PI/2 + arcAngleOffset));
+        double sweepAngle = alongBottom ? -Math.PI : Math.PI;
+        path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
+        p.setColor(colors.getColor(ClockColorValues.COLOR_LABEL1));
+        p.setTextSize(textSmall);
+        canvas.drawTextOnPath(text, path, 0, 0, p);
     }
 
     private CharSequence formatDate(@NonNull Context context, long dateMillis)
