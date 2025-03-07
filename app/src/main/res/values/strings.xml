@@ -424,17 +424,17 @@
 
     <string name="help_general1"><![CDATA[
         <h4>Equinoctial Hours</h4>
-        The inner dial displays <b>hours of equal length</b>. These include solar time, the system time, and time zones configured from Suntimes, counted from midnight.
+        The inner dial displays <b>hours of equal length</b>. Options include system time, solar time, and time zones configured from Suntimes.
         <br/><br/>
-        Others include:
+        Others options:
         <br/>
-        <b>Babylonian:</b> equal-length hours counted from sunrise.
+        <b>Babylonian:</b> hours counted from sunrise.
         <br/>
-        <b>Italic:</b> equal-length hours counted from sunset.
+        <b>Italic:</b> hours counted from sunset.
         <br/>
-        <b>Italian Civil:</b> equal-length hours counted from civil dusk.
+        <b>Italian Civil:</b> hours counted from civil dusk.
         <br/>
-        <b>Julian:</b> equal-length hours counted from solar noon.
+        <b>Julian:</b> hours counted from solar noon.
     ]]></string>
 
     <string name="app_name">Natural Hour</string>
