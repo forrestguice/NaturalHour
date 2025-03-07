@@ -310,6 +310,10 @@ public class NaturalHourFragment extends Fragment
     public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, NaturalHourData data)
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
+        return announceTime(context, now, currentHour, timeFormat, numeralType, data);
+    }
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, int numeralType, NaturalHourData data)
+    {
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
         int currentHourOf;
         switch (hourMode)

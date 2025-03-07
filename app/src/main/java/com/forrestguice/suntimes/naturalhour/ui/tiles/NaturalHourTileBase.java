@@ -118,7 +118,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         Calendar now = now(context);
         NaturalHourData data = initData(context);
         int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, getTimeFormat(context), data);
+        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, getTimeFormat(context), numeralType(context), data);
         return new SpannableStringBuilder(announcement);
     }
 
