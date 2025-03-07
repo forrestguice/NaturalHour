@@ -341,7 +341,7 @@ public class NaturalHourFragment extends Fragment
         String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
 
         TimeZone timezone = now.getTimeZone();
-        long timeOffset = EquinoctialHours.getTimeOffset(timezone, data, 0, getStartAngle(context));
+        long timeOffset = EquinoctialHours.getTimeOffset(timezone, data, 0, getStartAngle(context), AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_START_AT_TOP));
         boolean timeFormat24 = (timeFormat == AppSettings.TIMEMODE_24HR);    // TODO: timeformat
         boolean forceFormat24 = (EquinoctialHours.is24(timezone.getID(), false));
         String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, timeFormat24 || forceFormat24).toString();

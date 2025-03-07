@@ -666,7 +666,7 @@ public class NaturalHourClockBitmap
         float rTinyTick = r0 - (0.5f * tickLength_tiny);
         float rSmallTick = r0 - tickLength_tiny;
 
-        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0d, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
         double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         drawRayPointSquare(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
 
@@ -702,7 +702,7 @@ public class NaturalHourClockBitmap
         paintTickLarge.setColor(frameColor);
         paintTickHuge.setColor(frameColor);
 
-        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
         double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
@@ -740,7 +740,7 @@ public class NaturalHourClockBitmap
         float rLargeTick = r0 - tickLength_large;
         float rMediumTick = r0 - tickLength_medium;
 
-        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
         if (EquinoctialHours.is24(timezone.getID(), null) != null) {
             timeFormat = TIMEFORMAT_24;
         }
@@ -1002,7 +1002,7 @@ public class NaturalHourClockBitmap
         t_secondsNow.setTimeInMillis(nowMillis);
         int seconds = t_secondsNow.get(Calendar.SECOND);
 
-        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
         double a1 = getAdjustedAngle(startAngle + offset, NaturalHourData.getAngle(seconds), data);
         double x1 = cX + length * Math.cos(a1);
         double y1 = cY + length * Math.sin(a1);

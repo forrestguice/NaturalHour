@@ -45,27 +45,28 @@ public class EquinoctialHours
     private static final double TWO_PI = 2d * Math.PI;
     private static final long DAY_MILLIS = 24 * 60 * 60 * 1000;
 
-    public static long getTimeOffset(TimeZone timezone, NaturalHourData data, long defaultValue, double startAngle0)
+    public static long getTimeOffset(TimeZone timezone, NaturalHourData data, long defaultValue, double startAngle0, boolean startAtTop)
     {
-        double startAngleOffset = getStartAngleOffset(timezone, data, defaultValue, startAngle0);
+        double startAngleOffset = getStartAngleOffset(timezone, data, defaultValue, startAngle0, startAtTop);
         return (long)(-DAY_MILLIS * (startAngleOffset / TWO_PI));
     }
 
-    public static double getStartAngleOffset(TimeZone timezone, NaturalHourData data, double defaultValue, double startAngle0)
+    public static double getStartAngleOffset(TimeZone timezone, NaturalHourData data, double defaultValue, double startAngle0, boolean startAtTop)
     {
+        double offset = (startAtTop ? Math.PI : 0);
         switch (timezone.getID())
         {
             case JULIAN_HOURS:
-                return startAngle0 + data.getAngle(data.getNaturalHours()[6], timezone);
+                return startAngle0 + data.getAngle(data.getNaturalHours()[6], timezone) + offset;
 
             case BABYLONIAN_HOURS:
-                return startAngle0 + data.getAngle(data.getTwilightTimes()[3], timezone);
+                return startAngle0 + data.getAngle(data.getTwilightTimes()[3], timezone) + offset;
 
             case ITALIAN_HOURS:
-                return startAngle0 + data.getAngle(data.getTwilightTimes()[4], timezone);
+                return startAngle0 + data.getAngle(data.getTwilightTimes()[4], timezone) + offset;
 
             case ITALIAN_CIVIL_HOURS:
-                return startAngle0 + data.getAngle(data.getTwilightTimes()[5], timezone);
+                return startAngle0 + data.getAngle(data.getTwilightTimes()[5], timezone) + offset;
 
             default:
                 return defaultValue;
