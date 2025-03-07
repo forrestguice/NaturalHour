@@ -104,7 +104,7 @@ public class ClockDaydreamService extends DreamService
         int tzMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEZONE, context.getResources().getInteger(R.integer.daydream_tzmode));
         return AppSettings.fromTimeZoneMode(context, tzMode, info);
     }
-    protected boolean is24(Context context)
+    protected int getTimeFormat(Context context)
     {
         int timeMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
         return AppSettings.fromTimeFormatMode(context, timeMode, info);
@@ -137,7 +137,7 @@ public class ClockDaydreamService extends DreamService
         {
             clockView = findViewById(R.id.clock);
             clockView.setTimeZone(getTimezone(context));
-            clockView.set24HourMode(is24(context));
+            clockView.setTimeFormat(getTimeFormat(context));
             clockView.setShowTime(true);
 
             ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);

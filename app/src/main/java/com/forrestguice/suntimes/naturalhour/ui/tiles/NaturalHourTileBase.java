@@ -118,7 +118,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         Calendar now = now(context);
         NaturalHourData data = initData(context);
         int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, is24(context), data);
+        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, getTimeFormat(context), data);
         return new SpannableStringBuilder(announcement);
     }
 
@@ -181,7 +181,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         return AppSettings.fromTimeZoneMode(context, tzMode, initSuntimesInfo(context));
     }
 
-    protected boolean is24(Context context) {
+    protected int getTimeFormat(Context context) {
 
         String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
         int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
