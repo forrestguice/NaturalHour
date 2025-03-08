@@ -50,6 +50,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollec
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.daydream.ClockDaydreamBitmap;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -327,6 +328,7 @@ public class NaturalHourWidget extends AppWidgetProvider
                 clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey, clockView));
             }
         }
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS, false);    // widgets don't support the "seconds hand"
 
         prepareClockBitmap(context, clockView);
         clockView.setColors(clockAppearance);
