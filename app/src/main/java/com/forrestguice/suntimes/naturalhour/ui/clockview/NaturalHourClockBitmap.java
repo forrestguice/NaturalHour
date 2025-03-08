@@ -215,6 +215,7 @@ public class NaturalHourClockBitmap
     protected TimeZone timezone = TimeZone.getDefault();
     public void setTimeZone( TimeZone timezone) {
         this.timezone = timezone;
+        t_secondsNow = null;
     }
 
     protected int timeFormat = TIMEFORMAT_24;
@@ -1003,7 +1004,7 @@ public class NaturalHourClockBitmap
             t_secondsNow = Calendar.getInstance(timezone);
         }
         t_secondsNow.setTimeInMillis(nowMillis);
-        int seconds = t_secondsNow.get(Calendar.SECOND);
+        double seconds = t_secondsNow.get(Calendar.SECOND);
 
         double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
         double a1 = getAdjustedAngle(startAngle + offset, NaturalHourData.getAngle(seconds), data);
