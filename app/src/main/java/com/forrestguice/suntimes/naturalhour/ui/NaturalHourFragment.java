@@ -307,12 +307,12 @@ public class NaturalHourFragment extends Fragment
         return context.getString(R.string.format_announcement_naturalhour, hourPhrase, phraseOfDay);
     }
 
-    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, NaturalHourData data)
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, boolean showSeconds, NaturalHourData data)
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
-        return announceTime(context, now, currentHour, timeFormat, numeralType, data);
+        return announceTime(context, now, currentHour, timeFormat, numeralType, showSeconds, data);
     }
-    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, int numeralType, NaturalHourData data)
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, int numeralType, boolean showSeconds, NaturalHourData data)
     {
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
         int currentHourOf;
@@ -343,7 +343,7 @@ public class NaturalHourFragment extends Fragment
         TimeZone timezone = now.getTimeZone();
         long timeOffset = EquinoctialHours.getTimeOffset(timezone, data, 0, getStartAngle(context), AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_START_AT_TOP));
         boolean forceFormat24 = (EquinoctialHours.is24(timezone.getID(), false));
-        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, (forceFormat24 ? 24 : timeFormat)).toString();
+        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, (forceFormat24 ? 24 : timeFormat), showSeconds).toString();
 
         String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
         String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
@@ -381,7 +381,8 @@ public class NaturalHourFragment extends Fragment
             NaturalHourData data = cardAdapter.initData(position);
 
             int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-            SpannableString announcement = announceTime(context, now, currentHour, timeFormat, data);
+            boolean showSeconds = AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_SECONDS);
+            SpannableString announcement = announceTime(context, now, currentHour, timeFormat, showSeconds, data);
 
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
