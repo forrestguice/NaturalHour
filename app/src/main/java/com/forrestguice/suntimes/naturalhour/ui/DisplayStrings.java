@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -203,14 +203,31 @@ public class DisplayStrings
         return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
     }
 
-    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
+    public static String getTimeFormatPattern(Context context, int timeFormat, boolean showSeconds) {
+        switch (timeFormat) {
+            case 6: return context.getString(showSeconds ? R.string.format_time6_withseconds : R.string.format_time6);
+            case 12: return context.getString(showSeconds ? R.string.format_time12_withseconds : R.string.format_time12);
+            case 24: default: return context.getString(showSeconds ? R.string.format_time24_withseconds : R.string.format_time24);
+        }
+    }
+
+    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, int timeFormat) {
+        return formatTime(context, dateTime, timezone, timeFormat, false);
+    }
+    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, int timeFormat, boolean showSeconds)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dateTime);
-        String format = (is24Hr ? context.getString(R.string.format_time24) : context.getString(R.string.format_time12));
-        SimpleDateFormat timeFormat = new SimpleDateFormat(format, Locale.getDefault());
-        timeFormat.setTimeZone(timezone);
-        return timeFormat.format(calendar.getTime());
+        String format = getTimeFormatPattern(context, timeFormat, showSeconds);
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.getDefault());
+        formatter.setTimeZone(timezone);
+
+        if (timeFormat == 6) {    // special case "6 hour time" omits am/pm; formatted as 12hr mod 6 hours
+            if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                calendar.add(Calendar.HOUR_OF_DAY, -6);
+            }
+        }
+        return formatter.format(calendar.getTime());
     }
 
     public static SpannableString formatLocation(@NonNull Context context, @NonNull SuntimesInfo info)

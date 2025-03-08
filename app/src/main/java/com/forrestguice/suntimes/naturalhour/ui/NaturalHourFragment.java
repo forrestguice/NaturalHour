@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2024 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -342,9 +342,8 @@ public class NaturalHourFragment extends Fragment
 
         TimeZone timezone = now.getTimeZone();
         long timeOffset = EquinoctialHours.getTimeOffset(timezone, data, 0, getStartAngle(context), AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_START_AT_TOP));
-        boolean timeFormat24 = (timeFormat == NaturalHourClockBitmap.TIMEFORMAT_24);    // TODO: timeformat: 6hr
         boolean forceFormat24 = (EquinoctialHours.is24(timezone.getID(), false));
-        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, timeFormat24 || forceFormat24).toString();
+        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, (forceFormat24 ? 24 : timeFormat)).toString();
 
         String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
         String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
@@ -482,19 +481,18 @@ public class NaturalHourFragment extends Fragment
             {
                 if (text_debug != null && text_debug.getVisibility() == View.VISIBLE)
                 {
-                    boolean is24 = (options.timeFormat == NaturalHourClockBitmap.TIMEFORMAT_24);   // TODO: timeformat
                     long[] naturalHours = data.getNaturalHours();
                     CharSequence[] dayHours = new String[12];
                     StringBuilder debugDisplay0 = new StringBuilder("Day");
                     for (int i=0; i<dayHours.length; i++) {
-                        dayHours[i] = DisplayStrings.formatTime(context, naturalHours[i], options.timezone, is24);
+                        dayHours[i] = DisplayStrings.formatTime(context, naturalHours[i], options.timezone, options.timeFormat);
                         debugDisplay0.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                     }
 
                     CharSequence[] nightHours = new String[12];
                     StringBuilder debugDisplay1 = new StringBuilder("Night");
                     for (int i=0; i<nightHours.length; i++) {
-                        nightHours[i] = DisplayStrings.formatTime(context, naturalHours[12 + i], options.timezone, is24);
+                        nightHours[i] = DisplayStrings.formatTime(context, naturalHours[12 + i], options.timezone, options.timeFormat);
                         debugDisplay1.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                     }
                     text_debug.setText(debugDisplay0 + "\n" + debugDisplay1);

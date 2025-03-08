@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -262,7 +262,7 @@ public class NaturalHourAlarmFragment extends Fragment
             selectionMap.put(EXTRA_LOCATION_LON, location[1] + "");
             selectionMap.put(EXTRA_LOCATION_ALT, location[2] + "");
             long alarmTimeMillis = NaturalHourProvider.getAlarmInfo(alarmID).calculateAlarmTime(context, alarmID, selectionMap);   // TODO: optimize
-            text_time.setText(alarmTimeMillis >= 0 ? DisplayStrings.formatTime(context, alarmTimeMillis, getTimeZone(), is24()) : "");
+            text_time.setText(alarmTimeMillis >= 0 ? DisplayStrings.formatTime(context, alarmTimeMillis, getTimeZone(), is24() ? 24 : 12) : "");
         }
     }
 

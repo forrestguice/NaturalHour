@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -488,7 +488,7 @@ public class NaturalHourWidget extends AppWidgetProvider
                 } else {
                     alarmManager.setWindow(AlarmManager.RTC, updateTime, 5 * 1000, alarmIntent);
                 }
-                Log.d(getClass().getSimpleName(), "setUpdateAlarm: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), false).toString() + " --> " + getUpdateIntentFilter() + "(" + alarmID + ") :: " + getUpdateInterval());
+                Log.d(getClass().getSimpleName(), "setUpdateAlarm: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), 12).toString() + " --> " + getUpdateIntentFilter() + "(" + alarmID + ") :: " + getUpdateInterval());
             } else Log.d(getClass().getSimpleName(), "setUpdateAlarm: skipping " + alarmID);
         }
     }
@@ -520,7 +520,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     }
     public static void saveNextSuggestedUpdate(Context context, int appWidgetId, long updateTime)
     {
-        Log.d("NaturalHourWidget", "saveNextSuggestedUpdate: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), false));
+        Log.d("NaturalHourWidget", "saveNextSuggestedUpdate: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), 12));
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_WIDGET, 0).edit();
         String prefs_prefix = PREF_PREFIX_KEY + appWidgetId;
         prefs.putLong(prefs_prefix + PREF_KEY_NEXTUPDATE, updateTime);
