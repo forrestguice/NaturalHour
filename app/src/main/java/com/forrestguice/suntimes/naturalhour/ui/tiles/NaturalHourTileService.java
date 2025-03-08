@@ -24,9 +24,9 @@ import android.graphics.drawable.Icon;
 import android.service.quicksettings.Tile;
 import android.text.SpannableStringBuilder;
 
-import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 import java.util.TimeZone;
 
@@ -61,7 +61,7 @@ public class NaturalHourTileService extends SuntimesTileService
         NaturalHourTileBase b = ((NaturalHourTileBase) base);
         TimeZone timezone = b.getTimeZone(context);
         int timeFormat = b.getTimeFormat(context);
-        boolean is24 = (timeFormat == AppSettings.TIMEMODE_24HR);
+        boolean is24 = (timeFormat == NaturalHourClockBitmap.TIMEFORMAT_24);    // TODO: timeformat: 6hr
         String timeString = DisplayStrings.formatTime(context, b.now(context).getTimeInMillis(), timezone, is24).toString();
         String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
         String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
