@@ -98,25 +98,31 @@
 
     <string name="pref_title_timeformat">Time Format</string>
     <string-array name="pref_timeformat_display">
-        <item>@string/action_timeformat_system</item>
-        <item>@string/action_timeformat_suntimes</item>
-        <item>@string/timeformat_12hr</item>
-        <item>@string/timeformat_24hr</item>
+        <item>@string/action_timeformat_system</item>     <!-- 0 -->
+        <item>@string/action_timeformat_suntimes</item>   <!-- 1 -->
+        <item>@string/timeformat_6hr</item>               <!-- 4 -->
+        <item>@string/timeformat_12hr</item>              <!-- 2 -->
+        <item>@string/timeformat_24hr</item>              <!-- 3 -->
     </string-array>
     <string-array name="pref_timeformat_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
+        <item>4</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
     <string name="pref_title_tzmode">Time Zone</string>
     <string-array name="pref_tzmode_display">
-        <item>@string/action_timezone_system</item>
-        <item>@string/action_timezone_suntimes</item>
-        <item>@string/action_timezone_localmean</item>
-        <item>@string/action_timezone_apparentsolar</item>
-        <item>@string/action_timezone_utc</item>
+        <item>@string/action_timezone_system</item>           <!-- 0 -->
+        <item>@string/action_timezone_suntimes</item>         <!-- 1 -->
+        <item>@string/action_timezone_localmean</item>        <!-- 2 -->
+        <item>@string/action_timezone_apparentsolar</item>    <!-- 3 -->
+        <item>@string/action_timezone_utc</item>              <!-- 4 -->
+        <item>@string/action_timezone_babylonian</item>       <!-- 7 -->
+        <item>@string/action_timezone_italian</item>          <!-- 5 -->
+        <item>@string/action_timezone_italian_civil</item>    <!-- 6 -->
+        <item>@string/action_timezone_julian</item>           <!-- 8 -->
     </string-array>
     <string-array name="pref_tzmode_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
@@ -124,6 +130,10 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>7</item>
+        <item>5</item>
+        <item>6</item>
+        <item>8</item>
     </string-array>
 
     <string name="pref_title_nightwatch_type">Night Watch</string>
@@ -135,6 +145,9 @@
         <item>6 watches</item>
         <item>7 watches</item>
         <item>8 watches</item>
+        <item>9 watches</item>
+        <item>10 watches</item>
+        <item>11 watches</item>
     </string-array>
     <string-array name="pref_nightwatch_values" translatable="false">  <!-- one-to-one with pref_nightwatch_display -->
         <item>2</item>
@@ -144,6 +157,9 @@
         <item>6</item>
         <item>7</item>
         <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
     </string-array>
 
     <string name="pref_title_numerals">Numerals</string>
