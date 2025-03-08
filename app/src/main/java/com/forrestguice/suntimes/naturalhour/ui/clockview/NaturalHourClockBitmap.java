@@ -1003,7 +1003,7 @@ public class NaturalHourClockBitmap
         if (t_secondsNow == null) {
             t_secondsNow = Calendar.getInstance(timezone);
         }
-        t_secondsNow.setTimeInMillis(nowMillis);
+        t_secondsNow.setTimeInMillis(nowMillis + EquinoctialHours.getTimeOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP)));
         double seconds = t_secondsNow.get(Calendar.SECOND);
 
         double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
