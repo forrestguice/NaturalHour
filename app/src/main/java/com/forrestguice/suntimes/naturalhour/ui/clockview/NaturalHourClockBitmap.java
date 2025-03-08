@@ -272,6 +272,7 @@ public class NaturalHourClockBitmap
         drawBackground(context, data, canvas, cX, cY);
         drawTimeArcs(context, data, canvas, cX, cY);
         drawTicks(data, canvas, cX, cY, timeFormat);
+        drawTicksStart(data, canvas, cX, cY, timeFormat);
         if (getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS)) {
             drawTicksSeconds(data, canvas, cX, cY, timeFormat);
         }
@@ -657,6 +658,20 @@ public class NaturalHourClockBitmap
         canvas.drawPath(path, paint);
     }
 
+    protected void drawTicksStart(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
+    {
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
+        paintTickTiny.setStyle(Paint.Style.FILL);
+
+        float r0 = radiusInner1(cX);
+        float rTick = r0 - tickLength_tiny;
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0d, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
+        drawRayPointSquare(canvas, cX, cY, a, r0, rTick, paintTickTiny);
+
+        paintTickTiny.setStyle(Paint.Style.STROKE);
+    }
+
     protected void drawTicksSeconds(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
         paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
@@ -668,7 +683,7 @@ public class NaturalHourClockBitmap
 
         double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0d, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
         double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
-        drawRayPointSquare(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
+        //drawRayPointSquare(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
 
         for (int i=1; i<60; i++)
         {
