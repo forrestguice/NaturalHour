@@ -173,7 +173,7 @@ public class AppSettings
             case TZMODE_JULIAN: return NaturalHourFragment.getJulianHoursTZ(context, suntimesInfo.location[2]);
             case TZMODE_UTC: return NaturalHourFragment.getUtcTZ();
             case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
-            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
+            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparentSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(context, suntimesInfo);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
         }

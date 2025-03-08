@@ -802,7 +802,7 @@ public class NaturalHourFragment extends Fragment
             } else if ("UTC".equals(info.solartimeMode)) {
                 return getUtcTZ();
             } else {
-                return getApparantSolarTZ(context, info.location[2]);
+                return getApparentSolarTZ(context, info.location[2]);
             }
 
         } else {
@@ -834,7 +834,7 @@ public class NaturalHourFragment extends Fragment
         return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), context.getString(R.string.solartime_localmean));
     }
 
-    public static TimeZone getApparantSolarTZ(Context context, String longitude) {
+    public static TimeZone getApparentSolarTZ(Context context, String longitude) {
         return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(longitude), context.getString(R.string.solartime_apparent));
     }
 
