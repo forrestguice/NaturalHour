@@ -484,6 +484,7 @@
     <string name="daydream_name">@string/app_name</string>
     <string name="daydreamconfig_title">Natural Hour Daydream</string>
     <string name="widgetconfig_title">Natural Hour Widget</string>   <!-- widget configuration activity title text -->
+    <string name="widgetconfig_subtitle">Reconfigure (%s)</string>
 
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the

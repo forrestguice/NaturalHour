@@ -135,7 +135,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
-            actionBar.setSubtitle((reconfigure && appWidgetId > 0) ? "Reconfigure (" + appWidgetId + ")" : null);
+            actionBar.setSubtitle((reconfigure && appWidgetId > 0) ? context.getString(R.string.widgetconfig_subtitle, appWidgetId + "") : null);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
