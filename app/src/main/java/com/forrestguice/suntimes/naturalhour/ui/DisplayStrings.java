@@ -216,14 +216,14 @@ public class DisplayStrings
     }
     public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, int timeFormat, boolean showSeconds)
     {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(timezone);
         calendar.setTimeInMillis(dateTime);
         String format = getTimeFormatPattern(context, timeFormat, showSeconds);
         SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.getDefault());
         formatter.setTimeZone(timezone);
 
-        if (timeFormat == 6) {    // special case "6 hour time" omits am/pm; formatted as 12hr mod 6 hours
-            if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+        if (timeFormat == 6) {    // special case "6 hour time" omits am/pm; formatted as 12hr mod 6
+            while (calendar.get(Calendar.HOUR_OF_DAY) > 6) {
                 calendar.add(Calendar.HOUR_OF_DAY, -6);
             }
         }
