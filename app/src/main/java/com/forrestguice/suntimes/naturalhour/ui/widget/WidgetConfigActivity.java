@@ -47,6 +47,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 {
     public static final String DIALOG_ABOUT = "aboutDialog";
 
+    public static final String EXTRA_RECONFIGURE0 = "ONTAP_LAUNCH_CONFIG";
     public static final String EXTRA_RECONFIGURE = "reconfigure";
 
     protected SuntimesInfo suntimesInfo = null;
@@ -93,7 +94,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         if (extras != null)
         {
             appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            reconfigure = extras.getBoolean(EXTRA_RECONFIGURE, false);
+            reconfigure = extras.getBoolean(EXTRA_RECONFIGURE, extras.getBoolean(EXTRA_RECONFIGURE0, false));
         }
 
         resultValue = new Intent();
@@ -132,6 +133,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
+            actionBar.setSubtitle((reconfigure && appWidgetId > 0) ? context.getString(R.string.widgetconfig_subtitle, appWidgetId + "") : null);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -139,7 +141,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
-            flagFragment.setAppWidgetId(appWidgetId);
+            flagFragment.setAppWidgetId(appWidgetId, reconfigure);
         }
     }
 
@@ -158,6 +160,11 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     @Override
     protected boolean onPrepareOptionsPanel(View view, Menu menu)
     {
+        MenuItem doneAction = menu.findItem(R.id.action_done);
+        if (doneAction != null) {
+            doneAction.setVisible(!reconfigure);
+        }
+
         Messages.forceActionBarIcons(menu);
         return super.onPrepareOptionsPanel(view, menu);
     }
@@ -199,6 +206,9 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected boolean onCanceled()
     {
+        if (reconfigure) {
+            updateWidgets(this);
+        }
         setResult(RESULT_CANCELED, resultValue);
         finish();
         return true;

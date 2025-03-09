@@ -123,8 +123,8 @@ public class NaturalHourClockView extends View
         updateBase();
     }
 
-    public void set24HourMode(boolean value) {
-        bitmap.set24HourMode(value);
+    public void setTimeFormat(int value) {
+        bitmap.setTimeFormat(value);
         updateBase();
     }
 
@@ -192,7 +192,7 @@ public class NaturalHourClockView extends View
         @Override
         public void run() {
             if (BuildConfig.DEBUG) {
-                Log.d("DEBUG", "updateRunnable: tick");
+                //Log.d("DEBUG", "updateRunnable: tick");
             }
             invalidate();
             postDelayed(updateRunnable, UPDATE_INTERVAL);

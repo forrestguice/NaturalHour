@@ -39,6 +39,7 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
+import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -119,7 +120,7 @@ public class NaturalHourTileBase extends SuntimesTileBase
         Calendar now = now(context);
         NaturalHourData data = initData(context);
         int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, is24(context), data);
+        SpannableString announcement = NaturalHourFragment.announceTime(context, now, currentHour, getTimeFormat(context), numeralType(context), false, data);
         return new SpannableStringBuilder(announcement);
     }
 
@@ -177,14 +178,14 @@ public class NaturalHourTileBase extends SuntimesTileBase
 
     protected TimeZone getTimeZone(Context context)
     {
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
+        String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId());
         int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT);
         return AppSettings.fromTimeZoneMode(context, tzMode, initSuntimesInfo(context));
     }
 
-    protected boolean is24(Context context) {
+    protected int getTimeFormat(Context context) {
 
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId());
+        String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId());
         int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
         return AppSettings.fromTimeFormatMode(context, timeMode, initSuntimesInfo(context));
     }
@@ -212,11 +213,11 @@ public class NaturalHourTileBase extends SuntimesTileBase
     }
 
     protected int hourMode(Context context) {
-        return AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT);
+        return AppSettings.getClockIntValue(context, WidgetSettings.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT);
     }
 
     protected int numeralType(Context context) {
-        return AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_NUMERALS);
+        return AppSettings.getClockIntValue(context, WidgetSettings.widgetKeyPrefix(appWidgetId()) + NaturalHourClockBitmap.VALUE_NUMERALS);
     }
 
 }

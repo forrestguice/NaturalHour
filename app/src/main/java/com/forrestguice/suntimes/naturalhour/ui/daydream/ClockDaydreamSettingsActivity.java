@@ -90,7 +90,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
         flagFragment = (DaydreamPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
-            flagFragment.setAppWidgetId(appWidgetId);
+            flagFragment.setAppWidgetId(appWidgetId, false);
         }
     }
 

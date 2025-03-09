@@ -51,20 +51,31 @@ public class WidgetPreferenceFragment extends PreferenceFragment
 {
     public static final int REQUEST_PICKCOLORS = 100;
 
-    public static final String KEY_PREFIX = "widget";
-    public static String widgetKeyPrefix(int appWidgetId) {
-        return KEY_PREFIX + "_" + appWidgetId + "_";
-    }
-
     /**
      * @return appWidgetId (apply as widget settings), or 0 if unset (apply as global settings)
      */
     public int getAppWidgetId() {
         return getArguments().getInt("appWidgetId");
     }
-    public void setAppWidgetId(int appWidgetId) {
+    public void setAppWidgetId(int appWidgetId, boolean reconfigure)
+    {
         getArguments().putInt("appWidgetId", appWidgetId);
-        initWidgetDefaults();
+        getArguments().putBoolean("reconfigure", reconfigure);
+
+        if (reconfigure)
+        {
+            if (isAdded()) {
+                getPreferenceScreen().removeAll();
+                onPrepareReconfigure(appWidgetId);
+                addPreferencesFromResource(getPreferenceResources());
+                initColors();
+            }
+        } else {
+            initWidgetDefaults();
+        }
+    }
+    public boolean isReconfiguring() {
+        return getArguments().getBoolean("reconfigure");
     }
 
     public int getPreferenceResources() {
@@ -87,20 +98,14 @@ public class WidgetPreferenceFragment extends PreferenceFragment
 
     protected void initWidgetDefaults()
     {
+        initColors();
+
         Context context = getActivity();
         int appWidgetId = getAppWidgetId();
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
         {
-            final ColorValuesCollectionPreference colorsPref = (ColorValuesCollectionPreference) findPreference("widget_0_colors");
-            if (colorsPref != null)
-            {
-                colorsPref.setAppWidgetID(appWidgetId);
-                colorsPref.setCollection(context, new ClockColorValuesCollection<ColorValues>(context));
-                colorsPref.initPreferenceOnClickListener(this, REQUEST_PICKCOLORS);
-            }
-
-            String widgetPrefix0 = widgetKeyPrefix(0);
-            String widgetPrefix = widgetKeyPrefix(appWidgetId);
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
 
@@ -121,7 +126,57 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                 String widgetKey = widgetPrefix + AppSettings.VALUES[i];
                 editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
             }
+            for (int i = 0; i<WidgetSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix0 + WidgetSettings.VALUES[i];
+                String widgetKey = widgetPrefix + WidgetSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, WidgetSettings.VALUES_DEF[i]));
+            }
 
+            editor.apply();
+        }
+    }
+
+    protected void initColors()
+    {
+        Context context = getActivity();
+        int appWidgetId = getAppWidgetId();
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
+        {
+            final ColorValuesCollectionPreference colorsPref = (ColorValuesCollectionPreference) findPreference("widget_0_colors");
+            if (colorsPref != null) {
+                colorsPref.setAppWidgetID(appWidgetId);
+                colorsPref.setCollection(context, new ClockColorValuesCollection<ColorValues>(context));
+                colorsPref.initPreferenceOnClickListener(this, REQUEST_PICKCOLORS);
+            }
+        }
+    }
+
+    protected void onPrepareReconfigure(int appWidgetId)
+    {
+        Context context = getActivity();
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
+        {
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = prefs.edit();
+
+            NaturalHourClockBitmap helper = getBitmapHelper(context);
+            for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_i to widget_0
+                String prefKey = widgetPrefix + key;
+                String widgetKey = widgetPrefix0 + key;
+                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, helper.getDefaultFlag(context, key)));
+            }
+            for (String key : NaturalHourClockBitmap.VALUES) {                    // copy values from widget_i to widget_0
+                String prefKey = widgetPrefix + key;
+                String widgetKey = widgetPrefix0 + key;
+                editor.putInt(widgetKey, prefs.getInt(prefKey, helper.getDefaultValue(context, key)));
+            }
+            for (int i = 0; i<AppSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix + AppSettings.VALUES[i];
+                String widgetKey = widgetPrefix0 + AppSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+            }
             editor.apply();
         }
     }
@@ -166,11 +221,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             int appWidgetId = getAppWidgetId();
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
             {
-                String widgetPrefix0 = widgetKeyPrefix(0);
+                String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
                 if (prefKey.startsWith(widgetPrefix0))
                 {
                     String key = prefKey.replace(widgetPrefix0, "");
-                    String widgetKey = widgetKeyPrefix(appWidgetId) + key;
+                    String widgetKey = WidgetSettings.widgetKeyPrefix(appWidgetId) + key;
 
                     Context context = getActivity();
                     SharedPreferences.Editor editor = prefs.edit();
@@ -196,6 +251,14 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                     {
                         if (AppSettings.VALUES[i].equals(key)) {
                             editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+                            editor.apply();
+                            return;
+                        }
+                    }
+                    for (int i = 0; i<WidgetSettings.VALUES.length; i++)
+                    {
+                        if (WidgetSettings.VALUES[i].equals(key)) {
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, WidgetSettings.VALUES_DEF[i]));
                             editor.apply();
                             return;
                         }

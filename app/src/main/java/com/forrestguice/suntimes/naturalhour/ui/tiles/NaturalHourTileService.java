@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2024 Forrest Guice
+    Copyright (C) 2024-2025 Forrest Guice
     This file is part of NaturalHour.
 
      NaturalHour is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import android.text.SpannableStringBuilder;
 
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 import java.util.TimeZone;
 
@@ -59,7 +60,8 @@ public class NaturalHourTileService extends SuntimesTileService
     {
         NaturalHourTileBase b = ((NaturalHourTileBase) base);
         TimeZone timezone = b.getTimeZone(context);
-        String timeString = DisplayStrings.formatTime(context, b.now(context).getTimeInMillis(), timezone, b.is24(context)).toString();
+        int timeFormat = b.getTimeFormat(context);
+        String timeString = DisplayStrings.formatTime(context, b.now(context).getTimeInMillis(), timezone, timeFormat).toString();
         String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
         String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
 

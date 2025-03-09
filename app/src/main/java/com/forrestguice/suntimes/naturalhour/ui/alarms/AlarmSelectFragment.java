@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -17,15 +17,28 @@
     along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.naturalhour.ui.widget;
+package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
-import androidx.annotation.Nullable;
+import android.view.View;
 
-public class NaturalHourWidget_5x3 extends NaturalHourWidget
+public interface AlarmSelectFragment
 {
-    @Override
-    @Nullable
-    protected Class getConfigClass() {
-        return NaturalHourWidget_5x3_ConfigActivity.class;
+    String getSelectedEventID();
+    void setSelectedEventID(String eventID);
+
+    View getView();
+    void initViews(View content);
+    void updateViews();
+
+    void setIntArg(String key, int value);
+    void setBoolArg(String key, boolean value);
+
+    int getIntArg(String key, int defValue);
+    boolean getBoolArg(String key, boolean defValue);
+
+    void setFragmentListener(FragmentListener l);
+    interface FragmentListener
+    {
+        void onItemSelected(int[] values);
     }
 }

@@ -41,7 +41,7 @@ public class AppSettings
     public static final String THEME_SYSTEM = "system";
 
     public static final String KEY_MODE_TIMEFORMAT = "timeformatmode";
-    public static final int TIMEMODE_SYSTEM = 0, TIMEMODE_SUNTIMES = 1, TIMEMODE_12HR = 2, TIMEMODE_24HR = 3;
+    public static final int TIMEMODE_SYSTEM = 0, TIMEMODE_SUNTIMES = 1, TIMEMODE_12HR = 2, TIMEMODE_24HR = 3, TIMEMODE_6HR = 4;
     public static final int TIMEMODE_DEFAULT = TIMEMODE_24HR;
 
     public static final String KEY_MODE_TIMEZONE = "timezonemode";
@@ -148,19 +148,20 @@ public class AppSettings
 
     /**
      * @param mode TIMEMODE_12HR, TIMEMODE_24HR, TIMEMODE_SUNTIMES, TIMEMODE_SYSTEM
-     * @return true 24hr format, false 12hr format
+     * @return NaturalHourClockBitmap.TIMEFORMAT values; e.g. 6, 12, 24
      */
-    public static boolean fromTimeFormatMode(@NonNull Context context, int mode, @Nullable SuntimesInfo suntimesInfo)
+    public static int fromTimeFormatMode(@NonNull Context context, int mode, @Nullable SuntimesInfo suntimesInfo)
     {
         if (suntimesInfo == null) {
-            return android.text.format.DateFormat.is24HourFormat(context);
+            return (android.text.format.DateFormat.is24HourFormat(context) ? NaturalHourClockBitmap.TIMEFORMAT_24 : NaturalHourClockBitmap.TIMEFORMAT_12);
         }
         switch (mode)
         {
-            case TIMEMODE_12HR: return false;
-            case TIMEMODE_24HR: return true;
-            case TIMEMODE_SUNTIMES: return suntimesInfo.getOptions(context).time_is24;
-            case TIMEMODE_SYSTEM: default: return android.text.format.DateFormat.is24HourFormat(context);
+            case TIMEMODE_6HR: return NaturalHourClockBitmap.TIMEFORMAT_6;
+            case TIMEMODE_12HR: return NaturalHourClockBitmap.TIMEFORMAT_12;
+            case TIMEMODE_24HR: return NaturalHourClockBitmap.TIMEFORMAT_24;
+            case TIMEMODE_SUNTIMES: return suntimesInfo.getOptions(context).time_is24 ? NaturalHourClockBitmap.TIMEFORMAT_24 : NaturalHourClockBitmap.TIMEFORMAT_12;
+            case TIMEMODE_SYSTEM: default: return android.text.format.DateFormat.is24HourFormat(context) ? NaturalHourClockBitmap.TIMEFORMAT_24 : NaturalHourClockBitmap.TIMEFORMAT_12;
         }
     }
 
@@ -175,7 +176,7 @@ public class AppSettings
             case TZMODE_JULIAN: return NaturalHourFragment.getJulianHoursTZ(context, suntimesInfo.location[2]);
             case TZMODE_UTC: return NaturalHourFragment.getUtcTZ();
             case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
-            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparantSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
+            case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparentSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(context, suntimesInfo);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
         }
