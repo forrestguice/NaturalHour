@@ -9,3 +9,4 @@
 - adds clock option; show "solar midnight".
 - adds widget option; "On Tap"; "reconfigure widget" or "launch app".
 - adds default colors; "Sun (dark)".
+- updates targetSdkVersion (28 -> 30), and migrates app to AndroidX.
