@@ -18,6 +18,12 @@
             app:showAsAction="never" />
 
         <item
+            android:id="@+id/action_timeformat_6hr"
+            android:orderInCategory="250"
+            android:title="@string/action_timeformat_6hr"
+            app:showAsAction="never" />
+
+        <item
             android:id="@+id/action_timeformat_12hr"
             android:orderInCategory="300"
             android:title="@string/action_timeformat_12hr"

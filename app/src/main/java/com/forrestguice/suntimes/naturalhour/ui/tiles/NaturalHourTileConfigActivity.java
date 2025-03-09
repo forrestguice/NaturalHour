@@ -27,6 +27,7 @@ public class NaturalHourTileConfigActivity extends WidgetConfigActivity
 {
     public NaturalHourTileConfigActivity() {
         super();
+        this.reconfigure = true;
     }
 
     protected SuntimesTileBase initTileBase() {

@@ -51,6 +51,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
+import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -104,13 +105,13 @@ public class ClockDaydreamService extends DreamService
         int tzMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEZONE, context.getResources().getInteger(R.integer.daydream_tzmode));
         return AppSettings.fromTimeZoneMode(context, tzMode, info);
     }
-    protected boolean is24(Context context)
+    protected int getTimeFormat(Context context)
     {
         int timeMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
         return AppSettings.fromTimeFormatMode(context, timeMode, info);
     }
     protected String widgetPrefix() {
-        return WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
+        return WidgetSettings.widgetKeyPrefix(appWidgetId);
     }
 
     protected NaturalHourData initData(Context context)
@@ -137,11 +138,14 @@ public class ClockDaydreamService extends DreamService
         {
             clockView = findViewById(R.id.clock);
             clockView.setTimeZone(getTimezone(context));
-            clockView.set24HourMode(is24(context));
+            clockView.setTimeFormat(getTimeFormat(context));
             clockView.setShowTime(true);
 
             ClockColorValuesCollection<ClockColorValues> colors = new ClockColorValuesCollection<>(context);
             clockAppearance = colors.getSelectedColors(context, appWidgetId);
+            if (clockAppearance == null) {
+                clockAppearance = colors.getDefaultColors(context);
+            }
             clockView.setColors(clockAppearance);
             mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
 
