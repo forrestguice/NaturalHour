@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -312,10 +313,15 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
             Context context = getActivity();
             if (context != null && !colorCollection.isDefaultColorID(colorsID))
             {
+                int[] attrs = { R.attr.icDelete };
+                TypedArray a = context.obtainStyledAttributes(attrs);
+                int iconResId = a.getResourceId(0, R.drawable.ic_delete);
+                a.recycle();
+
                 String title = context.getString(R.string.colorsdelete_dialog_title);
                 String message = context.getString(R.string.colorsdelete_dialog_message, colorsID);
                 AlertDialog.Builder confirm = new AlertDialog.Builder(context)
-                        .setTitle(title).setMessage(message).setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(title).setMessage(message).setIcon(iconResId)
                         .setPositiveButton(context.getString(R.string.colorsdelete_dialog_ok), onConfirmDelete(context, colorsID))
                         .setNegativeButton(context.getString(R.string.colorsdelete_dialog_cancel), null);
                 confirm.show();
