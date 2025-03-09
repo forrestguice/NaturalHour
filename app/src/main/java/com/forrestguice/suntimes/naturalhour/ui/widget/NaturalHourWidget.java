@@ -454,7 +454,7 @@ public class NaturalHourWidget extends AppWidgetProvider
             Intent configIntent = new Intent(context, getConfigClass());
             configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //configIntent.putExtra(EXTRA_RECONFIGURE, true);
+            configIntent.putExtra(WidgetConfigActivity.EXTRA_RECONFIGURE, true);
             context.startActivity(configIntent);
             return true;
         }

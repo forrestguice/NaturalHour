@@ -51,6 +51,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
+import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -110,7 +111,7 @@ public class ClockDaydreamService extends DreamService
         return AppSettings.fromTimeFormatMode(context, timeMode, info);
     }
     protected String widgetPrefix() {
-        return WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
+        return WidgetSettings.widgetKeyPrefix(appWidgetId);
     }
 
     protected NaturalHourData initData(Context context)
