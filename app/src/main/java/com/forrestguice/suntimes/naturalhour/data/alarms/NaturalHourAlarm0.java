@@ -21,8 +21,6 @@ package com.forrestguice.suntimes.naturalhour.data.alarms;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
@@ -39,6 +37,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_NOW;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_OFFSET;
