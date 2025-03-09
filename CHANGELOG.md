@@ -11,7 +11,9 @@
 * adds clock option; night watches of five or more parts (#26).
 * adds clock option; show "solar midnight" (#24).
 * adds widget option; "On Tap"; "reconfigure widget" or "launch app".
+* enhances color editor (adds support for roles).
 * adds default colors; "Sun (dark)" (#9).
+* updates SuntimesAddon dependency (v0.4.0 -> v0.4.1); replaces jitpack.io with git submodule.
 
 ### v0.2.3 (2024-11-20)
 * fixes bug where "twilight periods are drawn incorrectly" (#30).
