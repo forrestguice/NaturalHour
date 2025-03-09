@@ -135,7 +135,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
-            actionBar.setSubtitle(reconfigure ? "ID: " + appWidgetId : null);
+            actionBar.setSubtitle((reconfigure && appWidgetId > 0) ? "Reconfigure (" + appWidgetId + ")" : null);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -162,6 +162,11 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     @Override
     protected boolean onPrepareOptionsPanel(View view, Menu menu)
     {
+        MenuItem doneAction = menu.findItem(R.id.action_done);
+        if (doneAction != null) {
+            doneAction.setVisible(!reconfigure);
+        }
+
         Messages.forceActionBarIcons(menu);
         return super.onPrepareOptionsPanel(view, menu);
     }
@@ -203,6 +208,9 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected boolean onCanceled()
     {
+        if (reconfigure) {
+            updateWidgets(this);
+        }
         setResult(RESULT_CANCELED, resultValue);
         finish();
         return true;
