@@ -1,5 +1,18 @@
 ~
 
+### v0.3.0 (2025-03-14)
+* adds quick settings tile that displays the current hour.
+* adds daydream (screen saver) that shows a "wandering clock" (#25).
+* adds fullscreen mode, ability to display over the lock screen, and home screen wallpaper option.
+* adds clock option; show "seconds hand" and inner dial.
+* adds clock option; "6hr time format" (Italian six-hour clock).
+* adds clock option; equinoctial hours; "Babylonian", "Italic", "Italian Civil", or "Julian" (#29).
+* adds clock option; temporal hours begin at "sunrise (24)", "civil dawn (24)", "noon (240", or "civil dusk (24)" (#29).
+* adds clock option; night watches of five or more parts (#26).
+* adds clock option; show "solar midnight" (#24).
+* adds widget option; "On Tap"; "reconfigure widget" or "launch app".
+* adds default colors; "Sun (dark)" (#9).
+
 ### v0.2.3 (2024-11-20)
 * fixes bug where "twilight periods are drawn incorrectly" (#30).
 * fixes bug where "alarms times are incorrect when using hours begin at sunset (24)" (#28).
