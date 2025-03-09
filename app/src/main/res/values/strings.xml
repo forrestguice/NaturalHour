@@ -206,6 +206,8 @@
     <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->
     <string name="format_announcement_timezone">(%s)</string>             <!-- [US/Arizona]-->
 
+    <string name="format_time6">h:mm</string>                     <!-- 12 hr time with am/pm omitted -->
+    <string name="format_time6_withseconds">h:mm:ss</string>
     <string name="format_date0">MMMM d</string>                   <!-- February 27 -->
     <string name="format_date0_long">MMMM d, yyyy</string>        <!-- February 27, 2020 -->
     <string name="format_date">MMMM d\nEEEE</string>              <!-- Thursday, February 27 -->
