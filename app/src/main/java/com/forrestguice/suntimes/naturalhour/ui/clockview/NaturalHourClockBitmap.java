@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2024 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -661,7 +661,7 @@ public class NaturalHourClockBitmap
 
     protected void drawTicksStart(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
-        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_START));
         paintTickTiny.setStyle(Paint.Style.FILL);
 
         float r0 = radiusInner1(cX);
@@ -670,12 +670,12 @@ public class NaturalHourClockBitmap
         double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         drawRayPointSquare(canvas, cX, cY, a, r0, rTick, paintTickTiny);
 
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         paintTickTiny.setStyle(Paint.Style.STROKE);
     }
 
     protected void drawTicksSeconds(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
-        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         paintTickTiny.setStyle(Paint.Style.FILL);
 
         float r0 = radiusInner1(cX);
@@ -690,11 +690,14 @@ public class NaturalHourClockBitmap
         {
             a += ((2 * Math.PI) / 60f);
             if ((i % 5) == 0 && (i % 2 == 0)) {
+                paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_SECONDS_MAJOR));
                 drawRayPointCircle(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
             } else if (i % 2 == 0) {
+                paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_SECONDS_MINOR));
                 drawRayPointCircle(canvas, cX, cY, a, r0, rTinyTick, paintTickTiny);
             }
         }
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         paintTickTiny.setStyle(Paint.Style.STROKE);
     }
 

@@ -361,6 +361,9 @@
     <string name="clockface_hand">Hour Hand</string>
     <string name="clockface_hand1">Seconds Hand</string>
     <string name="clockface_center">Center</string>
+    <string name="clockface_start">Start</string>
+    <string name="clockface_seconds_major">Seconds (major)</string>
+    <string name="clockface_seconds_minor">Seconds (minor)</string>
     <string name="clockface_label">Label1</string>
     <string name="clockface_label1">Label2</string>
     <string name="clockface_ring_day">Day Hours</string>
