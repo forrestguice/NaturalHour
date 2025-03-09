@@ -192,7 +192,7 @@ public class NaturalHourClockView extends View
         @Override
         public void run() {
             if (BuildConfig.DEBUG) {
-                Log.d("DEBUG", "updateRunnable: tick");
+                //Log.d("DEBUG", "updateRunnable: tick");
             }
             invalidate();
             postDelayed(updateRunnable, UPDATE_INTERVAL);
