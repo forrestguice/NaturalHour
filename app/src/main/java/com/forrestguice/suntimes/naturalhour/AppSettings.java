@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2023 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -19,13 +19,20 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 
@@ -49,6 +56,9 @@ public class AppSettings
 
     public static final String KEY_USE_WALLPAPER = "useWallpaper";
     public static final boolean DEF_USE_WALLPAPER = false;
+
+    public static final String PREF_KEY_DIALOG = "dialog";
+    public static final String PREF_KEY_DIALOG_DONOTSHOWAGAIN = "donotshowagain";
 
     public static final String[] VALUES = new String[] { AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.KEY_MODE_TIMEZONE };
     public static final int[] VALUES_DEF = new int[] { AppSettings.TIMEMODE_DEFAULT, AppSettings.TZMODE_DEFAULT };
@@ -141,6 +151,81 @@ public class AppSettings
     public static boolean getUseWallpaper(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(KEY_USE_WALLPAPER, DEF_USE_WALLPAPER);
+    }
+
+    /**
+     * @return true; dialog should not be shown (user has checked 'do not show again')
+     */
+    public static boolean checkDialogDoNotShowAgain( Context context, String dialogKey ) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(PREF_KEY_DIALOG + "_" + dialogKey + "_" + PREF_KEY_DIALOG_DONOTSHOWAGAIN, false);
+    }
+    public static void setDialogDoNotShowAgain(Context context, String dialogKey, boolean value)
+    {
+        SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        pref.putBoolean(PREF_KEY_DIALOG + "_" + dialogKey + "_" + PREF_KEY_DIALOG_DONOTSHOWAGAIN, value);
+        pref.apply();
+    }
+    public static AlertDialog.Builder buildAlertDialog(final String key, @NonNull LayoutInflater inflater,
+                                                       int iconResId, @Nullable CharSequence title, @NonNull CharSequence message, @Nullable final DialogInterface.OnClickListener onOkClicked)
+    {
+        final Context context = inflater.getContext();
+        @SuppressLint("InflateParams")
+        View dialogView = inflater.inflate(R.layout.layout_dialog_alert, null);
+        final CheckBox check_notagain = (CheckBox) dialogView.findViewById(R.id.check_donotshowagain);
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        if (title != null) {
+            dialog.setTitle(title);
+        }
+        dialog.setMessage(message)
+                .setView(dialogView)
+                .setIcon(iconResId)
+                .setCancelable(false)
+                .setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (check_notagain != null) {
+                            AppSettings.setDialogDoNotShowAgain(context, key, check_notagain.isChecked());
+                        }
+                        if (onOkClicked != null) {
+                            onOkClicked.onClick(dialog, which);
+                        }
+                    }
+                });
+        return dialog;
+    }
+
+    public static final String DIALOG_GPL_NOTICE = "gpl_notice";
+    public static void showLicenseNotice(Context context, LayoutInflater layoutInflater) {
+        AppSettings.buildAlertDialog(DIALOG_GPL_NOTICE, layoutInflater,
+                R.drawable.ic_about_ref, context.getString(android.R.string.dialog_alert_title),
+                DisplayStrings.fromHtml(context.getString(R.string.gpl_notice)), null).show();
+    }
+
+    public static void sanityCheck(Context context)
+    {
+        StringBuilder s = new StringBuilder("com")                // Thinking about removing or changing these lines?
+                .append(".").append("forrest").append("guice")    // They were placed here intentionally to deter GPLv3 license violations.
+                .append(".").append("sun").append("times")        // Please ensure compliance with the license before distributing modified versions of this software. Thank you.
+                .append(".").append("natural").append("hour");
+
+        if (!BuildConfig.DEBUG) {
+            if (!BuildConfig.APPLICATION_ID.equals(s.toString())
+                    && !AppSettings.checkDialogDoNotShowAgain(context, DIALOG_GPL_NOTICE))
+            {
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                showLicenseNotice(context, layoutInflater);
+            }
+        } else {
+            setDialogDoNotShowAgain(context, DIALOG_GPL_NOTICE, true);
+        }
+    }
+    public static void sanityCheck0(Context context) {
+        if (BuildConfig.DEBUG) {
+            setDialogDoNotShowAgain(context, DIALOG_GPL_NOTICE, true);
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2023 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -65,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         getFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment(), NaturalHourPreferenceFragment.TAG).commit();
+        AppSettings.sanityCheck(this);
     }
 
     @Override
