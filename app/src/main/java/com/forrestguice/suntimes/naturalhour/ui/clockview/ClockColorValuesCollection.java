@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -129,6 +129,19 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
             case ClockColorValuesSun.COLOR_ID_SUN: return context.getString(R.string.defaultColors_name_az);
             default: return colorsID;
         }
+    }
+
+    public static ColorValuesCollection<ColorValues> initClockColors(Context context)
+    {
+        ColorValuesCollection<ColorValues> colorCollection = new ClockColorValuesCollection<ClockColorValues>(context);
+        colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, true));
+        colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, false));
+
+        String[] defaults = context.getResources().getStringArray(R.array.clockface_collection);
+        for (String json : defaults) {
+            colorCollection.setColors(context, new ClockColorValues(json));
+        }
+        return colorCollection;
     }
 
 }
