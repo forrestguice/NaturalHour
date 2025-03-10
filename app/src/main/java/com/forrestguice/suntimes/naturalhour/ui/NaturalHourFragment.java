@@ -362,6 +362,7 @@ public class NaturalHourFragment extends Fragment
         return (startAtTop ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
     }
 
+    @SuppressLint("WrongConstant")
     public void announceTime()
     {
         Context context = getActivity();
@@ -467,6 +468,7 @@ public class NaturalHourFragment extends Fragment
             text_debug = (TextView) itemView.findViewById(R.id.text_time_debug);
         }
 
+        @SuppressLint("SetTextI18n")
         public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, NaturalHourAdapterOptions options)
         {
             if (data != null)
