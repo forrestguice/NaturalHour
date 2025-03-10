@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="is_nightmode">true</bool>
+    <bool name="not_nightmode">false</bool>
+
     <!-- system colors -->
     <color name="colorPrimary">@color/colorPrimary_dark</color>
     <color name="colorPrimaryDark">@color/colorPrimaryDark_dark</color>

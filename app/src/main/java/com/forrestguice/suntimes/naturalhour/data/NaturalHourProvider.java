@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2024 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -230,7 +230,7 @@ public class NaturalHourProvider extends ContentProvider
         MatrixCursor cursor = new MatrixCursor(columns);
         if (context != null)
         {
-            ColorValuesCollection<ColorValues> colorCollection = NaturalHourFragment.initClockColors(context);
+            ColorValuesCollection<ColorValues> colorCollection = ClockColorValuesCollection.initClockColors(context);
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
             for (int i=0; i<widgetClass.length; i++)
             {

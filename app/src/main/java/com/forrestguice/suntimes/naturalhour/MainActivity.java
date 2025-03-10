@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2024 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main);
+        AppSettings.sanityCheck0(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.setBottomSheetCallback(bottomSheetCallback);
 
         sheetDialog = new ColorValuesSheetFragment();
+        sheetDialog.setAppWidgetID(getResources().getBoolean(R.bool.is_nightmode) ? -1 : 0);
         //sheetDialog.setPreviewKeys(ClockColorValues.COLOR_FACE_NIGHT, ClockColorValues.COLOR_FRAME, ClockColorValues.COLOR_FACE_AM, ClockColorValues.COLOR_FACE_PM);
 
         ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = ViewModelProviders.of(MainActivity.this).get(ColorValuesEditFragment.ColorValuesEditViewModel.class);
