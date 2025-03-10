@@ -439,6 +439,15 @@
 
     <string name="min_suntimes_alarms_version" translatable="false">Suntimes v0.14.0</string>   <!-- should match version_code -->
     <integer name="min_suntimes_alarms_version_code" translatable="false">80</integer>                         <!-- TODO: set code -->
+    <string name="gpl_notice"><![CDATA[
+        <b>This software is licensed GPLv3.</b>
+        <br/><br/>
+        You should have received a copy of the GNU General Public License. If not, see <u>http://www.gnu.org/licenses/</u>.
+        <br/><br/>
+        You should have also received a copy of the source code, or a written offer to provide it.
+        <br/><br/>
+        If you suspect a violation of the license, please help by reporting it to <u>https://github.com/forrestguice/NaturalHour/issues</u>.
+    ]]></string>
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
@@ -485,6 +494,7 @@
     <string name="daydreamconfig_title">Natural Hour Daydream</string>
     <string name="widgetconfig_title">Natural Hour Widget</string>   <!-- widget configuration activity title text -->
     <string name="widgetconfig_subtitle">Reconfigure (%s)</string>
+    <string name="dialog_msg_donotshowagain">Do not show this message again</string>  <!-- checkbox text -->
 
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
