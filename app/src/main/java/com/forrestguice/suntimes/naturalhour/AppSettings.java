@@ -32,7 +32,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.forrestguice.suntimes.addon.BuildConfig;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
