@@ -203,7 +203,7 @@
 
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
-    <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->
+    <string name="format_announcement_naturalhour">%1$s (%2$s)</string>     <!-- hour phrase; I first hour of the day -->
     <string name="format_announcement_timezone">(%s)</string>             <!-- [US/Arizona]-->
 
     <string name="format_time6">h:mm</string>                     <!-- 12 hr time with am/pm omitted -->
