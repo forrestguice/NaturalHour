@@ -495,6 +495,7 @@
     <string name="widgetconfig_title">Natural Hour Widget</string>   <!-- widget configuration activity title text -->
     <string name="widgetconfig_subtitle">Reconfigure (%s)</string>
     <string name="dialog_msg_donotshowagain">Do not show this message again</string>  <!-- checkbox text -->
+    <string name="restart_required_message">A restart may be needed for changes to take full effect.</string>   <!-- toast; app restart may be required -->
 
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
