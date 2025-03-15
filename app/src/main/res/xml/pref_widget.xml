@@ -46,7 +46,7 @@
             android:title="@string/pref_title_tzmode"
             android:entries="@array/pref_tzmode_display"
             android:entryValues="@array/pref_tzmode_values"
-            android:defaultValue="3"
+            android:defaultValue="2"
             android:summary="%s" />
 
     </PreferenceCategory>
