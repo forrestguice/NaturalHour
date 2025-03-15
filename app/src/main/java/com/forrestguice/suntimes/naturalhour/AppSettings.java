@@ -52,7 +52,7 @@ public class AppSettings
     public static final int TZMODE_SYSTEM = 0, TZMODE_SUNTIMES = 1,
                             TZMODE_LOCALMEAN = 2, TZMODE_APPARENTSOLAR = 3, TZMODE_UTC = 4,
                             TZMODE_ITALIAN = 5, TZMODE_ITALIAN_CIVIL = 6, TZMODE_BABYLONIAN = 7, TZMODE_JULIAN = 8;
-    public static final int TZMODE_DEFAULT = TZMODE_APPARENTSOLAR;
+    public static final int TZMODE_DEFAULT = TZMODE_LOCALMEAN;
 
     public static final String KEY_USE_WALLPAPER = "useWallpaper";
     public static final boolean DEF_USE_WALLPAPER = false;

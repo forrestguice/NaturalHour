@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
+import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 
@@ -85,8 +86,9 @@ public class ColorValuesEditViewHolder extends RecyclerView.ViewHolder
 
             if (backgroundColor != null && textColor != null)
             {
-                float cornerRadiusPx = context.getResources().getDimension(R.dimen.chip_radius);
-                colorLabel = DisplayStrings.createRoundedBackgroundColorSpan(colorLabel, " " + labelText + " ", labelText, textColor, bold, backgroundColor, cornerRadiusPx, cornerRadiusPx);
+                //float cornerRadiusPx = context.getResources().getDimension(R.dimen.chip_radius);
+                //colorLabel = DisplayStrings.createRoundedBackgroundColorSpan(colorLabel, " " + labelText + " ", labelText, textColor, bold, backgroundColor, cornerRadiusPx, cornerRadiusPx); // TODO: fix.. looks nice, but it fails to render if the text becomes ellipsized
+                colorLabel = DisplayStrings.createColorSpan(colorLabel, " " + labelText + " ", labelText, textColor);
 
             } else if (textColor != null) {
                 colorLabel = (bold ? DisplayStrings.createBoldColorSpan(colorLabel, labelText, labelText, textColor)
