@@ -9,7 +9,7 @@ android {
         targetSdkVersion 28
         versionCode 5
         versionName "0.2.3"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
         missingDimensionStrategy 'version', 'androidx'

@@ -12,7 +12,11 @@ import androidx.test.filters.LargeTest;
 
 import java.io.IOException;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.forrestguice.suntimes.naturalhour.TestRobot.setAnimationsEnabled;
+import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper.assertShown;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -35,8 +39,29 @@ public class MainActivityTest
      */
     @Test
     public void test_mainActivity() {
-        MainActivityRobot robot = new MainActivityRobot();
-                robot.assertActionBar_homeButtonShown(true);
+        MainActivity activity = activityRule.getActivity();
+        MainActivityRobot robot = new MainActivityRobot()
+                .assertActionBar_homeButtonShown(true);
+    }
+
+    @Test
+    public void test_mainActivity_help() {
+        MainActivity activity = activityRule.getActivity();
+        new MainActivityRobot()
+                .showOverflowMenu(activity)
+                .assertOverflowMenuShown()
+                .clickOverflowMenu_help()
+                .assertHelpShown();
+    }
+
+    @Test
+    public void test_mainActivity_about() {
+        MainActivity activity = activityRule.getActivity();
+        new MainActivityRobot()
+                .showOverflowMenu(activity)
+                .assertOverflowMenuShown()
+                .clickOverflowMenu_about()
+                .assertAboutShown();
     }
 
     /**
@@ -46,6 +71,26 @@ public class MainActivityTest
     {
         public MainActivityRobot() {
             setRobot(this);
+        }
+
+        public MainActivityRobot assertOverflowMenuShown()
+        {
+            onView(withText(R.string.action_help)).check(assertShown);
+            onView(withText(R.string.action_about)).check(assertShown);
+            return this;
+        }
+
+        public MainActivityRobot assertHelpShown() {
+            onView(withId(R.id.help_content)).check(assertShown);
+            return this;
+        }
+
+        public MainActivityRobot assertAboutShown()
+        {
+            onView(withText(R.string.app_name)).check(assertShown);
+            onView(withText(R.string.app_desc)).check(assertShown);
+            onView(withId(R.id.txt_about_version)).check(assertShown);
+            return this;
         }
     }
 }
