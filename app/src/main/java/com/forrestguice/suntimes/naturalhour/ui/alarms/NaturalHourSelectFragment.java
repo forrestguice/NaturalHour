@@ -80,20 +80,20 @@ public class NaturalHourSelectFragment extends AlarmSelectFragmentBase implement
         hourPicker = (NumberPicker)content.findViewById(R.id.pick_hour);
         if (hourPicker != null)
         {
+            hourPicker.setDisplayedValues(getResources().getStringArray(mode24 ? R.array.hour_24 : R.array.hour_12));
             hourPicker.setMinValue(0);
             hourPicker.setMaxValue(mode24 ? (24-1) : (12-1));
             hourPicker.setWrapSelectorWheel(false);
-            hourPicker.setDisplayedValues(getResources().getStringArray(mode24 ? R.array.hour_24 : R.array.hour_12));
             hourPicker.setOnValueChangedListener(onHourSelected);
         }
 
         daynightPicker = (NumberPicker)content.findViewById(R.id.pick_daynight);
         if (daynightPicker != null)
         {
+            daynightPicker.setDisplayedValues(getResources().getStringArray(R.array.phrase_of_day));
             daynightPicker.setMinValue(0);
             daynightPicker.setMaxValue(mode24 ? 0 : 1);
             daynightPicker.setWrapSelectorWheel(false);
-            daynightPicker.setDisplayedValues(getResources().getStringArray(R.array.phrase_of_day));
             daynightPicker.setOnValueChangedListener(onDayNightSelected);
         }
 
@@ -101,9 +101,9 @@ public class NaturalHourSelectFragment extends AlarmSelectFragmentBase implement
         if (momentPicker != null)
         {
             String[] displayValues = momentDisplayValues(getContext());
+            momentPicker.setDisplayedValues(displayValues);
             momentPicker.setMinValue(0);
             momentPicker.setMaxValue(displayValues.length-1);
-            momentPicker.setDisplayedValues(displayValues);
             momentPicker.setWrapSelectorWheel(false);
             momentPicker.setOnValueChangedListener(onMomentSelected);
         }
