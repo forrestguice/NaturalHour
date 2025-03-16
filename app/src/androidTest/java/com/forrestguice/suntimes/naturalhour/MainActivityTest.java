@@ -39,9 +39,18 @@ public class MainActivityTest
      */
     @Test
     public void test_mainActivity() {
-        MainActivity activity = activityRule.getActivity();
-        MainActivityRobot robot = new MainActivityRobot()
+        new MainActivityRobot()
                 .assertActionBar_homeButtonShown(true);
+    }
+
+    @Test
+    public void test_mainActivity_setAlarm() {
+        MainActivity activity = activityRule.getActivity();
+        new MainActivityRobot()
+                .showOverflowMenu(activity)
+                .assertOverflowMenuShown()
+                .clickOverflowMenu_setAlarm()
+                .assertSetAlarmShown();
     }
 
     @Test
@@ -73,10 +82,21 @@ public class MainActivityTest
             setRobot(this);
         }
 
+        public MainActivityRobot clickOverflowMenu_setAlarm() {
+            onView(withText(R.string.action_alarms)).check(assertShown);
+            return this;
+        }
+
         public MainActivityRobot assertOverflowMenuShown()
         {
+            onView(withText(R.string.action_alarms)).check(assertShown);
             onView(withText(R.string.action_help)).check(assertShown);
             onView(withText(R.string.action_about)).check(assertShown);
+            return this;
+        }
+
+        public MainActivityRobot assertSetAlarmShown() {
+            onView(withId(R.id.alarmdialog_title)).check(assertShown);
             return this;
         }
 
