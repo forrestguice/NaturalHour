@@ -24,6 +24,10 @@
     <string name="action_timezone_localmean">@string/solartime_localmean</string>
     <string name="action_timezone_apparentsolar">@string/solartime_apparent</string>
     <string name="action_timezone_utc">@string/solartime_utc</string>
+    <string name="action_timezone_italian">Italic</string>
+    <string name="action_timezone_italian_civil">Italian Civil</string>
+    <string name="action_timezone_babylonian">Babylonian</string>
+    <string name="action_timezone_julian">Julian</string>
     <string name="solartime_localmean">Local Mean Time</string>
     <string name="solartime_apparent">Apparent Solar Time</string>
     <string name="solartime_utc">UTC</string>
@@ -31,69 +35,95 @@
     <string name="action_timeformat_system_format">(%s)</string>
     <string name="action_timeformat_system">System %s</string>
     <string name="action_timeformat_suntimes">Suntimes %s</string>
+    <string name="action_timeformat_6hr">@string/timeformat_6hr</string>
     <string name="action_timeformat_12hr">@string/timeformat_12hr</string>
     <string name="action_timeformat_24hr">@string/timeformat_24hr</string>
+    <string name="timeformat_6hr">6-hour</string>
     <string name="timeformat_12hr">12-hour</string>
     <string name="timeformat_24hr">24-hour</string>
 
     <string name="action_select">Select</string>
     <string name="action_alarms">Set Alarm</string>
     <string name="action_colors">Colors</string>
+    <string name="action_fullscreen">Fullscreen</string>
+    <string name="action_fullscreen_off">Disable Fullscreen</string>
     <string name="action_settings">Options</string>
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
 
     <string name="pref_category_general">General</string>
+    <string name="pref_category_widget">Widget</string>
     <string name="pref_category_clockface">Clock face</string>
     <string name="pref_category_orientation">Clock Orientation</string>
     <string name="pref_category_nightwatch">Night Watch</string>
-
+    <string name="pref_category_theme">Theme</string>
+    <string name="pref_category_animation">Animations</string>
+    
     <string name="pref_title_midnight_top">Midnight at top</string>
     <string name="pref_title_center_noon">Center on solar noon</string>
+    <string name="pref_title_show_noon">Show solar noon</string>
     <string name="pref_title_show_date">Show date</string>
     <string name="pref_title_show_timezone">Show time zone</string>
     <string name="pref_title_show_location">Show location</string>
     <string name="pref_title_show_night">Show night period</string>
+    <string name="pref_title_show_midnight">Show solar midnight</string>
     <string name="pref_title_show_twilights">Show twilight periods</string>
     <string name="pref_title_show_ampm">Show am/pm periods</string>
     <string name="pref_title_show_nightwatch">Show night watches</string>
     <string name="pref_title_show_ticks5m">Show ticks (5 minutes)</string>
     <string name="pref_title_show_ticks15m">Show ticks (15 minutes)</string>
     <string name="pref_title_show_plate">Show background plate</string>
+    <string name="pref_title_show_seconds">Show seconds hand</string>
+
+    <string name="pref_title_useWallpaper">Show home screen wallpaper</string>
 
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">
         <item>at sunrise &amp; sunset&#160;(12)</item>
         <item>at civil&#160;dawn &amp; civil&#160;dusk&#160;(12)</item>
+        <item>at sunrise&#160;(24)</item>
+        <item>at civil&#160;dawn(24)</item>
+        <item>at noon&#160;(24)</item>
         <item>at sunset&#160;(24)</item>
+        <item>at civil&#160;dusk&#160;(24)</item>
     </string-array>
     <string-array name="pref_hourdef_values" translatable="false">  <!-- one-to-one with pref_hourdef_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
+        <item>3</item>
+        <item>6</item>
+        <item>4</item>
         <item>2</item>
+        <item>5</item>
     </string-array>
 
     <string name="pref_title_timeformat">Time Format</string>
     <string-array name="pref_timeformat_display">
-        <item>@string/action_timeformat_system</item>
-        <item>@string/action_timeformat_suntimes</item>
-        <item>@string/timeformat_12hr</item>
-        <item>@string/timeformat_24hr</item>
+        <item>@string/action_timeformat_system</item>     <!-- 0 -->
+        <item>@string/action_timeformat_suntimes</item>   <!-- 1 -->
+        <item>@string/timeformat_6hr</item>               <!-- 4 -->
+        <item>@string/timeformat_12hr</item>              <!-- 2 -->
+        <item>@string/timeformat_24hr</item>              <!-- 3 -->
     </string-array>
     <string-array name="pref_timeformat_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>1</item>
+        <item>4</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
     <string name="pref_title_tzmode">Time Zone</string>
     <string-array name="pref_tzmode_display">
-        <item>@string/action_timezone_system</item>
-        <item>@string/action_timezone_suntimes</item>
-        <item>@string/action_timezone_localmean</item>
-        <item>@string/action_timezone_apparentsolar</item>
-        <item>@string/action_timezone_utc</item>
+        <item>@string/action_timezone_system</item>           <!-- 0 -->
+        <item>@string/action_timezone_suntimes</item>         <!-- 1 -->
+        <item>@string/action_timezone_localmean</item>        <!-- 2 -->
+        <item>@string/action_timezone_apparentsolar</item>    <!-- 3 -->
+        <item>@string/action_timezone_utc</item>              <!-- 4 -->
+        <item>@string/action_timezone_babylonian</item>       <!-- 7 -->
+        <item>@string/action_timezone_italian</item>          <!-- 5 -->
+        <item>@string/action_timezone_italian_civil</item>    <!-- 6 -->
+        <item>@string/action_timezone_julian</item>           <!-- 8 -->
     </string-array>
     <string-array name="pref_tzmode_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
         <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
@@ -101,16 +131,36 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>7</item>
+        <item>5</item>
+        <item>6</item>
+        <item>8</item>
     </string-array>
 
     <string name="pref_title_nightwatch_type">Night Watch</string>
     <string-array name="pref_nightwatch_display">
+        <item>2 watches</item>
         <item>3 watches</item>
         <item>4 watches</item>
+        <item>5 watches</item>
+        <item>6 watches</item>
+        <item>7 watches</item>
+        <item>8 watches</item>
+        <item>9 watches</item>
+        <item>10 watches</item>
+        <item>11 watches</item>
     </string-array>
     <string-array name="pref_nightwatch_values" translatable="false">  <!-- one-to-one with pref_nightwatch_display -->
-        <item>1</item>
-        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
     </string-array>
 
     <string name="pref_title_numerals">Numerals</string>
@@ -137,11 +187,27 @@
         <item>1</item>
     </string-array>
 
+    <string name="pref_title_action">On Tap</string>
+    <string-array name="pref_action_display">
+        <item>Do Nothing</item>
+        <item>Update Widget</item>
+        <item>Reconfigure Widget</item>
+        <item>Launch App</item>
+    </string-array>
+    <string-array name="pref_action_values" translatable="false">  <!-- one-to-one with pref_action_display -->
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->
-    <string name="format_announcement_naturalhour">%1$s %2$s</string>     <!-- hour phrase; I first hour of the day -->
+    <string name="format_announcement_naturalhour">%1$s (%2$s)</string>     <!-- hour phrase; I first hour of the day -->
     <string name="format_announcement_timezone">(%s)</string>             <!-- [US/Arizona]-->
 
+    <string name="format_time6">h:mm</string>                     <!-- 12 hr time with am/pm omitted -->
+    <string name="format_time6_withseconds">h:mm:ss</string>
     <string name="format_date0">MMMM d</string>                   <!-- February 27 -->
     <string name="format_date0_long">MMMM d, yyyy</string>        <!-- February 27, 2020 -->
     <string name="format_date">MMMM d\nEEEE</string>              <!-- Thursday, February 27 -->
@@ -170,6 +236,13 @@
         <item>second watch</item>
         <item>third watch</item>
         <item>fourth watch</item>
+        <item>fifth watch</item>
+        <item>sixth watch</item>
+        <item>seventh watch</item>
+        <item>eighth watch</item>
+        <item>ninth watch</item>
+        <item>tenth watch</item>
+        <item>eleventh watch</item>
     </string-array>
     <string-array name="nightwatch_phrase1">
         <item>0</item>
@@ -177,6 +250,7 @@
         <item>Middle watch</item>
         <item>Morning watch</item>
     </string-array>
+    <string name="nightwatch_phrase2">Night watch %1$s of %2$s</string>
 
     <string-array name="week_symbols">
         <item>☉</item>  <!-- sunday -->
@@ -301,8 +375,12 @@
     <string name="clockface_face_astro">Astronomical Twilight</string>
     <string name="clockface_face_nautical">Nautical Twilight</string>
     <string name="clockface_face_civil">Civil Twilight</string>
-    <string name="clockface_hand">Hand</string>
+    <string name="clockface_hand">Hour Hand</string>
+    <string name="clockface_hand1">Seconds Hand</string>
     <string name="clockface_center">Center</string>
+    <string name="clockface_start">Start</string>
+    <string name="clockface_seconds_major">Seconds (major)</string>
+    <string name="clockface_seconds_minor">Seconds (minor)</string>
     <string name="clockface_label">Label1</string>
     <string name="clockface_label1">Label2</string>
     <string name="clockface_ring_day">Day Hours</string>
@@ -313,43 +391,111 @@
     <string name="clockface_ring_day_stroke">Day Hours (stroke)</string>
     <string name="clockface_ring_day_label">Day Hours (label)</string>
     <string name="clockface_ring_night_label">Night Hours (label)</string>
+    <string name="clockface_background">Background</string>
+    <string name="clockface_backgroundAlt">Background (alternate)</string>
+
+    <string name="defaultColors_name">Default</string>
+    <string name="defaultColors_name_dark">Dark</string>
+    <string name="defaultColors_name_light">Light</string>
+    <string name="defaultColors_name_az">Sun (Dark)</string>
 
     <string name="suggest_colorid">Custom</string>       <!-- edittext hint -->
     <string name="hint_colorid">ID</string>              <!-- edittext hint -->
+    <string name="hint_colorlabel">Label</string>        <!-- edittext hint -->   <!-- TODO -->
     <string name="error_colorid_empty">ID required</string>                  <!-- edittext error text -->
     <string name="error_colorid_spaces">ID may not contains spaces</string>   <!-- edittext error text -->
+    <string name="error_colorlabel_empty">Label required</string>           <!-- edittext error text -->    <!-- TODO -->
     <string name="msg_colors_saved">Saved %s</string>        <!-- toast -->
     <string name="msg_colors_deleted">Removed %s</string>    <!-- toast -->
     <string name="msg_colors_imported">Imported colors %s</string>    <!-- toast -->
+    <string name="msg_colors_import_failed">Failed to import colors!</string>    <!-- toast -->
+
+    <string name="configAction_colors">Colors</string>
+    <string name="configAction_filterColors">Filter</string>    <!-- checkbox label -->
+    <string name="configAction_addColors">Add</string>
+    <string name="configAction_editColors">Edit</string>
+    <string name="configAction_saveColors">Save</string>
+    <string name="configAction_deleteColors">Delete</string>
+    <string name="configAction_importColors">Import</string>
+    <string name="configAction_exportColors">Export</string>
+    <string name="configAction_chooseColor">Choose color</string>
+    <string name="configAction_overflow">More</string>
+
+    <string name="colorsimport_dialog_title">@string/configAction_importColors</string>
+    <string name="colorsimport_dialog_hint">Paste previously shared colors here.</string>
+    <string name="colorsimport_dialog_ok">@string/configAction_importColors</string>
+    <string name="colorsimport_dialog_cancel">@string/dialog_cancel</string>
+
+    <string name="colorsdelete_dialog_title">Remove Colors?</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_message">Are you sure you want to remove %s?</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_ok">Remove</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_cancel">@string/dialog_cancel</string>    <!-- toast -->
+
+    <string name="configLabel_ID">ID</string>
+    <string name="dialog_cancel">@android:string/cancel</string>
 
     <string name="alarm_title_format">%s</string>
     <string name="alarm_summary_format">@string/app_name</string>
 
     <string name="min_suntimes_alarms_version" translatable="false">Suntimes v0.14.0</string>   <!-- should match version_code -->
     <integer name="min_suntimes_alarms_version_code" translatable="false">80</integer>                         <!-- TODO: set code -->
+    <string name="gpl_notice"><![CDATA[
+        <b>This software is licensed GPLv3.</b>
+        <br/><br/>
+        You should have received a copy of the GNU General Public License. If not, see <u>http://www.gnu.org/licenses/</u>.
+        <br/><br/>
+        You should have also received a copy of the source code, or a written offer to provide it.
+        <br/><br/>
+        If you suspect a violation of the license, please help by reporting it to <u>https://github.com/forrestguice/NaturalHour/issues</u>.
+    ]]></string>
 
     <string-array name="help_topics">      <!-- in order of appearance -->
         <item>@string/help_configuration</item>
         <item>@string/help_general</item>
+        <item>@string/help_general1</item>
     </string-array>
-    <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location and other options are configured from Suntimes.]]></string>
-    <string name="help_general"><![CDATA[<h4>Natural Hour</h4>
-    Daytime, the period between sunrise and sunset, is divided evenly into 12 natural hours.
+    <string name="help_configuration"><![CDATA[<h4>App Configuration</h4>The location is configured from Suntimes.]]></string>
+    <string name="help_general"><![CDATA[<h4>Roman Hours</h4>
+    The outer dial displays <b>hours of unequal length</b>. These are known as Roman hours, temporal hours, or seasonal hours.
+    <br/><br/>
+    Daytime, the period between sunrise and sunset, is divided evenly into 12 hours.
     The first hour (I) <em>of the day</em> begins with sunrise, while the twelfth hour (XII) ends at sunset.
     <br/><br/>
     Similarly, nighttime is also divided into 12 hours.
     The first hour (I) <em>of the night</em> begins with sunset, and the twelfth hour (XII) ends at sunrise.
     <br/><br/>
-    These daytime and nighttime hours are not the same, with length depending on latitude and varying with the seasons. For example, in the winter the daytime hours are shorter (and nighttime hours longer), and vice versa in the summer.
+    These daytime and nighttime hours are not the same, with length depending on latitude and varying with the seasons. For example, in the winter the daytime hours are shorter and nighttime hours longer, and vice versa in the summer.
+    ]]></string>
+
+    <string name="help_general1"><![CDATA[
+        <h4>Equinoctial Hours</h4>
+        The inner dial displays <b>hours of equal length</b>. Options include system time, solar time, and time zones configured from Suntimes.
+        <br/><br/>
+        Others options:
+        <br/>
+        <b>Babylonian:</b> hours counted from sunrise.
+        <br/>
+        <b>Italic:</b> hours counted from sunset.
+        <br/>
+        <b>Italian Civil:</b> hours counted from civil dusk.
+        <br/>
+        <b>Julian:</b> hours counted from solar noon.
     ]]></string>
 
     <string name="app_name">Natural Hour</string>
     <string name="app_desc">A 24-hour clock &amp; roman timekeeping add-on for Suntimes.</string>
     <string name="app_version"><![CDATA[<b>Version:</b>]]> %s</string>
     <string name="app_provider_version"><![CDATA[<b>Suntimes:</b>]]> %s</string>
+    <string name="tile_name">@string/app_name</string>
+    <string name="tileconfig_title">Natural Hour Tile</string>   <!-- tile configuration activity title text -->
     <string name="widget_name">@string/app_name</string>
     <string name="widget_summary">Clock Widget (%s)</string>    <!-- e.g. Clock Widget (3x2) -->
+    <string name="daydream_name">@string/app_name</string>
+    <string name="daydreamconfig_title">Natural Hour Daydream</string>
     <string name="widgetconfig_title">Natural Hour Widget</string>   <!-- widget configuration activity title text -->
+    <string name="widgetconfig_subtitle">Reconfigure (%s)</string>
+    <string name="dialog_msg_donotshowagain">Do not show this message again</string>  <!-- checkbox text -->
+    <string name="restart_required_message">A restart may be needed for changes to take full effect.</string>   <!-- toast; app restart may be required -->
 
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
@@ -363,7 +509,7 @@
 
     <string name="app_legal1"><![CDATA[
         <b>Source Code:</b><br />
-        Copyright &#169 2020-2024 Forrest Guice <br />
+        Copyright &#169 2020-2025 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
 

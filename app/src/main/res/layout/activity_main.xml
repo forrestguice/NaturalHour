@@ -6,21 +6,25 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="?attr/toolbarTheme"
-            app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
-            app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
-            app:title="@string/app_name"
-            app:popupTheme="?attr/actionBarPopupTheme" />
+            android:id="@+id/toolbar" style="@style/AppToolbarStyle"
+            app:title="@string/app_name" />
 
         <include layout="@layout/content_main" />
 
         <include layout="@layout/content_bottombar" />
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_togglefullscreen"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
+        app:fabSize="mini"  android:scaleType="center"
+        android:src="?attr/icFullscreenOff"
+        android:tint="?attr/fab_foregroundColor"
+        app:backgroundTint="?attr/fab_backgroundColor"
+        app:rippleColor="?attr/fab_rippleColor"
+        android:contentDescription="@string/action_fullscreen_off" />
 
     <android.support.v7.widget.LinearLayoutCompat android:id="@+id/app_bottomsheet"
         android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"

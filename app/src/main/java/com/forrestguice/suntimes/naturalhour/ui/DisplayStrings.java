@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -20,6 +20,10 @@
 package com.forrestguice.suntimes.naturalhour.ui;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +33,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.ReplacementSpan;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
@@ -119,14 +124,14 @@ public class DisplayStrings
     public static CharSequence formatNightWatchLabel0(@NonNull Context context, int num)
     {
         String[] phrase = context.getResources().getStringArray(R.array.nightwatch_phrase0);
-        if (num >= 1 && num <= 4) {
+        if (num >= 1 && num <= phrase.length) {
             return phrase[num];
         } else return "";
     }
     public static CharSequence formatNightWatchLabel1(@NonNull Context context, int num)
     {
         String[] phrase = context.getResources().getStringArray(R.array.nightwatch_phrase1);
-        if (num >= 1 && num <= 3) {
+        if (num >= 1 && num <= phrase.length) {
             return phrase[num];
         } else return "";
     }
@@ -172,14 +177,19 @@ public class DisplayStrings
         }
     }
 
-    public static String timeFormatLabel(@NonNull Context context, boolean is24) {
-        return context.getString(is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr);
+    public static String timeFormatLabel(@NonNull Context context, int timeFormat)
+    {
+        switch (timeFormat) {
+            case 6: return context.getString(R.string.timeformat_6hr);
+            case 12: return context.getString(R.string.timeformat_12hr);
+            case 24: default: return context.getString(R.string.timeformat_24hr);
+        }
     }
-    public static String timeFormatTag(@NonNull Context context, boolean is24) {
-        return context.getString(R.string.action_timeformat_system_format, timeFormatLabel(context, is24));
+    public static String timeFormatTag(@NonNull Context context, int timeFormat) {
+        return context.getString(R.string.action_timeformat_system_format, timeFormatLabel(context, timeFormat));
     }
-    public static CharSequence formatTimeFormatLabel(Context context, String labelFormat, boolean is24) {
-        String tag = DisplayStrings.timeFormatTag(context, is24);
+    public static CharSequence formatTimeFormatLabel(Context context, String labelFormat, int timeFormat) {
+        String tag = DisplayStrings.timeFormatTag(context, timeFormat);
         String label = String.format(labelFormat, tag);
         return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
     }
@@ -193,14 +203,31 @@ public class DisplayStrings
         return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
     }
 
-    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, boolean is24Hr)
+    public static String getTimeFormatPattern(Context context, int timeFormat, boolean showSeconds) {
+        switch (timeFormat) {
+            case 6: return context.getString(showSeconds ? R.string.format_time6_withseconds : R.string.format_time6);
+            case 12: return context.getString(showSeconds ? R.string.format_time12_withseconds : R.string.format_time12);
+            case 24: default: return context.getString(showSeconds ? R.string.format_time24_withseconds : R.string.format_time24);
+        }
+    }
+
+    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, int timeFormat) {
+        return formatTime(context, dateTime, timezone, timeFormat, false);
+    }
+    public static CharSequence formatTime(@NonNull Context context, long dateTime, TimeZone timezone, int timeFormat, boolean showSeconds)
     {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(timezone);
         calendar.setTimeInMillis(dateTime);
-        String format = (is24Hr ? context.getString(R.string.format_time24) : context.getString(R.string.format_time12));
-        SimpleDateFormat timeFormat = new SimpleDateFormat(format, Locale.getDefault());
-        timeFormat.setTimeZone(timezone);
-        return timeFormat.format(calendar.getTime());
+        String format = getTimeFormatPattern(context, timeFormat, showSeconds);
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.getDefault());
+        formatter.setTimeZone(timezone);
+
+        if (timeFormat == 6) {    // special case "6 hour time" omits am/pm; formatted as 12hr mod 6
+            while (calendar.get(Calendar.HOUR_OF_DAY) > 6) {
+                calendar.add(Calendar.HOUR_OF_DAY, -6);
+            }
+        }
+        return formatter.format(calendar.getTime());
     }
 
     public static SpannableString formatLocation(@NonNull Context context, @NonNull SuntimesInfo info)
@@ -297,11 +324,68 @@ public class DisplayStrings
         return span;
     }
 
+    public static SpannableString createBoldColorSpan(SpannableString span, String text, String toBold, int color) {
+        return createColorSpan(createBoldSpan(span, text, toBold), text, toBold, color);
+    }
+
+    public static SpannableString createBoldSpan(SpannableString span, String text, String toBold)
+    {
+        if (span == null) {
+            span = new SpannableString(text);
+        }
+        int start = text.indexOf(toBold);
+        if (start >= 0)
+        {
+            int end = start + toBold.length();
+            span.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return span;
+    }
+
+    public static SpannableString createRoundedBackgroundColorSpan(SpannableString span, String text, String toColorize,
+                                                                   final int textColor, final boolean boldText,
+                                                                   final int backgroundColor, final float cornerRadiusPx, final float paddingPx)
+    {
+        ReplacementSpan replacementSpan = new ReplacementSpan()
+        {
+            @Override
+            public int getSize(@NonNull Paint p, CharSequence t, int start, int end, @Nullable Paint.FontMetricsInt fontMetrics) {
+                return (int) Math.ceil(p.measureText(t, start, end) + (2 * paddingPx));
+            }
+
+            @Override
+            public void draw(@NonNull Canvas c, CharSequence t, int start, int end, float x, int top, int y, int bottom, @NonNull Paint p)
+            {
+                p.setColor(backgroundColor);
+                RectF rect = new RectF(x, top, x + p.measureText(t, start, end) + (2 * paddingPx), bottom);
+                c.drawRoundRect(rect, cornerRadiusPx, cornerRadiusPx, p);
+
+                p.setColor(textColor);
+                p.setTypeface(boldText ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
+                c.drawText(t, start, end, x + paddingPx, y, p);
+            }
+        };
+
+        if (span == null) {
+            span = new SpannableString(text);
+        }
+        int start = text.indexOf(toColorize);
+        if (start >= 0)
+        {
+            int end = start + toColorize.length() + 1;  // 1 beyond last character
+            span.setSpan(replacementSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return span;
+    }
+
     public static Spanned fromHtml(String htmlString )
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             return Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY);
         else return Html.fromHtml(htmlString);
     }
+
+
+
 
 }

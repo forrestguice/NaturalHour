@@ -45,16 +45,6 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
     }
 
     @Override
-    protected Intent pickColorIntent(String key, int requestCode) {
-        return AddonHelper.intentForColorActivity(colorValues.getColor(key), true, colorValues.getColors());
-    }
-
-    @Override
-    protected void onPickColorResult(String key, Intent data) {
-        setColor(key, AddonHelper.resultForColorActivity(data, colorValues.getColor(key)));
-    }
-
-    @Override
     protected void onPrepareOverflowMenu(Context context, Menu menu)
     {
         super.onPrepareOverflowMenu(context, menu);
@@ -97,6 +87,7 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
     {
         if (themeValues != null)
         {
+            setColor(ClockColorValues.COLOR_BACKGROUND, themeValues.getAsInteger(SuntimesThemeContract.THEME_BACKGROUND_COLOR));
             setColor(ClockColorValues.COLOR_PLATE, themeValues.getAsInteger(SuntimesThemeContract.THEME_BACKGROUND_COLOR));
             setColor(ClockColorValues.COLOR_HAND, themeValues.getAsInteger(SuntimesThemeContract.THEME_ACCENTCOLOR));
             setColor(ClockColorValues.COLOR_CENTER, themeValues.getAsInteger(SuntimesThemeContract.THEME_ACCENTCOLOR));

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.naturalhour.ui.widget;
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,15 +37,19 @@ import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.SettingsActivity;
 import com.forrestguice.suntimes.naturalhour.ui.IntListPreference;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class WidgetPreferenceFragment extends PreferenceFragment
 {
-    public static final String KEY_PREFIX = "widget";
-    public static String widgetKeyPrefix(int appWidgetId) {
-        return KEY_PREFIX + "_" + appWidgetId + "_";
-    }
+    public static final int REQUEST_PICKCOLORS = 100;
 
     /**
      * @return appWidgetId (apply as widget settings), or 0 if unset (apply as global settings)
@@ -52,9 +57,29 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     public int getAppWidgetId() {
         return getArguments().getInt("appWidgetId");
     }
-    public void setAppWidgetId(int appWidgetId) {
+    public void setAppWidgetId(int appWidgetId, boolean reconfigure)
+    {
         getArguments().putInt("appWidgetId", appWidgetId);
-        initWidgetDefaults();
+        getArguments().putBoolean("reconfigure", reconfigure);
+
+        if (reconfigure)
+        {
+            if (isAdded()) {
+                getPreferenceScreen().removeAll();
+                onPrepareReconfigure(appWidgetId);
+                addPreferencesFromResource(getPreferenceResources());
+                initColors();
+            }
+        } else {
+            initWidgetDefaults();
+        }
+    }
+    public boolean isReconfiguring() {
+        return getArguments().getBoolean("reconfigure");
+    }
+
+    public int getPreferenceResources() {
+        return R.xml.pref_widget;
     }
 
     public WidgetPreferenceFragment()
@@ -66,37 +91,92 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_widget);
+        addPreferencesFromResource(getPreferenceResources());
         initWidgetDefaults();
         setHasOptionsMenu(false);
     }
 
     protected void initWidgetDefaults()
     {
+        initColors();
+
         Context context = getActivity();
         int appWidgetId = getAppWidgetId();
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
         {
-            String widgetPrefix0 = widgetKeyPrefix(0);
-            String widgetPrefix = widgetKeyPrefix(appWidgetId);
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
+
+            NaturalHourClockBitmap helper = getBitmapHelper(context);
+
             for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_0 to widget_i
                 String prefKey = widgetPrefix0 + key;
                 String widgetKey = widgetPrefix + key;
-                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, NaturalHourClockBitmap.getDefaultFlag(context, key)));
+                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, helper.getDefaultFlag(context, key)));
             }
             for (String key : NaturalHourClockBitmap.VALUES) {                    // copy values from widget_0 to widget_i
                 String prefKey = widgetPrefix0 + key;
                 String widgetKey = widgetPrefix + key;
-                editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
+                editor.putInt(widgetKey, prefs.getInt(prefKey, helper.getDefaultValue(context, key)));
             }
             for (int i = 0; i<AppSettings.VALUES.length; i++) {
                 String prefKey = widgetPrefix0 + AppSettings.VALUES[i];
                 String widgetKey = widgetPrefix + AppSettings.VALUES[i];
                 editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
             }
+            for (int i = 0; i<WidgetSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix0 + WidgetSettings.VALUES[i];
+                String widgetKey = widgetPrefix + WidgetSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, WidgetSettings.VALUES_DEF[i]));
+            }
 
+            editor.apply();
+        }
+    }
+
+    protected void initColors()
+    {
+        Context context = getActivity();
+        int appWidgetId = getAppWidgetId();
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
+        {
+            final ColorValuesCollectionPreference colorsPref = (ColorValuesCollectionPreference) findPreference("widget_0_colors");
+            if (colorsPref != null) {
+                colorsPref.setAppWidgetID(appWidgetId);
+                colorsPref.setCollection(context, new ClockColorValuesCollection<ColorValues>(context));
+                colorsPref.initPreferenceOnClickListener(this, REQUEST_PICKCOLORS);
+            }
+        }
+    }
+
+    protected void onPrepareReconfigure(int appWidgetId)
+    {
+        Context context = getActivity();
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
+        {
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = prefs.edit();
+
+            NaturalHourClockBitmap helper = getBitmapHelper(context);
+            for (String key : NaturalHourClockBitmap.FLAGS) {                     // copy flags from widget_i to widget_0
+                String prefKey = widgetPrefix + key;
+                String widgetKey = widgetPrefix0 + key;
+                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, helper.getDefaultFlag(context, key)));
+            }
+            for (String key : NaturalHourClockBitmap.VALUES) {                    // copy values from widget_i to widget_0
+                String prefKey = widgetPrefix + key;
+                String widgetKey = widgetPrefix0 + key;
+                editor.putInt(widgetKey, prefs.getInt(prefKey, helper.getDefaultValue(context, key)));
+            }
+            for (int i = 0; i<AppSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix + AppSettings.VALUES[i];
+                String widgetKey = widgetPrefix0 + AppSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, AppSettings.VALUES_DEF[i]));
+            }
             editor.apply();
         }
     }
@@ -121,6 +201,18 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         super.onPause();
     }
 
+    protected NaturalHourClockBitmap getBitmapHelper(Context context)
+    {
+        if (bitmapHelper == null) {
+            bitmapHelper = createBitmapHelper(context);
+        }
+        return bitmapHelper;
+    }
+    protected NaturalHourClockBitmap createBitmapHelper(Context context) {
+        return new NaturalHourClockBitmap(context, 0);
+    }
+    protected NaturalHourClockBitmap bitmapHelper = null;
+
     private SharedPreferences.OnSharedPreferenceChangeListener onWidgetPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
     {
         @Override
@@ -129,19 +221,20 @@ public class WidgetPreferenceFragment extends PreferenceFragment
             int appWidgetId = getAppWidgetId();
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
             {
-                String widgetPrefix0 = widgetKeyPrefix(0);
+                String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
                 if (prefKey.startsWith(widgetPrefix0))
                 {
                     String key = prefKey.replace(widgetPrefix0, "");
-                    String widgetKey = widgetKeyPrefix(appWidgetId) + key;
+                    String widgetKey = WidgetSettings.widgetKeyPrefix(appWidgetId) + key;
 
                     Context context = getActivity();
                     SharedPreferences.Editor editor = prefs.edit();
 
+                    NaturalHourClockBitmap helper = getBitmapHelper(context);
                     for (String boolPref : NaturalHourClockBitmap.FLAGS)
                     {
                         if (boolPref.equals(key)) {
-                            editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, NaturalHourClockBitmap.getDefaultFlag(context, key)));
+                            editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, helper.getDefaultFlag(context, key)));
                             editor.apply();
                             return;
                         }
@@ -149,7 +242,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                     for (String intPref : NaturalHourClockBitmap.VALUES)
                     {
                         if (intPref.equals(key)) {
-                            editor.putInt(widgetKey, prefs.getInt(prefKey, NaturalHourClockBitmap.getDefaultValue(context, key)));
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, helper.getDefaultValue(context, key)));
                             editor.apply();
                             return;
                         }
@@ -162,11 +255,70 @@ public class WidgetPreferenceFragment extends PreferenceFragment
                             return;
                         }
                     }
+                    for (int i = 0; i<WidgetSettings.VALUES.length; i++)
+                    {
+                        if (WidgetSettings.VALUES[i].equals(key)) {
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, WidgetSettings.VALUES_DEF[i]));
+                            editor.apply();
+                            return;
+                        }
+                    }
                 }
 
             } else Log.e("onWidgetPrefChanged", "AppWidgetID is unset! ignoring change to " + prefKey);
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("DEBUG", "onActivityResult: " + requestCode);
+        switch (requestCode)
+        {
+            case REQUEST_PICKCOLORS:
+                onPickColors(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    private String prefKeyForRequestCode(int requestCode)
+    {
+        switch(requestCode) {
+            //case REQUEST_PICKCOLORS_X: return "app_pickcolors_x";
+            default: return null;
+        }
+    }
+
+    private void onPickColors(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            String selection = data.getStringExtra(ColorValuesSheetActivity.EXTRA_SELECTED_COLORS_ID);
+            int appWidgetID = data.getIntExtra(ColorValuesSheetActivity.EXTRA_APPWIDGET_ID, 0);
+            String colorTag = data.getStringExtra(ColorValuesSheetActivity.EXTRA_COLORTAG);
+            ColorValuesCollection<ColorValues> collection = data.getParcelableExtra(ColorValuesSheetActivity.EXTRA_COLLECTION);
+            //Log.d("DEBUG", "onPickColors: " + selection);
+
+            if (collection != null) {
+                collection.setSelectedColorsID(getActivity(), selection, appWidgetID, colorTag);
+                Log.d("DEBUG", "onPickColors: colorTag: " + colorTag);
+            }
+
+            String key = prefKeyForRequestCode(requestCode);
+            if (key != null)
+            {
+                SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+                pref.putString(key, selection);
+                pref.apply();
+
+            } else {
+                final ColorValuesCollectionPreference colorsPref = (ColorValuesCollectionPreference) findPreference("widget_0_colors");
+                if (colorsPref != null) {
+                    colorsPref.setCollection(getActivity(), collection);
+                }
+            }
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

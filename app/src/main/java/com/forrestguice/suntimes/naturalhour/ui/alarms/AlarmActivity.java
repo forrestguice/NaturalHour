@@ -49,6 +49,7 @@ import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
+import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarmType;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.HelpDialog;
@@ -94,15 +95,12 @@ public class AlarmActivity extends AppCompatActivity
         setResult(RESULT_CANCELED);
 
         Intent intent = getIntent();
-        int[] param_naturalHour = null;
+        String param_alarmID = null;
         if (intent.hasExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT))
         {
             String alarmUriString = intent.getStringExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
-            if (alarmUriString != null)
-            {
-                Uri alarmUri = Uri.parse(alarmUriString);
-                String alarmID = alarmUri.getLastPathSegment();
-                param_naturalHour = NaturalHourProvider.alarmIdToNaturalHour(alarmID);
+            if (alarmUriString != null) {
+                param_alarmID = Uri.parse(alarmUriString).getLastPathSegment();
             }
             intent.removeExtra(NaturalHourProviderContract.EXTRA_ALARM_EVENT);
         }
@@ -114,14 +112,12 @@ public class AlarmActivity extends AppCompatActivity
         fragment = (NaturalHourAlarmFragment) fragments.findFragmentById(R.id.naturalhouralarm_fragment);
         if (fragment != null)
         {
-            if (param_naturalHour != null) {
-                fragment.setHourMode(param_naturalHour[0]);
-                fragment.setHour(param_naturalHour[1]);
-                fragment.setMoment(param_naturalHour[2]);
+            if (param_alarmID != null) {
+                fragment.setAlarmID(param_alarmID);
             } else {
                 fragment.setHourMode(AppSettings.getClockIntValue(AlarmActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
             }
-            fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo));
+            fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo) == 24);   // TODO: timeformat
             fragment.setLocation(param_latitude, param_longitude, param_altitude);
             fragment.addFragmentListener(onAlarmSelectionChanged);
             triggerActionMode(fragment.getView(), fragment.getAlarmID());
@@ -177,7 +173,7 @@ public class AlarmActivity extends AppCompatActivity
         }
     }
 
-    private NaturalHourAlarmFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourAlarmFragment.FragmentListener()
+    private final NaturalHourAlarmFragment.FragmentListener onAlarmSelectionChanged = new NaturalHourAlarmFragment.FragmentListener()
     {
         @Override
         public void onAlarmSelected(String alarmID)
@@ -253,7 +249,7 @@ public class AlarmActivity extends AppCompatActivity
             toolbar.setSubtitle(DisplayStrings.formatLocation(this, param_latitude, param_longitude, param_altitude, 4, suntimesInfo.getOptions(this).length_units));
         }
 
-        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo);
+        boolean is24 = AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo) == NaturalHourClockBitmap.TIMEFORMAT_24;   // TODO: timeformat
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
         if (timeformatText != null) {
             timeformatText.setText( is24 ? R.string.timeformat_24hr : R.string.timeformat_12hr );
@@ -266,19 +262,6 @@ public class AlarmActivity extends AppCompatActivity
             timezoneText.setText( timezone.getID() );
         }
     }
-
-    /*@Override
-    public void onSaveInstanceState( Bundle outState ) {
-        super.onSaveInstanceState(outState);
-    }*/
-    /*@Override
-    public void onRestoreInstanceState(@NonNull Bundle savedState) {
-        super.onRestoreInstanceState(savedState);
-    }*/
-    /*@Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }*/
 
     @SuppressWarnings("RestrictedApi")
     @Override
@@ -319,11 +302,12 @@ public class AlarmActivity extends AppCompatActivity
 
     protected void onDone(String alarmID)
     {
+        NaturalHourAlarmType alarmInfo = NaturalHourProvider.getAlarmInfo(alarmID);
         Intent result = new Intent();    // e.g. content://suntimes.naturalhour.provider/alarmInfo/0_6_0    .. hourMode:0, hour:6(noon), moment:0
         result.putExtra(NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER, NaturalHourProviderContract.AUTHORITY);
         result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_NAME, alarmID);
-        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_TITLE, NaturalHourProvider.getAlarmTitle(this, alarmID));
-        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_SUMMARY, NaturalHourProvider.getAlarmSummary(this, alarmID));
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_TITLE, alarmInfo.getAlarmTitle(this, alarmID));
+        result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_SUMMARY, alarmInfo.getAlarmSummary(this, alarmID));
         result.setData(Uri.parse(AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID)));
         setResult(Activity.RESULT_OK, result);
         finish();
@@ -353,7 +337,7 @@ public class AlarmActivity extends AppCompatActivity
         alarmActions.setSelection(alarmID);
         actionMode = startSupportActionMode(alarmActions);
         if (actionMode != null) {
-            actionMode.setTitle(NaturalHourProvider.getAlarmTitle(this, alarmID));
+            actionMode.setTitle(NaturalHourProvider.getAlarmInfo(alarmID).getAlarmTitle(this, alarmID));
         }
     }
 

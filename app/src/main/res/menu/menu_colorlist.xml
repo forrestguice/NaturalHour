@@ -11,17 +11,24 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_colors_export"
-        android:orderInCategory="100"
-        android:icon="?attr/icShare"
-        android:title="@string/action_export"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_colors_import"
         android:orderInCategory="200"
         android:icon="?attr/icAdd"
-        android:title="@string/action_import" android:visible="false"
+        android:title="@string/action_import"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_colors_share"
+        android:orderInCategory="300"
+        android:icon="?attr/icShare"
+        android:title="@string/action_share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_colors_delete"
+        android:orderInCategory="400"
+        android:icon="?attr/icDelete"
+        android:title="@string/configAction_deleteColors"
         app:showAsAction="never" />
 
 </menu>

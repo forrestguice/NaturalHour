@@ -9,16 +9,19 @@
     <bool name="clockface_show_hand_simple">false</bool>
     <bool name="clockface_show_ticks_5m">true</bool>
     <bool name="clockface_show_ticks_15m">true</bool>
+    <bool name="clockface_show_seconds">true</bool>
     <bool name="clockface_show_background_plate">true</bool>
     <bool name="clockface_show_background_day">false</bool>
     <bool name="clockface_show_background_night">true</bool>
     <bool name="clockface_show_background_ampm">true</bool>
     <bool name="clockface_show_background_twilights">true</bool>
+    <bool name="clockface_show_background_midnight">false</bool>
+    <bool name="clockface_show_background_noon">false</bool>
 
     <!-- values -->
     <integer name="clockface_hourmode">0</integer>
     <integer name="clockface_numerals">0</integer>
-    <integer name="clockface_nightwatch_type">0</integer>
+    <integer name="clockface_nightwatch_type">4</integer>
 
     <!-- dimensions -->
     <dimen name="clockface_center_width">0dp</dimen>
@@ -53,11 +56,14 @@
     <color name="clockColorNight_light">#3F51B5</color>
     <color name="clockColorNightLabel_light">@color/grey_200</color>
     <color name="clockColorNightFace_light">#000000</color>
+    <color name="clockColorBackground_light">@android:color/white</color>
+    <color name="clockColorBackgroundAlt_light">@color/grey_400</color>
     <color name="clockColorFace_light">@color/grey_300</color>
     <color name="clockColorPlate_light">@color/grey_300</color>
     <color name="clockColorFrame_light">@color/grey_850</color>
     <color name="clockColorCenter_light">@color/grey_900</color>
-    <color name="clockColorHand_light">@color/colorAccent_dark</color>
+    <color name="clockColorHand_light">@color/deep_teal_200</color>
+    <color name="clockColorHand1_light">@color/deep_teal_500</color>
     <color name="clockColorLabel1_light">@color/grey_800</color>
     <color name="clockColorLabel2_light">@color/grey_600</color>
 
@@ -76,11 +82,14 @@
     <color name="clockColorNight_dark">#000000</color>
     <color name="clockColorNightLabel_dark">#FFFFFF</color>
     <color name="clockColorNightFace_dark">#000000</color>
+    <color name="clockColorBackground_dark">@android:color/black</color>
+    <color name="clockColorBackgroundAlt_dark">@color/grey_800</color>
     <color name="clockColorFace_dark">@color/grey_900</color>
     <color name="clockColorPlate_dark">@color/grey_900</color>
     <color name="clockColorFrame_dark">@color/teal_a200</color>
     <color name="clockColorCenter_dark">@color/deep_teal_200</color>
     <color name="clockColorHand_dark">@color/deep_teal_200</color>
+    <color name="clockColorHand1_dark">@color/deep_teal_500</color>
     <color name="clockColorLabel1_dark">#FFFFFF</color>
     <color name="clockColorLabel2_dark">@color/grey_300</color>
 
@@ -99,11 +108,14 @@
     <color name="clockColorNight">@color/clockColorNight_light</color>
     <color name="clockColorNightLabel">@color/clockColorNightLabel_light</color>
     <color name="clockColorNightFace">@color/clockColorNightFace_light</color>
+    <color name="clockColorBackground">@color/clockColorBackground_light</color>
+    <color name="clockColorBackgroundAlt">@color/clockColorBackgroundAlt_light</color>
     <color name="clockColorFace">@color/clockColorFace_light</color>
     <color name="clockColorPlate">@color/clockColorPlate_light</color>
     <color name="clockColorFrame">@color/clockColorFrame_light</color>
     <color name="clockColorCenter">@color/clockColorCenter_light</color>
     <color name="clockColorHand">@color/clockColorHand_light</color>
+    <color name="clockColorHand1">@color/clockColorHand1_light</color>
     <color name="clockColorLabel1">@color/clockColorLabel1_light</color>
     <color name="clockColorLabel2">@color/clockColorLabel2_light</color>
 

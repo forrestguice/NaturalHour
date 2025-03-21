@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -17,26 +17,30 @@
     along with Natural Hour.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.forrestguice.suntimes.naturalhour.ui.clockview;
+package com.forrestguice.suntimes.naturalhour.ui.daydream;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.view.Menu;
+import android.util.AttributeSet;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView;
 
-import com.forrestguice.suntimes.addon.ui.Messages;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
-
-public class ClockColorValuesSelectFragment extends ColorValuesSelectFragment
+public class DaydreamClockView extends NaturalHourClockView
 {
     @Override
-    protected void onPrepareOverflowMenu(Context context, Menu menu) {
-        Messages.forceActionBarIcons(menu);
+    protected NaturalHourClockBitmap createBitmapHelper() {
+        return new ClockDaydreamBitmap(getContext(), getWidth());
     }
 
-    @Override
-    @Nullable
-    protected ColorValues createColorValues(String jsonString) {
-        return new ClockColorValues(jsonString);
+    public DaydreamClockView(Context context) {
+        super(context);
+    }
+
+    public DaydreamClockView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public DaydreamClockView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 }
