@@ -14,7 +14,7 @@
 * enhances color editor (adds support for roles).
 * adds default colors; "Sun (dark)" (#9).
 * updates build; updates SuntimesAddon dependency (v0.4.0 -> v0.4.1); replaces jitpack.io with git submodule.
-* updates build; targetSdkVersion 28 -> 30; Gradle 5.6.4 -> 6.7.1; Android Gradle Plugin 3.6.1 -> 4.1.3; migrates from legacy support libraries to AndroidX.
+* updates build; targetSdkVersion 28 -> 33; Gradle 5.6.4 -> 6.7.1; Android Gradle Plugin 3.6.1 -> 4.1.3; migrates from legacy support libraries to AndroidX.
 
 ### v0.2.3 (2024-11-20)
 * fixes bug where "twilight periods are drawn incorrectly" (#30).
