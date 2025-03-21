@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -50,6 +50,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollec
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.daydream.ClockDaydreamBitmap;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -210,7 +211,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void deleteWidgetPrefs(Context context, int appWidgetId)
     {
         deleteNextSuggestedUpdate(context, appWidgetId);
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
+        String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
         for (String key : NaturalHourClockBitmap.FLAGS) {
             AppSettings.deleteKey(context, widgetPrefix + key);
         }
@@ -218,6 +219,9 @@ public class NaturalHourWidget extends AppWidgetProvider
             AppSettings.deleteKey(context, widgetPrefix + key);
         }
         for (String key : AppSettings.VALUES) {
+            AppSettings.deleteKey(context, widgetPrefix + key);
+        }
+        for (String key : WidgetSettings.VALUES) {
             AppSettings.deleteKey(context, widgetPrefix + key);
         }
     }
@@ -282,7 +286,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         }
 
         ContentResolver resolver = context.getContentResolver();
-        NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
+        NaturalHourCalculator calculator = NaturalHourClockBitmap.getCalculator(AppSettings.getClockIntValue(context, WidgetSettings.widgetKeyPrefix(appWidgetId) + NaturalHourClockBitmap.VALUE_HOURMODE, NaturalHourClockBitmap.HOURMODE_DEFAULT));
         NaturalHourData data = new NaturalHourData(now.getTimeInMillis(), latitude, longitude, altitude);
         calculator.calculateData(resolver, data);
 
@@ -305,28 +309,34 @@ public class NaturalHourWidget extends AppWidgetProvider
     protected void updateViews(Context context, int appWidgetId, RemoteViews views, NaturalHourData data, SuntimesInfo suntimesInfo)
     {
         Log.d(getClass().getSimpleName(), "updateViews: " + appWidgetId);
-        String widgetPrefix = WidgetPreferenceFragment.widgetKeyPrefix(appWidgetId);
-        int timeMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
-        int tzMode = AppSettings.getClockIntValue(context, widgetPrefix + AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT );
-        boolean is24 = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
+        int timeMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
+        int tzMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, AppSettings.KEY_MODE_TIMEZONE, AppSettings.TZMODE_DEFAULT);
+        int timeFormat = AppSettings.fromTimeFormatMode(context, timeMode, suntimesInfo);
         TimeZone timezone = AppSettings.fromTimeZoneMode(context, tzMode, suntimesInfo);
 
         NaturalHourClockBitmap clockView = new NaturalHourClockBitmap(context, clockSizePx);
         clockView.setTimeZone(timezone);
-        clockView.set24HourMode(is24);
+        clockView.setTimeFormat(timeFormat);
 
+        String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
         for (String key : NaturalHourClockBitmap.FLAGS) {
             String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
-                clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey));
+                clockView.setFlag(key, AppSettings.getClockFlag(context, widgetKey, clockView));
             }
         }
         for (String key : NaturalHourClockBitmap.VALUES) {
             String widgetKey = widgetPrefix + key;
             if (AppSettings.containsKey(context, widgetKey)) {
-                clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey));
+                clockView.setValue(key, AppSettings.getClockIntValue(context, widgetKey, clockView));
             }
         }
+        for (String key : WidgetSettings.VALUES) {
+            if (WidgetSettings.containsKey(context, appWidgetId, key)) {
+                clockView.setValue(key, WidgetSettings.getWidgetIntValue(context, appWidgetId, key));
+            }
+        }
+        clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS, false);    // widgets don't support the "seconds hand"
 
         prepareClockBitmap(context, clockView);
         clockView.setColors(clockAppearance);
@@ -334,7 +344,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         if (Build.VERSION.SDK_INT >= 15)
         {
             Calendar now = Calendar.getInstance(timezone);
-            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), is24));
+            views.setContentDescription(R.id.clockface, NaturalHourFragment.announceTime(context, now, NaturalHourData.findNaturalHour(now, data), timeFormat, false, data));
         }
         //views.setTextViewText(R.id.text_title, "title");
     }
@@ -410,8 +420,9 @@ public class NaturalHourWidget extends AppWidgetProvider
 
     public PendingIntent getClickActionIntent(Context context, int appWidgetId, Class widgetClass)
     {
+        int actionMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, WidgetSettings.KEY_MODE_ACTION, WidgetSettings.ACTIONMODE_DEFAULT);
         Intent actionIntent = new Intent(context, widgetClass);
-        actionIntent.setAction(ACTION_WIDGET_CLICK_LAUNCHAPP);   // TODO: configurable
+        actionIntent.setAction(WidgetSettings.fromActionMode(actionMode));
         actionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         return PendingIntent.getBroadcast(context, appWidgetId, actionIntent, 0);
     }
@@ -443,7 +454,7 @@ public class NaturalHourWidget extends AppWidgetProvider
             Intent configIntent = new Intent(context, getConfigClass());
             configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //configIntent.putExtra(EXTRA_RECONFIGURE, true);
+            configIntent.putExtra(WidgetConfigActivity.EXTRA_RECONFIGURE, true);
             context.startActivity(configIntent);
             return true;
         }
@@ -486,7 +497,7 @@ public class NaturalHourWidget extends AppWidgetProvider
                 } else {
                     alarmManager.setWindow(AlarmManager.RTC, updateTime, 5 * 1000, alarmIntent);
                 }
-                Log.d(getClass().getSimpleName(), "setUpdateAlarm: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), false).toString() + " --> " + getUpdateIntentFilter() + "(" + alarmID + ") :: " + getUpdateInterval());
+                Log.d(getClass().getSimpleName(), "setUpdateAlarm: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), 12).toString() + " --> " + getUpdateIntentFilter() + "(" + alarmID + ") :: " + getUpdateInterval());
             } else Log.d(getClass().getSimpleName(), "setUpdateAlarm: skipping " + alarmID);
         }
     }
@@ -518,7 +529,7 @@ public class NaturalHourWidget extends AppWidgetProvider
     }
     public static void saveNextSuggestedUpdate(Context context, int appWidgetId, long updateTime)
     {
-        Log.d("NaturalHourWidget", "saveNextSuggestedUpdate: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), false));
+        Log.d("NaturalHourWidget", "saveNextSuggestedUpdate: " + DisplayStrings.formatTime(context, updateTime, TimeZone.getDefault(), 12));
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_WIDGET, 0).edit();
         String prefs_prefix = PREF_PREFIX_KEY + appWidgetId;
         prefs.putLong(prefs_prefix + PREF_KEY_NEXTUPDATE, updateTime);

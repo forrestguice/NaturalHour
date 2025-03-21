@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2023 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.Menu;
@@ -37,29 +37,25 @@ import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
-import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
 {
     public static final String DIALOG_ABOUT = "aboutDialog";
 
+    public static final String EXTRA_RECONFIGURE0 = "ONTAP_LAUNCH_CONFIG";
     public static final String EXTRA_RECONFIGURE = "reconfigure";
 
     protected SuntimesInfo suntimesInfo = null;
     protected boolean reconfigure = false;
 
-    protected int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    protected int appWidgetId = getDefaultAppWidgetId();
     private Intent resultValue;
 
-    protected ColorValuesCollection<ClockColorValues> colors;
-    protected ColorValuesSelectFragment colorFragment;
     protected WidgetPreferenceFragment flagFragment;
 
     public abstract Class getWidgetClass();
@@ -71,6 +67,10 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
         super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
                 LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
+    }
+
+    public int getDefaultAppWidgetId() {
+        return AppWidgetManager.INVALID_APPWIDGET_ID;
     }
 
     public int getAppWidgetId() {
@@ -94,7 +94,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         if (extras != null)
         {
             appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            reconfigure = extras.getBoolean(EXTRA_RECONFIGURE, false);
+            reconfigure = extras.getBoolean(EXTRA_RECONFIGURE, extras.getBoolean(EXTRA_RECONFIGURE0, false));
         }
 
         resultValue = new Intent();
@@ -108,7 +108,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             return;
         }
 
-        setContentView(R.layout.activity_widget);
+        setContentView(getActivityLayoutResID());
         initViews(this);
 
         if (!SuntimesInfo.checkVersion(this, suntimesInfo))
@@ -118,6 +118,11 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
+        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
+    }
+
+    protected int getActivityLayoutResID() {
+        return R.layout.activity_widget;
     }
 
     protected void initViews(Context context)
@@ -128,26 +133,15 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
+            actionBar.setSubtitle((reconfigure && appWidgetId > 0) ? context.getString(R.string.widgetconfig_subtitle, appWidgetId + "") : null);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        colors = NaturalHourFragment.initClockColors(this);
-        FragmentManager fragments = getSupportFragmentManager();
-        colorFragment = (ColorValuesSelectFragment) fragments.findFragmentById(R.id.clockColorSelectorFragment);
-        if (colorFragment != null)
-        {
-            colorFragment.setShowMenu(false);
-            colorFragment.setShowBack(false);
-            colorFragment.setAllowEdit(false);
-            colorFragment.setAppWidgetID(appWidgetId);;
-            colorFragment.setColorCollection(colors);
-        }
-
+        
         flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
-            flagFragment.setAppWidgetId(appWidgetId);
+            flagFragment.setAppWidgetId(appWidgetId, reconfigure);
         }
     }
 
@@ -166,6 +160,11 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     @Override
     protected boolean onPrepareOptionsPanel(View view, Menu menu)
     {
+        MenuItem doneAction = menu.findItem(R.id.action_done);
+        if (doneAction != null) {
+            doneAction.setVisible(!reconfigure);
+        }
+
         Messages.forceActionBarIcons(menu);
         return super.onPrepareOptionsPanel(view, menu);
     }
@@ -199,10 +198,6 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected boolean onDone()
     {
-        if (colorFragment != null) {
-            colors.setSelectedColorsID(WidgetConfigActivity.this, colorFragment.getSelectedID(), getAppWidgetId());
-        }
-
         updateWidgets(this);
         setResult(RESULT_OK, resultValue);
         finish();
@@ -211,6 +206,9 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected boolean onCanceled()
     {
+        if (reconfigure) {
+            updateWidgets(this);
+        }
         setResult(RESULT_CANCELED, resultValue);
         finish();
         return true;

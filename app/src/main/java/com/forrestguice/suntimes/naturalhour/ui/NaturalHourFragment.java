@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -26,14 +26,14 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -45,8 +45,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
@@ -54,6 +54,7 @@ import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
@@ -76,21 +77,21 @@ public class NaturalHourFragment extends Fragment
 
     protected SuntimesInfo info;
     protected TimeZone timezone = TimeZone.getDefault();
-    protected boolean is24 = true;
+    protected int timeFormat = AppSettings.TIMEMODE_24HR;
     protected ColorValues clockColors = null;
 
-    public void setSuntimesInfo(SuntimesInfo value, TimeZone tz, boolean is24)
+    public void setSuntimesInfo(SuntimesInfo value, TimeZone tz, int timeFormat)
     {
         this.info = value;
         this.timezone = tz;
-        this.is24 = is24;
-        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, is24, clockColors));
+        this.timeFormat = timeFormat;
+        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors));
     }
     public TimeZone getTimeZone() {
         return timezone;
     }
-    public boolean is24() {
-        return is24;
+    public int getTimeFormat() {
+        return timeFormat;
     }
 
     @Nullable
@@ -111,18 +112,7 @@ public class NaturalHourFragment extends Fragment
         return colorCollection;
     }
 
-    public static ColorValuesCollection<ClockColorValues> initClockColors(Context context)
-    {
-        ColorValuesCollection<ClockColorValues> colorCollection = new ClockColorValuesCollection<ColorValues>(context);
-        colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, true));
-        colorCollection.setColors(context, ClockColorValues.getColorDefaults(context, false));
 
-        String[] defaults = context.getResources().getStringArray(R.array.clockface_collection);
-        for (String json : defaults) {
-            colorCollection.setColors(context, new ClockColorValues(json));
-        }
-        return colorCollection;
-    }
 
     public NaturalHourFragment() {
         setHasOptionsMenu(true);
@@ -145,10 +135,12 @@ public class NaturalHourFragment extends Fragment
                 info = SuntimesInfo.queryInfo(context);
             }
             if (colorCollection == null) {
-                colorCollection = initClockColors(getActivity());
+                colorCollection = ClockColorValuesCollection.initClockColors(getActivity());
             }
             if (clockColors == null) {
-                clockColors = colorCollection.getSelectedColors(getActivity());
+                boolean isNightMode = context.getResources().getBoolean(R.bool.is_nightmode);
+                clockColors = (ClockColorValues) colorCollection.getSelectedColors(context, (isNightMode ? -1 : 0), null);
+                //clockColors = colorCollection.getSelectedColors(getActivity());
             }
         }
 
@@ -223,7 +215,7 @@ public class NaturalHourFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, is24, clockColors));
+            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -285,9 +277,17 @@ public class NaturalHourFragment extends Fragment
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static boolean isMode24(int hourMode) {
+        return (hourMode == NaturalHourClockBitmap.HOURMODE_SUNRISE_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_NOON_24
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILSET_24)
+                || (hourMode == NaturalHourClockBitmap.HOURMODE_CIVILRISE_24));
+    }
+
     public static String naturalHourPhrase(Context context, int hourMode, int hourNum, int momentNum)
     {
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        boolean mode24 = isMode24(hourMode);
         int hour = mode24 ? hourNum : (hourNum >= 12 ? hourNum-12 : hourNum);
 
         Resources r = context.getResources();
@@ -298,21 +298,44 @@ public class NaturalHourFragment extends Fragment
         return context.getString(R.string.format_announcement_naturalhour, hourPhrase, phraseOfDay);
     }
 
-    public static SpannableString announceTime(Context context, Calendar now, int currentHour, boolean timeFormat24)
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, boolean showSeconds, NaturalHourData data)
     {
         int numeralType = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_NUMERALS);
+        return announceTime(context, now, currentHour, timeFormat, numeralType, showSeconds, data);
+    }
+    public static SpannableString announceTime(Context context, Calendar now, int currentHour, int timeFormat, int numeralType, boolean showSeconds, NaturalHourData data)
+    {
         int hourMode = AppSettings.getClockIntValue(context, NaturalHourClockBitmap.VALUE_HOURMODE);
-        boolean mode24 = (hourMode == NaturalHourClockBitmap.HOURMODE_SUNSET);
+        int currentHourOf;
+        switch (hourMode)
+        {
+            case NaturalHourClockBitmap.HOURMODE_CIVILSET_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNSET_24:
+                currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+                break;
 
-        int currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
-        if (mode24) {
-            currentHourOf = (currentHour > 12 ? currentHour - 12 : currentHour + 12);
+            case NaturalHourClockBitmap.HOURMODE_CIVILRISE_24:
+            case NaturalHourClockBitmap.HOURMODE_SUNRISE_24:
+                currentHourOf = currentHour;    // [1,24]
+                break;
+
+            case NaturalHourClockBitmap.HOURMODE_NOON_24:
+                currentHourOf = (((currentHour - 1 - 6) + 24) % 24) + 1;
+                break;
+
+            default:
+                currentHourOf = ((currentHour - 1) % 12) + 1;    // [1,12]
+                break;
         }
 
+        boolean mode24 = isMode24(hourMode);
         String[] phrase = context.getResources().getStringArray((mode24 ? R.array.hour_phrase_24 : R.array.hour_phrase_12));
 
         TimeZone timezone = now.getTimeZone();
-        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis(), timezone, timeFormat24).toString();
+        long timeOffset = EquinoctialHours.getTimeOffset(timezone, data, 0, getStartAngle(context), AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_START_AT_TOP));
+        boolean forceFormat24 = (EquinoctialHours.is24(timezone.getID(), false));
+        String timeString = DisplayStrings.formatTime(context, now.getTimeInMillis() + timeOffset, timezone, (forceFormat24 ? 24 : timeFormat), showSeconds).toString();
+
         String timezoneString = context.getString(R.string.format_announcement_timezone, timezone.getID());
         String clockTimeString = context.getString(R.string.format_announcement_clocktime, timeString, timezoneString);
         String numeralString = NaturalHourClockBitmap.getNumeral(context, numeralType, currentHourOf);
@@ -333,6 +356,13 @@ public class NaturalHourFragment extends Fragment
         return announcement;
     }
 
+    protected static double getStartAngle(Context context)
+    {
+        boolean startAtTop = AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_START_AT_TOP);
+        return (startAtTop ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
+    }
+
+    @SuppressLint("WrongConstant")
     public void announceTime()
     {
         Context context = getActivity();
@@ -343,11 +373,12 @@ public class NaturalHourFragment extends Fragment
             NaturalHourData data = cardAdapter.initData(position);
 
             int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
-            SpannableString announcement = announceTime(context, now, currentHour, is24);
+            boolean showSeconds = AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_SECONDS);
+            SpannableString announcement = announceTime(context, now, currentHour, timeFormat, showSeconds, data);
 
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
-            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);   // android.support.design.R.id.snackbar_text
             if (textView != null)
             {
                 int[] attrs = new int[] { R.attr.text_size_small };
@@ -437,6 +468,7 @@ public class NaturalHourFragment extends Fragment
             text_debug = (TextView) itemView.findViewById(R.id.text_time_debug);
         }
 
+        @SuppressLint("SetTextI18n")
         public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, NaturalHourAdapterOptions options)
         {
             if (data != null)
@@ -447,14 +479,14 @@ public class NaturalHourFragment extends Fragment
                     CharSequence[] dayHours = new String[12];
                     StringBuilder debugDisplay0 = new StringBuilder("Day");
                     for (int i=0; i<dayHours.length; i++) {
-                        dayHours[i] = DisplayStrings.formatTime(context, naturalHours[i], options.timezone, options.is24);
+                        dayHours[i] = DisplayStrings.formatTime(context, naturalHours[i], options.timezone, options.timeFormat);
                         debugDisplay0.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(dayHours[i]);
                     }
 
                     CharSequence[] nightHours = new String[12];
                     StringBuilder debugDisplay1 = new StringBuilder("Night");
                     for (int i=0; i<nightHours.length; i++) {
-                        nightHours[i] = DisplayStrings.formatTime(context, naturalHours[12 + i], options.timezone, options.is24);
+                        nightHours[i] = DisplayStrings.formatTime(context, naturalHours[12 + i], options.timezone, options.timeFormat);
                         debugDisplay1.append("\t").append(DisplayStrings.romanNumeral(context, i + 1)).append(": ").append(nightHours[i]);
                     }
                     text_debug.setText(debugDisplay0 + "\n" + debugDisplay1);
@@ -473,14 +505,14 @@ public class NaturalHourFragment extends Fragment
 
                 clockface.setTimeZone(options.timezone);
                 clockface.setShowTime(true);
-                clockface.set24HourMode(options.is24);
+                clockface.setTimeFormat(options.timeFormat);
                 clockface.setColors(options.colors);
 
                 for (String key : NaturalHourClockBitmap.FLAGS) {
-                    clockface.setFlag(key, AppSettings.getClockFlag(context, key));
+                    clockface.setFlag(key, AppSettings.getClockFlag(context, key, clockface.getBitmapHelper()));
                 }
                 for (String key : NaturalHourClockBitmap.VALUES) {
-                    clockface.setValue(key, AppSettings.getClockIntValue(context, key));
+                    clockface.setValue(key, AppSettings.getClockIntValue(context, key, clockface.getBitmapHelper()));
                 }
 
             } else {
@@ -500,14 +532,14 @@ public class NaturalHourFragment extends Fragment
         public SuntimesInfo suntimes_info;
         public SuntimesInfo.SuntimesOptions suntimes_options;
         public TimeZone timezone;
-        public boolean is24;
+        public int timeFormat;
         public ColorValues colors;
 
-        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, boolean is24, ColorValues colors) {
+        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors) {
             this.suntimes_info = info;
             this.suntimes_options = info.getOptions(context);
             this.timezone = tz;
-            this.is24 = is24;
+            this.timeFormat = timeFormat;
             this.colors = colors;
         }
     }
@@ -544,6 +576,7 @@ public class NaturalHourFragment extends Fragment
             if (context != null)
             {
                 holder.onBindViewHolder(context, position, initData(position), options);
+                holder.clockface.startUpdateTask();
                 attachClickListeners(holder, position);
             }
         }
@@ -552,6 +585,7 @@ public class NaturalHourFragment extends Fragment
         public void onViewRecycled(@NonNull NaturalHourViewHolder holder)
         {
             detachClickListeners(holder);
+            holder.clockface.stopUpdateTask();
             holder.clockface.invalidate();
             int position = holder.getAdapterPosition();
             if (position >= 0) {
@@ -761,7 +795,7 @@ public class NaturalHourFragment extends Fragment
             } else if ("UTC".equals(info.solartimeMode)) {
                 return getUtcTZ();
             } else {
-                return getApparantSolarTZ(context, info.location[2]);
+                return getApparentSolarTZ(context, info.location[2]);
             }
 
         } else {
@@ -773,11 +807,27 @@ public class NaturalHourFragment extends Fragment
         return TimeZone.getTimeZone("UTC");
     }
 
+    public static TimeZone getItalianHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.ITALIAN_HOURS);
+    }
+
+    public static TimeZone getItalianCivilHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.ITALIAN_CIVIL_HOURS);
+    }
+
+    public static TimeZone getBabylonianHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.BABYLONIAN_HOURS);
+    }
+
+    public static TimeZone getJulianHoursTZ(Context context, String longitude) {
+        return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), EquinoctialHours.JULIAN_HOURS);
+    }
+
     public static TimeZone getLocalMeanTZ(Context context, String longitude) {
         return new TimeZoneHelper.LocalMeanTime(Double.parseDouble(longitude), context.getString(R.string.solartime_localmean));
     }
 
-    public static TimeZone getApparantSolarTZ(Context context, String longitude) {
+    public static TimeZone getApparentSolarTZ(Context context, String longitude) {
         return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(longitude), context.getString(R.string.solartime_apparent));
     }
 

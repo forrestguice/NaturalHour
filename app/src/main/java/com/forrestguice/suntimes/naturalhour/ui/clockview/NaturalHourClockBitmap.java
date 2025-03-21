@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -27,13 +27,14 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.addon.TimeZoneHelper;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.data.EquinoctialHours;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator1;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator2;
@@ -54,15 +55,23 @@ public class NaturalHourClockBitmap
     public static final double START_BOTTOM = Math.PI / 2d;
 
     public static final String VALUE_NIGHTWATCH_TYPE = "clockface_nightwatchType";
-    public static final int NIGHTWATCH_4 = 0;
-    public static final int NIGHTWATCH_3 = 1;
+    public static final int NIGHTWATCH_4 = 4;
+    public static final int NIGHTWATCH_3 = 3;
     public static final int NIGHTWATCH_DEFAULT = NIGHTWATCH_4;
 
     public static final String VALUE_HOURMODE = "clockface_hourmode";
     public static final int HOURMODE_SUNRISE = 0;
     public static final int HOURMODE_CIVILRISE = 1;
-    public static final int HOURMODE_SUNSET = 2;
+    public static final int HOURMODE_SUNSET_24 = 2;
+    public static final int HOURMODE_SUNRISE_24 = 3;
+    public static final int HOURMODE_NOON_24 = 4;
+    public static final int HOURMODE_CIVILSET_24 = 5;
+    public static final int HOURMODE_CIVILRISE_24 = 6;
     public static final int HOURMODE_DEFAULT = HOURMODE_SUNRISE;
+
+    public static final int TIMEFORMAT_6 = 6;
+    public static final int TIMEFORMAT_12 = 12;
+    public static final int TIMEFORMAT_24 = 24;
 
     public static final String VALUE_NUMERALS = "clockface_numerals";
     public static final int NUMERALS_ROMAN = 0;
@@ -89,17 +98,21 @@ public class NaturalHourClockBitmap
     public static final String FLAG_SHOW_BACKGROUND_NIGHT = "clockface_showBackgroundNight";
     public static final String FLAG_SHOW_BACKGROUND_AMPM = "clockface_showBackgroundAmPm";
     public static final String FLAG_SHOW_BACKGROUND_TWILIGHTS = "clockface_showBackgroundTwilights";
+    public static final String FLAG_SHOW_BACKGROUND_MIDNIGHT = "clockface_showBackgroundMidnight";
+    public static final String FLAG_SHOW_BACKGROUND_NOON = "clockface_showBackgroundNoon";
     public static final String FLAG_SHOW_TICKS_15M = "clockface_showTick15m";
     public static final String FLAG_SHOW_TICKS_5M = "clockface_showTick5m";
+    public static final String FLAG_SHOW_SECONDS = "clockface_showSeconds";
 
     public static final String[] FLAGS = new String[] { FLAG_START_AT_TOP, FLAG_CENTER_NOON, FLAG_SHOW_NIGHTWATCH, FLAG_SHOW_TIMEZONE, FLAG_SHOW_LOCATION,
             FLAG_SHOW_DATE, FLAG_SHOW_DATEYEAR, FLAG_SHOW_HAND_SIMPLE, FLAG_SHOW_BACKGROUND_PLATE, FLAG_SHOW_BACKGROUND_DAY,
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
+            FLAG_SHOW_BACKGROUND_MIDNIGHT, FLAG_SHOW_BACKGROUND_NOON, FLAG_SHOW_SECONDS
     };
     public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NIGHTWATCH_TYPE };
 
     protected ContentValues flags = new ContentValues();
-    private void initFlags(Context context)
+    protected void initFlags(Context context)
     {
         setValueIfUnset(VALUE_HOURMODE, context.getResources().getInteger(R.integer.clockface_hourmode));
         setValueIfUnset(VALUE_NUMERALS, context.getResources().getInteger(R.integer.clockface_numerals));
@@ -116,8 +129,11 @@ public class NaturalHourClockBitmap
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_DAY, context.getResources().getBoolean(R.bool.clockface_show_background_day));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_AMPM, context.getResources().getBoolean(R.bool.clockface_show_background_ampm));
         setFlagIfUnset(FLAG_SHOW_BACKGROUND_TWILIGHTS, context.getResources().getBoolean(R.bool.clockface_show_background_twilights));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_MIDNIGHT, context.getResources().getBoolean(R.bool.clockface_show_background_midnight));
+        setFlagIfUnset(FLAG_SHOW_BACKGROUND_NOON, context.getResources().getBoolean(R.bool.clockface_show_background_noon));
         setFlagIfUnset(FLAG_SHOW_TICKS_5M, context.getResources().getBoolean(R.bool.clockface_show_ticks_5m));
         setFlagIfUnset(FLAG_SHOW_TICKS_15M, context.getResources().getBoolean(R.bool.clockface_show_ticks_15m));
+        setFlagIfUnset(FLAG_SHOW_SECONDS, context.getResources().getBoolean(R.bool.clockface_show_seconds));
 
         setFlagIfUnset(FLAG_CENTER_NOON, context.getResources().getBoolean(R.bool.clockface_center_noon));
         setFlagIfUnset(FLAG_START_AT_TOP, context.getResources().getBoolean(R.bool.clockface_start_at_top));
@@ -157,7 +173,7 @@ public class NaturalHourClockBitmap
         return flags.getAsInteger(key);
     }
 
-    public static boolean getDefaultFlag(Context context, String flag) {
+    public boolean getDefaultFlag(Context context, String flag) {
         switch (flag) {
             case FLAG_CENTER_NOON: return context.getResources().getBoolean(R.bool.clockface_center_noon);
             case FLAG_START_AT_TOP: return context.getResources().getBoolean(R.bool.clockface_start_at_top);
@@ -171,13 +187,17 @@ public class NaturalHourClockBitmap
             case FLAG_SHOW_BACKGROUND_DAY: return context.getResources().getBoolean(R.bool.clockface_show_background_day);
             case FLAG_SHOW_BACKGROUND_AMPM: return context.getResources().getBoolean(R.bool.clockface_show_background_ampm);
             case FLAG_SHOW_BACKGROUND_TWILIGHTS: return context.getResources().getBoolean(R.bool.clockface_show_background_twilights);
+            case FLAG_SHOW_BACKGROUND_MIDNIGHT: return context.getResources().getBoolean(R.bool.clockface_show_background_midnight);
+            case FLAG_SHOW_BACKGROUND_NOON: return context.getResources().getBoolean(R.bool.clockface_show_background_noon);
             case FLAG_SHOW_TICKS_5M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_5m);
             case FLAG_SHOW_TICKS_15M: return context.getResources().getBoolean(R.bool.clockface_show_ticks_15m);
+            case FLAG_SHOW_SECONDS: return context.getResources().getBoolean(R.bool.clockface_show_seconds);
             case FLAG_SHOW_DATEYEAR:
             default: return false;
         }
     }
-    public static int getDefaultValue(Context context, String key) {
+
+    public int getDefaultValue(Context context, String key) {
         switch (key)
         {
             case VALUE_HOURMODE: return HOURMODE_DEFAULT;
@@ -195,11 +215,12 @@ public class NaturalHourClockBitmap
     protected TimeZone timezone = TimeZone.getDefault();
     public void setTimeZone( TimeZone timezone) {
         this.timezone = timezone;
+        t_secondsNow = null;
     }
 
-    protected boolean is24 = true;
-    public void set24HourMode(boolean value) {
-        is24 = value;
+    protected int timeFormat = TIMEFORMAT_24;
+    public void setTimeFormat(int value) {
+        timeFormat = value;
     }
 
     protected Double startAngle = null;
@@ -251,14 +272,19 @@ public class NaturalHourClockBitmap
 
         drawBackground(context, data, canvas, cX, cY);
         drawTimeArcs(context, data, canvas, cX, cY);
-        drawTicks(data, canvas, cX, cY, is24);
-        drawTickLabels(data, canvas, cX, cY, is24);
+        drawTicks(data, canvas, cX, cY, timeFormat);
+        drawTicksStart(data, canvas, cX, cY, timeFormat);
+        if (getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS)) {
+            drawTicksSeconds(data, canvas, cX, cY, timeFormat);
+        }
+        drawTickLabels(data, canvas, cX, cY, timeFormat);
 
         paintTickLarge.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
 
         if (showTime) {
             drawHourHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
+            //drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner(cX));
         }
     }
 
@@ -286,7 +312,7 @@ public class NaturalHourClockBitmap
     private int textSmall;
     private int textTiny;
 
-    private Paint paint, paintLabel, paintHand,
+    protected Paint paint, paintLabel, paintHand,
             paintTickHuge, paintTickLarge, paintTickMedium, paintTickSmall, paintTickTiny,
             paintArcDayFill, paintArcDayBorder, paintFillDay,
             paintArcNightFill, paintArcNightBorder, paintFillNight,
@@ -413,6 +439,14 @@ public class NaturalHourClockBitmap
         return r - (2.05f * arcWidth);
     }
 
+    private float radiusInner1(float r) {
+        return radiusInner(r) - 2 * arcWidth - 2 * tickLength_tiny;
+        //return radiusInner(r) - 2 * arcWidth;
+    }
+    private float radiusInner2(float r) {
+        return radiusInner(r) - 2*arcWidth;
+    }
+
     private float radiusOuter(float r) {
         return radiusInner(r) + arcWidth;
     }
@@ -487,8 +521,27 @@ public class NaturalHourClockBitmap
                 paint.setTextSize(textSmall);
 
 
-                int j = (hourmode == HOURMODE_SUNSET) ? (i >= 12) ? i - 12 + 1 : i + 12 + 1
-                                                      : ((i % 12) + 1);  //i + 1;
+                int j;
+                switch (hourmode)
+                {
+                    case HOURMODE_CIVILRISE_24:
+                    case HOURMODE_SUNRISE_24:
+                        j = i + 1;
+                        break;
+
+                    case HOURMODE_CIVILSET_24:
+                    case HOURMODE_SUNSET_24:
+                        j = (i >= 12) ? i - 12 + 1 : i + 12 + 1;
+                        break;
+
+                    case HOURMODE_NOON_24:
+                        j = (((i - 6) + 24) % 24) + 1;
+                        break;
+
+                    default:
+                        j = ((i % 12) + 1);  //i + 1;
+                        break;
+                }
 
                 canvas.drawText(getNumeral(context, j), (float)(lx), (float)(ly) + (textSmall * 0.5f), paint);
             }
@@ -499,15 +552,14 @@ public class NaturalHourClockBitmap
             if (flags.getAsBoolean(FLAG_SHOW_NIGHTWATCH))
             {
                 int type = getValue(VALUE_NIGHTWATCH_TYPE);
-                int numWatches = (type == NIGHTWATCH_3 ? 3 : 4);
-                int hoursPerWatch = 12 / numWatches;
+                int numWatches = getNumWatchesForNightWatchType(type);
+                double watchSweepAngle = (nightAngle * 12d) / numWatches;
 
                 int c = 1;
                 Path labelPath = new Path();
-                double watchSweepAngle = nightAngle * hoursPerWatch;
-                for (int i = 12; i<naturalHours.length; i += hoursPerWatch)
+                for (int i = 0; i<numWatches; i++)
                 {
-                    double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[i], tz), data);
+                    double a = sunsetAngle + (i * watchSweepAngle);
                     canvas.drawArc(circle_mid1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightFill);
                     canvas.drawArc(circle_outer1, (float) Math.toDegrees(a), (float) Math.toDegrees(watchSweepAngle), false, paintArcNightBorder);
                     drawRay(canvas, cX, cY, a, r_outer, r_outer1, paintArcNightBorder);
@@ -538,12 +590,24 @@ public class NaturalHourClockBitmap
         }
     }
 
+    protected int getNumWatchesForNightWatchType(int type)
+    {
+        int n;
+        switch (type)
+        {
+            case 0: n = 4; break;    // legacy mapping
+            case 1: n = 3; break;    // legacy mapping
+            default: n = type; break;
+        }
+        return (n <= 1 ? NIGHTWATCH_DEFAULT : (Math.min(type, 11)));
+    }
+
     protected CharSequence formatNightWatchLabel(@NonNull Context context, int type, int num)
     {
         switch (type)
         {
             case NIGHTWATCH_3: return DisplayStrings.formatNightWatchLabel1(context, num);
-            case NIGHTWATCH_4: default: return DisplayStrings.formatNightWatchLabel0(context, num);
+            default: return DisplayStrings.formatNightWatchLabel0(context, num);
         }
     }
 
@@ -558,6 +622,31 @@ public class NaturalHourClockBitmap
         canvas.drawLine((float) x0, (float) y0, (float) x1, (float) y1, paint);
     }
 
+    protected void drawRayPointCircle(Canvas canvas, double cX, double cY, double angle, double radius_inner, double radius_outer, Paint paint)
+    {
+        double cosA = Math.cos(angle);
+        double sinA = Math.sin(angle);
+        double x0 = cX + radius_inner * cosA;
+        double y0 = cY + radius_inner * sinA;
+        double x1 = cX + radius_outer * cosA;
+        double y1 = cY + radius_outer * sinA;
+        canvas.drawCircle((float)(x0 + x1)/2f, (float)(y0 + y1)/2f, (float)(radius_inner - radius_outer), paint);
+    }
+    protected void drawRayPointSquare(Canvas canvas, double cX, double cY, double angle, double radius_inner, double radius_outer, Paint paint)
+    {
+        double cosA = Math.cos(angle);
+        double sinA = Math.sin(angle);
+        double x0 = cX + radius_inner * cosA;
+        double y0 = cY + radius_inner * sinA;
+        double x1 = cX + radius_outer * cosA;
+        double y1 = cY + radius_outer * sinA;
+
+        float x = (float)(x0 + x1)/2f;
+        float y = (float)(y0 + y1)/2f;
+        float l = (float)(radius_inner - radius_outer);
+        canvas.drawRect(x-l, y-l, x+l, y+l, paint);
+    }
+
     protected void drawPie(Canvas canvas, double cX, double cY, double radius, double startRadians, double angleRadians, Paint paint)
     {
         final RectF circle_inner = new RectF((float)(cX - radius), (float)(cY - radius), (float)(cX + radius), (float)(cY + radius));
@@ -570,7 +659,49 @@ public class NaturalHourClockBitmap
         canvas.drawPath(path, paint);
     }
 
-    protected void drawTicks(NaturalHourData data, Canvas canvas, float cX, float cY, boolean is24)
+    protected void drawTicksStart(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
+    {
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_START));
+        paintTickTiny.setStyle(Paint.Style.FILL);
+
+        float r0 = radiusInner1(cX);
+        float rTick = r0 - tickLength_tiny;
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0d, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
+        drawRayPointSquare(canvas, cX, cY, a, r0, rTick, paintTickTiny);
+
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
+        paintTickTiny.setStyle(Paint.Style.STROKE);
+    }
+
+    protected void drawTicksSeconds(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
+    {
+        paintTickTiny.setStyle(Paint.Style.FILL);
+
+        float r0 = radiusInner1(cX);
+        float rTinyTick = r0 - (0.5f * tickLength_tiny);
+        float rSmallTick = r0 - tickLength_tiny;
+
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0d, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
+        //drawRayPointSquare(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
+
+        for (int i=1; i<60; i++)
+        {
+            a += ((2 * Math.PI) / 60f);
+            if ((i % 5) == 0 && (i % 2 == 0)) {
+                paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_SECONDS_MAJOR));
+                drawRayPointCircle(canvas, cX, cY, a, r0, rSmallTick, paintTickTiny);
+            } else if (i % 2 == 0) {
+                paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_SECONDS_MINOR));
+                drawRayPointCircle(canvas, cX, cY, a, r0, rTinyTick, paintTickTiny);
+            }
+        }
+        paintTickTiny.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
+        paintTickTiny.setStyle(Paint.Style.STROKE);
+    }
+
+    protected void drawTicks(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
         float r0 = radiusInner(cX);
         float rHugeTick = r0 - tickLength_huge;
@@ -590,7 +721,8 @@ public class NaturalHourClockBitmap
         paintTickLarge.setColor(frameColor);
         paintTickHuge.setColor(frameColor);
 
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -618,7 +750,7 @@ public class NaturalHourClockBitmap
         }
     }
 
-    protected void drawTickLabels(NaturalHourData data, Canvas canvas, float cX, float cY, boolean is24)
+    protected void drawTickLabels(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
         paint.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
 
@@ -626,7 +758,13 @@ public class NaturalHourClockBitmap
         float rHugeTick = r0 - tickLength_huge;
         float rLargeTick = r0 - tickLength_large;
         float rMediumTick = r0 - tickLength_medium;
-        double a = getAdjustedAngle(startAngle, -Math.PI/2d, data);
+
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
+        if (EquinoctialHours.is24(timezone.getID(), null) != null) {
+            timeFormat = TIMEFORMAT_24;
+        }
+
+        double a = getAdjustedAngle(startAngle + offset, -Math.PI/2d, data);
         for (int i=1; i<=24; i++)
         {
             a += ((2 * Math.PI) / 24f);
@@ -645,8 +783,28 @@ public class NaturalHourClockBitmap
                     i % 3 == 0 ? textMedium : textSmall;
             paint.setTextSize(textSize);
 
-            int j = is24 ? i : (i == 24 || i == 12 ? 12 : (i % 12));
-            String label = is24 ? (i < 10 ? "0" + j : "" + j) : "" + j;
+            int j;
+            String label;
+            switch (timeFormat)
+            {
+                case TIMEFORMAT_6:
+                    j = (i == 24 || i == 18 || i == 12 || i == 6 ? 6 : (i % 6));
+                    label = "" + j;
+                    break;
+
+                case TIMEFORMAT_12:
+                    j = (i == 24 || i == 12 ? 12 : (i % 12));
+                    label = "" + j;
+                    break;
+
+                case TIMEFORMAT_24:
+                default:
+                    j = i;
+                    label = (i < 10) ? "0" + j : "" + j;
+                    break;
+            }
+            //int j = is24 ? i : (i == 24 || i == 12 ? 12 : (i % 12));
+            //String label = is24 ? (i < 10 ? "0" + j : "" + j) : "" + j;
 
             if (!isMinorTick || showMinorTickLabels) {
                 canvas.drawText(label, (float)(lx), (float)(ly) + (textSize * 0.25f), paint);
@@ -761,21 +919,20 @@ public class NaturalHourClockBitmap
                 CharSequence location = DisplayStrings.formatLocation(context, data.getLatitude(), data.getLongitude(), 2);
                 canvas.drawTextOnPath(location.toString(), path, 0, textSmall/3f, paintLabel);
             }
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_MIDNIGHT)) {
+                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[18], timezone), data);
+                drawRay(canvas, cX, cY, a, 0, radiusInner(cX), paintArcNightBorder);
+            }
+
+            if (flags.getAsBoolean(FLAG_SHOW_BACKGROUND_NOON)) {
+                double a = getAdjustedAngle(startAngle, data.getAngle(naturalHours[6], timezone), data);
+                drawRay(canvas, cX, cY, a, 0, radiusInner(cX), paintArcDayBorder);
+            }
         }
 
-        if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE))
-        {
-            float r = (radiusInner(cX) - (2.65f * arcWidth));
-            final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
-
-            Path path = new Path();
-            boolean alongBottom = alongBottom(startAngle);
-            double arcAngle = NaturalHourData.simplifyAngle(startAngle + (alongBottom ? Math.PI/2d : -Math.PI/2));
-            double sweepAngle = alongBottom ? -Math.PI : Math.PI;
-            path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-            paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL1));
-            paintLabel.setTextSize(textSmall);
-            canvas.drawTextOnPath(timezone.getID(), path, 0, 0, paintLabel);
+        if (flags.getAsBoolean(FLAG_SHOW_TIMEZONE)) {
+            drawTimeZoneLabel(timezone.getID(), canvas, paintLabel);
         }
     }
 
@@ -839,6 +996,65 @@ public class NaturalHourClockBitmap
         }
     }
 
+    public void drawSecondsHand(Canvas canvas, NaturalHourData data) {
+        drawSecondsHand(data, time <= 0 ? System.currentTimeMillis() : time, canvas, cX, cY, radiusInner1(cX));
+    }
+
+    private Calendar t_secondsNow = null;
+    protected void drawSecondsHand(NaturalHourData data, long nowMillis, Canvas canvas, float cX, float cY, float length)
+    {
+        if (t_secondsNow == null) {
+            t_secondsNow = Calendar.getInstance(timezone);
+        }
+        t_secondsNow.setTimeInMillis(nowMillis + EquinoctialHours.getTimeOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP)));
+        double seconds = t_secondsNow.get(Calendar.SECOND);
+
+        double offset = EquinoctialHours.getStartAngleOffset(timezone, data, 0, startAngle, flags.getAsBoolean(FLAG_START_AT_TOP));
+        double a1 = getAdjustedAngle(startAngle + offset, NaturalHourData.getAngle(seconds), data);
+        double x1 = cX + length * Math.cos(a1);
+        double y1 = cY + length * Math.sin(a1);
+
+        paintHand.setColor(colors.getColor(ClockColorValues.COLOR_HAND1));
+
+        if (flags.getAsBoolean(FLAG_SHOW_HAND_SIMPLE)) {
+            canvas.drawLine(cX, cY, (float)x1, (float)y1, paintHand);
+
+        } else {
+            double handRadius = handWidth / 4d;
+            double a0 = a1 - Math.PI/2;
+            double x0 = cX + handRadius * Math.cos(a0);
+            double y0 = cY + handRadius * Math.sin(a0);
+
+            double a2 = a1 + Math.PI/2;
+            double x2 = cX + handRadius * Math.cos(a2);
+            double y2 = cY + handRadius * Math.sin(a2);
+
+            Path path = new Path();
+            path.moveTo((float) x0, (float) y0);
+            path.lineTo((float) x1, (float) y1);
+            path.lineTo((float) x2, (float) y2);
+            path.close();
+            canvas.drawPath(path, paintHand);
+        }
+    }
+
+    protected void drawTimeZoneLabel(String text, Canvas canvas, Paint p)
+    {
+        boolean alongBottom = alongBottom(startAngle);
+        float offsetR = (alongBottom ? 2.7f : 3f);
+        float r = (radiusInner(cX) - (offsetR * arcWidth));
+        final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
+
+        Path path = new Path();
+        double arcAngleOffset = 0; //Math.PI/6;
+        double arcAngle = NaturalHourData.simplifyAngle(startAngle + (alongBottom ? Math.PI/2d - arcAngleOffset : -Math.PI/2 + arcAngleOffset));
+        double sweepAngle = alongBottom ? -Math.PI : Math.PI;
+        path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
+        p.setColor(colors.getColor(ClockColorValues.COLOR_LABEL1));
+        p.setTextSize(textSmall);
+        canvas.drawTextOnPath(text, path, 0, 0, p);
+    }
+
     private CharSequence formatDate(@NonNull Context context, long dateMillis)
     {
         Calendar now = Calendar.getInstance(timezone);
@@ -878,9 +1094,11 @@ public class NaturalHourClockBitmap
     public static NaturalHourCalculator getCalculator(int hourmode)
     {
         switch (hourmode) {
+            case HOURMODE_CIVILRISE_24: case HOURMODE_CIVILSET_24:
             case HOURMODE_CIVILRISE: return new NaturalHourCalculator1();
-            case HOURMODE_SUNSET: return new NaturalHourCalculator2();
-            case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
+            case HOURMODE_SUNSET_24: return new NaturalHourCalculator2();
+            case HOURMODE_NOON_24:
+            case HOURMODE_SUNRISE_24: case HOURMODE_SUNRISE: default: return new NaturalHourCalculator();
         }
     }
 

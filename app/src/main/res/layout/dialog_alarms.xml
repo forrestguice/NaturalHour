@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/alarmdialog_layout"
     android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="0dp"
     android:orientation="vertical">
@@ -21,7 +22,7 @@
             style="?attr/actionOverflowButtonStyle"
             android:contentDescription="@string/action_done"
             android:layout_width="96dp" android:layout_height="56dp" android:paddingLeft="16dp" android:paddingRight="16dp"
-            android:tint="?attr/colorAccent" />
+            app:tint="?attr/colorAccent" />
 
     </LinearLayout>
 

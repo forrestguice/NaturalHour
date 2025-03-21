@@ -21,13 +21,13 @@ package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +52,7 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedState)
     {
-        android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
+        androidx.appcompat.view.ContextThemeWrapper contextWrapper = new androidx.appcompat.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
         return inflater.cloneInContext(contextWrapper).inflate(R.layout.dialog_alarms, parent, false);
     }
 
@@ -88,7 +88,7 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
         expandSheet(getDialog());
     }
 
-    private View.OnClickListener onOkClicked = new View.OnClickListener() {
+    private final View.OnClickListener onOkClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (listener != null) {
@@ -143,9 +143,9 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
     {
         if (dialog != null) {
             BottomSheetDialog bottomSheet = (BottomSheetDialog) dialog;
-            FrameLayout layout = (FrameLayout) bottomSheet.findViewById(android.support.design.R.id.design_bottom_sheet);  // for AndroidX, resource is renamed to com.google.android.material.R.id.design_bottom_sheet
+            FrameLayout layout = (FrameLayout) bottomSheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);  // android.support.design.R.id.design_bottom_sheet
             if (layout != null) {
-                BottomSheetBehavior behavior = BottomSheetBehavior.from(layout);
+                BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(layout);
                 behavior.setHideable(false);
                 behavior.setSkipCollapsed(true);
                 behavior.setPeekHeight(200);

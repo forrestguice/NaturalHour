@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020-2023 Forrest Guice
+    Copyright (C) 2020-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -23,12 +23,14 @@ import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.forrestguice.suntimes.addon.AppThemeInfo;
@@ -37,6 +39,7 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.IntListPreference;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.Toast;
 
 import java.util.TimeZone;
 
@@ -65,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         getFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment(), NaturalHourPreferenceFragment.TAG).commit();
+        AppSettings.sanityCheck(this);
     }
 
     @Override
@@ -92,6 +96,20 @@ public class SettingsActivity extends AppCompatActivity
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+        }
+
+        @Override
+        public void onStart()
+        {
+            super.onStart();
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(onChangedNeedsRestart);
+        }
+
+        @Override
+        public void onStop()
+        {
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(onChangedNeedsRestart);
+            super.onStop();
         }
 
         @Override
@@ -128,6 +146,17 @@ public class SettingsActivity extends AppCompatActivity
                 entries[1] = DisplayStrings.formatTimeFormatLabel(context, entries[1].toString(), AppSettings.fromTimeFormatMode(context, AppSettings.TIMEMODE_SUNTIMES, info));
             }
         }
+
+        private final SharedPreferences.OnSharedPreferenceChangeListener onChangedNeedsRestart = new SharedPreferences.OnSharedPreferenceChangeListener()
+        {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+            {
+                if (key.equals(AppSettings.KEY_USE_WALLPAPER)) {
+                    Toast.makeText(getActivity(), getString(R.string.restart_required_message), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
 
         protected SuntimesInfo info;
         public void setSuntimesInfo(SuntimesInfo info) {

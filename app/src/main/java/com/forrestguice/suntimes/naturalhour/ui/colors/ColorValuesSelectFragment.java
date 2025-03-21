@@ -21,9 +21,12 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,8 +40,11 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.forrestguice.suntimes.naturalhour.ui.Toast;
+import com.forrestguice.suntimes.naturalhour.ui.ThrottledClickListener;
 import com.forrestguice.suntimes.naturalhour.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColorValuesSelectFragment extends ColorValuesFragment
 {
@@ -57,6 +63,9 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
     public static final String ARG_SHOW_MENU = "showMenu";
     public static final boolean DEF_SHOW_MENU = true;
 
+    public static final String ARG_COLOR_TAG = "colorTag";
+    public static final String DEF_COLOR_TAG = null;
+
     protected TextView label;
     protected Spinner selector;
     protected ImageButton addButton, editButton, backButton, menuButton;
@@ -71,6 +80,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         args.putBoolean(ARG_SHOW_BACK, DEF_SHOW_BACK);
         args.putBoolean(ARG_SHOW_MENU, DEF_SHOW_MENU);
         args.putInt(ARG_APPWIDGETID, DEF_APPWIDGETID);
+        args.putString(ARG_COLOR_TAG, DEF_COLOR_TAG);
         setArguments(args);
     }
 
@@ -81,44 +91,69 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState)
     {
-        android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
-        View content = inflater.cloneInContext(contextWrapper).inflate(R.layout.fragment_colorselector, container, false);
+        //android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
+        View content = inflater.cloneInContext(getActivity()).inflate(R.layout.fragment_colorselector, container, false);
         if (savedState != null) {
             onRestoreInstanceState(savedState);
         }
 
         label = (TextView) content.findViewById(R.id.color_values_selector_label);
-
-        selector = content.findViewById(R.id.colorvalues_selector);
-        if (selector != null) {
-            selector.setOnItemSelectedListener(onItemSelected);
-        }
-
-        editButton = content.findViewById(R.id.editButton);
-        if (editButton != null) {
-            editButton.setOnClickListener(onEditButtonClicked);
-        }
-
-        addButton = content.findViewById(R.id.addButton);
-        if (addButton != null) {
-            addButton.setOnClickListener(onAddButtonClicked);
-        }
-
-        backButton = content.findViewById(R.id.backButton);
-        if (backButton != null) {
-            backButton.setOnClickListener(onBackButtonClicked);
-        }
-
-        menuButton = content.findViewById(R.id.menuButton);
-        if (menuButton != null) {
-            menuButton.setOnClickListener(onMenuButtonClicked);
-        }
+        selector = (Spinner) content.findViewById(R.id.colorvalues_selector);
+        editButton = (ImageButton) content.findViewById(R.id.editButton);
+        addButton = (ImageButton) content.findViewById(R.id.addButton);
+        backButton = (ImageButton) content.findViewById(R.id.backButton);
+        menuButton = (ImageButton) content.findViewById(R.id.menuButton);
 
         updateViews();
         return content;
     }
 
-    private AdapterView.OnItemSelectedListener onItemSelected = new AdapterView.OnItemSelectedListener() {
+    protected void attachListeners()
+    {
+        if (selector != null) {
+            selector.setOnItemSelectedListener(onItemSelected);
+        }
+        if (editButton != null) {
+            editButton.setOnClickListener(new ThrottledClickListener(onEditButtonClicked));
+        }
+        if (addButton != null) {
+            addButton.setOnClickListener(new ThrottledClickListener(onAddButtonClicked));
+        }
+        if (backButton != null) {
+            backButton.setOnClickListener(new ThrottledClickListener(onBackButtonClicked));
+        }
+        if (menuButton != null) {
+            menuButton.setOnClickListener(new ThrottledClickListener(onMenuButtonClicked));
+        }
+    }
+    protected void detachListeners()
+    {
+        if (selector != null) {
+            selector.setOnItemSelectedListener(null);
+        }
+        if (editButton != null) {
+            editButton.setOnClickListener(null);
+        }
+        if (addButton != null) {
+            addButton.setOnClickListener(null);
+        }
+        if (backButton != null) {
+            backButton.setOnClickListener(null);
+        }
+        if (menuButton != null) {
+            menuButton.setOnClickListener(null);
+        }
+    }
+
+
+    public void requestFocus()
+    {
+        if (backButton != null) {
+            backButton.requestFocus();
+        }
+    }
+
+    private final AdapterView.OnItemSelectedListener onItemSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             onColorValuesSelected(position);
@@ -131,6 +166,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         if (listener != null) {
             listener.onItemSelected((ColorValuesItem) selector.getItemAtPosition(position));
         }
+        updateControls();
     }
     public String getSelectedID() {
         if (selector != null) {
@@ -139,12 +175,12 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         } else return null;
     }
 
-    private View.OnClickListener onEditButtonClicked = new View.OnClickListener() {
+    private final View.OnClickListener onEditButtonClicked = new ThrottledClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             onEditSelectedItem();
         }
-    };
+    });
     protected void onEditSelectedItem()
     {
         if (listener != null) {
@@ -153,7 +189,7 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         }
     }
 
-    private View.OnClickListener onAddButtonClicked = new View.OnClickListener() {
+    private final View.OnClickListener onAddButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             onAddItem();
@@ -167,7 +203,15 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         }
     }
 
-    private View.OnClickListener onBackButtonClicked = new View.OnClickListener() {
+    protected void onDeleteItem()
+    {
+        if (listener != null) {
+            ColorValuesItem item = (ColorValuesItem) selector.getSelectedItem();
+            listener.onDeleteClicked(item != null ? item.colorsID : null);
+        }
+    }
+
+    private final View.OnClickListener onBackButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             onBack();
@@ -179,12 +223,20 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         }
     }
 
-    private View.OnClickListener onMenuButtonClicked = new View.OnClickListener() {
+    private final View.OnClickListener onMenuButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             showOverflowMenu(getActivity(), v);
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (onOverflowMenuItemSelected.onMenuItemClick(item)) {
+            return true;
+        } else { return super.onOptionsItemSelected(item); }
+    }
 
     protected void showOverflowMenu(Context context, View v)
     {
@@ -195,8 +247,14 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         popup.setOnMenuItemClickListener(onOverflowMenuItemSelected);
         popup.show();
     }
-    protected void onPrepareOverflowMenu(Context context, Menu menu) { /* EMPTY */ }
-    private PopupMenu.OnMenuItemClickListener onOverflowMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
+    protected void onPrepareOverflowMenu(Context context, Menu menu)
+    {
+        MenuItem deleteItem = menu.findItem(R.id.action_colors_delete);
+        if (deleteItem != null) {
+            deleteItem.setEnabled(!colorCollection.isDefaultColorID(getSelectedID()));
+        }
+    }
+    private final PopupMenu.OnMenuItemClickListener onOverflowMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
     {
         @Override
         public boolean onMenuItemClick(MenuItem item)
@@ -207,8 +265,12 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
                     onAddItem();
                     return true;
 
-                case R.id.action_colors_export:
-                    onExportColors();
+                case R.id.action_colors_delete:
+                    onDeleteItem();
+                    return true;
+
+                case R.id.action_colors_share:
+                    onShareColors();
                     return true;
 
                 case R.id.action_colors_import:
@@ -219,77 +281,77 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         }
     };
 
-    protected void onExportColors()
+    protected void onShareColors()
     {
         Context context = getActivity();
         if (colorCollection != null && context != null)
         {
-            StringBuilder exportString = new StringBuilder(colorCollection.toString());
-            for (String colorsID : colorCollection.getCollection())
+            ColorValues colors = colorCollection.getSelectedColors(context, getAppWidgetID(), getColorTag());
+            if (colors != null)
             {
-                ColorValues colors = colorCollection.getColors(context, colorsID);
-                exportString.append("\n");
-                exportString.append(colors.toJSON());
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, colors.toJSON(false));
+                startActivity(Intent.createChooser(intent, null));
             }
-            exportString.append("...");
-
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(android.content.Intent.EXTRA_TEXT, exportString.toString());
-            startActivity(Intent.createChooser(intent, null));
         }
     }
 
     protected void onImportColors()
     {
-        Context context = getActivity();
-        if (colorCollection != null && context != null)
-        {
-            String importString = "";  // TODO: user input
-            importColors(context, importString);
+        if (listener != null) {
+            listener.onImportClicked();
         }
-    }
-    protected void importColors(@NonNull Context context, String jsonString)
-    {
-        ColorValues values = createColorValues(jsonString);
-        if (values != null)
-        {
-            String id = values.getID();
-            if (!colorCollection.hasColors(id))
-            {
-                colorCollection.setColors(context, values);
-                Toast.makeText(getActivity(), context.getString(R.string.msg_colors_imported, id), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    /**
-     * createColorsValues
-     * @param jsonString json colorvalues string
-     * @return defaults null; this method should be overridden by concrete implementations to create and return a valid ColorValues obj
-     */
-    @Nullable
-    protected ColorValues createColorValues(String jsonString) {
-        return null;
     }
 
     protected ArrayAdapter<ColorValuesItem> initAdapter(Context context)
     {
-        ColorValuesItem[] items = (colorCollection == null ? new ColorValuesItem[0] : ColorValuesItem.createItems(getActivity(), colorCollection.getCollection()));
-        return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items);
+        ColorValuesItem[] items = (colorCollection == null ? new ColorValuesItem[0] : ColorValuesItem.createItems(context, colorCollection, previewKeys()));
+        return new ColorValuesArrayAdapter(context, R.layout.layout_listitem_colors, items);
+    }
+
+    public void setPreviewKeys(String... keys) {
+        getArguments().putStringArray("previewKeys", keys);
+    }
+    public String[] previewKeys() {
+        return getArguments().getStringArray("previewKeys");
     }
 
     protected void onRestoreInstanceState(@NonNull Bundle savedState) { /* EMPTY */ }
 
     protected void updateViews()
     {
+        detachListeners();
+        boolean allowEdit = allowEdit();
+
+        if (selector != null)
+        {
+            selector.setAdapter(initAdapter(getActivity()));
+
+            if (colorCollection != null)
+            {
+                int selectedIndex = 0;
+                String selectedColorsID = colorCollection.getSelectedColorsID(getActivity(), getAppWidgetID(), getColorTag());
+
+                for (int i=0; i<selector.getCount(); i++)
+                {
+                    ColorValuesItem item = (ColorValuesItem) selector.getItemAtPosition(i);
+                    if (item != null && item.colorsID != null && item.colorsID.equals(selectedColorsID))
+                    {
+                        selectedIndex = i;
+                        break;
+                    }
+                }
+                selector.setSelection(selectedIndex, false);
+            }
+        }
+
         if (label != null) {
             label.setVisibility(getShowLabel() ? View.VISIBLE : View.GONE);
         }
         if (backButton != null) {
             backButton.setVisibility(getShowBack() ? View.VISIBLE : View.GONE);
         }
-        boolean allowEdit = allowEdit();
         if (addButton != null) {
             addButton.setVisibility(allowEdit ? View.VISIBLE : View.GONE);
         }
@@ -300,38 +362,37 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         {
             boolean showMenu = getShowMenu();
             menuButton.setVisibility(showMenu ? View.VISIBLE : View.GONE);
-            if (addButton != null) {    // shown as part of menu
-                addButton.setVisibility(showMenu || !allowEdit() ? View.GONE : View.VISIBLE);
-            }
+            //if (addButton != null) {    // shown as part of menu
+            //    addButton.setVisibility(showMenu || !allowEdit() ? View.GONE : View.VISIBLE);
+            //}
+        }
+        updateControls();
+        attachListeners();
+    }
+
+    protected void updateControls()
+    {
+        //String selectedColorsID = (colorCollection != null) ? colorCollection.getSelectedColorsID(getActivity(), getAppWidgetID(), getColorTag()) : null;
+        String selectedColorsID;
+        if (selector != null) {
+            ColorValuesItem selectedColors = (ColorValuesItem) selector.getSelectedItem();
+            selectedColorsID = (selectedColors != null ? selectedColors.colorsID : null);
+        } else {
+            selectedColorsID = (colorCollection != null) ? colorCollection.getSelectedColorsID(getActivity(), getAppWidgetID(), getColorTag()) : null;
         }
 
-        if (selector != null)
-        {
-            selector.setAdapter(initAdapter(getActivity()));
+        boolean isDefault = ((colorCollection != null) ? colorCollection.isDefaultColorID(selectedColorsID) : (selectedColorsID == null));
 
-            if (colorCollection != null)
-            {
-                int selectedIndex = 0;
-                String selectedColorsID = colorCollection.getSelectedColorsID(getActivity(), getAppWidgetID());
-                if (selectedColorsID == null) {
-                    selectedColorsID = colorCollection.getSelectedColorsID(getActivity(), 0);
-                }
-
-                for (int i=0; i<selector.getCount(); i++)
-                {
-                    ColorValuesItem item = (ColorValuesItem) selector.getItemAtPosition(i);
-                    if (item.colorsID.equals(selectedColorsID)) {
-                        selectedIndex = i;
-                        break;
-                    }
-                }
-                selector.setSelection(selectedIndex, false);
-            }
+        if (editButton != null) {
+            editButton.setVisibility(isDefault ? View.GONE : View.VISIBLE);
+        }
+        if (addButton != null) {
+            addButton.setVisibility(isDefault || !getShowMenu() ? View.VISIBLE : View.GONE);
         }
     }
 
-    protected ColorValuesCollection colorCollection = null;
-    public void setColorCollection(ColorValuesCollection collection) {
+    protected ColorValuesCollection<ColorValues> colorCollection = null;
+    public void setColorCollection(ColorValuesCollection<ColorValues> collection) {
         colorCollection = collection;
         updateViews();
     }
@@ -389,6 +450,20 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
         return args != null ? args.getInt(ARG_APPWIDGETID, DEF_APPWIDGETID) : DEF_APPWIDGETID;
     }
 
+    public void setColorTag(@Nullable String tag)
+    {
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putString(ARG_COLOR_TAG, tag);
+            updateViews();
+        }
+    }
+    @Nullable
+    public String getColorTag() {
+        Bundle args = getArguments();
+        return args != null ? args.getString(ARG_COLOR_TAG, DEF_COLOR_TAG) : DEF_COLOR_TAG;
+    }
+
     /**
      * ColorValuesItem
      */
@@ -396,23 +471,181 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
     {
         public String displayString;
         public String colorsID;
+        public int[] previewColors;
 
-        public ColorValuesItem(String displayString, String colorsID) {
-            this.displayString = displayString;
+        public ColorValuesItem(@Nullable String displayString, @Nullable String colorsID, int... previewColors)
+        {
+            this.displayString = (displayString != null ? displayString : colorsID);
             this.colorsID = colorsID;
+            this.previewColors = previewColors;
         }
 
         public String toString() {
             return displayString;
         }
 
-        public static ColorValuesItem[] createItems(Context context, String[] colorIDs)
+        public static final boolean INCLUDE_DEFAULT_ITEM = false;
+
+        public static ColorValuesItem[] createItems(Context context, ColorValuesCollection<ColorValues> collection, String[] previewKeys)
         {
-            ColorValuesItem[] items = new ColorValuesItem[colorIDs.length];
-            for (int i=0; i<colorIDs.length; i++) {
-                items[i] = new ColorValuesItem(colorIDs[i], colorIDs[i]);
+            String[] colorIDs = collection != null ? collection.getCollection() : new String[0];
+            ColorValuesItem[] items = new ColorValuesItem[ INCLUDE_DEFAULT_ITEM ? colorIDs.length+1 : colorIDs.length];
+
+            int c = 0;
+            if (INCLUDE_DEFAULT_ITEM) {
+                items[c++] = new ColorValuesItem("Default", null, getPreviewColors(context, collection, null, previewKeys));
+            }
+            for (int i=c; i<colorIDs.length; i++) {
+                items[i] = new ColorValuesItem(collection.getColorsLabel(context, colorIDs[i]), colorIDs[i], getPreviewColors(context, collection, colorIDs[i], previewKeys));
             }
             return items;
+        }
+
+        public static int[] getPreviewColors(Context context, @Nullable ColorValuesCollection<ColorValues> collection, @Nullable String colorsID, @Nullable String[] previewKeys)
+        {
+            if (collection == null) {
+                return new int[] { Color.TRANSPARENT };
+            }
+
+            if (colorsID == null)
+            {
+                int[] colors = ((previewKeys != null) ? new int[previewKeys.length] : new int[0]);
+                if (previewKeys != null)
+                {
+                    ColorValues values = collection.getDefaultColors(context);
+                    for (int i=0; i<previewKeys.length; i++) {
+                        colors[i] = values.getColor(previewKeys[i]);
+                    }
+                }
+                return colors;
+
+            } else {
+                return collection.getColors(context, colorsID, ContextCompat.getColor(context, R.color.transparent), previewKeys);
+            }
+        }
+    }
+
+    /**
+     * ColorValuesArrayAdapter
+     */
+    public static class ColorValuesArrayAdapter extends ArrayAdapter<ColorValuesItem>
+    {
+        private int resourceID, dropDownResourceID;
+        private ColorValuesItem selectedItem;
+
+        public ColorValuesArrayAdapter(@NonNull Context context, int resource) {
+            super(context, resource);
+            init(context, resource);
+        }
+
+        public ColorValuesArrayAdapter(@NonNull Context context, int resource, @NonNull ColorValuesItem[] objects) {
+            super(context, resource, objects);
+            init(context, resource);
+        }
+
+        public ColorValuesArrayAdapter(@NonNull Context context, int resource, @NonNull List<ColorValuesItem> objects) {
+            super(context, resource, objects);
+            init(context, resource);
+        }
+
+        private void init(@NonNull Context context, int resource) {
+            resourceID = dropDownResourceID = resource;
+        }
+
+        public void setSelected( ColorValuesItem item ) {
+            selectedItem = item;
+            notifyDataSetChanged();
+        }
+
+        public ColorValuesItem getSelected() {
+            return selectedItem;
+        }
+
+        public List<ColorValuesItem> getItems()
+        {
+            ArrayList<ColorValuesItem> items = new ArrayList<>();
+            for (int i=0; i<getCount(); i++)
+            {
+                ColorValuesItem item = getItem(i);
+                if (item != null) {
+                    items.add(item);
+                }
+            }
+            return items;
+        }
+
+        @Override
+        public void setDropDownViewResource(int resID) {
+            super.setDropDownViewResource(resID);
+            dropDownResourceID = resID;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+            return getItemView(position, convertView, parent, dropDownResourceID);
+        }
+
+        @Override
+        @NonNull
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            return getItemView(position, convertView, parent, resourceID);
+        }
+
+        private View getItemView(int position, View convertView, @NonNull ViewGroup parent, int resID)
+        {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                view = layoutInflater.inflate(resID, parent, false);
+            }
+
+            ColorValuesItem item = getItem(position);
+            if (item == null) {
+                Log.w("getItemView", "item at position " + position + " is null.");
+                return view;
+            }
+
+            TextView primaryText = (TextView) view.findViewById(android.R.id.text1);
+            if (primaryText != null) {
+                primaryText.setText(item.displayString);
+            }
+
+            int[] previewColors = item.previewColors;
+            View[] previews = new View[] { view.findViewById(R.id.colorPreview0), view.findViewById(R.id.colorPreview1), view.findViewById(R.id.colorPreview2), view.findViewById(R.id.colorPreview3) };
+            if (previews[0] != null && previewColors != null && previewColors.length > 0)
+            {
+                for (int i=0; i<previews.length; i++)
+                {
+                    View preview = previews[i];
+                    if (preview != null)
+                    {
+                        if (i < previewColors.length) {
+                            preview.setBackgroundColor(previewColors[i]);
+                            preview.setVisibility(View.VISIBLE);
+                        } else {
+                            preview.setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+            } else {
+                for (View v : previews) {
+                    if (v != null) {
+                        v.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            /*if (selectedItem != null && item.colorsID.equals(selectedItem.colorsID)) {
+                Log.d("DEBUG", "getItemView: " + selectedItem.colorsID);
+                view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.text_accent_dark));
+            } else view.setBackgroundColor(Color.TRANSPARENT);
+            TextView secondaryText = (TextView)view.findViewById(android.R.id.text2);
+            if (secondaryText != null) {
+                secondaryText.setText(item.getSummary(getContext()));
+            }*/
+
+            return view;
         }
     }
 
@@ -422,8 +655,10 @@ public class ColorValuesSelectFragment extends ColorValuesFragment
     public interface FragmentListener
     {
         void onBackClicked();
+        void onImportClicked();
         void onAddClicked(@Nullable String colorsID);
         void onEditClicked(@Nullable String colorsID);
+        void onDeleteClicked(@Nullable String colorsID);
         void onItemSelected(ColorValuesItem item);
     }
 

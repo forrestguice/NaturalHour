@@ -23,6 +23,8 @@ import android.content.Context;
 
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
+import androidx.annotation.Nullable;
+
 public class NaturalHourWidget_3x2 extends NaturalHourWidget
 {
     @Override
@@ -31,5 +33,11 @@ public class NaturalHourWidget_3x2 extends NaturalHourWidget
         clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_DATE, false);
         clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TIMEZONE, false);
         clockView.setFlag(NaturalHourClockBitmap.FLAG_SHOW_TICKS_5M, false);
+    }
+
+    @Override
+    @Nullable
+    protected Class getConfigClass() {
+        return NaturalHourWidget_3x2_ConfigActivity.class;
     }
 }

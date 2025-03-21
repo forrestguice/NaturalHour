@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="api_post_24">false</bool>
 
     <attr name="icBack" format="reference" />
     <attr name="icDone" format="reference" />
     <attr name="icAdd" format="reference" />
     <attr name="icEdit" format="reference" />
+    <attr name="icSave" format="reference" />
     <attr name="icDelete" format="reference" />
     <attr name="icColors" format="reference" />
     <attr name="icShare" format="reference" />
     <attr name="icAlarms" format="reference" />
+    <attr name="icFullscreenOn" format="reference" />
+    <attr name="icFullscreenOff" format="reference" />
 
     <attr name="icToday" format="reference" />
     <attr name="icSettings" format="reference" />
@@ -21,11 +25,14 @@
     <attr name="colorValue" format="reference" />
     <attr name="colorBottomSheet" format="reference" />
 
+    <attr name="clockColorBackground" format="reference" />
+    <attr name="clockColorBackgroundAlt" format="reference" />
     <attr name="clockColorFace" format="reference" />
     <attr name="clockColorPlate" format="reference" />
     <attr name="clockColorFrame" format="reference" />
     <attr name="clockColorCenter" format="reference" />
     <attr name="clockColorHand" format="reference" />
+    <attr name="clockColorHand1" format="reference" />
     <attr name="clockColorLabel1" format="reference" />
     <attr name="clockColorLabel2" format="reference" />
 
@@ -45,6 +52,25 @@
     <attr name="clockColorNautical" format="reference" />
     <attr name="clockColorCivil" format="reference" />
 
+    <attr name="tileCardBackground" format="reference" />
+
     <attr name="bottomBarSize" format="reference" />   <!-- TODO: move to SuntimesAddon -->
+    <attr name="fab_foregroundColor" format="reference" />  <!-- TODO: move to SuntimesAddon -->
+
+    <declare-styleable name="ColorCollectionPreference">
+        <attr name="colorTag" format="string" />
+        <attr name="appWidgetID" format="integer" />
+        <attr name="showAlpha" format="boolean" />
+        <attr name="previewKeys" format="reference" />
+        <attr name="previewMode" format="integer" />
+        <attr name="android:summary" />
+    </declare-styleable>
+    <integer name="colorpicker_preview_text">0</integer>        <!-- previewMode value -->
+    <integer name="colorpicker_preview_contrast">10</integer>   <!-- previewMode value -->
+    <integer name="colorpicker_preview_luminance">10</integer>  <!-- previewMode value -->
+
+    <string name="published_package_id" translatable="false">com.forrestguice.suntimes.naturalhour</string> <!-- Changing or removing this line signifies agreement with the terms of the license. -->
+    <integer name="published_minSdkVersion">14</integer>
+    <integer name="published_targetSdkVersion">30</integer>
 
 </resources>

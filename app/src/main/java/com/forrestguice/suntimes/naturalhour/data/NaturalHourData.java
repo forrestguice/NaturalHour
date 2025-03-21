@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2020 Forrest Guice
+    Copyright (C) 2020-2024 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -22,7 +22,8 @@ package com.forrestguice.suntimes.naturalhour.data;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import android.provider.CalendarContract;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -264,6 +265,14 @@ public class NaturalHourData implements Parcelable
                 ((second / (60d * 60d * 24d)) * twoPI);
     }
 
+    public static double getAngle(double seconds)
+    {
+        double twoPI = 2 * Math.PI;
+        return (-Math.PI / 2d)
+                + ((seconds / 60d) * twoPI);
+        //return ((seconds / 60d) * twoPI);
+    }
+
     public static double simplifyAngle(double radians)
     {
         double fullCircle = 2 * Math.PI;
@@ -349,6 +358,14 @@ public class NaturalHourData implements Parcelable
     }
     public Calendar getNaturalHour(int i) {
         return getNaturalHour(i, 0);
+    }
+
+    public Calendar getNightWatch(int i, int n)
+    {
+        double watchLength = (getNightHourLength() * 12d) / n;
+        Calendar event = getNaturalHour(12);
+        event.setTimeInMillis(event.getTimeInMillis() + (long)((i-1) * watchLength));
+        return event;
     }
 
     /**

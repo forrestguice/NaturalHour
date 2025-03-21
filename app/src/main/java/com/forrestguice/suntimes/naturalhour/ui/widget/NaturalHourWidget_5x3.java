@@ -19,4 +19,13 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
-public class NaturalHourWidget_5x3 extends NaturalHourWidget {}
+import androidx.annotation.Nullable;
+
+public class NaturalHourWidget_5x3 extends NaturalHourWidget
+{
+    @Override
+    @Nullable
+    protected Class getConfigClass() {
+        return NaturalHourWidget_5x3_ConfigActivity.class;
+    }
+}

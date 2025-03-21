@@ -1,4 +1,28 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/pref_category_theme">
+
+        <com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference
+            android:key="widget_0_colors" android:persistent="false"
+            android:title="@string/action_colors"
+            android:summary="%s"
+            app:showAlpha="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_widget">
+
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_actionmode"
+            android:title="@string/pref_title_action"
+            android:entries="@array/pref_action_display"
+            android:entryValues="@array/pref_action_values"
+            android:defaultValue="2"
+            android:summary="%s" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_category_general">
@@ -8,7 +32,7 @@
             android:title="@string/pref_title_hourdef"
             android:entries="@array/pref_hourdef_display"
             android:entryValues="@array/pref_hourdef_values"
-            android:defaultValue="0"
+            android:defaultValue="@integer/clockface_hourmode"
             android:summary="%s" />
 
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_timeformatmode"
@@ -22,7 +46,7 @@
             android:title="@string/pref_title_tzmode"
             android:entries="@array/pref_tzmode_display"
             android:entryValues="@array/pref_tzmode_values"
-            android:defaultValue="3"
+            android:defaultValue="2"
             android:summary="%s" />
 
     </PreferenceCategory>
@@ -31,10 +55,10 @@
         android:title="@string/pref_category_orientation">
 
         <CheckBoxPreference android:key="widget_0_clockface_startAtTop"
-            android:title="@string/pref_title_midnight_top" android:defaultValue="false" />
+            android:title="@string/pref_title_midnight_top" android:defaultValue="@bool/clockface_start_at_top" />
 
         <CheckBoxPreference android:key="widget_0_clockface_centerNoon"
-            android:title="@string/pref_title_center_noon" android:defaultValue="false" />
+            android:title="@string/pref_title_center_noon" android:defaultValue="@bool/clockface_center_noon" />
 
     </PreferenceCategory>
 
@@ -42,14 +66,14 @@
         android:title="@string/pref_category_nightwatch">
 
         <CheckBoxPreference android:key="widget_0_clockface_showVigilia"
-            android:title="@string/pref_title_show_nightwatch" android:defaultValue="false" />
+            android:title="@string/pref_title_show_nightwatch" android:defaultValue="@bool/clockface_show_vigilia" />
 
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
             android:key="widget_0_clockface_nightwatchType"
             android:title="@string/pref_title_nightwatch_type"
             android:entries="@array/pref_nightwatch_display"
             android:entryValues="@array/pref_nightwatch_values"
-            android:defaultValue="0"
+            android:defaultValue="@integer/clockface_nightwatch_type"
             android:summary="%s" />
 
     </PreferenceCategory>
@@ -62,35 +86,41 @@
             android:title="@string/pref_title_numerals"
             android:entries="@array/pref_numerals_display"
             android:entryValues="@array/pref_numerals_values"
-            android:defaultValue="0"
+            android:defaultValue="@integer/clockface_numerals"
             android:summary="%s" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showBackgroundPlate"
-            android:title="@string/pref_title_show_plate" android:defaultValue="true" />
+            android:title="@string/pref_title_show_plate" android:defaultValue="@bool/clockface_show_background_plate" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showBackgroundAmPm"
-            android:title="@string/pref_title_show_ampm" android:defaultValue="true" />
+            android:title="@string/pref_title_show_ampm" android:defaultValue="@bool/clockface_show_background_ampm" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showBackgroundTwilights"
-            android:title="@string/pref_title_show_twilights" android:defaultValue="true" />
+            android:title="@string/pref_title_show_twilights" android:defaultValue="@bool/clockface_show_background_twilights" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showBackgroundNight"
-            android:title="@string/pref_title_show_night" android:defaultValue="true" />
+            android:title="@string/pref_title_show_night" android:defaultValue="@bool/clockface_show_background_night" />
+
+        <CheckBoxPreference android:key="widget_0_clockface_showBackgroundMidnight"
+            android:title="@string/pref_title_show_midnight" android:defaultValue="@bool/clockface_show_background_midnight" />
+
+        <CheckBoxPreference android:key="widget_0_clockface_showBackgroundNoon"
+            android:title="@string/pref_title_show_noon" android:defaultValue="@bool/clockface_show_background_noon" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showDate"
-            android:title="@string/pref_title_show_date" android:defaultValue="true" />
+            android:title="@string/pref_title_show_date" android:defaultValue="@bool/clockface_show_date" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showTimeZone"
-            android:title="@string/pref_title_show_timezone" android:defaultValue="true" />
+            android:title="@string/pref_title_show_timezone" android:defaultValue="@bool/clockface_show_timezone" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showLocation"
-            android:title="@string/pref_title_show_location" android:defaultValue="true" />
+            android:title="@string/pref_title_show_location" android:defaultValue="@bool/clockface_show_location" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showTick15m"
-            android:title="@string/pref_title_show_ticks15m" android:defaultValue="true" />
+            android:title="@string/pref_title_show_ticks15m" android:defaultValue="@bool/clockface_show_ticks_15m" />
 
         <CheckBoxPreference android:key="widget_0_clockface_showTick5m"
-            android:title="@string/pref_title_show_ticks5m" android:defaultValue="true" />
+            android:title="@string/pref_title_show_ticks5m" android:defaultValue="@bool/clockface_show_ticks_5m" />
 
     </PreferenceCategory>
 
