@@ -20,7 +20,7 @@
 package com.forrestguice.suntimes.naturalhour.ui.daydream;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView;

@@ -19,7 +19,7 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public class NaturalHourWidget_4x3 extends NaturalHourWidget
 {

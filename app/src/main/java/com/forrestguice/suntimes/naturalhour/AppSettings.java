@@ -23,10 +23,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -261,6 +262,52 @@ public class AppSettings
             case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparentSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(context, suntimesInfo);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
+        }
+    }
+
+    /**
+     * showLicenseNotice
+     * A notice is displayed to the user when the package name is different from the published value.
+     *
+     * ATTENTION! Suntimes is licensed under GPLv3.
+     * Please read the LICENSE and obey all terms when sharing this app.
+     *
+     * If you are sharing this app under a different package name, modify the values below,
+     * and again in `attrs.xml/R.string.published_package_id`. Changing or removing this check
+     * signifies agreement with the terms of the license.
+     */
+    public static boolean showLicenseNotice(Context context)
+    {
+        String publishedID = context.getString(R.string.published_package_id);
+        boolean showWarning = (!"com.forrestguice.suntimes.naturalhour".equals(publishedID));         // Changing or removing this line signifies agreement with the terms of the license.
+        showWarning |= (!"com.forrestguice.suntimes.naturalhour".equals(context.getPackageName()));   // (Again...) Changes to this code are only permitted under the terms of the license!
+
+        int publishedTargetSdkVersion = context.getResources().getInteger(R.integer.published_targetSdkVersion);
+        int targetSdkVersion = context.getApplicationContext().getApplicationInfo().targetSdkVersion;
+        showWarning |= (targetSdkVersion != publishedTargetSdkVersion);
+
+        if (Build.VERSION.SDK_INT >= 24)
+        {
+            int publishedMinSdkVersion = context.getResources().getInteger(R.integer.published_minSdkVersion);
+            int minSdkVersion = context.getApplicationContext().getApplicationInfo().minSdkVersion;
+            showWarning |= (minSdkVersion != publishedMinSdkVersion);
+        }
+
+        return showWarning;
+    }
+    public static void displayLicenseNotice(Context context)
+    {
+        if (!BuildConfig.DEBUG) {
+            if (showLicenseNotice(context))
+            {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                dialog.setIcon(R.drawable.ic_share);
+                dialog.setTitle("License Notice");
+                dialog.setMessage("Natural Hour is licensed GPLv3.\n\n"
+                        + "You should have received a copy of the GNU General Public License along with Natural Hour. If not, see <http://www.gnu.org/licenses/>.\n\n"
+                        + "You can help by reporting license violations to https://github.com/forrestguice/NaturalHour/issues.");
+                dialog.show();
+            }
         }
     }
 

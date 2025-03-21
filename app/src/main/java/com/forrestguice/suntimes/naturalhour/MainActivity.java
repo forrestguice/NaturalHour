@@ -19,7 +19,9 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuCompat;
+import androidx.lifecycle.ViewModelProviders;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
@@ -28,17 +30,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.MenuInflater;
@@ -67,8 +65,8 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesEditFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesEditFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -192,6 +190,7 @@ public class MainActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
+        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
     }
 
     @Override

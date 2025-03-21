@@ -22,11 +22,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,15 +33,10 @@ import android.view.View;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
-import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 
 public class ClockDaydreamSettingsActivity extends AppCompatActivity
@@ -79,6 +73,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
+        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
     }
 
     protected void initViews()

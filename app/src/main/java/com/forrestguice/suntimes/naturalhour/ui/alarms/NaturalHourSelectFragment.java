@@ -21,6 +21,8 @@ package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
 import android.content.Context;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 

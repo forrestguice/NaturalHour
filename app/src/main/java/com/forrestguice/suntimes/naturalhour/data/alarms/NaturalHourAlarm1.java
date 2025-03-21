@@ -20,8 +20,6 @@
 package com.forrestguice.suntimes.naturalhour.data.alarms;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.AppSettings;
@@ -30,6 +28,9 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 import java.util.Calendar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Alarm at night watch i of n.

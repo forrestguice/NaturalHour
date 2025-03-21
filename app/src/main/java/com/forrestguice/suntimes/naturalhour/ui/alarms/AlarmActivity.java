@@ -24,13 +24,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -344,7 +344,7 @@ public class AlarmActivity extends AppCompatActivity
     /**
      * AlarmActionsCompat
      */
-    private class AlarmActionsCompat implements android.support.v7.view.ActionMode.Callback
+    private class AlarmActionsCompat implements androidx.appcompat.view.ActionMode.Callback
     {
         protected String alarmID = null;
         public void setSelection(String alarmID ) {
@@ -352,7 +352,7 @@ public class AlarmActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu)
         {
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_alarm1, menu);
@@ -360,7 +360,7 @@ public class AlarmActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu)
+        public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode mode, Menu menu)
         {
             Messages.forceActionBarIcons(menu);
             return false;
@@ -372,7 +372,7 @@ public class AlarmActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onActionItemClicked(android.support.v7.view.ActionMode mode, MenuItem item)
+        public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item)
         {
             if (alarmID != null)
             {

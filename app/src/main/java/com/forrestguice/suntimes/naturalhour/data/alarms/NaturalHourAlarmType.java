@@ -20,13 +20,14 @@
 package com.forrestguice.suntimes.naturalhour.data.alarms;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 
 import java.util.Calendar;
 import java.util.HashMap;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public interface NaturalHourAlarmType
 {

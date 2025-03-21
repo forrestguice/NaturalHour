@@ -21,8 +21,8 @@ package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
 import android.os.Parcel;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;

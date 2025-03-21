@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="NaturalHourAppTheme.Dark" />
 
     <!-- System theme -->
-    <style name="NaturalHourAppTheme.System.Base" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="NaturalHourAppTheme.System.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -178,7 +178,7 @@
     </style>
 
     <!-- Light theme -->
-    <style name="NaturalHourAppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="NaturalHourAppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary_light</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_light</item>
         <item name="colorAccent">@color/colorAccent_light</item>
@@ -354,7 +354,7 @@
     </style>
 
     <!-- Dark theme -->
-    <style name="NaturalHourAppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+    <style name="NaturalHourAppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary_dark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
         <item name="colorAccent">@color/colorAccent_dark</item>

@@ -23,10 +23,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.Menu;
@@ -37,14 +37,11 @@ import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.AboutDialog;
-import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
-import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSelectFragment;
 
 public abstract class WidgetConfigActivity extends AppCompatActivity
 {
@@ -121,6 +118,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
+        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
     }
 
     protected int getActivityLayoutResID() {

@@ -20,9 +20,10 @@
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
+
+import androidx.annotation.Nullable;
 
 public class NaturalHourWidget_3x2 extends NaturalHourWidget
 {

@@ -26,14 +26,14 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -45,8 +45,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
@@ -362,6 +362,7 @@ public class NaturalHourFragment extends Fragment
         return (startAtTop ? NaturalHourClockBitmap.START_TOP : NaturalHourClockBitmap.START_BOTTOM);
     }
 
+    @SuppressLint("WrongConstant")
     public void announceTime()
     {
         Context context = getActivity();
@@ -377,7 +378,7 @@ public class NaturalHourFragment extends Fragment
 
             Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
-            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);   // android.support.design.R.id.snackbar_text
             if (textView != null)
             {
                 int[] attrs = new int[] { R.attr.text_size_small };
@@ -467,6 +468,7 @@ public class NaturalHourFragment extends Fragment
             text_debug = (TextView) itemView.findViewById(R.id.text_time_debug);
         }
 
+        @SuppressLint("SetTextI18n")
         public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, NaturalHourAdapterOptions options)
         {
             if (data != null)

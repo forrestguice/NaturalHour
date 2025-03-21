@@ -29,8 +29,8 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.forrestguice.suntimes.ContextCompat;
@@ -39,6 +39,7 @@ import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm1;
