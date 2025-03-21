@@ -27,6 +27,9 @@
         <CheckBoxPreference android:key="clockface_showSeconds"
             android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/clockface_show_seconds" />
 
+        <CheckBoxPreference android:key="useWallpaper"
+            android:title="@string/pref_title_useWallpaper" android:defaultValue="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -100,8 +103,5 @@
 
 
     </PreferenceCategory>
-
-    <CheckBoxPreference android:key="useWallpaper"
-        android:title="@string/pref_title_useWallpaper" android:defaultValue="false" />
 
 </PreferenceScreen>
