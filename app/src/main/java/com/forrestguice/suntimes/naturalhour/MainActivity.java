@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
-        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
+        AppSettings.sanityCheck(this);
     }
 
     @Override

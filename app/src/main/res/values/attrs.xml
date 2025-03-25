@@ -71,6 +71,6 @@
 
     <string name="published_package_id" translatable="false">com.forrestguice.suntimes.naturalhour</string> <!-- Changing or removing this line signifies agreement with the terms of the license. -->
     <integer name="published_minSdkVersion">14</integer>
-    <integer name="published_targetSdkVersion">30</integer>
+    <integer name="published_targetSdkVersion">33</integer>
 
 </resources>
