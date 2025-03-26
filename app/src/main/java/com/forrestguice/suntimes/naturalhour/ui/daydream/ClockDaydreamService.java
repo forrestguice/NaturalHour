@@ -211,8 +211,9 @@ public class ClockDaydreamService extends DreamService
     public void onDreamingStarted()
     {
         super.onDreamingStarted();
+        startUpdateTask();                  // this loop triggers update on hours/minutes
         if (clockView != null) {
-            clockView.startUpdateTask();
+            clockView.startUpdateTask();    // this loop updates seconds
         }
         if (animation != null) {
             animation.startAnimation();
@@ -222,6 +223,7 @@ public class ClockDaydreamService extends DreamService
     @Override
     public void onDreamingStopped()
     {
+        stopUpdateTask();
         if (clockView != null) {
             clockView.stopUpdateTask();
         }
@@ -230,6 +232,38 @@ public class ClockDaydreamService extends DreamService
         }
         super.onDreamingStopped();
     }
+
+    public void startUpdateTask()
+    {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream update: starting..");
+        }
+        if (clockView != null) {
+            clockView.post(updateRunnable);
+        }
+    }
+    public void stopUpdateTask()
+    {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream update: stopping..");
+        }
+        if (clockView != null) {
+            clockView.removeCallbacks(updateRunnable);
+        }
+    }
+    private final Runnable updateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (BuildConfig.DEBUG) {
+                Log.d("DEBUG", "daydream update: tick");
+            }
+            if (clockView != null) {
+                clockView.updateBase();
+                clockView.postDelayed(updateRunnable, UPDATE_INTERVAL);
+            }
+        }
+    };
+    public static final long UPDATE_INTERVAL = 15 * 1000;
 
     /**
      * DreamAnimationInterface
