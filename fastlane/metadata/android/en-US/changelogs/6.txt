@@ -7,6 +7,6 @@
 - adds clock option; temporal hours begin at "sunrise (24)", "civil dawn (24)", "noon (240", or "civil dusk (24)".
 - adds clock option; night watches of five or more parts.
 - adds clock option; show "solar midnight".
-- adds widget option; "On Tap"; "reconfigure widget" or "launch app".
+- adds widget option; "on tap", "reconfigure widget" or "launch app".
 - adds default colors; "Sun (dark)".
 - updates targetSdkVersion (28 -> 30), and migrates app to AndroidX.

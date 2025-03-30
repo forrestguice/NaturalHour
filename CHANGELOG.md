@@ -1,6 +1,6 @@
 ~
 
-### v0.3.0 (2025-03-14)
+### v0.3.0 (2025-03-30)
 * adds quick settings tile that displays the current hour.
 * adds daydream (screen saver) that shows a "wandering clock" (#25).
 * adds fullscreen mode, ability to display over the lock screen, and home screen wallpaper option.
@@ -10,10 +10,10 @@
 * adds clock option; temporal hours begin at "sunrise (24)", "civil dawn (24)", "noon (240", or "civil dusk (24)" (#29).
 * adds clock option; night watches of five or more parts (#26).
 * adds clock option; show "solar midnight" (#24).
-* adds widget option; "On Tap"; "reconfigure widget" or "launch app".
-* enhances color editor (adds support for roles).
-* adds default colors; "Sun (dark)" (#9).
-* updates build; updates SuntimesAddon dependency (v0.4.0 -> v0.4.1); replaces jitpack.io with git submodule.
+* adds widget option; "on tap", "reconfigure widget" or "launch app".
+* enhances color editor (adds support for color roles).
+* adds to default colors; "Sun (dark)" (#9).
+* updates build; updates SuntimesAddon dependency (v0.4.0 -> v0.4.2); replaces jitpack.io with git submodule.
 * updates build; targetSdkVersion 28 -> 33; Gradle 5.6.4 -> 6.7.1; Android Gradle Plugin 3.6.1 -> 4.1.3; migrates from legacy support libraries to AndroidX.
 
 ### v0.2.3 (2024-11-20)
