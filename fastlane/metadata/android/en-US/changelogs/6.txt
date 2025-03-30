@@ -1,0 +1,12 @@
+- adds quick settings tile that displays the current hour.
+- adds daydream (screen saver) that shows a "wandering clock".
+- adds fullscreen mode, ability to display over the lock screen, and home screen wallpaper option.
+- adds clock option; show "seconds hand" and inner dial.
+- adds clock option; "6hr time format" (Italian six-hour clock).
+- adds clock option; equinoctial hours; "Babylonian", "Italic", "Italian Civil", or "Julian".
+- adds clock option; temporal hours begin at "sunrise (24)", "civil dawn (24)", "noon (240", or "civil dusk (24)".
+- adds clock option; night watches of five or more parts.
+- adds clock option; show "solar midnight".
+- adds widget option; "on tap", "reconfigure widget" or "launch app".
+- adds default colors; "Sun (dark)".
+- updates targetSdkVersion (28 -> 30), and migrates app to AndroidX.
