@@ -507,6 +507,11 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         if (deleteItem != null) {
             deleteItem.setVisible(allowDelete());
         }
+
+        MenuItem copyThemeItem = menu.findItem(R.id.action_colors_copytheme);
+        if (copyThemeItem != null) {
+            copyThemeItem.setVisible(pickThemeIntent() != null);
+        }
     }
 
     private final PopupMenu.OnMenuItemClickListener onOverflowMenuItemSelected = new PopupMenu.OnMenuItemClickListener()

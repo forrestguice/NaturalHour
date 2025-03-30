@@ -118,7 +118,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
-        AppSettings.displayLicenseNotice(this);    // Changing or removing this line signifies agreement with the terms of the license!
+        AppSettings.sanityCheck(this);
     }
 
     protected int getActivityLayoutResID() {

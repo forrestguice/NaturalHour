@@ -442,11 +442,11 @@
     <string name="gpl_notice"><![CDATA[
         <b>This software is licensed GPLv3.</b>
         <br/><br/>
-        You should have received a copy of the GNU General Public License. If not, see <u>http://www.gnu.org/licenses/</u>.
+        You should have received a copy of the GNU General Public License. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
         <br/><br/>
         You should have also received a copy of the source code, or a written offer to provide it.
         <br/><br/>
-        If you suspect a violation of the license, please help by reporting it to <u>https://github.com/forrestguice/NaturalHour/issues</u>.
+        If you suspect a violation of the license, please help by reporting it to <a href="https://github.com/forrestguice/NaturalHour/issues">https://github.com/forrestguice/NaturalHour/issues</a>
     ]]></string>
 
     <string-array name="help_topics">      <!-- in order of appearance -->
