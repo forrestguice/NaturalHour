@@ -94,7 +94,8 @@
 
         <!-- Widget: 3x2 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_3x2"
-            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round">
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="suntimes.naturalhour.WIDGET_UPDATE" />
@@ -111,7 +112,8 @@
 
         <!-- Widget: 4x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_4x3"
-            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round">
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="suntimes.naturalhour.WIDGET_UPDATE" />
@@ -128,7 +130,8 @@
 
         <!-- Widget: 5x3 -->
         <receiver android:name=".ui.widget.NaturalHourWidget_5x3"
-            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round">
+            android:label="@string/widget_name" android:icon="@mipmap/ic_launcher_round"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="suntimes.naturalhour.WIDGET_UPDATE" />
@@ -173,7 +176,8 @@
             android:label="@string/tile_name"
             android:icon="@drawable/ic_alarm"
             android:enabled="@bool/api_post_24"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
