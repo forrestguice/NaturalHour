@@ -1,5 +1,8 @@
 ~
 
+### v0.3.1 (2025-03-31)
+* fixes bug where Android 12+ refuses to install the app (#35).
+
 ### v0.3.0 (2025-03-30)
 * adds quick settings tile that displays the current hour.
 * adds daydream (screen saver) that shows a "wandering clock" (#25).
