@@ -24,7 +24,8 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
             android:showWhenLocked="true"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,8 +54,8 @@
         <!-- Activity: AlarmPicker -->
         <activity
             android:name=".ui.alarms.AlarmActivity" android:label="@string/app_name"
-            android:permission=""
-            android:icon="@mipmap/ic_launcher_round">
+            android:icon="@mipmap/ic_launcher_round"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="suntimes.action.ADDON_EVENT" />
@@ -74,7 +75,8 @@
 
         <!-- Activity: Settings -->
         <activity android:name=".SettingsActivity" android:label="@string/app_name"
-            android:icon="@mipmap/ic_launcher_round" />
+            android:icon="@mipmap/ic_launcher_round"
+            android:exported="false" />
 
         <!-- Color Collection Settings -->
         <activity
@@ -162,7 +164,8 @@
             android:name=".ui.daydream.ClockDaydreamSettingsActivity"
             android:label="@string/daydream_name"
             android:icon="@mipmap/ic_launcher"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:exported="true" />
 
         <!-- Quick Settings Tile -->
         <service
@@ -176,10 +179,12 @@
             </intent-filter>
         </service>
         <activity android:name=".ui.tiles.NaturalHourTileConfigActivity"
-            android:enabled="@bool/api_post_24" />
+            android:enabled="@bool/api_post_24"
+            android:exported="true" />
         <activity android:name=".ui.tiles.TileLockScreenActivity" android:theme="@style/LockScreenActivityStyle"
             android:enabled="@bool/api_post_24"
-            android:showWhenLocked="true" />
+            android:showWhenLocked="true"
+            android:exported="true" />
 
     </application>
 
