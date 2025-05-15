@@ -283,10 +283,10 @@ public class AppSettings
         boolean hasLocation = (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4);
         switch (mode)
         {
-            case TZMODE_ITALIAN: return NaturalHourFragment.getItalianHoursTZ(context, suntimesInfo.location[2]);
-            case TZMODE_ITALIAN_CIVIL: return NaturalHourFragment.getItalianCivilHoursTZ(context, suntimesInfo.location[2]);
-            case TZMODE_BABYLONIAN: return NaturalHourFragment.getBabylonianHoursTZ(context, suntimesInfo.location[2]);
-            case TZMODE_JULIAN: return NaturalHourFragment.getJulianHoursTZ(context, suntimesInfo.location[2]);
+            case TZMODE_ITALIAN: return NaturalHourFragment.getItalianHoursTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
+            case TZMODE_ITALIAN_CIVIL: return NaturalHourFragment.getItalianCivilHoursTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
+            case TZMODE_BABYLONIAN: return NaturalHourFragment.getBabylonianHoursTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
+            case TZMODE_JULIAN: return NaturalHourFragment.getJulianHoursTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_UTC: return NaturalHourFragment.getUtcTZ();
             case TZMODE_LOCALMEAN: return NaturalHourFragment.getLocalMeanTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
             case TZMODE_APPARENTSOLAR: return NaturalHourFragment.getApparentSolarTZ(context, hasLocation ? suntimesInfo.location[2] : "0");
