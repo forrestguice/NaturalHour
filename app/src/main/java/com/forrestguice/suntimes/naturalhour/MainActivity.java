@@ -71,6 +71,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+@SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class MainActivity extends AppCompatActivity
 {
     public static final String DIALOG_ALARM = "alarmDialog";
@@ -353,7 +354,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSaveInstanceState( Bundle outState )
+    public void onSaveInstanceState( @NonNull Bundle outState )
     {
         super.onSaveInstanceState(outState);
         outState.putInt("bottomSheet", bottomSheet.getState());
@@ -440,7 +441,7 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    private ColorValuesSheetFragment.FragmentListener colorSheetListener = new ColorValuesSheetFragment.FragmentListener()
+    private final ColorValuesSheetFragment.FragmentListener colorSheetListener = new ColorValuesSheetFragment.FragmentListener()
     {
         @Override
         public void requestPeekHeight(int height) {
@@ -521,7 +522,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("RestrictedApi")
     @Override
-    protected boolean onPrepareOptionsPanel(View view, Menu menu)
+    protected boolean onPrepareOptionsPanel(View view, @NonNull Menu menu)
     {
         Messages.forceActionBarIcons(menu);
 
@@ -724,7 +725,7 @@ public class MainActivity extends AppCompatActivity
 
         items[AppSettings.getTimeZoneMode(MainActivity.this)].setChecked(true);
     }
-    private PopupMenu.OnMenuItemClickListener onTimeZonePopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
+    private final PopupMenu.OnMenuItemClickListener onTimeZonePopupMenuItemSelected = new PopupMenu.OnMenuItemClickListener()
     {
         @Override
         public boolean onMenuItemClick(MenuItem item)
@@ -908,7 +909,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, notSupportedMessage, Toast.LENGTH_LONG).show();
         }
     }
-    private NaturalHourAlarmSheet.FragmentListener onAlarmDialog = new NaturalHourAlarmSheet.FragmentListener() {
+    private final NaturalHourAlarmSheet.FragmentListener onAlarmDialog = new NaturalHourAlarmSheet.FragmentListener() {
         @Override
         public void onAlarmSelected(String alarmID) {}
 
