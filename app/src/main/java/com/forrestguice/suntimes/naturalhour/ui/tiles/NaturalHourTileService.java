@@ -26,7 +26,6 @@ import android.text.SpannableStringBuilder;
 
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
-import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 
 import java.util.TimeZone;
 

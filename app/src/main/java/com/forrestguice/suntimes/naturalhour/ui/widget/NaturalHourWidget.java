@@ -40,7 +40,6 @@ import android.widget.RemoteViews;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
-import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
@@ -51,7 +50,6 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollec
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.daydream.ClockDaydreamBitmap;
 
 import java.util.ArrayList;
 import java.util.Calendar;

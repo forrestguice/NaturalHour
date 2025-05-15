@@ -33,10 +33,8 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.annotation.Nullable;
@@ -50,7 +48,6 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollec
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockView;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
-import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 
 import java.util.Calendar;

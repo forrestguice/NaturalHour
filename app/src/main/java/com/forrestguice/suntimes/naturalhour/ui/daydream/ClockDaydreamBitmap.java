@@ -20,7 +20,6 @@
 package com.forrestguice.suntimes.naturalhour.ui.daydream;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;

@@ -69,6 +69,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+@SuppressWarnings("RedundantCast")
 public class NaturalHourFragment extends Fragment
 {
     protected RecyclerView cardView;
@@ -164,7 +165,7 @@ public class NaturalHourFragment extends Fragment
         Log.d("DEBUG", "clockRunnable: stopping..");
         cardView.removeCallbacks(clockUpdateRunnable);
     }
-    private Runnable clockUpdateRunnable = new Runnable() {
+    private final Runnable clockUpdateRunnable = new Runnable() {
         @Override
         public void run() {
             Log.d("DEBUG", "clockRunnable: update clock");
@@ -197,7 +198,7 @@ public class NaturalHourFragment extends Fragment
         snapHelper.attachToRecyclerView(cardView);
     }
 
-    private RecyclerView.ItemDecoration cardDecoration = new RecyclerView.ItemDecoration()
+    private final RecyclerView.ItemDecoration cardDecoration = new RecyclerView.ItemDecoration()
     {
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state)
@@ -222,7 +223,7 @@ public class NaturalHourFragment extends Fragment
         }
     }
 
-    private NaturalHourAdapterListener cardListener = new NaturalHourAdapterListener()
+    private final NaturalHourAdapterListener cardListener = new NaturalHourAdapterListener()
     {
         public void onClockClick(int position) {
             announceTime();
@@ -237,7 +238,7 @@ public class NaturalHourFragment extends Fragment
     };
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_jumpto, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -460,6 +461,7 @@ public class NaturalHourFragment extends Fragment
         public TextView text_debug;
         public NaturalHourClockView clockface;
 
+        @SuppressWarnings("RedundantCast")
         public NaturalHourViewHolder(@NonNull View itemView, NaturalHourAdapterOptions options)
         {
             super(itemView);

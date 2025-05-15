@@ -213,7 +213,7 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     }
     protected NaturalHourClockBitmap bitmapHelper = null;
 
-    private SharedPreferences.OnSharedPreferenceChangeListener onWidgetPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
+    private final SharedPreferences.OnSharedPreferenceChangeListener onWidgetPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
     {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String prefKey)

@@ -295,7 +295,7 @@ public class DisplayStrings
         formatter.setMaximumFractionDigits(places);
         return context.getString(R.string.format_location_altitude, formatter.format(value), unitsString);
     }
-    private static NumberFormat formatter = NumberFormat.getInstance();
+    private static final NumberFormat formatter = NumberFormat.getInstance();
 
     public static SpannableString createRelativeSpan(@Nullable SpannableString span, @NonNull String text, @NonNull String toRelative, float relativeSize)
     {

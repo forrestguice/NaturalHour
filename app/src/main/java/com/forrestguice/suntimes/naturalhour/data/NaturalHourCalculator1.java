@@ -20,10 +20,6 @@
 package com.forrestguice.suntimes.naturalhour.data;
 
 import android.content.ContentResolver;
-import android.database.Cursor;
-import android.net.Uri;
-
-import com.forrestguice.suntimes.calculator.core.CalculatorProviderContract;
 
 /**
  * An alternate definition of "natural hour" where the day begins and ends at civil twilight (6 degrees).

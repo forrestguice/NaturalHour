@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
-import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 

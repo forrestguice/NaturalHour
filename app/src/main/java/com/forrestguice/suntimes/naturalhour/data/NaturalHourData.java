@@ -23,7 +23,6 @@ import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
-import android.provider.CalendarContract;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -248,7 +247,7 @@ public class NaturalHourData implements Parcelable
         calendar.setTimeInMillis(timeMillis);
         return NaturalHourData.getAngle( calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
     }
-    private Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     /**
      * @param hour HOUR_OF_DAY

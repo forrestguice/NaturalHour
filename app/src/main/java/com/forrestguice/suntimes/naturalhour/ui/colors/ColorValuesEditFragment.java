@@ -184,7 +184,7 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         return true;
     }
 
-    private View.OnClickListener onSaveButtonClicked = new View.OnClickListener() {
+    private final View.OnClickListener onSaveButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             onSaveColorValues();

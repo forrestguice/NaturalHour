@@ -38,7 +38,6 @@ import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
-import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 
 import java.util.Calendar;
