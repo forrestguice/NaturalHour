@@ -40,6 +40,7 @@ import android.widget.RemoteViews;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
+import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourCalculator;
@@ -155,7 +156,11 @@ public class NaturalHourWidget extends AppWidgetProvider
         intent.setComponent(new ComponentName(context, getClass()));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.putExtra(KEY_WIDGETCLASS, getClass().toString());
-        return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (Build.VERSION.SDK_INT >= 23) {
+            flags = flags | PendingIntent.FLAG_IMMUTABLE;
+        }
+        return PendingIntent.getBroadcast(context, appWidgetId, intent, flags);
     }
 
     protected long getUpdateTimeMillis( Context context, int appWidgetID )
@@ -424,7 +429,11 @@ public class NaturalHourWidget extends AppWidgetProvider
         Intent actionIntent = new Intent(context, widgetClass);
         actionIntent.setAction(WidgetSettings.fromActionMode(actionMode));
         actionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        return PendingIntent.getBroadcast(context, appWidgetId, actionIntent, 0);
+        int actionFlags = 0;
+        if (Build.VERSION.SDK_INT >= 23) {
+            actionFlags = PendingIntent.FLAG_IMMUTABLE;
+        }
+        return PendingIntent.getBroadcast(context, appWidgetId, actionIntent, actionFlags);
     }
 
     public boolean isClickAction(String action) {
