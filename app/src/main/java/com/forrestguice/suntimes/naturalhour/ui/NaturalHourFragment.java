@@ -683,7 +683,7 @@ public class NaturalHourFragment extends Fragment
         public int positionForDate(long dateMillis)
         {
             NaturalHourData dataToday = data.get(TODAY_POSITION);
-            long todayMillis = dataToday.getDateMillis();
+            long todayMillis = (dataToday != null ? dataToday.getDateMillis() : 0);
             return TODAY_POSITION + (int)((dateMillis - todayMillis) / (24 * 60 * 60 * 1000)) + 1;
         }
 
