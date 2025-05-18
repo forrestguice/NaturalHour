@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             AppThemeInfo.setTheme(this, suntimesInfo);
         }
 
-        if (AppSettings.getUseWallpaper(this)) {
+        if (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_WALLPAPER) {
             getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.transparent));
         }
 
@@ -250,6 +251,14 @@ public class MainActivity extends AppCompatActivity
         NaturalHourAlarmSheet alarmSheet = (NaturalHourAlarmSheet) fragments.findFragmentByTag(DIALOG_ALARM);
         if (alarmSheet != null) {
             alarmSheet.setFragmentListener(onAlarmDialog);
+        }
+
+        if (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_COLOR && naturalHour != null)
+        {
+            ColorValues colors = naturalHour.getClockColors();
+            if (colors != null) {
+                getWindow().setBackgroundDrawable(new ColorDrawable(colors.getColor(ClockColorValues.COLOR_BACKGROUND)));
+            }
         }
     }
 

@@ -75,7 +75,17 @@
     <string name="pref_title_show_plate">Show background plate</string>
     <string name="pref_title_show_seconds">Show seconds hand</string>
 
-    <string name="pref_title_useWallpaper">Show home screen wallpaper</string>
+    <string name="pref_title_bgmode">Background</string>
+    <string-array name="pref_bgmode_display">
+        <item>App theme</item>
+        <item>Home screen wallpaper</item>
+        <item>Clock colors</item>
+    </string-array>
+    <string-array name="pref_bgmode_values" translatable="false">  <!-- one-to-one with pref_timeformat_display -->
+        <item>0</item>   <!-- items must be "int" (parsed to int when saved) -->
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 
     <string name="pref_title_hourdef">Hours begin</string>
     <string-array name="pref_hourdef_display">

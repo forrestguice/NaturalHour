@@ -58,8 +58,14 @@ public class AppSettings
                             TZMODE_ITALIAN = 5, TZMODE_ITALIAN_CIVIL = 6, TZMODE_BABYLONIAN = 7, TZMODE_JULIAN = 8;
     public static final int TZMODE_DEFAULT = TZMODE_LOCALMEAN;
 
+    @Deprecated    // replaced by "backgroundMode"
     public static final String KEY_USE_WALLPAPER = "useWallpaper";
+    @Deprecated
     public static final boolean DEF_USE_WALLPAPER = false;
+
+    public static final String KEY_MODE_BACKGROUND = "backgroundMode";
+    public static final int BGMODE_APPTHEME = 0, BGMODE_WALLPAPER = 1, BGMODE_COLOR = 2;
+    public static final int DEF_MODE_BACKGROUND = BGMODE_APPTHEME;
 
     public static final String PREF_KEY_DIALOG = "dialog";
     public static final String PREF_KEY_DIALOG_DONOTSHOWAGAIN = "donotshowagain";
@@ -147,14 +153,20 @@ public class AppSettings
         return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_DEFAULT);
     }
 
-    public static void setUseWallpaper(Context context, boolean value) {
-        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        prefs.putBoolean(KEY_USE_WALLPAPER, value);
-        prefs.apply();
-    }
-    public static boolean getUseWallpaper(Context context) {
+    @Deprecated    // replaced by "backgroundMode"
+    public static boolean useWallpaper(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(KEY_USE_WALLPAPER, DEF_USE_WALLPAPER);
+    }
+
+    public static int getBackgroundMode(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(KEY_MODE_BACKGROUND, useWallpaper(context) ? BGMODE_WALLPAPER : DEF_MODE_BACKGROUND);
+    }
+    public static void setBackgroundMode(Context context, int value) {
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        prefs.putInt(KEY_MODE_BACKGROUND, value);
+        prefs.apply();
     }
 
     /**

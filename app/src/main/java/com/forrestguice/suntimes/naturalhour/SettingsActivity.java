@@ -152,7 +152,7 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
             {
-                if (key.equals(AppSettings.KEY_USE_WALLPAPER)) {
+                if (key.equals(AppSettings.KEY_MODE_BACKGROUND)) {
                     Toast.makeText(getActivity(), getString(R.string.restart_required_message), Toast.LENGTH_SHORT).show();
                 }
             }
