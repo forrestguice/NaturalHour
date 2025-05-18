@@ -113,7 +113,9 @@ public class NaturalHourFragment extends Fragment
         return colorCollection;
     }
 
-
+    public NaturalHourCardAdapter getCardAdapter() {
+        return cardAdapter;
+    }
 
     public NaturalHourFragment() {
         setHasOptionsMenu(true);
@@ -223,7 +225,7 @@ public class NaturalHourFragment extends Fragment
         }
     }
 
-    private final NaturalHourAdapterListener cardListener = new NaturalHourAdapterListener()
+    private NaturalHourAdapterListener cardListener = new NaturalHourAdapterListener()
     {
         public void onClockClick(int position) {
             announceTime();
@@ -236,6 +238,13 @@ public class NaturalHourFragment extends Fragment
             return false;
         }
     };
+    public void setCardListener(NaturalHourAdapterListener listener)
+    {
+        cardListener = listener;
+        if (cardAdapter != null) {
+            cardAdapter.setCardAdapterListener(cardListener);
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
