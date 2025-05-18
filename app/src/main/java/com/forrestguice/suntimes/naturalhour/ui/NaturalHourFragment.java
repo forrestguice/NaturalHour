@@ -466,6 +466,8 @@ public class NaturalHourFragment extends Fragment
      */
     public static class NaturalHourViewHolder extends RecyclerView.ViewHolder
     {
+        public View card;
+        public View card_date;
         public TextView text_date;
         public TextView text_debug;
         public NaturalHourClockView clockface;
@@ -474,6 +476,8 @@ public class NaturalHourFragment extends Fragment
         public NaturalHourViewHolder(@NonNull View itemView, NaturalHourAdapterOptions options)
         {
             super(itemView);
+            card = itemView.findViewById(R.id.card);
+            card_date = itemView.findViewById(R.id.card_date);
             text_date = (TextView) itemView.findViewById(R.id.text_date);
             clockface = (NaturalHourClockView) itemView.findViewById(R.id.clockface);
             text_debug = (TextView) itemView.findViewById(R.id.text_time_debug);
@@ -708,16 +712,16 @@ public class NaturalHourFragment extends Fragment
         {
             holder.text_date.setOnClickListener(onDateClick(position));
             holder.clockface.setOnClickListener(onClockClick(position));
-            //holder.layout_front.setOnClickListener(onCardClick(holder));
-            //holder.layout_front.setOnLongClickListener(onCardLongClick(holder));
+            holder.card.setOnClickListener(onCardClick(holder));
+            //holder.card.setOnLongClickListener(onCardLongClick(holder));
         }
 
         private void detachClickListeners(@NonNull NaturalHourViewHolder holder)
         {
             holder.text_date.setOnClickListener(null);
             holder.clockface.setOnClickListener(null);
-            //holder.layout_front.setOnClickListener(null);
-            //holder.layout_front.setOnLongClickListener(null);
+            holder.card.setOnClickListener(null);
+            //holder.card.setOnLongClickListener(null);
         }
 
         public void setCardAdapterListener( @NonNull NaturalHourAdapterListener listener ) {
