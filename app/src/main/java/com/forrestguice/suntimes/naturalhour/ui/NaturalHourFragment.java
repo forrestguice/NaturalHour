@@ -105,11 +105,11 @@ public class NaturalHourFragment extends Fragment
         cardAdapter.notifyDataSetChanged();
     }
 
-    private ColorValuesCollection colorCollection;
-    public void setColorCollection(ColorValuesCollection collection) {
+    private ColorValuesCollection<ColorValues> colorCollection;
+    public void setColorCollection(ColorValuesCollection<ColorValues> collection) {
         colorCollection = collection;
     }
-    public ColorValuesCollection getColorCollection() {
+    public ColorValuesCollection<ColorValues> getColorCollection() {
         return colorCollection;
     }
 
