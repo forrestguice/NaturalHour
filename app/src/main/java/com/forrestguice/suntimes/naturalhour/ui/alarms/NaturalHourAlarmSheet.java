@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /*
-    Copyright (C) 2021 Forrest Guice
+    Copyright (C) 2021-2025 Forrest Guice
     This file is part of Natural Hour.
 
     Natural Hour is free software: you can redistribute it and/or modify
@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.naturalhour.ui.alarms;
 
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,7 +143,8 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
 
     private static void expandSheet(DialogInterface dialog)
     {
-        if (dialog != null) {
+        if (dialog != null)
+        {
             BottomSheetDialog bottomSheet = (BottomSheetDialog) dialog;
             FrameLayout layout = (FrameLayout) bottomSheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);  // android.support.design.R.id.design_bottom_sheet
             if (layout != null) {
@@ -150,6 +153,35 @@ public class NaturalHourAlarmSheet extends BottomSheetDialogFragment
                 behavior.setSkipCollapsed(true);
                 behavior.setPeekHeight(200);
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                layout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initPeekHeight(dialog, R.id.naturalhourselect_hourMode);
+                    }
+                }, 1000);
+            }
+        }
+    }
+
+    public static void initPeekHeight(DialogInterface dialog, int bottomViewResId)
+    {
+        if (dialog != null) {
+            BottomSheetDialog bottomSheet = (BottomSheetDialog) dialog;
+            FrameLayout layout = (FrameLayout) bottomSheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);  // android.support.design.R.id.design_bottom_sheet
+            if (layout != null)
+            {
+                BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(layout);
+                View divider1 = bottomSheet.findViewById(bottomViewResId);
+                if (divider1 != null)
+                {
+                    Rect headerBounds = new Rect();
+                    divider1.getDrawingRect(headerBounds);
+                    layout.offsetDescendantRectToMyCoords(divider1, headerBounds);
+                    behavior.setPeekHeight(headerBounds.top);
+
+                } else {
+                    behavior.setPeekHeight(-1);
+                }
             }
         }
     }
