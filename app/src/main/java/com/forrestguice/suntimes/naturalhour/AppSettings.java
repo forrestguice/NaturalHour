@@ -64,14 +64,14 @@ public class AppSettings
     public static final boolean DEF_USE_WALLPAPER = false;
 
     public static final String KEY_MODE_BACKGROUND = "backgroundMode";
-    public static final int BGMODE_APPTHEME = 0, BGMODE_WALLPAPER = 1, BGMODE_COLOR = 2;
-    public static final int DEF_MODE_BACKGROUND = BGMODE_APPTHEME;
+    public static final int BGMODE_APPTHEME = 0, BGMODE_WALLPAPER = 1, BGMODE_COLOR = 2, BGMODE_BLACK = 3;
+    public static final int BGMODE_DEFAULT = BGMODE_APPTHEME;
 
     public static final String PREF_KEY_DIALOG = "dialog";
     public static final String PREF_KEY_DIALOG_DONOTSHOWAGAIN = "donotshowagain";
 
-    public static final String[] VALUES = new String[] { AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.KEY_MODE_TIMEZONE };
-    public static final int[] VALUES_DEF = new int[] { AppSettings.TIMEMODE_DEFAULT, AppSettings.TZMODE_DEFAULT };
+    public static final String[] VALUES = new String[] { AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.KEY_MODE_TIMEZONE, AppSettings.KEY_MODE_BACKGROUND };
+    public static final int[] VALUES_DEF = new int[] { AppSettings.TIMEMODE_DEFAULT, AppSettings.TZMODE_DEFAULT, AppSettings.BGMODE_DEFAULT };
 
     public static void setClockFlag(Context context, String key, boolean flag)
     {
@@ -161,7 +161,7 @@ public class AppSettings
 
     public static int getBackgroundMode(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt(KEY_MODE_BACKGROUND, useWallpaper(context) ? BGMODE_WALLPAPER : DEF_MODE_BACKGROUND);
+        return prefs.getInt(KEY_MODE_BACKGROUND, useWallpaper(context) ? BGMODE_WALLPAPER : BGMODE_DEFAULT);
     }
     public static void setBackgroundMode(Context context, int value) {
         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();

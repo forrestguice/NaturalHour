@@ -133,8 +133,12 @@ public class MainActivity extends AppCompatActivity
             AppThemeInfo.setTheme(this, suntimesInfo);
         }
 
-        if (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_WALLPAPER) {
-            getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.transparent));
+        if (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_WALLPAPER ||
+                AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_BLACK)
+        {
+            int color = (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_BLACK)
+                    ? R.color.black : R.color.transparent;
+            getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, color));
         }
 
         setContentView(R.layout.activity_main);

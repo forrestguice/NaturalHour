@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="daydream_tzmode">0</integer>
+    <integer name="daydream_bgmode">3</integer>    <!-- 3; black -->
+    <integer name="daydream_tzmode">0</integer>    <!-- 0; system tz -->
 
     <bool name="daydream_show_seconds">true</bool>
 

@@ -26,6 +26,7 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.service.dreams.DreamService;
 import android.util.Log;
@@ -107,6 +108,9 @@ public class ClockDaydreamService extends DreamService
         int timeMode = AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_TIMEFORMAT, AppSettings.TIMEMODE_DEFAULT);
         return AppSettings.fromTimeFormatMode(context, timeMode, info);
     }
+    protected int getBackgroundMode(Context context) {
+        return AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_BACKGROUND, context.getResources().getInteger(R.integer.daydream_bgmode));
+    }
     protected String widgetPrefix() {
         return WidgetSettings.widgetKeyPrefix(appWidgetId);
     }
@@ -144,7 +148,7 @@ public class ClockDaydreamService extends DreamService
                 clockAppearance = colors.getDefaultColors(context);
             }
             clockView.setColors(clockAppearance);
-            mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
+            setBackgroundColor(context);
 
             for (String key : NaturalHourClockBitmap.FLAGS) {
                 String widgetKey = widgetPrefix() + key;
@@ -185,6 +189,21 @@ public class ClockDaydreamService extends DreamService
                 }
             }
         };
+    }
+
+    protected void setBackgroundColor(Context context)
+    {
+        switch (getBackgroundMode(context))
+        {
+            case AppSettings.BGMODE_BLACK:
+                mainLayout.setBackgroundColor(Color.BLACK);
+                break;
+
+            case AppSettings.BGMODE_COLOR:
+            default:
+                mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
+                break;
+        }
     }
 
     @Override
@@ -326,7 +345,8 @@ public class ClockDaydreamService extends DreamService
         public void startAnimation()
         {
             isAnimated = true;
-            if (option_background_pulse)
+            if (option_background_pulse
+                    && getBackgroundMode(ClockDaydreamService.this) == AppSettings.BGMODE_COLOR)
             {
                 int[] bgColors = new int[]{ clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND),
                                             clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND_ALT) };
