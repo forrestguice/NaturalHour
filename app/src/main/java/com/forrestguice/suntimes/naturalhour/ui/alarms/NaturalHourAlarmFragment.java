@@ -81,27 +81,17 @@ public class NaturalHourAlarmFragment extends Fragment
 
     public void setAlarmID(String alarmID)
     {
+        int[] params = NaturalHourProvider.getAlarmInfo(alarmID).fromAlarmID(alarmID);
+        if (params != null) {
+            setHourMode(params[0]);
+        }
         alarmSelect.setSelectedEventID(alarmID);
 
         /*NaturalHourAlarmType alarmType = NaturalHourProvider.getAlarmInfo(alarmID);
-        switch (alarmType.getTypeID())
-        {
-            // TODO
+        switch (alarmType.getTypeID()) {
             case NaturalHourAlarm1.TYPE_PREFIX:
-                alarmSelect.setSelectedEventID(alarmID);
-
             case NaturalHourAlarm0.TYPE_PREFIX:
-            default:
-                alarmSelect.setSelectedEventID(alarmID);
-                break;
-        }*/
-
-        /*int[] params = NaturalHourProvider.getAlarmInfo(alarmID).fromAlarmID(alarmID);
-        if (params != null)
-        {
-            setHourMode(params[0]);
-            setHour(params[1]);
-            setMoment(params[2]);
+            default: break;
         }*/
     }
 

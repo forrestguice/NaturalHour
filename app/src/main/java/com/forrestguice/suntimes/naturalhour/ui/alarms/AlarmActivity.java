@@ -112,10 +112,9 @@ public class AlarmActivity extends AppCompatActivity
         fragment = (NaturalHourAlarmFragment) fragments.findFragmentById(R.id.naturalhouralarm_fragment);
         if (fragment != null)
         {
+            fragment.setHourMode(AppSettings.getClockIntValue(AlarmActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
             if (param_alarmID != null) {
-                fragment.setAlarmID(param_alarmID);
-            } else {
-                fragment.setHourMode(AppSettings.getClockIntValue(AlarmActivity.this, NaturalHourClockBitmap.VALUE_HOURMODE));
+                fragment.setAlarmID(param_alarmID);    // overrides hourMode
             }
             fragment.setIs24(AppSettings.fromTimeFormatMode(AlarmActivity.this, AppSettings.getTimeFormatMode(AlarmActivity.this), suntimesInfo) == 24);   // TODO: timeformat
             fragment.setLocation(param_latitude, param_longitude, param_altitude);
