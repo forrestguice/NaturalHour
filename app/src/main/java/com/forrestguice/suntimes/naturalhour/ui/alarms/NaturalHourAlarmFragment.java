@@ -383,6 +383,7 @@ public class NaturalHourAlarmFragment extends Fragment
         public static List<HourModeDisplay> getHourModes(Context context)
         {
             String[] rawValues = context.getResources().getStringArray(R.array.pref_hourdef_values);
+            String[] displaySymbols = context.getResources().getStringArray(R.array.hourdef_symbols);
             String[] displayStrings = context.getResources().getStringArray(R.array.pref_hourdef_display);
             ArrayList<HourModeDisplay> modes = new ArrayList<>();
             for (int i=0; i<rawValues.length; i++)
@@ -390,7 +391,8 @@ public class NaturalHourAlarmFragment extends Fragment
                 try {
                     int value = Integer.parseInt(rawValues[i]);
                     String displayString = displayStrings[i];
-                    modes.add(new HourModeDisplay(value, displayString));
+                    String symbol = displaySymbols[value];
+                    modes.add(new HourModeDisplay(value, displayString + " " + symbol));
 
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     Log.w("getHourModes", "failed to parse mode: " + e);

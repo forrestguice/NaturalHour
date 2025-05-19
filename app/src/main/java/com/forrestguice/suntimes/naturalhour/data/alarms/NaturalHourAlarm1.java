@@ -115,8 +115,9 @@ public class NaturalHourAlarm1 extends NaturalHourAlarm0
     @Override
     public String getAlarmSummary(Context context, @Nullable String alarmID)
     {
+        int[] nightwatch = fromAlarmID(alarmID);
         if (fromAlarmID(alarmID) != null) {
-            return context.getString(R.string.alarm_summary_format);
+            return context.getString(R.string.alarm_summary_format, context.getString(R.string.app_name), (nightwatch != null ? " (" + nightwatch[0] + ")" : ""));
         } else return null;
     }
 

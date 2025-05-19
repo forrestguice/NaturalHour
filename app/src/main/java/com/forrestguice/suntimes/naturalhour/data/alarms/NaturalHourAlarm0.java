@@ -128,9 +128,15 @@ public class NaturalHourAlarm0 implements NaturalHourAlarmType
     }
 
     @Override
-    public String getAlarmSummary(Context context, @Nullable String alarmID) {
-        if (alarmIdToNaturalHour(alarmID) != null) {
-            return context.getString(R.string.alarm_summary_format);
+    public String getAlarmSummary(Context context, @Nullable String alarmID)
+    {
+        if (alarmIdToNaturalHour(alarmID) != null)
+        {
+            int[] hour = alarmIdToNaturalHour(alarmID);
+            String[] symbols = context.getResources().getStringArray(R.array.hourdef_symbols);
+            if (hour != null && hour[0] >= 0 && hour[0] < symbols.length) {
+                return context.getString(R.string.alarm_summary_format, context.getString(R.string.app_name), symbols[hour[0]]);
+            } else return context.getString(R.string.app_name);
         } else return null;
     }
 

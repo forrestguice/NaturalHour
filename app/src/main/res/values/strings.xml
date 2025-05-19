@@ -106,6 +106,15 @@
         <item>2</item>
         <item>5</item>
     </string-array>
+    <string-array name="hourdef_symbols" translatable="false">  <!-- one-to-one with hourdef int values -->
+        <item>↑↓</item>    <!-- 0; sunrise, sunset -->
+        <item>↑↑↓↓</item>  <!-- 1; dawn, dusk -->
+        <item>↓</item>     <!-- 2; sunset -->
+        <item>↑</item>     <!-- 3; sunrise -->
+        <item>~</item>     <!-- 4; noon -->
+        <item>↓↓</item>    <!-- 5; dusk -->
+        <item>↑↑</item>    <!-- 6; dawn -->
+    </string-array>
 
     <string name="pref_title_timeformat">Time Format</string>
     <string-array name="pref_timeformat_display">
@@ -445,7 +454,7 @@
     <string name="dialog_cancel">@android:string/cancel</string>
 
     <string name="alarm_title_format">%s</string>
-    <string name="alarm_summary_format">@string/app_name</string>
+    <string name="alarm_summary_format">%1$s (%2$s)</string>
 
     <string name="min_suntimes_alarms_version" translatable="false">Suntimes v0.14.0</string>   <!-- should match version_code -->
     <integer name="min_suntimes_alarms_version_code" translatable="false">80</integer>                         <!-- TODO: set code -->
