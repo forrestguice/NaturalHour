@@ -129,6 +129,15 @@ public class MainActivity extends AppCompatActivity
         setShowWhenLocked();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
 
+        if (Build.VERSION.SDK_INT >= 28)
+        {
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            if (Build.VERSION.SDK_INT >= 30) {
+                layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+            } else layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(layoutParams);
+        }
+
         if (suntimesInfo.appTheme != null) {    // override the theme
             AppThemeInfo.setTheme(this, suntimesInfo);
         }
