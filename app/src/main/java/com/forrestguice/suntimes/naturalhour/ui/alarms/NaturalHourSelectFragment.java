@@ -154,14 +154,14 @@ public class NaturalHourSelectFragment extends AlarmSelectFragmentBase implement
     {
         if (hourPicker != null) {
             return getBoolArg(ARG_MODE24, DEF_MODE24) ? hourPicker.getValue() : (hourPicker.getValue() + 12 * daynightPicker.getValue());
-        } else return 0;
+        } else return DEF_HOUR;
     }
 
     public int getSelectedMoment()
     {
         if (momentPicker != null) {
             return momentPicker.getValue();
-        } else return 0;
+        } else return DEF_MOMENT;
     }
 
     @Override
@@ -190,4 +190,5 @@ public class NaturalHourSelectFragment extends AlarmSelectFragmentBase implement
     protected int getLayoutResourceID() {
         return R.layout.fragment_naturalhour_selector;
     }
+
 }

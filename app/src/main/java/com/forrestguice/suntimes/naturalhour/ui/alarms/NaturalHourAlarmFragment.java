@@ -31,6 +31,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.AddonHelper;
@@ -45,6 +49,7 @@ import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.EXTRA_ALARM_NOW;
@@ -65,6 +70,7 @@ public class NaturalHourAlarmFragment extends Fragment
 
     protected TextView text_time;
     protected AlarmSelectFragment alarmSelect;
+    protected Spinner modePicker;
 
     public NaturalHourAlarmFragment()
     {
@@ -204,6 +210,16 @@ public class NaturalHourAlarmFragment extends Fragment
             //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());
             alarmSelect.initViews(alarmSelect.getView());    // re-init views
         }
+
+        Context context = content.getContext();
+        modePicker = (Spinner) content.findViewById(R.id.pick_hourMode);
+        if (modePicker != null)
+        {
+            ArrayAdapter<HourModeDisplay> adapter = new ArrayAdapter<HourModeDisplay>(context, R.layout.layout_listitem_hourmode, android.R.id.text1, HourModeDisplay.getHourModes(context));
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            modePicker.setAdapter(adapter);
+            modePicker.setOnItemSelectedListener(onHourModeSelected);
+        }
     }
 
     @Override
@@ -236,8 +252,29 @@ public class NaturalHourAlarmFragment extends Fragment
         }
     };
 
-    protected void updateViews(Context context) {
+    private final AdapterView.OnItemSelectedListener onHourModeSelected = new AdapterView.OnItemSelectedListener()
+    {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            setHourMode(((HourModeDisplay) modePicker.getSelectedItem()).getValue());
+            updateViews(getActivity());
+            triggerAlarmSelected();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {}
+    };
+
+    protected void updateViews(Context context)
+    {
         updateTimeView(getAlarmID());
+
+        if (modePicker != null) {
+            int i = HourModeDisplay.findItem(modePicker.getAdapter(), getHourMode());
+            if (i >= 0) {
+                modePicker.setSelection(i);
+            }
+        }
     }
 
     protected void updateTimeView(String alarmID)
@@ -308,6 +345,58 @@ public class NaturalHourAlarmFragment extends Fragment
             if (listener != null) {
                 listener.onAlarmSelected(getAlarmID());
             }
+        }
+    }
+
+    /**
+     * HourModeDisplay
+     */
+    public static class HourModeDisplay
+    {
+        public HourModeDisplay(int value, String displayString) {
+            this.value = value;
+            this.displayString = displayString;
+        }
+
+        private final int value;
+        public int getValue() {
+            return value;
+        }
+
+        private final String displayString;
+        public String toString() {
+            return displayString;
+        }
+
+        public static int findItem(Adapter adapter, int value)
+        {
+            for (int i=0; i<adapter.getCount(); i++)
+            {
+                HourModeDisplay modeDisplay = (HourModeDisplay) adapter.getItem(i);
+                if (value == modeDisplay.getValue()) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public static List<HourModeDisplay> getHourModes(Context context)
+        {
+            String[] rawValues = context.getResources().getStringArray(R.array.pref_hourdef_values);
+            String[] displayStrings = context.getResources().getStringArray(R.array.pref_hourdef_display);
+            ArrayList<HourModeDisplay> modes = new ArrayList<>();
+            for (int i=0; i<rawValues.length; i++)
+            {
+                try {
+                    int value = Integer.parseInt(rawValues[i]);
+                    String displayString = displayStrings[i];
+                    modes.add(new HourModeDisplay(value, displayString));
+
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    Log.w("getHourModes", "failed to parse mode: " + e);
+                }
+            }
+            return modes;
         }
     }
 }

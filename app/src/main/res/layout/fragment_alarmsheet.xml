@@ -18,9 +18,31 @@
         android:name="com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourSelectFragment"
         android:layout_width="0dp"
         android:layout_height="0dp" app:layout_constraintVertical_weight="2.5"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/naturalhourselect_hourMode"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_time" />
+
+    <LinearLayout android:id="@+id/naturalhourselect_hourMode"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingLeft="16dp" android:paddingRight="16dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:background="?attr/dialogBackground">
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:labelFor="@+id/pick_hourMode"
+            android:textSize="?attr/text_size_small"
+            android:text="@string/pref_title_hourdef" />
+
+        <Spinner android:id="@+id/pick_hourMode"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
