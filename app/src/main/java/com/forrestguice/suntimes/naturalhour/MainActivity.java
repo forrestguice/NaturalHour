@@ -204,6 +204,25 @@ public class MainActivity extends AppCompatActivity
         AppSettings.sanityCheck(this);
     }
 
+    public static final int REQUEST_SETTINGS = 1000;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("DEBUG", "onActivityResult: " + requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case REQUEST_SETTINGS:
+                FragmentManager fragments = getSupportFragmentManager();
+                NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+                if (fragment != null) {
+                    fragment.initColorCollection(this, true);
+                }
+                break;
+        }
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         Log.d("DEBUG", "onNewIntent");
@@ -951,7 +970,7 @@ public class MainActivity extends AppCompatActivity
     protected void showSettings()
     {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_SETTINGS);
     }
 
     protected void showAlarmDialog()

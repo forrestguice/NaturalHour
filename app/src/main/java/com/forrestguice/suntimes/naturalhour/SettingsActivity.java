@@ -31,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.forrestguice.suntimes.addon.AppThemeInfo;
@@ -40,6 +41,11 @@ import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.IntListPreference;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.Toast;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetActivity;
 
 import java.util.TimeZone;
 
@@ -91,11 +97,78 @@ public class SettingsActivity extends AppCompatActivity
     {
         public static final String TAG = "naturalHourFragment";
 
+        public static final int REQUEST_PICKCOLORS_LIGHT = 100;
+        public static final int REQUEST_PICKCOLORS_DARK = 101;
+
+        public static final String KEY_COLORS_LIGHT = "colors_light";
+        public static final String KEY_COLORS_DARK = "colors_dark";
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+            initColors();
+        }
+
+        protected void initColors()
+        {
+            Context context = getActivity();
+
+            if (context != null)
+            {
+                final ColorValuesCollectionPreference lightColorsPref = (ColorValuesCollectionPreference) findPreference(KEY_COLORS_LIGHT);
+                if (lightColorsPref != null) {
+                    lightColorsPref.setAppWidgetID(0);
+                    lightColorsPref.setCollection(context, new ClockColorValuesCollection<ColorValues>(context));
+                    lightColorsPref.initPreferenceOnClickListener(this, REQUEST_PICKCOLORS_LIGHT);
+                }
+
+                final ColorValuesCollectionPreference darkColorsPref = (ColorValuesCollectionPreference) findPreference(KEY_COLORS_DARK);
+                if (darkColorsPref != null) {
+                    darkColorsPref.setAppWidgetID(-1);
+                    darkColorsPref.setCollection(context, new ClockColorValuesCollection<ColorValues>(context));
+                    darkColorsPref.initPreferenceOnClickListener(this, REQUEST_PICKCOLORS_DARK);
+                }
+            }
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            Log.d("DEBUG", "onActivityResult: " + requestCode);
+            super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode)
+            {
+                case REQUEST_PICKCOLORS_LIGHT:
+                case REQUEST_PICKCOLORS_DARK:
+                    onPickColors(requestCode, resultCode, data);
+                    break;
+            }
+        }
+
+        private void onPickColors(int requestCode, int resultCode, Intent data)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                String selection = data.getStringExtra(ColorValuesSheetActivity.EXTRA_SELECTED_COLORS_ID);
+                int appWidgetID = data.getIntExtra(ColorValuesSheetActivity.EXTRA_APPWIDGET_ID, 0);
+                String colorTag = data.getStringExtra(ColorValuesSheetActivity.EXTRA_COLORTAG);
+                ColorValuesCollection<ColorValues> collection = data.getParcelableExtra(ColorValuesSheetActivity.EXTRA_COLLECTION);
+                //Log.d("DEBUG", "onPickColors: " + selection);
+
+                if (collection != null) {
+                    collection.setSelectedColorsID(getActivity(), selection, appWidgetID, colorTag);
+                    Log.d("DEBUG", "onPickColors: colorTag: " + colorTag);
+                }
+
+                String prefKey = (requestCode == REQUEST_PICKCOLORS_DARK) ? KEY_COLORS_DARK : KEY_COLORS_LIGHT;
+                final ColorValuesCollectionPreference colorsPref = (ColorValuesCollectionPreference) findPreference(prefKey);
+                if (colorsPref != null) {
+                    colorsPref.setCollection(getActivity(), collection);
+                }
+                Toast.makeText(getActivity(), getString(R.string.restart_required_message), Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override

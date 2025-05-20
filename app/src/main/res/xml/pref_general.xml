@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:title="@string/pref_category_general">
@@ -38,6 +39,18 @@
             android:entryValues="@array/pref_bgmode_values"
             android:defaultValue="0"
             android:summary="%s" />
+
+        <com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference
+            android:key="colors_light" android:persistent="false"
+            android:title="@string/action_colors_light" app:appWidgetID="1"
+            android:summary="%s"
+            app:showAlpha="true" />
+
+        <com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference
+            android:key="colors_dark" android:persistent="false"
+            android:title="@string/action_colors_dark" app:appWidgetID="-1"
+            android:summary="%s"
+            app:showAlpha="true" />
 
     </PreferenceCategory>
 
