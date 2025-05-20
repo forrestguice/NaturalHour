@@ -31,6 +31,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.ReplacementSpan;
@@ -338,6 +339,20 @@ public class DisplayStrings
         {
             int end = start + toBold.length();
             span.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return span;
+    }
+
+    public static SpannableString createBackgroundColorSpan(SpannableString span, String text, String toColorize, int color)
+    {
+        if (span == null) {
+            span = new SpannableString(text);
+        }
+        int start = text.indexOf(toColorize);
+        if (start >= 0)
+        {
+            int end = start + toColorize.length();
+            span.setSpan(new BackgroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return span;
     }
