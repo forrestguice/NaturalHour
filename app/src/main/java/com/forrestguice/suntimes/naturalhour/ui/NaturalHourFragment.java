@@ -489,6 +489,7 @@ public class NaturalHourFragment extends Fragment
         @SuppressLint("SetTextI18n")
         public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, NaturalHourAdapterOptions options)
         {
+            card_date.setVisibility(options.showDate ? View.VISIBLE : View.GONE);
             if (data != null)
             {
                 if (text_debug != null && text_debug.getVisibility() == View.VISIBLE)
@@ -552,6 +553,7 @@ public class NaturalHourFragment extends Fragment
         public TimeZone timezone;
         public int timeFormat;
         public ColorValues colors;
+        public boolean showDate = true;
 
         public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors) {
             this.suntimes_info = info;
