@@ -141,11 +141,7 @@ public class MainActivity extends AppCompatActivity
             AppThemeInfo.setTheme(this, suntimesInfo);
         }
 
-        Integer bgcolor = AppSettings.getBackgroundModeColor(this, null);
-        if (bgcolor != null) {
-            getWindow().setBackgroundDrawable(new ColorDrawable(bgcolor));
-        }
-
+        setBackgroundColor(AppSettings.getBackgroundModeColor(this, null));
         setContentView(R.layout.activity_main);
         AppSettings.sanityCheck0(this);
 
@@ -269,6 +265,7 @@ public class MainActivity extends AppCompatActivity
     {
         final FragmentManager fragments = getSupportFragmentManager();
         NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+
         if (sheetDialog != null && naturalHour != null)
         {
             sheetDialog.setColorCollection(naturalHour.getColorCollection());
@@ -282,10 +279,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         ColorValues colors = ((naturalHour != null) ? naturalHour.getClockColors() : null);
-        Integer bgcolor = AppSettings.getBackgroundModeColor(this, colors);
-        if (bgcolor != null) {
-            getWindow().setBackgroundDrawable(new ColorDrawable(bgcolor));
-        }
+        setBackgroundColor(AppSettings.getBackgroundModeColor(this, colors));
     }
 
     @Override
@@ -459,6 +453,13 @@ public class MainActivity extends AppCompatActivity
         bottomSheet.setState(sheetState);
     }
 
+    protected void setBackgroundColor(@Nullable Integer bgcolor)
+    {
+        if (bgcolor != null) {
+            getWindow().setBackgroundDrawable(new ColorDrawable(bgcolor));
+        }
+    }
+
     protected static void setVisibility(Context context, View v, int visibility, boolean upward, boolean animate)
     {
         if (animate)
@@ -548,11 +549,16 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public void onColorValuesSelected(ColorValues values) {
+        public void onColorValuesSelected(ColorValues values)
+        {
             FragmentManager fragments = getSupportFragmentManager();
             NaturalHourFragment naturalHour = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
             if (naturalHour != null) {
                 naturalHour.setClockColors(values);
+            }
+
+            if (AppSettings.getBackgroundMode(MainActivity.this) == AppSettings.BGMODE_COLOR) {
+                setBackgroundColor(AppSettings.getBackgroundModeColor(MainActivity.this, values));
             }
         }
 
