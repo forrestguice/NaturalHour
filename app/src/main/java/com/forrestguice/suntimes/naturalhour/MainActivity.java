@@ -368,10 +368,64 @@ public class MainActivity extends AppCompatActivity
         if (fab_toggleFullscreen != null)
         {
             if (isFullscreen || isLocked) {
-                fab_toggleFullscreen.show();
+                showFabMomentarily(fab_toggleFullscreen, 5000);
+
             } else {
                 fab_toggleFullscreen.hide();
+                resetFabHideRunnable(fab_toggleFullscreen);
             }
+
+            if (fragment != null) {
+                fragment.setCardListener(new NaturalHourFragment.NaturalHourAdapterListener()
+                {
+                    public void onClockClick(int position) {
+                        fragment.announceTime();
+                    }
+                    public void onDateClick(int position) {
+                        fragment.showToday(false);
+                        showFabMomentarilyWhenFullscreenOrLocked(fab_toggleFullscreen, 5000);
+                    }
+                    public void onCardClick(int position) {
+                        showFabMomentarilyWhenFullscreenOrLocked(fab_toggleFullscreen, 5000);
+                    }
+                    public boolean onCardLongClick(int position) {
+                        return false;
+                    }
+                });
+            }
+        }
+    }
+
+    protected void showFabMomentarilyWhenFullscreenOrLocked(FloatingActionButton button, long duration)
+    {
+        if (isFullscreen() || isDeviceLocked()) {
+            showFabMomentarily(button, duration);
+        }
+    }
+    protected void showFabMomentarily(FloatingActionButton button, long duration)
+    {
+        if (button.getVisibility() != View.VISIBLE) {
+            button.show();
+        }
+
+        resetFabHideRunnable(button);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                button.hide();
+                fabHideRunnable.remove(button);
+            }
+        };
+        fabHideRunnable.put(button, r);
+        button.postDelayed(r, duration);
+    }
+
+    private final HashMap<View, Runnable> fabHideRunnable = new HashMap<>();
+    protected void resetFabHideRunnable(View button)
+    {
+        if (fabHideRunnable.get(button) != null) {
+            button.removeCallbacks(fabHideRunnable.get(button));
+            fabHideRunnable.remove(button);
         }
     }
 
