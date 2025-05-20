@@ -32,6 +32,8 @@ import android.service.dreams.DreamService;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -165,7 +167,26 @@ public class ClockDaydreamService extends DreamService
             }
             clockView.setData(initData(context));
         }
-        animation = new WanderingDreamAnimation(context)
+    }
+
+    protected void setBackgroundColor(Context context)
+    {
+        switch (getBackgroundMode(context))
+        {
+            case AppSettings.BGMODE_BLACK:
+                mainLayout.setBackgroundColor(Color.BLACK);
+                break;
+
+            case AppSettings.BGMODE_COLOR:
+            default:
+                mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
+                break;
+        }
+    }
+
+    protected DreamAnimationInterface initAnimation(Context context)
+    {
+        return new WanderingDreamAnimation(context)
         {
             @Override
             protected TimeInterpolator getFadeInInterpolator() {
@@ -191,41 +212,78 @@ public class ClockDaydreamService extends DreamService
         };
     }
 
-    protected void setBackgroundColor(Context context)
-    {
-        switch (getBackgroundMode(context))
-        {
-            case AppSettings.BGMODE_BLACK:
-                mainLayout.setBackgroundColor(Color.BLACK);
-                break;
-
-            case AppSettings.BGMODE_COLOR:
-            default:
-                mainLayout.setBackgroundColor(clockAppearance.getColor(ClockColorValues.COLOR_BACKGROUND));
-                break;
-        }
-    }
-
     @Override
     public void onAttachedToWindow()
     {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream: onAttachedToWindow");
+        }
         super.onAttachedToWindow();
-        setScreenBright(false);
-        setInteractive(false);
-        setFullscreen(true);
+
+        animation = initAnimation(this);
+        setScreenBright(animation.isScreenBright());
+        setInteractive(animation.isInteractive());
+        setFullscreen(animation.isFullscreen());
+        setDisplayCutoutMode();
+
         initSuntimesInfo();
         setContentView(getLayoutResID());
         initViews(this);
     }
 
     @Override
+    public void onWindowAttributesChanged(WindowManager.LayoutParams attrs)
+    {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream: onWindowAttributesChanged");
+        }
+    }
+
+    protected void setDisplayCutoutMode()
+    {
+        if (Build.VERSION.SDK_INT >= 28)
+        {
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            if (Build.VERSION.SDK_INT >= 30) {
+                layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+            } else layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(layoutParams);
+        }
+    }
+
+    @TargetApi(21)
+    @Override
+    public void onWakeUp()
+    {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream: onWakeUp (0)");
+        }
+        animation.gracefullyStopAnimation(new Runnable()
+        {
+            @Override
+            public void run() {
+                if (BuildConfig.DEBUG) {
+                    Log.d("DEBUG", "daydream: onWakeUp (1)");
+                }
+                finish();
+            }
+        });
+    }
+
+    @Override
     public void onDetachedFromWindow() {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream: onDetachedFromWindow");
+        }
         super.onDetachedFromWindow();
     }
 
     @Override
     public void onDreamingStarted()
     {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream: onDreamingStarted");
+        }
         super.onDreamingStarted();
         startUpdateTask();                  // this loop triggers update on hours/minutes
         if (clockView != null) {
@@ -239,6 +297,9 @@ public class ClockDaydreamService extends DreamService
     @Override
     public void onDreamingStopped()
     {
+        if (BuildConfig.DEBUG) {
+            Log.d("DEBUG", "daydream: onDreamingStopped");
+        }
         stopUpdateTask();
         if (clockView != null) {
             clockView.stopUpdateTask();
@@ -252,7 +313,7 @@ public class ClockDaydreamService extends DreamService
     public void startUpdateTask()
     {
         if (BuildConfig.DEBUG) {
-            Log.d("DEBUG", "daydream update: starting..");
+            Log.d("DEBUG", "daydream: update starting..");
         }
         if (clockView != null) {
             clockView.post(updateRunnable);
@@ -261,7 +322,7 @@ public class ClockDaydreamService extends DreamService
     public void stopUpdateTask()
     {
         if (BuildConfig.DEBUG) {
-            Log.d("DEBUG", "daydream update: stopping..");
+            Log.d("DEBUG", "daydream: update stopping..");
         }
         if (clockView != null) {
             clockView.removeCallbacks(updateRunnable);
@@ -271,7 +332,7 @@ public class ClockDaydreamService extends DreamService
         @Override
         public void run() {
             if (BuildConfig.DEBUG) {
-                Log.d("DEBUG", "daydream update: tick");
+                Log.d("DEBUG", "daydream: update tick");
             }
             if (clockView != null) {
                 clockView.updateBase();
@@ -288,8 +349,12 @@ public class ClockDaydreamService extends DreamService
     {
         void startAnimation();
         void stopAnimation();
-        void gracefulStopAnimation(@Nullable Runnable onAnimationEnd);
+        void gracefullyStopAnimation(@Nullable Runnable onAnimationEnd);
         boolean isAnimated();
+
+        boolean isFullscreen();
+        boolean isInteractive();
+        boolean isScreenBright();
     }
 
     /**
@@ -297,6 +362,10 @@ public class ClockDaydreamService extends DreamService
      */
     protected class WanderingDreamAnimation implements DreamAnimationInterface
     {
+        public boolean option_interactive = false;
+        public boolean option_fullscreen = true;
+        public boolean option_screenbright = false;
+
         protected boolean option_wander;
         protected boolean option_randomPosition;
         protected boolean option_fade_scale, option_fade_wander, option_fade_rotate;
@@ -368,7 +437,7 @@ public class ClockDaydreamService extends DreamService
         }
 
         @Override
-        public void gracefulStopAnimation(@Nullable Runnable onAnimationEnd)
+        public void gracefullyStopAnimation(@Nullable Runnable onAnimationEnd)
         {
             isAnimated = false;
             if (clockLayout != null) {
@@ -382,8 +451,24 @@ public class ClockDaydreamService extends DreamService
         }
 
         protected boolean isAnimated = false;
+        @Override
         public boolean isAnimated() {
             return isAnimated;
+        }
+
+        @Override
+        public boolean isFullscreen() {
+            return option_fullscreen;
+        }
+
+        @Override
+        public boolean isInteractive() {
+            return option_interactive;
+        }
+
+        @Override
+        public boolean isScreenBright() {
+            return option_screenbright;
         }
 
         protected void animateFadeIn(final View view)
