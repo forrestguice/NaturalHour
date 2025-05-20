@@ -27,6 +27,11 @@
         <CheckBoxPreference android:key="clockface_showSeconds"
             android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/clockface_show_seconds" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_theme">
+
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="backgroundMode"
             android:title="@string/pref_title_bgmode"
             android:entries="@array/pref_bgmode_display"
