@@ -288,6 +288,7 @@ public class ClockDaydreamService extends DreamService
     {
         void startAnimation();
         void stopAnimation();
+        void gracefulStopAnimation(@Nullable Runnable onAnimationEnd);
         boolean isAnimated();
     }
 
@@ -342,6 +343,7 @@ public class ClockDaydreamService extends DreamService
             wait_duration_max = r.getInteger(R.integer.anim_daydream_wait_duration_max);
         }
 
+        @Override
         public void startAnimation()
         {
             isAnimated = true;
@@ -355,6 +357,7 @@ public class ClockDaydreamService extends DreamService
             animateFadeIn(clockLayout);
         }
 
+        @Override
         public void stopAnimation()
         {
             isAnimated = false;
@@ -362,6 +365,20 @@ public class ClockDaydreamService extends DreamService
                 clockLayout.clearAnimation();
             }
             stopAnimateBackground();
+        }
+
+        @Override
+        public void gracefulStopAnimation(@Nullable Runnable onAnimationEnd)
+        {
+            isAnimated = false;
+            if (clockLayout != null) {
+                clockLayout.clearAnimation();
+
+                if (onAnimationEnd != null) {
+                    animateFadeOut(clockLayout, 1000, onAnimationEnd, 0);
+                }
+            }
+            stopAnimateBackground();   // TODO: graceful stop
         }
 
         protected boolean isAnimated = false;
@@ -407,6 +424,20 @@ public class ClockDaydreamService extends DreamService
         }
         protected void animateFadeOut(final View view)
         {
+            animateFadeOut(view, fade_duration_out, new Runnable() {
+                @Override
+                public void run() {
+                    if (isAnimated) {
+                        if (option_randomPosition)
+                            setRandomViewPosition(view);
+                        else centerViewPosition(view);
+                        animateFadeIn(view);
+                    }
+                }
+            }, random(hide_duration_min, hide_duration_max));
+        }
+        protected void animateFadeOut(final View view, long duration, @Nullable Runnable onAnimationEnd, long onAnimationEndDelay)
+        {
             if (BuildConfig.DEBUG) {
                 Log.d("DEBUG", "animateFadeOut");
             }
@@ -434,24 +465,16 @@ public class ClockDaydreamService extends DreamService
                 view.setAlpha(alpha_value_max);
                 animation.alpha(alpha_value_min)
                         .setInterpolator(getFadeOutInterpolator())
-                        .setDuration(fade_duration_out)
+                        .setDuration(duration)
                         .setListener(new AnimatorListenerAdapter()
                         {
                             @Override
                             public void onAnimationEnd(Animator animation)
                             {
                                 super.onAnimationEnd(animation);
-                                view.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (isAnimated) {
-                                            if (option_randomPosition)
-                                                setRandomViewPosition(view);
-                                            else centerViewPosition(view);
-                                            animateFadeIn(view);
-                                        }
-                                    }
-                                }, random(hide_duration_min, hide_duration_max));
+                                if (onAnimationEnd != null) {
+                                    view.postDelayed(onAnimationEnd, onAnimationEndDelay);
+                                }
                             }
                         });
             }
