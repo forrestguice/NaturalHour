@@ -19,7 +19,6 @@
 
 package com.forrestguice.suntimes.naturalhour;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 import androidx.lifecycle.ViewModelProviders;
 import android.animation.Animator;
@@ -142,12 +141,9 @@ public class MainActivity extends AppCompatActivity
             AppThemeInfo.setTheme(this, suntimesInfo);
         }
 
-        if (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_WALLPAPER ||
-                AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_BLACK)
-        {
-            int color = (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_BLACK)
-                    ? R.color.black : R.color.transparent;
-            getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, color));
+        Integer bgcolor = AppSettings.getBackgroundModeColor(this, null);
+        if (bgcolor != null) {
+            getWindow().setBackgroundDrawable(new ColorDrawable(bgcolor));
         }
 
         setContentView(R.layout.activity_main);
@@ -266,12 +262,10 @@ public class MainActivity extends AppCompatActivity
             alarmSheet.setFragmentListener(onAlarmDialog);
         }
 
-        if (AppSettings.getBackgroundMode(this) == AppSettings.BGMODE_COLOR && naturalHour != null)
-        {
-            ColorValues colors = naturalHour.getClockColors();
-            if (colors != null) {
-                getWindow().setBackgroundDrawable(new ColorDrawable(colors.getColor(ClockColorValues.COLOR_BACKGROUND)));
-            }
+        ColorValues colors = ((naturalHour != null) ? naturalHour.getClockColors() : null);
+        Integer bgcolor = AppSettings.getBackgroundModeColor(this, colors);
+        if (bgcolor != null) {
+            getWindow().setBackgroundDrawable(new ColorDrawable(bgcolor));
         }
     }
 

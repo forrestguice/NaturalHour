@@ -23,6 +23,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
@@ -37,8 +38,10 @@ import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
+import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
+import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 
 import java.util.TimeZone;
 
@@ -167,6 +170,25 @@ public class AppSettings
         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
         prefs.putInt(KEY_MODE_BACKGROUND, value);
         prefs.apply();
+    }
+
+    public static Integer getBackgroundModeColor(Context context, @Nullable ColorValues colors)
+    {
+        switch (AppSettings.getBackgroundMode(context))
+        {
+            case AppSettings.BGMODE_COLOR:
+                return (colors != null
+                    ? colors.getColor(ClockColorValues.COLOR_BACKGROUND)
+                    : Color.BLACK);
+
+            case AppSettings.BGMODE_BLACK:
+                return Color.BLACK;
+
+            case AppSettings.BGMODE_WALLPAPER:
+                return Color.TRANSPARENT;
+
+            default: return null;
+        }
     }
 
     /**
