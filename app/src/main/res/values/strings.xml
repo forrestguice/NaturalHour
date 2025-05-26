@@ -60,6 +60,7 @@
     <string name="pref_category_nightwatch">Night Watch</string>
     <string name="pref_category_theme">Theme</string>
     <string name="pref_category_animation">Animations</string>
+    <string name="pref_category_daydream">Daydream</string>
     
     <string name="pref_title_midnight_top">Midnight at top</string>
     <string name="pref_title_center_noon">Center on solar noon</string>
@@ -231,6 +232,10 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string name="pref_title_daydream_fullscreen">Fullscreen</string>
+    <string name="pref_title_daydream_interactive">Touch interactions</string>
+    <string name="pref_title_daydream_screenbright">Keep screen bright</string>
 
     <string name="format_announcement">%1$s\n%2$s</string>                <!-- clocktime \n naturalhour -->
     <string name="format_announcement_clocktime">%1$s %2$s</string>       <!-- time [timezone]; 7:00 AM [US/Arizona] -->

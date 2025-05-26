@@ -20,6 +20,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/pref_category_daydream">
+
+        <CheckBoxPreference android:key="widget_0_fullscreen"
+            android:title="@string/pref_title_daydream_fullscreen" android:defaultValue="@bool/daydream_fullscreen" />
+
+        <CheckBoxPreference android:key="widget_0_screenbright"
+            android:title="@string/pref_title_daydream_screenbright" android:defaultValue="@bool/daydream_screenbright" />
+
+        <CheckBoxPreference android:key="widget_0_interactive"
+            android:title="@string/pref_title_daydream_interactive" android:defaultValue="@bool/daydream_interactive" />
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory
+        android:title="@string/pref_category_animation">
+    </PreferenceCategory>-->
+
+    <PreferenceCategory
         android:title="@string/pref_category_general">
 
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
@@ -44,6 +62,9 @@
             android:defaultValue="@integer/daydream_tzmode"
             android:summary="%s" />
 
+        <CheckBoxPreference android:key="widget_0_clockface_showSeconds"
+            android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/daydream_show_seconds" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -54,14 +75,6 @@
 
         <CheckBoxPreference android:key="widget_0_clockface_centerNoon"
             android:title="@string/pref_title_center_noon" android:defaultValue="@bool/clockface_center_noon" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/pref_category_animation">
-
-        <CheckBoxPreference android:key="widget_0_clockface_showSeconds"
-            android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/daydream_show_seconds" />
 
     </PreferenceCategory>
 

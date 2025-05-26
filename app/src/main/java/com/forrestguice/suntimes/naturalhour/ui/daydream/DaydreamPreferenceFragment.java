@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2024 Forrest Guice
+    Copyright (C) 2024-2025 Forrest Guice
     This file is part of NaturalHour.
 
     NaturalHour is free software: you can redistribute it and/or modify
@@ -18,11 +18,16 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.daydream;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment;
+import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 
 public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
 {
@@ -35,4 +40,93 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
     public int getPreferenceResources() {
         return R.xml.pref_daydream;
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(onDaydreamPrefChanged);
+    }
+
+    @Override
+    public void onPause()
+    {
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(onDaydreamPrefChanged);
+        super.onPause();
+    }
+
+    private final SharedPreferences.OnSharedPreferenceChangeListener onDaydreamPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener()
+    {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String prefKey)
+        {
+            int appWidgetId = getAppWidgetId();
+            if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
+            {
+                String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+                if (prefKey.startsWith(widgetPrefix0))
+                {
+                    String key = prefKey.replace(widgetPrefix0, "");
+                    String widgetKey = WidgetSettings.widgetKeyPrefix(appWidgetId) + key;
+
+                    SharedPreferences.Editor editor = prefs.edit();
+                    for (int i=0; i<DaydreamSettings.FLAGS.length; i++)
+                    {
+                        if (DaydreamSettings.FLAGS[i].equals(key)) {
+                            editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, DaydreamSettings.FLAGS_DEF[i]));
+                            editor.apply();
+                            return;
+                        }
+                    }
+                }
+
+            } else Log.e("onDaydreamPrefChanged", "AppWidgetID is unset! ignoring change to " + prefKey);
+        }
+    };
+
+    @Override
+    protected void initWidgetDefaults()
+    {
+        super.initWidgetDefaults();
+
+        Context context = getActivity();
+        int appWidgetId = getAppWidgetId();
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
+        {
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = prefs.edit();
+            for (int i = 0; i<DaydreamSettings.FLAGS.length; i++) {
+                String prefKey = widgetPrefix0 + DaydreamSettings.FLAGS[i];
+                String widgetKey = widgetPrefix + DaydreamSettings.FLAGS[i];
+                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, DaydreamSettings.FLAGS_DEF[i]));
+            }
+            editor.apply();
+        }
+    }
+
+    @Override
+    protected void onPrepareReconfigure(int appWidgetId)
+    {
+        super.onPrepareReconfigure(appWidgetId);
+
+        Context context = getActivity();
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
+        {
+            String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
+            String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = prefs.edit();
+            for (int i = 0; i<DaydreamSettings.FLAGS.length; i++) {
+                String prefKey = widgetPrefix + DaydreamSettings.FLAGS[i];
+                String widgetKey = widgetPrefix0 + DaydreamSettings.FLAGS[i];
+                editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, DaydreamSettings.FLAGS_DEF[i]));
+            }
+            editor.apply();
+        }
+    }
+
 }

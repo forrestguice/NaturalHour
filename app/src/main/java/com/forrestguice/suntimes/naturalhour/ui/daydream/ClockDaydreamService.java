@@ -362,9 +362,9 @@ public class ClockDaydreamService extends DreamService
      */
     protected class WanderingDreamAnimation implements DreamAnimationInterface
     {
-        public boolean option_interactive = false;
-        public boolean option_fullscreen = true;
-        public boolean option_screenbright = false;
+        public boolean option_interactive;
+        public boolean option_fullscreen;
+        public boolean option_screenbright;
 
         protected boolean option_wander;
         protected boolean option_randomPosition;
@@ -382,9 +382,12 @@ public class ClockDaydreamService extends DreamService
         protected float wander_value_y = 200f;
         protected int option_rotate_chance = 2;
 
-        public WanderingDreamAnimation(Context context)
+        public WanderingDreamAnimation(Resources r)
         {
-            Resources r = context.getResources();
+            option_fullscreen = r.getBoolean(R.bool.daydream_fullscreen);
+            option_interactive = r.getBoolean(R.bool.daydream_interactive);
+            option_screenbright = r.getBoolean(R.bool.daydream_screenbright);
+
             option_randomPosition = r.getBoolean(R.bool.anim_daydream_option_randomPosition);
             option_wander = r.getBoolean(R.bool.anim_daydream_option_wander);
             option_fade_scale = r.getBoolean(R.bool.anim_daydream_option_fade_scale);
@@ -410,6 +413,13 @@ public class ClockDaydreamService extends DreamService
 
             wait_duration_min = r.getInteger(R.integer.anim_daydream_wait_duration_min);
             wait_duration_max = r.getInteger(R.integer.anim_daydream_wait_duration_max);
+        }
+        public WanderingDreamAnimation(Context context)
+        {
+            this(context.getResources());
+            option_fullscreen = DaydreamSettings.getDaydreamFlag(context, 0, DaydreamSettings.KEY_MODE_FULLSCREEN, DaydreamSettings.DEF_MODE_FULLSCREEN);
+            option_interactive = DaydreamSettings.getDaydreamFlag(context, 0, DaydreamSettings.KEY_MODE_INTERACTIVE, DaydreamSettings.DEF_MODE_INTERACTIVE);
+            option_screenbright = DaydreamSettings.getDaydreamFlag(context, 0, DaydreamSettings.KEY_MODE_SCREENBRIGHT, DaydreamSettings.DEF_MODE_SCREENBRIGHT);
         }
 
         @Override

@@ -36,4 +36,8 @@
     <color name="daydream_bg_dark">@android:color/black</color>
     <color name="daydream_bg_light">@android:color/white</color>
 
+    <bool name="daydream_fullscreen">true</bool>
+    <bool name="daydream_interactive">false</bool>
+    <bool name="daydream_screenbright">false</bool>
+
 </resources>
