@@ -20,9 +20,12 @@
 package com.forrestguice.suntimes.naturalhour;
 
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -327,6 +330,24 @@ public class AppSettings
             case TZMODE_SUNTIMES: return NaturalHourFragment.getTimeZone(context, suntimesInfo);
             case TZMODE_SYSTEM: default: return TimeZone.getDefault();
         }
+    }
+
+    /**
+     * Is the current device a television? This implies limited features.
+     */
+    public static boolean isTelevision(@NonNull Context context)
+    {
+        if (context != null)
+        {
+            if (Build.VERSION.SDK_INT >= 21) {
+                return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+
+            } else if (Build.VERSION.SDK_INT >= 13) {
+                UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+                return (uiModeManager != null && (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION));
+
+            } else return false;
+        } else return false;
     }
 
 }
