@@ -549,6 +549,9 @@
         Copyright &#169 2020-2025 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
+    <string name="dialog_ok">Ok</string>
+    <string name="offset_button_before">Before</string>
+    <string name="offset_button_after">After</string>
 
 
 </resources>
