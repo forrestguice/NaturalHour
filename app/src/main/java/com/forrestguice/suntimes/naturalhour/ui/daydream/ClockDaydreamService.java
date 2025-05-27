@@ -417,9 +417,10 @@ public class ClockDaydreamService extends DreamService
         public WanderingDreamAnimation(Context context)
         {
             this(context.getResources());
-            option_fullscreen = DaydreamSettings.getDaydreamFlag(context, 0, DaydreamSettings.KEY_MODE_FULLSCREEN, DaydreamSettings.DEF_MODE_FULLSCREEN);
-            option_interactive = DaydreamSettings.getDaydreamFlag(context, 0, DaydreamSettings.KEY_MODE_INTERACTIVE, DaydreamSettings.DEF_MODE_INTERACTIVE);
-            option_screenbright = DaydreamSettings.getDaydreamFlag(context, 0, DaydreamSettings.KEY_MODE_SCREENBRIGHT, DaydreamSettings.DEF_MODE_SCREENBRIGHT);
+            option_fullscreen = DaydreamSettings.getDaydreamFlag(context, appWidgetId, DaydreamSettings.KEY_MODE_FULLSCREEN, DaydreamSettings.DEF_MODE_FULLSCREEN);
+            option_interactive = DaydreamSettings.getDaydreamFlag(context, appWidgetId, DaydreamSettings.KEY_MODE_INTERACTIVE, DaydreamSettings.DEF_MODE_INTERACTIVE);
+            option_screenbright = DaydreamSettings.getDaydreamFlag(context, appWidgetId, DaydreamSettings.KEY_MODE_SCREENBRIGHT, DaydreamSettings.DEF_MODE_SCREENBRIGHT);
+            option_background_pulse_duration = DaydreamSettings.getDaydreamIntValue(context, appWidgetId, DaydreamSettings.KEY_ANIM_BGPULSE_DURATION, (int) option_background_pulse_duration);
         }
 
         @Override

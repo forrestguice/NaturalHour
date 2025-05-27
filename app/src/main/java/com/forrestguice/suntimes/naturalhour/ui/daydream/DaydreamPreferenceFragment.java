@@ -70,8 +70,15 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
                     String widgetKey = WidgetSettings.widgetKeyPrefix(appWidgetId) + key;
 
                     SharedPreferences.Editor editor = prefs.edit();
-                    for (int i=0; i<DaydreamSettings.FLAGS.length; i++)
-                    {
+                    for (int i=0; i<DaydreamSettings.VALUES.length; i++) {
+                        if (DaydreamSettings.VALUES[i].equals(key)) {
+                            editor.putInt(widgetKey, prefs.getInt(prefKey, DaydreamSettings.VALUES_DEF[i]));
+                            editor.apply();
+                            return;
+                        }
+                    }
+
+                    for (int i=0; i<DaydreamSettings.FLAGS.length; i++) {
                         if (DaydreamSettings.FLAGS[i].equals(key)) {
                             editor.putBoolean(widgetKey, prefs.getBoolean(prefKey, DaydreamSettings.FLAGS_DEF[i]));
                             editor.apply();
@@ -98,6 +105,13 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
+
+            for (int i = 0; i<DaydreamSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix0 + DaydreamSettings.VALUES[i];
+                String widgetKey = widgetPrefix + DaydreamSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, DaydreamSettings.VALUES_DEF[i]));
+            }
+
             for (int i = 0; i<DaydreamSettings.FLAGS.length; i++) {
                 String prefKey = widgetPrefix0 + DaydreamSettings.FLAGS[i];
                 String widgetKey = widgetPrefix + DaydreamSettings.FLAGS[i];
@@ -120,6 +134,13 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
+
+            for (int i = 0; i<DaydreamSettings.VALUES.length; i++) {
+                String prefKey = widgetPrefix + DaydreamSettings.VALUES[i];
+                String widgetKey = widgetPrefix0 + DaydreamSettings.VALUES[i];
+                editor.putInt(widgetKey, prefs.getInt(prefKey, DaydreamSettings.VALUES_DEF[i]));
+            }
+
             for (int i = 0; i<DaydreamSettings.FLAGS.length; i++) {
                 String prefKey = widgetPrefix + DaydreamSettings.FLAGS[i];
                 String widgetKey = widgetPrefix0 + DaydreamSettings.FLAGS[i];

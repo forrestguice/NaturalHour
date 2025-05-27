@@ -33,9 +33,21 @@
 
     </PreferenceCategory>
 
-    <!--<PreferenceCategory
+    <PreferenceCategory
         android:title="@string/pref_category_animation">
-    </PreferenceCategory>-->
+
+        <com.forrestguice.suntimes.naturalhour.ui.TimeOffsetPickerPreference
+            android:key="widget_0_anim_bgpulse_duration"
+            android:title="Background Pulse (duration)"
+            android:summary="%s"
+            app:minValue="0"
+            app:maxValue="60000"
+            app:allowPickSeconds="true"
+            android:defaultValue="15000"
+            app:resetDefaultsValue="15000"
+            app:resetDefaultsText="Restore Defaults" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_category_general">
