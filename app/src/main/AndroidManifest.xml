@@ -152,6 +152,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/daydream_name"
+            android:theme="@style/NaturalHourDaydreamTheme"
             android:permission="android.permission.BIND_DREAM_SERVICE">
 
             <intent-filter>

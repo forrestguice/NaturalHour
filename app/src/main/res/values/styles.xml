@@ -530,6 +530,8 @@
         <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
     </style>
 
+    <style name="NaturalHourDaydreamTheme" parent="NaturalHourAppTheme.Dark.Large" />
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
