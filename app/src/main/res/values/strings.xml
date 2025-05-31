@@ -254,12 +254,12 @@
     <string name="format_date0_long">MMMM d, yyyy</string>        <!-- February 27, 2020 -->
     <string name="format_date">MMMM d\nEEEE</string>              <!-- Thursday, February 27 -->
     <string name="format_date_long">MMMM d, yyyy\nEEEE</string>   <!-- Thursday, February 27, 2020 -->
-    <string name="format_location">%s, %s</string>                <!-- lat, lon -->
-    <string name="format_location_long">%s, %s %s</string>        <!-- lat, lon [alt] -->
+    <string name="format_location">%1$s, %2$s</string>                <!-- lat, lon -->
+    <string name="format_location_long">%1$s, %2$s %3$s</string>        <!-- lat, lon [alt] -->
     <string name="format_location_altitude">%1$s%2$s</string>     <!-- altitude, e.g. 1600m -->
     <string name="format_tag">[%1$s]</string>                     <!-- [tag] -->
     <string name="format_summary_minutes">%s minutes</string>
-    <string name="format_help"><![CDATA[%s<br/><br/>%s]]></string>
+    <string name="format_help"><![CDATA[%1$s<br/><br/>%2$s]]></string>
 
     <string name="units_feet">feet</string>
     <string name="units_feet_short">ft</string>
