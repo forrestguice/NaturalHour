@@ -3,10 +3,12 @@
     <string name="help_url">@string/help_cb_url</string>       <!-- must end with / -->
 
     <!-- Help Paths (these should be prefixed by `help_url`) -->
-    <string name="help_main_path" translatable="false">addons</string>   <!-- TODO -->
-    <string name="help_alarms_path" translatable="false">addons</string>   <!-- TODO -->
+    <string name="help_main_path" translatable="false">addons/naturalhour</string>
+    <string name="help_alarms_path" translatable="false">addons/naturalhour/#alarms</string>
+
     <!-- GitHub (mirror) -->
     <string name="help_gh_url" translatable="false">https://forrestguice.github.io/Suntimes/help/</string>   <!-- must end with / -->
+
     <!-- Codeberg (mirror) -->
     <string name="help_cb_url" translatable="false">https://forrestguice.codeberg.page/Suntimes/help/</string>   <!-- must end with / -->
 
