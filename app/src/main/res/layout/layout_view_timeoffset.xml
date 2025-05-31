@@ -39,12 +39,13 @@
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 style="@style/ActionButton"
-                android:src="?attr/icAdd" />
+                android:src="?attr/icAdd"
+                android:contentDescription="@string/action_add_days" />
 
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textSize="?attr/text_size_tiny"
-                android:text="days" />
+                android:text="@string/action_add_days" />
 
         </LinearLayout>
 
@@ -79,12 +80,13 @@
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 style="@style/ActionButton"
-                android:src="?attr/icAdd" />
+                android:src="?attr/icAdd"
+                android:contentDescription="@string/action_add_hours" />
 
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textSize="?attr/text_size_tiny"
-                android:text="hours" />
+                android:text="@string/action_add_hours" />
 
         </LinearLayout>
 
@@ -119,12 +121,13 @@
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 style="@style/ActionButton"
-                android:src="?attr/icAdd" />
+                android:src="?attr/icAdd"
+                android:contentDescription="@string/action_add_minutes" />
 
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textSize="?attr/text_size_tiny"
-                android:text="minutes" />
+                android:text="@string/action_add_minutes" />
 
         </LinearLayout>
 
@@ -160,12 +163,13 @@
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 style="@style/ActionButton"
-                android:src="?attr/icAdd" />
+                android:src="?attr/icAdd"
+                android:contentDescription="@string/action_add_seconds" />
 
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textSize="?attr/text_size_tiny"
-                android:text="seconds" />
+                android:text="@string/action_add_seconds" />
 
         </LinearLayout>
 

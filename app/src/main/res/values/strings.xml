@@ -42,6 +42,11 @@
     <string name="timeformat_12hr">12-hour</string>
     <string name="timeformat_24hr">24-hour</string>
 
+    <string name="action_add_seconds">seconds</string>
+    <string name="action_add_minutes">minutes</string>
+    <string name="action_add_hours">hours</string>
+    <string name="action_add_days">days</string>
+
     <string name="action_select">Select</string>
     <string name="action_alarms">Set Alarm</string>
     <string name="action_colors">Colors</string>
@@ -549,7 +554,7 @@
         Copyright &#169 2020-2025 Forrest Guice <br />
         Source code available under GPLv3.
     ]]></string>
-    <string name="dialog_ok">Ok</string>
+    <string name="dialog_ok">@android:string/ok</string>
     <string name="offset_button_before">Before</string>
     <string name="offset_button_after">After</string>
 
