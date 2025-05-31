@@ -218,6 +218,11 @@ public class AlarmActivity extends AppCompatActivity
             fragment.updateViews(AlarmActivity.this);
             fragment.addFragmentListener(onAlarmSelectionChanged);
         }
+
+        HelpDialog helpDialog = (HelpDialog) fragments.findFragmentByTag(DIALOG_HELP);
+        if (helpDialog != null) {
+            helpDialog.setNeutralButtonListener(HelpDialog.getOnlineHelpClickListener(this, HELP_PATH_ID), DIALOG_HELP);
+        }
     }
 
     @Override
@@ -391,9 +396,11 @@ public class AlarmActivity extends AppCompatActivity
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+    private static final int HELP_PATH_ID = R.string.help_alarms_path;
+
     protected void showHelp()
     {
-        HelpDialog dialog = MainActivity.createHelpDialog(this,suntimesInfo, R.array.help_topics);
+        HelpDialog dialog = MainActivity.createHelpDialog(this, suntimesInfo, R.array.help_topics, MainActivity.DIALOG_HELP, HELP_PATH_ID);
         dialog.show(getSupportFragmentManager(), DIALOG_HELP);
     }
 

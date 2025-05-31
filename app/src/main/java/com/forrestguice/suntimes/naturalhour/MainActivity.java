@@ -280,6 +280,11 @@ public class MainActivity extends AppCompatActivity
 
         ColorValues colors = ((naturalHour != null) ? naturalHour.getClockColors() : null);
         setBackgroundColor(AppSettings.getBackgroundModeColor(this, colors));
+
+        HelpDialog helpDialog = (HelpDialog) fragments.findFragmentByTag(DIALOG_HELP);
+        if (helpDialog != null) {
+            helpDialog.setNeutralButtonListener(HelpDialog.getOnlineHelpClickListener(this, HELP_PATH_ID), DIALOG_HELP);
+        }
     }
 
     @Override
@@ -1014,16 +1019,22 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+    private static final int HELP_PATH_ID = R.string.help_main_path;
+
     protected void showHelp()
     {
-        HelpDialog dialog = createHelpDialog(this,suntimesInfo, R.array.help_topics);
+        HelpDialog dialog = createHelpDialog(this, suntimesInfo, R.array.help_topics, DIALOG_HELP, HELP_PATH_ID);
         dialog.show(getSupportFragmentManager(), DIALOG_HELP);
     }
-    public static HelpDialog createHelpDialog(Context context, @Nullable SuntimesInfo suntimesInfo, int helpTopicsArrayRes)
+    public static HelpDialog createHelpDialog(Context context, @Nullable SuntimesInfo suntimesInfo, int helpTopicsArrayRes, String dialogTag, Integer helpPathID)
     {
         HelpDialog dialog = new HelpDialog();
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {
             dialog.setTheme(AppThemeInfo.themePrefToStyleId(context, AppThemeInfo.themeNameFromInfo(suntimesInfo)));
+        }
+        if (helpPathID != null) {
+            dialog.setShowNeutralButton(context.getString(R.string.action_onlineHelp));
+            dialog.setNeutralButtonListener(HelpDialog.getOnlineHelpClickListener(context, helpPathID), dialogTag);
         }
 
         String[] help = context.getResources().getStringArray(helpTopicsArrayRes);
