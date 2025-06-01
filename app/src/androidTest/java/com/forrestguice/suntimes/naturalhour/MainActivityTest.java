@@ -101,7 +101,7 @@ public class MainActivityTest
         }
 
         public MainActivityRobot assertHelpShown() {
-            onView(withId(R.id.help_content)).check(assertShown);
+            onView(withId(R.id.txt_help_content)).check(assertShown);
             return this;
         }
 
