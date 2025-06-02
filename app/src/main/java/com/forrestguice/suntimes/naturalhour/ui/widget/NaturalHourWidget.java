@@ -136,10 +136,13 @@ public class NaturalHourWidget extends AppWidgetProvider
         } else {
             Log.d(getClass().getSimpleName(), "onReceive: unhandled :: " + action + " :: " + getClass());
         }
+        t_onReceived = true;
     }
 
+    protected boolean t_onReceived = false;    // track method return state for testing
+
     @Nullable
-    protected Class getConfigClass() {
+    protected Class<?> getConfigClass() {
         return null;
     }
 
@@ -147,13 +150,19 @@ public class NaturalHourWidget extends AppWidgetProvider
         return ACTION_WIDGET_UPDATE;
     }
 
-    protected PendingIntent getUpdateIntent(Context context, int appWidgetId)
+    protected Intent getUpdateIntent(Context context, int appWidgetId)
     {
         String updateFilter = getUpdateIntentFilter();
         Intent intent = new Intent(updateFilter);
         intent.setComponent(new ComponentName(context, getClass()));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.putExtra(KEY_WIDGETCLASS, getClass().toString());
+        return intent;
+    }
+
+    protected PendingIntent getUpdatePendingIntent(Context context, int appWidgetId)
+    {
+        Intent intent = getUpdateIntent(context, appWidgetId);
         int flags = PendingIntent.FLAG_UPDATE_CURRENT;
         if (Build.VERSION.SDK_INT >= 23) {
             flags = flags | PendingIntent.FLAG_IMMUTABLE;
@@ -494,7 +503,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null)
         {
-            PendingIntent alarmIntent = getUpdateIntent(context, alarmID);
+            PendingIntent alarmIntent = getUpdatePendingIntent(context, alarmID);
 
             long updateTime = getUpdateTimeMillis(context, alarmID);
             if (updateTime > 0)
@@ -518,7 +527,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null)
         {
-            PendingIntent alarmIntent = getUpdateIntent(context, alarmID);
+            PendingIntent alarmIntent = getUpdatePendingIntent(context, alarmID);
             alarmManager.cancel(alarmIntent);
             Log.d(getClass().getSimpleName(), "unsetUpdateAlarm: unset alarm --> " + getUpdateIntentFilter() + "(" + alarmID + ")");
         }

@@ -37,7 +37,7 @@ public class NaturalHourWidget_3x2 extends NaturalHourWidget
 
     @Override
     @Nullable
-    protected Class getConfigClass() {
+    protected Class<?> getConfigClass() {
         return NaturalHourWidget_3x2_ConfigActivity.class;
     }
 }
