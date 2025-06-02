@@ -18,12 +18,14 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.tiles;
 
+import android.appwidget.AppWidgetManager;
+
 /**
  * TileLockScreenActivity
  */
 public class TileLockScreenActivity extends SuntimesTileActivity
 {
-    public static final String EXTRA_APPWIDGETID = "appWidgetID";
+    public static final String EXTRA_APPWIDGETID = AppWidgetManager.EXTRA_APPWIDGET_ID;
 
     public TileLockScreenActivity() {
         super();

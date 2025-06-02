@@ -13,6 +13,7 @@ import androidx.test.filters.LargeTest;
 import java.io.IOException;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.forrestguice.suntimes.naturalhour.TestRobot.setAnimationsEnabled;
@@ -83,7 +84,7 @@ public class MainActivityTest
         }
 
         public MainActivityRobot clickOverflowMenu_setAlarm() {
-            onView(withText(R.string.action_alarms)).check(assertShown);
+            onView(withText(R.string.action_alarms)).perform(click());
             return this;
         }
 
