@@ -95,4 +95,8 @@
         <attr name="resetDefaultsValue" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="ConfirmDeleteAlertDialog">
+        <attr name="icDelete" />
+    </declare-styleable>
+
 </resources>

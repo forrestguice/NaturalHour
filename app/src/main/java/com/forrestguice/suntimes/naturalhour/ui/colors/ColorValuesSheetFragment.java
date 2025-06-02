@@ -313,9 +313,9 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
             Context context = getActivity();
             if (context != null && !colorCollection.isDefaultColorID(colorsID))
             {
-                int[] attrs = { R.attr.icDelete };
-                TypedArray a = context.obtainStyledAttributes(attrs);
-                int iconResId = a.getResourceId(0, R.drawable.ic_delete);
+                //int[] attrs = { R.attr.icDelete };
+                TypedArray a = context.obtainStyledAttributes(R.styleable.ConfirmDeleteAlertDialog);
+                int iconResId = a.getResourceId(R.styleable.ConfirmDeleteAlertDialog_icDelete, R.drawable.ic_delete);
                 a.recycle();
 
                 String title = context.getString(R.string.colorsdelete_dialog_title);
