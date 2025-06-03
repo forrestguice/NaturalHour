@@ -111,7 +111,7 @@ public class ClockDaydreamService extends DreamService
         return AppSettings.fromTimeFormatMode(context, timeMode, info);
     }
     protected int getBackgroundMode(Context context) {
-        return AppSettings.getClockIntValue(context, widgetPrefix() + AppSettings.KEY_MODE_BACKGROUND, context.getResources().getInteger(R.integer.daydream_bgmode));
+        return AppSettings.getClockIntValue(context, widgetPrefix() + DaydreamSettings.KEY_MODE_BACKGROUND, context.getResources().getInteger(R.integer.daydream_bgmode));
     }
     protected String widgetPrefix() {
         return WidgetSettings.widgetKeyPrefix(appWidgetId);
