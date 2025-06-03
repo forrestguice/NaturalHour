@@ -1,19 +1,25 @@
-A 24-hour clock &amp; roman timekeeping add-on for Suntimes. This app displays the roman hours for a given date and location.
+A 24-hour clock and roman timekeeping add-on for Suntimes. This app displays the roman hours for a given date and location.
 
 This is an add-on for Suntimes. It depends on <a href="https://f-droid.org/en/packages/com.forrestguice.suntimeswidget/">Suntimes v0.10.3</a> or later.
 
 * A 24-hr clock face with roman timekeeping divisions; hours, twilights, and night watches.
 * Repeating alarms and notifications (requires Suntimes v0.14.0 or later).
-* Home screen widgets (resizable 3x2, 4x3, and 5x3 clock widgets).
-* The app announces the current time (and roman hour) when the clock is clicked.
+* Home screen widgets (resizable clock widgets).
+* Quick settings tile that displays the current hour.
+* Daydream / screensaver that shows a "wandering clock".
 * Quick navigation to the dates of the solstices and equinoxes.
+* The app announces the current time (and roman hour) when the clock is clicked.
 
 Options for:
-* hour definitions; the day begins at sunrise/sunset (12), at sunset (24), etc.
-* time zone (support for solar time), and time format (12hr / 24hr)
+* time zone (local mean time, apparent solar time, UTC, system, or app time zone), and time format (24hr, 12hr, or 6hr).
+* other equinoctial hours; Babylonian, Italic, Italian Civil, or Julian.
+* temporal hours; the day begins at sunrise/sunset (12), dawn/dusk (12), dawn (24), sunrise (24), noon (24), sunset (24), or dusk (24).
+* clock colors (custom color schemes), and other customizations.
 * clock orientation; show "midnight at top", "center on noon".
 * clock numerals; Arabic, Attic, Armenian, Etruscan, Greek, Hebrew, Roman.
-* clock colors (support for custom color schemes).
+* night watches; 2, 3, 4, or more divisions.
+* seconds; a "seconds dial" and "seconds hand".
+* fullscreen mode (over the home screen wallpaper).
 
 The following permissions are required:
 * <small><u>suntimes.permission.READ_CALCULATOR</u></small> is used to read data from the Suntimes provider.
