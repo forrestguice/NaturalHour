@@ -1,6 +1,6 @@
 ~
 
-### v0.3.2 (2025-06-02)
+### v0.3.2 (2025-06-03)
 * fixes broken widgets on Android 12+ (#38).
 * adds fullscreen behavior; the floating action button is shown for a moment and then hides itself.
 * adds fullscreen notch support to the main activity.
