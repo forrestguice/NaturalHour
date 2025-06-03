@@ -35,14 +35,17 @@ public class DaydreamSettings
     public static final String KEY_MODE_SCREENBRIGHT = "screenbright";
     public static final boolean DEF_MODE_SCREENBRIGHT = false;
 
+    public static final String KEY_MODE_BACKGROUND = AppSettings.KEY_MODE_BACKGROUND;
+    public static final int DEF_MODE_BACKGROUND = AppSettings.BGMODE_BLACK;
+
     public static final String KEY_ANIM_BGPULSE_DURATION = "anim_bgpulse_duration";
     public static final int DEF_ANIM_BGPULSE_DURATION = 15000;
 
     public static final String[] FLAGS = new String[] { KEY_MODE_FULLSCREEN, KEY_MODE_INTERACTIVE, KEY_MODE_SCREENBRIGHT };
     public static final boolean[] FLAGS_DEF = new boolean[] { DEF_MODE_FULLSCREEN, DEF_MODE_INTERACTIVE, DEF_MODE_SCREENBRIGHT };
 
-    public static final String[] VALUES = new String[] { KEY_ANIM_BGPULSE_DURATION };
-    public static final int[] VALUES_DEF = new int[] { DEF_ANIM_BGPULSE_DURATION };
+    public static final String[] VALUES = new String[] { KEY_MODE_BACKGROUND, KEY_ANIM_BGPULSE_DURATION };
+    public static final int[] VALUES_DEF = new int[] { DEF_MODE_BACKGROUND, DEF_ANIM_BGPULSE_DURATION };
 
     public static boolean getDaydreamFlag(Context context, int appWidgetId, String key, boolean defaultValue) {
         return AppSettings.getClockFlag(context, WidgetSettings.widgetKeyPrefix(appWidgetId) + key, defaultValue);

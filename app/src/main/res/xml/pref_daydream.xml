@@ -4,11 +4,12 @@
     <PreferenceCategory
         android:title="@string/pref_category_theme">
 
-        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference android:key="widget_0_backgroundMode"
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
+            android:key="widget_0_backgroundMode"
             android:title="@string/pref_title_bgmode"
             android:entries="@array/pref_bgmode_daydream_display"
             android:entryValues="@array/pref_bgmode_daydream_values"
-            android:defaultValue="3"
+            android:defaultValue="@integer/daydream_bgmode"
             android:summary="%s" />
 
         <com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollectionPreference
