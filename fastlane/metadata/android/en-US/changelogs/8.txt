@@ -1,0 +1,6 @@
+- fixes broken widgets on Android 12+ (#38).
+- fixes bug where alarm activity ignores the "hour mode" setting (#38).
+- adds fullscreen behavior; the floating action button is shown for a moment and then hides itself.
+- adds background option to app; "app theme" (default), "black", "home screen wallpaper", "clock colors".
+- adds background option to daydream: "black" (default), "clock colors" (#37).
+- adds daydream options; "fullscreen", "interactive", "screen bright", and "background pulse".

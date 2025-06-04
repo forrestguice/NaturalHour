@@ -1,5 +1,20 @@
 ~
 
+### v0.3.2 (2025-06-03)
+* fixes broken widgets on Android 12+ (#38).
+* adds fullscreen behavior; the floating action button is shown for a moment and then hides itself.
+* adds fullscreen notch support to the main activity.
+* adds "light colors" and "dark colors" to app settings (clock colors follow system dark mode).
+* adds background option to app settings; "app theme" (default), "black" (added), "home screen wallpaper", or "clock colors" (added).
+* adds background option to daydream: "black" (default), "clock colors" (#37).
+* adds daydream options; "fullscreen", "interactive", "screen bright", and "background pulse".
+* fixes daydream "wake up" so that animations are gracefully stopped when exiting.
+* fixes bug where the alarm activity ignores the "hour mode" setting (#38); adds "hour mode" override.
+* fixes bug where color preview is not shown when editing colors.
+* adds "online help" button to help dialogs (https://forrestguice.github.io/Suntimes/help/addons).
+* updates build: updates SuntimesAddon dependency 0.4.1 -> 0.4.2.
+* updates build: updates Gradle 6.7.1 -> 7.3.3; Android Gradle Plugin 4.1.3 -> 7.2.2.
+
 ### v0.3.1 (2025-03-31)
 * fixes bug where Android 12+ refuses to install the app (#35).
 
