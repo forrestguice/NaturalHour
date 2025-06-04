@@ -35,7 +35,7 @@ public class DaydreamSettings
     public static final String KEY_MODE_SCREENBRIGHT = "screenbright";
     public static final boolean DEF_MODE_SCREENBRIGHT = false;
 
-    public static final String KEY_MODE_BACKGROUND = AppSettings.KEY_MODE_BACKGROUND;
+    public static final String KEY_MODE_BACKGROUND = "daydreamBackgroundMode";
     public static final int DEF_MODE_BACKGROUND = AppSettings.BGMODE_BLACK;
 
     public static final String KEY_ANIM_BGPULSE_DURATION = "anim_bgpulse_duration";
