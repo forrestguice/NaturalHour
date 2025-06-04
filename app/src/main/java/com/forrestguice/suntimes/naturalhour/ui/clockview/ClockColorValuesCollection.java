@@ -20,6 +20,7 @@
 package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -142,6 +143,15 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
             colorCollection.setColors(context, new ClockColorValues(json));
         }
         return colorCollection;
+    }
+
+    @Override
+    @Nullable
+    public String getSelectedColorsID(Context context, int appWidgetID, @Nullable String tag)
+    {
+        String defaultId = ((appWidgetID == 0) ? ClockColorValues.COLOR_ID_LIGHT : ClockColorValues.COLOR_ID_DARK);
+        SharedPreferences prefs = getSharedPreferences(context);
+        return prefs.getString(getSelectedColorsKey(appWidgetID, tag), defaultId);
     }
 
 }

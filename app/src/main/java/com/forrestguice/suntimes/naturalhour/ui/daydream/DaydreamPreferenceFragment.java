@@ -94,6 +94,8 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
     @Override
     protected void initWidgetDefaults()
     {
+        super.initWidgetDefaults();
+
         Context context = getActivity();
         int appWidgetId = getAppWidgetId();
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
@@ -117,13 +119,13 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
             }
             editor.apply();
         }
-
-        super.initWidgetDefaults();
     }
 
     @Override
     protected void onPrepareReconfigure(int appWidgetId)
     {
+        super.onPrepareReconfigure(appWidgetId);
+
         Context context = getActivity();
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID && context != null)
         {
@@ -146,8 +148,6 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
             }
             editor.apply();
         }
-
-        super.onPrepareReconfigure(appWidgetId);
     }
 
 }

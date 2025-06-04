@@ -20,6 +20,8 @@ package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.app.Activity;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -33,7 +35,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
+import com.forrestguice.suntimes.addon.LocaleHelper;
+import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.R;
 
 public class ColorValuesSheetActivity extends AppCompatActivity
@@ -58,19 +64,36 @@ public class ColorValuesSheetActivity extends AppCompatActivity
     }
 
     @Override
+    protected void attachBaseContext(Context context)
+    {
+        AppThemeInfo.setFactory(new AppThemes());
+        suntimesInfo = SuntimesInfo.queryInfo(context);    // obtain Suntimes version info
+        super.attachBaseContext( (suntimesInfo != null && suntimesInfo.appLocale != null) ?    // override the locale
+                LocaleHelper.loadLocale(context, suntimesInfo.appLocale) : context );
+    }
+
+    protected SuntimesInfo suntimesInfo = null;
+    protected void initAppTheme()
+    {
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {    // override the theme
+            AppThemeInfo.setTheme(this, suntimesInfo);
+        }
+    }
+
+    @Override
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
         setResult(RESULT_CANCELED);
+        initAppTheme();
         setContentView(R.layout.activity_colorsheet);
 
         Intent intent = getIntent();
-        FragmentManager fragments = getSupportFragmentManager();
-
         ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = ViewModelProviders.of(this).get(ColorValuesEditFragment.ColorValuesEditViewModel .class);
         editViewModel.setShowAlpha(intent.getBooleanExtra(EXTRA_SHOW_ALPHA, false));
         editViewModel.setPreviewMode(intent.getIntExtra(EXTRA_PREVIEW_MODE, ColorValuesEditFragment.ColorValuesEditViewModel.PREVIEW_TEXT));
 
+        FragmentManager fragments = getSupportFragmentManager();
         colorSheet = (ColorValuesSheetFragment) fragments.findFragmentByTag(DIALOG_SHEET);
         if (colorSheet == null)
         {

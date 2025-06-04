@@ -5,7 +5,7 @@
         android:title="@string/pref_category_theme">
 
         <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
-            android:key="widget_0_backgroundMode"
+            android:key="widget_0_daydreamBackgroundMode"
             android:title="@string/pref_title_bgmode"
             android:entries="@array/pref_bgmode_daydream_display"
             android:entryValues="@array/pref_bgmode_daydream_values"
