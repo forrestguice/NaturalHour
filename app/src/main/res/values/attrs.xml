@@ -54,7 +54,6 @@
 
     <attr name="tileCardBackground" format="reference" />
 
-    <attr name="bottomBarSize" format="reference" />   <!-- TODO: move to SuntimesAddon -->
     <attr name="fab_foregroundColor" format="reference" />  <!-- TODO: move to SuntimesAddon -->
 
     <declare-styleable name="ColorCollectionPreference">
