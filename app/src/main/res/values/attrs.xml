@@ -54,8 +54,6 @@
 
     <attr name="tileCardBackground" format="reference" />
 
-    <attr name="fab_foregroundColor" format="reference" />  <!-- TODO: move to SuntimesAddon -->
-
     <declare-styleable name="ColorCollectionPreference">
         <attr name="colorTag" format="string" />
         <attr name="appWidgetID" format="integer" />
