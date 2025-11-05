@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
     defaultConfig {
         applicationId "com.forrestguice.suntimes.naturalhour"
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 33
+        compileSdk 33
+
         versionCode 8
         versionName "0.3.2"
 
@@ -28,6 +29,27 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions = [ "versiontype" ]
+    productFlavors {
+        production {
+            dimension "versiontype"
+            getIsDefault().set(true)
+        }
+        nightly {
+            dimension "versiontype"
+            applicationIdSuffix ".nightly"
+            versionNameSuffix "-nightly"
+            def nightlyVersionCode = new Date().format('yyyyMMddhh') as int
+            versionCode nightlyVersionCode
+
+            def authorityRoot = "suntimes.naturalhour.nightly"
+            manifestPlaceholders.suntimesApplicationId = "com.forrestguice.suntimeswidget"
+            manifestPlaceholders.suntimesPermissionRoot = "suntimes"
+            manifestPlaceholders.naturalHourAuthorityRoot = "$authorityRoot"
+            buildConfigField "String", "AUTHORITY_ROOT", "\"$authorityRoot\""
         }
     }
 
@@ -53,9 +75,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation "androidx.preference:preference:1.2.1"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test:core:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

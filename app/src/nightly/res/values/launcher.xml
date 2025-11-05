@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Natural Hour (Debug)</string>
+    <string name="app_desc">A 24-hour clock &amp; roman timekeeping add-on for Suntimes.</string>
+    <color name="ic_launcher_background">#512021</color>
+</resources>
