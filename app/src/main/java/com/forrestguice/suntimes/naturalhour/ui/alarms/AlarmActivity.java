@@ -308,11 +308,11 @@ public class AlarmActivity extends AppCompatActivity
     {
         NaturalHourAlarmType alarmInfo = NaturalHourProvider.getAlarmInfo(alarmID);
         Intent result = new Intent();    // e.g. content://suntimes.naturalhour.provider/alarmInfo/0_6_0    .. hourMode:0, hour:6(noon), moment:0
-        result.putExtra(NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER, NaturalHourProviderContract.AUTHORITY);
+        result.putExtra(NaturalHourProviderContract.COLUMN_CONFIG_PROVIDER, NaturalHourProvider.getAuthority());
         result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_NAME, alarmID);
         result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_TITLE, alarmInfo.getAlarmTitle(this, alarmID));
         result.putExtra(NaturalHourProviderContract.COLUMN_EVENT_SUMMARY, alarmInfo.getAlarmSummary(this, alarmID));
-        result.setData(Uri.parse(AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID)));
+        result.setData(Uri.parse(AlarmHelper.getEventInfoUri(NaturalHourProvider.getAuthority(), alarmID)));
         setResult(Activity.RESULT_OK, result);
         finish();
     }

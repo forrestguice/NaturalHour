@@ -9,9 +9,17 @@ android {
         targetSdkVersion 33
         versionCode 8
         versionName "0.3.2"
+
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
+
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
+        manifestPlaceholders.suntimesApplicationId = "com.forrestguice.suntimeswidget"
+        manifestPlaceholders.suntimesPermissionRoot = "suntimes"
+        def authorityRoot = "suntimes.naturalhour"
+        manifestPlaceholders.naturalHourAuthorityRoot = "$authorityRoot"
+        buildConfigField "String", "AUTHORITY_ROOT", "\"$authorityRoot\""
+
         missingDimensionStrategy 'version', 'androidx'
         missingDimensionStrategy 'api', 'api33'
     }

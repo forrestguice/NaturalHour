@@ -4,7 +4,7 @@
     
     <uses-feature android:name="android.software.app_widgets" android:required="false"/>   <!-- provides app widgets -->
 
-    <uses-permission android:name="suntimes.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
+    <uses-permission android:name="${suntimesPermissionRoot}.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
 
     <application
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -48,7 +48,7 @@
                 <category android:name="suntimes.SUNTIMES_ADDON" />
             </intent-filter>
             <meta-data android:name="WidgetInfoProvider"
-                android:value="content://suntimes.naturalhour.provider" />
+                android:value="content://${naturalHourAuthorityRoot}.provider" />
 
         </activity>
 
@@ -63,7 +63,7 @@
                 <category android:name="suntimes.SUNTIMES_ALARM" />
             </intent-filter>
             <meta-data android:name="EventInfoProvider"
-                android:value="content://suntimes.naturalhour.provider" />
+                android:value="content://${naturalHourAuthorityRoot}.provider" />
 
             <intent-filter>
                 <action android:name="suntimes.action.PICK_EVENT" />
@@ -89,8 +89,8 @@
         <!-- Content Provider -->
         <provider
             android:name="com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider"
-            android:authorities="suntimes.naturalhour.provider"
-            android:exported="true" android:permission="suntimes.permission.READ_CALCULATOR"
+            android:authorities="${naturalHourAuthorityRoot}.provider"
+            android:exported="true" android:permission="${suntimesPermissionRoot}.permission.READ_CALCULATOR"
             android:syncable="false" />
 
         <!-- Widget: 3x2 -->
@@ -195,7 +195,7 @@
     </application>
 
     <queries>
-        <package android:name="com.forrestguice.suntimeswidget" />    <!-- package visibility api 30+ -->
+        <package android:name="${suntimesApplicationId}" />    <!-- package visibility api 30+ -->
     </queries>
 
 </manifest>

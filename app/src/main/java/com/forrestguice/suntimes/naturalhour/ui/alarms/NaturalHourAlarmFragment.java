@@ -295,7 +295,7 @@ public class NaturalHourAlarmFragment extends Fragment
 
     public static void scheduleAlarm(Context context, String alarmID)
     {
-        String alarmUri = AlarmHelper.getEventInfoUri(NaturalHourProviderContract.AUTHORITY, alarmID);
+        String alarmUri = AlarmHelper.getEventInfoUri(NaturalHourProvider.getAuthority(), alarmID);
         String label = NaturalHourProvider.getAlarmInfo(alarmID).getAlarmTitle(context, alarmID);
         try {
             context.startActivity(AddonHelper.scheduleAlarm("ALARM", label, -1, -1, TimeZone.getDefault(), alarmUri));

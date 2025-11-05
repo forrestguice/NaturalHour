@@ -56,7 +56,6 @@ import java.util.HashMap;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.COLUMN_EVENT_REQUIRES_LOCATION;
 import static com.forrestguice.suntimes.alarm.AlarmEventContract.COLUMN_EVENT_SUPPORTS_REPEATING;
 
-import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.AUTHORITY;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_NAME;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_PHRASE;
 import static com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract.COLUMN_EVENT_PHRASE_GENDER;
@@ -88,11 +87,15 @@ public class NaturalHourProvider extends ContentProvider
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static
     {
-        uriMatcher.addURI(AUTHORITY, QUERY_CONFIG, URIMATCH_CONFIG);
-        uriMatcher.addURI(AUTHORITY, QUERY_WIDGET, URIMATCH_WIDGET);
-        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO, URIMATCH_ALARM_INFO);
-        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_INFO + "/*", URIMATCH_ALARM_INFO_FOR_NAME);
-        uriMatcher.addURI(AUTHORITY, QUERY_EVENT_CALC + "/*", URIMATCH_ALARM_CALC_FOR_NAME);
+        uriMatcher.addURI(getAuthority(), QUERY_CONFIG, URIMATCH_CONFIG);
+        uriMatcher.addURI(getAuthority(), QUERY_WIDGET, URIMATCH_WIDGET);
+        uriMatcher.addURI(getAuthority(), QUERY_EVENT_INFO, URIMATCH_ALARM_INFO);
+        uriMatcher.addURI(getAuthority(), QUERY_EVENT_INFO + "/*", URIMATCH_ALARM_INFO_FOR_NAME);
+        uriMatcher.addURI(getAuthority(), QUERY_EVENT_CALC + "/*", URIMATCH_ALARM_CALC_FOR_NAME);
+    }
+
+    public static String getAuthority() {
+        return BuildConfig.AUTHORITY_ROOT + ".provider";     //return NaturalHourProviderContract.AUTHORITY;
     }
 
     @Override
