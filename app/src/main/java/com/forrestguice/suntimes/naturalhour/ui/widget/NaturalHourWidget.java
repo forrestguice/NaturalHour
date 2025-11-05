@@ -430,7 +430,7 @@ public class NaturalHourWidget extends AppWidgetProvider
         minSize[1] = context.getResources().getInteger(R.integer.widget_size_min_dp3x3);
     }
 
-    public PendingIntent getClickActionIntent(Context context, int appWidgetId, Class widgetClass)
+    public PendingIntent getClickActionIntent(Context context, int appWidgetId, Class<?> widgetClass)
     {
         int actionMode = WidgetSettings.getWidgetIntValue(context, appWidgetId, WidgetSettings.KEY_MODE_ACTION, WidgetSettings.ACTIONMODE_DEFAULT);
         Intent actionIntent = new Intent(context, widgetClass);

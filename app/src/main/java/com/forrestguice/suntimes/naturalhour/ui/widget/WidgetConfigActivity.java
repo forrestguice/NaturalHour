@@ -58,7 +58,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     protected WidgetPreferenceFragment flagFragment;
 
-    public abstract Class getWidgetClass();
+    public abstract Class<?> getWidgetClass();
 
     @Override
     protected void attachBaseContext(Context context)

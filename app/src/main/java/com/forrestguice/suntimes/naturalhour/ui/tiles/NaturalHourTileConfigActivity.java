@@ -45,7 +45,7 @@ public class NaturalHourTileConfigActivity extends WidgetConfigActivity
     }
 
     @Override
-    public Class getWidgetClass() {
+    public Class<?> getWidgetClass() {
         return null;
     }
 

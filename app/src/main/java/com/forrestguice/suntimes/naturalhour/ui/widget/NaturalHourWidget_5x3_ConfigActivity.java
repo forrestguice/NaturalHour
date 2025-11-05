@@ -22,7 +22,7 @@ package com.forrestguice.suntimes.naturalhour.ui.widget;
 public class NaturalHourWidget_5x3_ConfigActivity extends WidgetConfigActivity
 {
     @Override
-    public Class getWidgetClass() {
+    public Class<?> getWidgetClass() {
         return NaturalHourWidget_5x3.class;
     }
 }
