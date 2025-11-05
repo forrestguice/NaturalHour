@@ -21,7 +21,7 @@ package com.forrestguice.suntimes.naturalhour.ui.daydream;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import com.forrestguice.suntimes.naturalhour.R;

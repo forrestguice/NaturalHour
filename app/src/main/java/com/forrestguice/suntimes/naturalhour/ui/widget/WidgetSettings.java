@@ -20,7 +20,7 @@
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 
