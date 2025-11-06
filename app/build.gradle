@@ -42,7 +42,7 @@ android {
             dimension "versiontype"
             applicationIdSuffix ".nightly"
             versionNameSuffix "-nightly"
-            def nightlyVersionCode = new Date().format('yyyyMMddhh') as int
+            def nightlyVersionCode = new Date().format('yyyyMMddHH') as int
             versionCode nightlyVersionCode
 
             def authorityRoot = "suntimes.naturalhour.nightly"
