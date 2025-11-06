@@ -2,4 +2,5 @@
     <string name="app_name">Natural Hour</string>
     <string name="app_desc">A 24-hour clock &amp; roman timekeeping add-on for Suntimes.</string>
     <color name="ic_launcher_background">#313131</color>
+    <item type="mipmap" name="ic_launcher_round">@mipmap/ic_launcher</item>
 </resources>
