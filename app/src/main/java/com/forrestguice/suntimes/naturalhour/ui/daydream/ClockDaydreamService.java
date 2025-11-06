@@ -32,7 +32,6 @@ import android.service.dreams.DreamService;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -56,6 +55,8 @@ import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetSettings;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.TimeZone;
+
+import androidx.annotation.NonNull;
 
 @TargetApi(17)
 public class ClockDaydreamService extends DreamService
@@ -742,7 +743,7 @@ public class ClockDaydreamService extends DreamService
         {
             final ValueAnimator animation = getColorValueAnimator(colors);
             animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animator)
+                public void onAnimationUpdate(@NonNull ValueAnimator animator)
                 {
                     for (Colorable v : views) {
                         if (v != null) {

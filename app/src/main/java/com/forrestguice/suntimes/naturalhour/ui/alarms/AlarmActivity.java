@@ -348,7 +348,7 @@ public class AlarmActivity extends AppCompatActivity
     /**
      * AlarmActionsCompat
      */
-    private class AlarmActionsCompat implements androidx.appcompat.view.ActionMode.Callback
+    protected class AlarmActionsCompat implements androidx.appcompat.view.ActionMode.Callback
     {
         protected String alarmID = null;
         public void setSelection(String alarmID ) {

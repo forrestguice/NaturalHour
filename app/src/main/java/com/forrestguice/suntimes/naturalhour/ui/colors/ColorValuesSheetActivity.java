@@ -19,6 +19,8 @@
 package com.forrestguice.suntimes.naturalhour.ui.colors;
 
 import android.app.Activity;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -264,7 +266,7 @@ public class ColorValuesSheetActivity extends AppCompatActivity
 
     @SuppressWarnings("RestrictedApi")
     @Override
-    protected boolean onPrepareOptionsPanel(View view, Menu menu)
+    protected boolean onPrepareOptionsPanel(View view, @NonNull Menu menu)
     {
         Messages.forceActionBarIcons(menu);
         return super.onPrepareOptionsPanel(view, menu);

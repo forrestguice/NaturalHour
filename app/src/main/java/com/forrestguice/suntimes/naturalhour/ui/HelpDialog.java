@@ -79,7 +79,8 @@ public class HelpDialog extends BottomSheetDialogFragment
         if (savedState != null) {
             rawContent = savedState.getCharSequence(KEY_HELPTEXT);
             neutralButtonMsg = savedState.getString(KEY_NEUTRALTEXT);
-            listenerTag = savedState.getString(KEY_NEUTRALTAG);        }
+            listenerTag = savedState.getString(KEY_NEUTRALTAG);
+        }
         return dialogContent;
     }
 

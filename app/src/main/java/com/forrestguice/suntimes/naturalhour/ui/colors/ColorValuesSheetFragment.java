@@ -327,7 +327,7 @@ public class ColorValuesSheetFragment extends ColorValuesFragment
                 confirm.show();
             }
         }
-        protected DialogInterface.OnClickListener onConfirmDelete(final Context context, @NonNull final String colorsID)
+        private DialogInterface.OnClickListener onConfirmDelete(final Context context, @NonNull final String colorsID)
         {
             return new DialogInterface.OnClickListener()
             {

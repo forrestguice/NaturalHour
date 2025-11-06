@@ -42,7 +42,6 @@ import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider;
-import com.forrestguice.suntimes.naturalhour.data.NaturalHourProviderContract;
 import com.forrestguice.suntimes.naturalhour.ui.DisplayStrings;
 import com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;

@@ -117,7 +117,7 @@ public class DisplayStrings
         return numerals[hour];
     }
 
-    /*
+    /**
      * @param context Context
      * @param num [1-4]
      * @return e.g. "Vigilia Prima"
@@ -393,6 +393,7 @@ public class DisplayStrings
         return span;
     }
 
+    /** @noinspection deprecation*/
     public static Spanned fromHtml(String htmlString )
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
