@@ -37,6 +37,7 @@ import com.forrestguice.suntimes.ContextCompat;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.alarm.AlarmHelper;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
+import com.forrestguice.suntimes.naturalhour.ExceptionHandler;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm0;
 import com.forrestguice.suntimes.naturalhour.data.alarms.NaturalHourAlarm1;
@@ -100,6 +101,7 @@ public class NaturalHourProvider extends ContentProvider
 
     @Override
     public boolean onCreate() {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getContext(), Thread.getDefaultUncaughtExceptionHandler()));
         return true;
     }
 

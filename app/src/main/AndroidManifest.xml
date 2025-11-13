@@ -86,6 +86,11 @@
             android:icon="@drawable/ic_palette"
             android:exported="false" />
 
+        <!-- Crash Report Activity -->
+        <activity android:name="com.forrestguice.suntimes.crashreport.ExceptionActivity"
+            android:process=":crashreport"
+            android:exported="false" />
+
         <!-- Content Provider -->
         <provider
             android:name="com.forrestguice.suntimes.naturalhour.data.NaturalHourProvider"

@@ -537,6 +537,7 @@
     <string name="dialog_msg_donotshowagain">Do not show this message again</string>  <!-- checkbox text -->
     <string name="restart_required_message">A restart may be needed for changes to take full effect.</string>   <!-- toast; app restart may be required -->
 
+    <string name="app_support_url0">https://github.com/forrestguice/NaturalHour/issues</string>
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
         <a href="https://github.com/forrestguice/NaturalHour/issues">issue tracker</a> to submit a request.
