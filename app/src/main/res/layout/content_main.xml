@@ -5,7 +5,7 @@
     android:layout_height="match_parent" android:layout_weight="1"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/naturalhour_fragment"
         android:name="com.forrestguice.suntimes.naturalhour.ui.NaturalHourFragment"
         android:layout_width="0dp"

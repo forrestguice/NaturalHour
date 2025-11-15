@@ -16,7 +16,7 @@
             app:title="@string/daydreamconfig_title"
             app:popupTheme="?attr/actionBarPopupTheme" />
         
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.daydream.DaydreamPreferenceFragment"
+        <androidx.fragment.app.FragmentContainerView android:name="com.forrestguice.suntimes.naturalhour.ui.daydream.DaydreamPreferenceFragment"
             android:id="@+id/clockFlagsFragment"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 

@@ -13,7 +13,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/naturalhourselect_fragment" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/naturalhourselect_fragment"
         android:name="com.forrestguice.suntimes.naturalhour.ui.alarms.NaturalHourSelectFragment"
         android:layout_width="0dp"

@@ -16,7 +16,7 @@
             app:title="@string/tileconfig_title"
             app:popupTheme="?attr/actionBarPopupTheme" />
 
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.tiles.TilePreferenceFragment"
+        <androidx.fragment.app.FragmentContainerView android:name="com.forrestguice.suntimes.naturalhour.ui.tiles.TilePreferenceFragment"
             android:id="@+id/clockFlagsFragment"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 

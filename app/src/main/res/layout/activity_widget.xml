@@ -9,7 +9,7 @@
             android:id="@+id/toolbar" style="@style/AppToolbarStyle"
             app:title="@string/widgetconfig_title" />
 
-        <fragment android:name="com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment"
+        <androidx.fragment.app.FragmentContainerView android:name="com.forrestguice.suntimes.naturalhour.ui.widget.WidgetPreferenceFragment"
             android:id="@+id/clockFlagsFragment"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 
