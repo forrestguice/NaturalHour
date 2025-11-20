@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en">
     <string name="help_url">@string/help_cb_url</string>       <!-- must end with / -->
 
     <!-- Help Paths (these should be prefixed by `help_url`) -->
