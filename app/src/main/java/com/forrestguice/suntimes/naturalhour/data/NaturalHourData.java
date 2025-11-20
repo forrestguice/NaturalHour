@@ -67,12 +67,13 @@ public class NaturalHourData implements Parcelable
         this.altitude = altitude;
     }
 
-    public NaturalHourData(long date, String latitude, String longitude, String altitude) {
+    public NaturalHourData(long date, String latitude, String longitude, String altitude)
+    {
         this.calculated = false;
         this.date = date;
-        this.latitude = Double.parseDouble(latitude);
-        this.longitude = Double.parseDouble(longitude);
-        this.altitude = Double.parseDouble(altitude);
+        setLatitude(latitude);
+        setLongitude(longitude);
+        setAltitude(altitude);
     }
 
     public NaturalHourData(ContentValues values) {
@@ -380,6 +381,13 @@ public class NaturalHourData implements Parcelable
     public double getLatitude() {
         return latitude;
     }
+    protected void setLatitude(String value) {
+        try {
+            this.latitude = Double.parseDouble(value);
+        } catch (NumberFormatException | NullPointerException e) {
+            Log.w("NaturalHourData", "setLatitude: " + e);
+        }
+    }
 
     /**
      * @return decimal degrees
@@ -387,11 +395,25 @@ public class NaturalHourData implements Parcelable
     public double getLongitude() {
         return longitude;
     }
+    protected void setLongitude(String value) {
+        try {
+            this.longitude = Double.parseDouble(value);
+        } catch (NumberFormatException | NullPointerException e) {
+            Log.w("NaturalHourData", "setLongitude: " + e);
+        }
+    }
 
     /**
      * @return meters
      */
     public double getAltitude() {
         return altitude;
+    }
+    protected void setAltitude(String value) {
+        try {
+            this.altitude = Double.parseDouble(value);
+        } catch (NumberFormatException | NullPointerException e) {
+            Log.w("NaturalHourData", "setAltitude: " + e);
+        }
     }
 }
