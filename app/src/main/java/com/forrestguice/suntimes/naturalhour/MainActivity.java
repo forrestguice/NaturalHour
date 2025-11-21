@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
             getWindow().setAttributes(layoutParams);
         }
 
-        if (suntimesInfo.appTheme != null) {    // override the theme
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {    // override the theme
             AppThemeInfo.setTheme(this, suntimesInfo);
         }
 
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
         ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = ViewModelProviders.of(MainActivity.this).get(ColorValuesEditFragment.ColorValuesEditViewModel.class);
         editViewModel.setShowAlpha(true);
 
-        if (suntimesInfo.appTheme != null) {    // override the theme
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {    // override the theme
             sheetDialog.setTheme(AppThemeInfo.themePrefToStyleId(MainActivity.this, AppThemeInfo.themeNameFromInfo(suntimesInfo)));
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.app_bottomsheet, sheetDialog).commit();
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         {
             Log.w("NaturalHour", "Check version failed! Displaying warning banner..");
             View view = getWindow().getDecorView().findViewById(android.R.id.content);
-            if (!suntimesInfo.hasPermission)
+            if (suntimesInfo != null && !suntimesInfo.hasPermission)
                 Messages.showPermissionDeniedMessage(this, view);
             else Messages.showMissingDependencyMessage(this, view);
         }
@@ -254,7 +254,9 @@ public class MainActivity extends AppCompatActivity
         Log.d("DEBUG", "onResume");
         String appTheme = SuntimesInfo.queryAppTheme(getContentResolver());
         if (appTheme != null && suntimesInfo != null && suntimesInfo.appTheme != null && !appTheme.equals(suntimesInfo.appTheme)) {
+            Log.d("DEBUG", suntimesInfo.appTheme + " != " + appTheme + ": calling recreate...");
             recreate();
+
         } else {
             suntimesInfo = SuntimesInfo.queryInfo(MainActivity.this);    // refresh suntimesInfo
             handleIntent(getIntent());
@@ -296,14 +298,14 @@ public class MainActivity extends AppCompatActivity
         restoreDialogs();
     }
 
-    protected CharSequence createTitle(SuntimesInfo info) {
-        return (suntimesInfo != null && suntimesInfo.location != null && suntimesInfo.location.length >= 4)
-                ? suntimesInfo.location[0]
-                : getString(R.string.app_name);
+    protected CharSequence createTitle(Context context, SuntimesInfo info) {
+        return (info != null && info.location != null && info.location.length >= 4)
+                ? info.location[0]
+                : context.getString(R.string.app_name);
     }
 
-    protected CharSequence createSubTitle(SuntimesInfo info) {
-        return (suntimesInfo != null) ? DisplayStrings.formatLocation(this, suntimesInfo) : "";
+    protected CharSequence createSubTitle(Context context, SuntimesInfo info) {
+        return (info != null) ? DisplayStrings.formatLocation(context, info) : "";
     }
 
     protected String[] getLocation() {
@@ -326,7 +328,7 @@ public class MainActivity extends AppCompatActivity
         View bottomBar = findViewById(R.id.bottombar);
 
         if (actionBar != null) {
-            actionBar.setTitle(createTitle(suntimesInfo));
+            actionBar.setTitle(createTitle(this, suntimesInfo));
             actionBar.setSubtitle(isLocked ? context.getString(R.string.app_name)
                                            : DisplayStrings.formatLocation(this, suntimesInfo));
             actionBar.setHomeButtonEnabled(!isLocked);
@@ -986,7 +988,7 @@ public class MainActivity extends AppCompatActivity
 
     protected void showAlarmDialog()
     {
-        if (suntimesInfo.appCode >= suntimesAlarms_minVersion)
+        if (suntimesInfo != null && suntimesInfo.appCode >= suntimesAlarms_minVersion)
         {
             NaturalHourAlarmSheet dialog = new NaturalHourAlarmSheet();
             if (suntimesInfo != null && suntimesInfo.appTheme != null) {
