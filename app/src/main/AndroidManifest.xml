@@ -5,6 +5,7 @@
     <uses-feature android:name="android.software.app_widgets" android:required="false"/>   <!-- provides app widgets -->
 
     <uses-permission android:name="${suntimesPermissionRoot}.permission.READ_CALCULATOR" />  <!-- required to interact w/ Suntimes provider -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />    <!-- used to report app crashes -->
 
     <application
         android:dataExtractionRules="@xml/data_extraction_rules"
