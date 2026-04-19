@@ -108,7 +108,7 @@
         <item>au crépuscule civil&#160;(24)</item>
     </string-array>
 
-    <string name="pref_title_timeformat">Format de l'heure</string>
+    <string name="pref_title_timeformat">Format de l\'heure</string>
     <string-array name="pref_timeformat_display">
         <item>@string/action_timeformat_system</item>     <!-- 0 -->
         <item>@string/action_timeformat_suntimes</item>   <!-- 1 -->
@@ -194,7 +194,7 @@
 
     <string name="format_date_past">Passé (-%1$s)\n%2$s</string>         <!-- e.g. "Past [-1] \n [format_date] " -->
     <string name="format_date_yesterday">Hier\n%2$s</string>      <!-- e.g. "Yesterday \n [format_date] " -->
-    <string name="format_date_today">Aujourd'hui\n%1$s</string>              <!-- e.g. "Today \n [format_date] " -->
+    <string name="format_date_today">Aujourd\'hui\n%1$s</string>              <!-- e.g. "Today \n [format_date] " -->
     <string name="format_date_tomorrow">demain\n%2$s</string>        <!-- e.g. "Tomorrow \n [format_date] " -->
     <string name="format_date_future">Futur (+%1$s)\n%2$s</string>     <!-- e.g. "Future [+1] \n [format_date] " -->
 
@@ -367,7 +367,7 @@
     <string name="msg_colors_saved">Enregistré %s</string>        <!-- toast -->
     <string name="msg_colors_deleted">Supprimé %s</string>    <!-- toast -->
     <string name="msg_colors_imported">Couleurs importées %s</string>    <!-- toast -->
-    <string name="msg_colors_import_failed">Echec d'importation des couleurs!</string>    <!-- toast -->
+    <string name="msg_colors_import_failed">Echec d\'importation des couleurs !</string>    <!-- toast -->
 
     <string name="configAction_colors">Couleurs</string>
     <string name="configAction_filterColors">Filtres</string>    <!-- checkbox label -->
@@ -386,7 +386,7 @@
     <string name="colorsimport_dialog_cancel">@string/dialog_cancel</string>
 
     <string name="colorsdelete_dialog_title">Supprimer le thème ?</string>    <!-- toast -->
-    <string name="colorsdelete_dialog_message">Etes-vous sur de vouloir supprimer %s?</string>    <!-- toast -->
+    <string name="colorsdelete_dialog_message">Etes-vous sur de vouloir supprimer %s ?</string>    <!-- toast -->
     <string name="colorsdelete_dialog_ok">Supprimer</string>    <!-- toast -->
     <string name="colorsdelete_dialog_cancel">@string/dialog_cancel</string>    <!-- toast -->
 
