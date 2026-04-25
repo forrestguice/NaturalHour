@@ -8,6 +8,8 @@
     <color name="colorDisabled_monet">@color/colorDisabled_monet_light</color>
     <color name="colorBottomSheet_monet">@color/colorBottomSheet_monet_light</color>
     <color name="window_bg_monet">@color/window_bg_monet_light</color>
+    <color name="menu_bg_monet">@color/menu_bg_monet_light</color>
+    <color name="card_bg_monet">@color/card_bg_monet_light</color>
 
     <color name="colorPrimary_monet_dark">@color/grey_900</color>
     <color name="colorPrimaryDark_monet_dark">@android:color/black</color>
@@ -16,6 +18,8 @@
     <color name="colorDisabled_monet_dark">#aaaaaa</color>
     <color name="colorBottomSheet_monet_dark">@color/grey_900</color>
     <color name="window_bg_monet_dark">@color/grey_999</color>
+    <color name="menu_bg_monet_dark">@color/grey_900</color>
+    <color name="card_bg_monet_dark">@color/grey_50</color>
 
     <color name="colorPrimary_monet_light">@color/grey_100</color>
     <color name="colorPrimaryDark_monet_light">@color/grey_600</color>
@@ -24,5 +28,7 @@
     <color name="colorDisabled_monet_light">#aaaaaa</color>
     <color name="colorBottomSheet_monet_light">@color/grey_200</color>
     <color name="window_bg_monet_light">@color/grey_50</color>
+    <color name="menu_bg_monet_light">@color/grey_200</color>
+    <color name="card_bg_monet_light">@color/grey_900</color>
 
 </resources>
