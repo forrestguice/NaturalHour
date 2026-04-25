@@ -33,9 +33,9 @@ Options for:
 ## Donations ##
 Do you find value in this software? Please pay as you feel.
 
-[![paypal](https://www.paypalobjects.com/webstatic/en_US/i/btn/png/silver-rect-paypal-26px.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NZJ5FJBCKY6K2)
-
 <noscript><a href="https://liberapay.com/forrestguice/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
+
+[![paypal](https://www.paypalobjects.com/webstatic/en_US/i/btn/png/silver-rect-paypal-26px.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NZJ5FJBCKY6K2)
 
 
 ## Bug Reports ##
@@ -49,7 +49,7 @@ Natural Hour does not collect, store, or transmit personal user data. It contain
 __Natural Hour is an add-on for Suntimes.__ It uses the `suntimes.permission.READ_CALCULATOR` permission in order to access data provided by this app. https://github.com/forrestguice/SuntimesWidget/wiki/Privacy
 
 ## Legal Stuff
-Copyright (C) 2020-2025 **Forrest Guice**
+Copyright (C) 2020-2026 **Forrest Guice**
 ```
 Natural Hour is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
