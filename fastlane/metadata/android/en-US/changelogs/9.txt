@@ -1,0 +1,4 @@
+- adds "Material You" app themes.
+- adds widget reconfiguration (drag widgets to reconfigure).
+- adds exception handler and crash report notification.
+- updates translation to French.
