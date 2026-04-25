@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- (Monet) System theme -->
+    <style name="NaturalHourAppTheme.MonetSystem" parent="NaturalHourAppTheme.System">
+    </style>
+    <style name="NaturalHourAppTheme.MonetSystem.Small" parent="NaturalHourAppTheme.MonetSystem">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
+    </style>
+    <style name="NaturalHourAppTheme.MonetSystem.Large" parent="NaturalHourAppTheme.MonetSystem">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
+    </style>
+    <style name="NaturalHourAppTheme.MonetSystem.XLarge" parent="NaturalHourAppTheme.MonetSystem">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
+    </style>
+
+    <!-- (Monet) Dark theme -->
+    <style name="NaturalHourAppTheme.MonetDark" parent="NaturalHourAppTheme.Dark">
+    </style>
+    <style name="NaturalHourAppTheme.MonetDark.Small" parent="NaturalHourAppTheme.MonetDark">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
+    </style>
+    <style name="NaturalHourAppTheme.MonetDark.Large" parent="NaturalHourAppTheme.MonetDark">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
+    </style>
+    <style name="NaturalHourAppTheme.MonetDark.XLarge" parent="NaturalHourAppTheme.MonetDark">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
+    </style>
+
+    <!-- (Monet) Light theme -->
+    <style name="NaturalHourAppTheme.MonetLight" parent="NaturalHourAppTheme.Light">
+    </style>
+    <style name="NaturalHourAppTheme.MonetLight.Small" parent="NaturalHourAppTheme.MonetLight">
+        <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/smalltext_size_xsmall</item>
+        <item name="text_size_small">@dimen/smalltext_size_small</item>
+        <item name="text_size_medium">@dimen/smalltext_size_medium</item>
+        <item name="text_size_large">@dimen/smalltext_size_large</item>
+        <item name="text_size_xlarge">@dimen/smalltext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/smalltext_size_huge</item>
+        <item name="text_size_enormous">@dimen/smalltext_size_enormous</item>
+        <item name="actionBarSize">@dimen/small_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/small_bottombar_size</item>
+    </style>
+    <style name="NaturalHourAppTheme.MonetLight.Large" parent="NaturalHourAppTheme.MonetLight">
+        <item name="text_size_tiny">@dimen/largetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/largetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/largetext_size_small</item>
+        <item name="text_size_medium">@dimen/largetext_size_medium</item>
+        <item name="text_size_large">@dimen/largetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/largetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/largetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/largetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/large_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/large_bottombar_size</item>
+    </style>
+    <style name="NaturalHourAppTheme.MonetLight.XLarge" parent="NaturalHourAppTheme.MonetLight">
+        <item name="text_size_tiny">@dimen/xlargetext_size_tiny</item>
+        <item name="text_size_xsmall">@dimen/xlargetext_size_xsmall</item>
+        <item name="text_size_small">@dimen/xlargetext_size_small</item>
+        <item name="text_size_medium">@dimen/xlargetext_size_medium</item>
+        <item name="text_size_large">@dimen/xlargetext_size_large</item>
+        <item name="text_size_xlarge">@dimen/xlargetext_size_xlarge</item>
+        <item name="text_size_huge">@dimen/xlargetext_size_huge</item>
+        <item name="text_size_enormous">@dimen/xlargetext_size_enormous</item>
+        <item name="actionBarSize">@dimen/xlarge_actionbar_size</item>
+        <item name="bottomBarSize">@dimen/xlarge_bottombar_size</item>
+    </style>
+
+</resources>

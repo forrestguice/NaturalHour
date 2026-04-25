@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary_monet">@color/colorPrimary_monet_dark</color>
+    <color name="colorPrimaryDark_monet">@color/colorPrimaryDark_monet_dark</color>
+    <color name="colorAccent_monet">@color/colorAccent_monet_dark</color>
+    <color name="colorAction_monet">@color/colorAction_monet_dark</color>
+    <color name="colorDisabled_monet">@color/colorDisabled_monet_dark</color>
+    <color name="colorBottomSheet_monet">@color/colorBottomSheet_monet_dark</color>
+    <color name="window_bg_monet">@color/window_bg_monet_dark</color>
+
+</resources>

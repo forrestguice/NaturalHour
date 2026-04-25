@@ -20,6 +20,8 @@
 package com.forrestguice.suntimes.naturalhour;
 
 import android.content.Context;
+import android.os.Build;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -34,7 +36,17 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
     private static final AppThemeInfo info_systemTheme_contrast = new ContrastSystemThemeInfo();
     private static final AppThemeInfo info_darkTheme_contrast = new ContrastDarkThemeInfo();
     private static final AppThemeInfo info_lightTheme_contrast = new ContrastLightThemeInfo();
-    private static final AppThemeInfo info_defaultTheme = info_systemTheme;
+    private static final AppThemeInfo info_systemTheme_monet = new MonetSystemThemeInfo();
+    private static final AppThemeInfo info_darkTheme_monet = new MonetDarkThemeInfo();
+    private static final AppThemeInfo info_lightTheme_monet = new MonetLightThemeInfo();
+    private static final AppThemeInfo info_defaultTheme;
+    static {
+        if (Build.VERSION.SDK_INT >= 31) {
+            info_defaultTheme = info_systemTheme_monet;
+        } else {
+            info_defaultTheme = info_systemTheme;
+        }
+    }
 
     @Override
     public AppThemeInfo loadThemeInfo(@Nullable String extendedThemeName)
@@ -44,21 +56,24 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
 
         } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_LIGHT)) {
             return info_lightTheme;
-
         } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_DARK)) {
             return info_darkTheme;
-
         } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_SYSTEM)) {
             return info_systemTheme;
 
         } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_CONTRAST_LIGHT)) {
             return info_lightTheme_contrast;
-
         } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_CONTRAST_DARK)) {
             return info_darkTheme_contrast;
-
         } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_CONTRAST_SYSTEM)) {
             return info_systemTheme_contrast;
+
+        } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_MONET_LIGHT)) {
+            return info_lightTheme_monet;
+        } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_MONET_DARK)) {
+            return info_darkTheme_monet;
+        } else if (extendedThemeName.startsWith(SuntimesInfo.THEME_MONET_SYSTEM)) {
+            return info_systemTheme_monet;
 
         } else {
             return info_defaultTheme;
@@ -207,5 +222,70 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
         }
     }
 
+    /* MonetSystemThemeInfo */
+    public static class MonetSystemThemeInfo extends AppThemeInfo
+    {
+        @Override
+        public String getThemeName() {
+            return SuntimesInfo.THEME_MONET_SYSTEM;
+        }
+        @Override
+        public int getDefaultNightMode() {
+            return AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        }
+        @Override
+        public int getStyleId(Context context, TextSize size) {
+            switch (size) {
+                case SMALL: return R.style.NaturalHourAppTheme_MonetSystem_Small;
+                case LARGE: return R.style.NaturalHourAppTheme_MonetSystem_Large;
+                case XLARGE: return R.style.NaturalHourAppTheme_MonetSystem_XLarge;
+                case NORMAL: default: return R.style.NaturalHourAppTheme_MonetSystem;
+            }
+        }
+    }
+
+    /* MonetLightThemeInfo */
+    public static class MonetLightThemeInfo extends AppThemeInfo
+    {
+        @Override
+        public String getThemeName() {
+            return SuntimesInfo.THEME_MONET_LIGHT;
+        }
+        @Override
+        public int getDefaultNightMode() {
+            return AppCompatDelegate.MODE_NIGHT_NO;
+        }
+        @Override
+        public int getStyleId(Context context, TextSize size) {
+            switch (size) {
+                case SMALL: return R.style.NaturalHourAppTheme_MonetLight_Small;
+                case LARGE: return R.style.NaturalHourAppTheme_MonetLight_Large;
+                case XLARGE: return R.style.NaturalHourAppTheme_MonetLight_XLarge;
+                case NORMAL: default: return R.style.NaturalHourAppTheme_MonetLight;
+            }
+        }
+    }
+
+    /* MonetDarkThemeInfo */
+    public static class MonetDarkThemeInfo extends AppThemeInfo
+    {
+        @Override
+        public String getThemeName() {
+            return SuntimesInfo.THEME_MONET_DARK;
+        }
+        @Override
+        public int getDefaultNightMode() {
+            return AppCompatDelegate.MODE_NIGHT_YES;
+        }
+        @Override
+        public int getStyleId(Context context, TextSize size) {
+            switch (size) {
+                case SMALL: return R.style.NaturalHourAppTheme_MonetDark_Small;
+                case LARGE: return R.style.NaturalHourAppTheme_MonetDark_Large;
+                case XLARGE: return R.style.NaturalHourAppTheme_MonetDark_XLarge;
+                case NORMAL: default: return R.style.NaturalHourAppTheme_MonetDark;
+            }
+        }
+    }
 
 }
