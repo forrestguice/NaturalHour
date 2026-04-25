@@ -23,8 +23,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.preference.Preference;
+
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceViewHolder;
 
 import android.util.AttributeSet;
 import android.view.View;
@@ -81,10 +84,11 @@ public class ColorValuesCollectionPreference extends Preference
     }
 
     @Override
-    protected void onBindView(View view)
+    public void onBindViewHolder(@NonNull PreferenceViewHolder holder)
     {
-        super.onBindView(view);
+        super.onBindViewHolder(holder);
 
+        View view = holder.itemView;
         if (collection != null && !previewKeys.isEmpty())
         {
             int[] previewViewIDs = new int[] { R.id.colorPreview0, R.id.colorPreview1, R.id.colorPreview2 };
@@ -191,7 +195,7 @@ public class ColorValuesCollectionPreference extends Preference
         setRequestCode(requestCode);
         setOnPreferenceClickListener(createPreferenceOnClickListener(activity));
     }
-    public void initPreferenceOnClickListener(final android.app.Fragment fragment, int requestCode)
+    public void initPreferenceOnClickListener(final androidx.fragment.app.Fragment fragment, int requestCode)
     {
         setRequestCode(requestCode);
         setOnPreferenceClickListener(createPreferenceOnClickListener(fragment));
@@ -214,7 +218,7 @@ public class ColorValuesCollectionPreference extends Preference
             }
         };
     }
-    protected OnPreferenceClickListener createPreferenceOnClickListener(final android.app.Fragment fragment)
+    protected OnPreferenceClickListener createPreferenceOnClickListener(final androidx.fragment.app.Fragment fragment)
     {
         return new OnPreferenceClickListener()
         {

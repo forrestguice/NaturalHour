@@ -26,7 +26,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -46,8 +48,7 @@ import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetActivity;
 
 import static android.app.Activity.RESULT_OK;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class WidgetPreferenceFragment extends PreferenceFragment
+public class WidgetPreferenceFragment extends PreferenceFragmentCompat
 {
     public static final int REQUEST_PICKCOLORS = 100;
 
@@ -91,7 +92,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(getPreferenceResources());
+    }
+
+    @Override
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        setPreferencesFromResource(getPreferenceResources(), rootKey);
         initWidgetDefaults();
         setHasOptionsMenu(false);
     }

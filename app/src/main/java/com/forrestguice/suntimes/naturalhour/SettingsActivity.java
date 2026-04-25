@@ -20,16 +20,17 @@
 package com.forrestguice.suntimes.naturalhour;
 
 import android.annotation.TargetApi;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -73,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment(), NaturalHourPreferenceFragment.TAG).commit();
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new NaturalHourPreferenceFragment(), NaturalHourPreferenceFragment.TAG).commit();
         AppSettings.sanityCheck(this);
     }
 
@@ -82,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity
     {
         super.onResume();
 
-        FragmentManager fragments = getFragmentManager();
+        FragmentManager fragments = getSupportFragmentManager();
         NaturalHourPreferenceFragment fragment = (NaturalHourPreferenceFragment) fragments.findFragmentByTag(NaturalHourPreferenceFragment.TAG);
         if (fragment != null) {
             fragment.setSuntimesInfo(suntimesInfo);
@@ -92,8 +93,7 @@ public class SettingsActivity extends AppCompatActivity
     /**
      * NaturalHourPreferenceFragment
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class NaturalHourPreferenceFragment extends PreferenceFragment
+    public static class NaturalHourPreferenceFragment extends PreferenceFragmentCompat
     {
         public static final String TAG = "naturalHourFragment";
 
@@ -106,7 +106,11 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
+
+        }
+        @Override
+        public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+            setPreferencesFromResource(R.xml.pref_general, rootKey);
             setHasOptionsMenu(true);
             initColors();
         }

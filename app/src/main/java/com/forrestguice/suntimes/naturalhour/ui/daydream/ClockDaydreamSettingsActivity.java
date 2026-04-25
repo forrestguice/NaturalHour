@@ -87,7 +87,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        flagFragment = (DaydreamPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (DaydreamPreferenceFragment) getSupportFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
             flagFragment.setAppWidgetId(appWidgetId, false);
@@ -103,7 +103,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-        WidgetPreferenceFragment flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        WidgetPreferenceFragment flagFragment = (WidgetPreferenceFragment) getSupportFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
         }
