@@ -16,6 +16,12 @@
         <item name="cardViewStyle">@style/MonetCardView.System</item>
         <item name="tileCardBackground">@drawable/monet_tilecard_bg_ref</item>
         <item name="spinnerStyle">@style/MonetSpinnerStyle.System</item>
+        <item name="dialogBackground">@color/dialog_bg_monet</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg_monet</item>
+        <item name="actionModeStyle">@style/MonetActionMode.System</item>
+        <item name="fab_foregroundColor">@color/fab_foreground_monet</item>
+        <item name="fab_backgroundColor">@color/fab_background_monet</item>
+        <item name="fab_rippleColor">@color/fab_ripple_monet</item>
     </style>
     <style name="NaturalHourAppTheme.MonetSystem.Small" parent="NaturalHourAppTheme.MonetSystem">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -69,6 +75,12 @@
         <item name="cardViewStyle">@style/MonetCardView.Dark</item>
         <item name="tileCardBackground">@drawable/monet_tilecard_bg_dark</item>
         <item name="spinnerStyle">@style/MonetSpinnerStyle.Dark</item>
+        <item name="dialogBackground">@color/dialog_bg_monet_dark</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg_monet_dark</item>
+        <item name="actionModeStyle">@style/MonetActionMode.Dark</item>
+        <item name="fab_foregroundColor">@color/fab_foreground_monet_dark</item>
+        <item name="fab_backgroundColor">@color/fab_background_monet_dark</item>
+        <item name="fab_rippleColor">@color/fab_ripple_monet_dark</item>
     </style>
     <style name="NaturalHourAppTheme.MonetDark.Small" parent="NaturalHourAppTheme.MonetDark">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -122,6 +134,12 @@
         <item name="cardViewStyle">@style/MonetCardView.Light</item>
         <item name="tileCardBackground">@drawable/monet_tilecard_bg_light</item>
         <item name="spinnerStyle">@style/MonetSpinnerStyle.Light</item>
+        <item name="dialogBackground">@color/dialog_bg_monet_light</item>
+        <item name="dialogBackgroundAlt">@color/dialog_alt_bg_monet_light</item>
+        <item name="actionModeStyle">@style/MonetActionMode.Light</item>
+        <item name="fab_foregroundColor">@color/fab_foreground_monet_light</item>
+        <item name="fab_backgroundColor">@color/fab_background_monet_light</item>
+        <item name="fab_rippleColor">@color/fab_ripple_monet_light</item>
     </style>
     <style name="NaturalHourAppTheme.MonetLight.Small" parent="NaturalHourAppTheme.MonetLight">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -201,4 +219,14 @@
         <item name="android:popupBackground">@drawable/monet_popupmenu_frame_light</item>
     </style>
 
-</resources>
+    <style name="MonetActionMode.System" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/actionmode_bg_monet</item>
+    </style>
+    <style name="MonetActionMode.Dark" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/actionmode_bg_monet_dark</item>
+    </style>
+    <style name="MonetActionMode.Light" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/actionmode_bg_monet_light</item>
+    </style>
+
+    </resources>
