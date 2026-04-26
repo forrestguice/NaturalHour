@@ -2,12 +2,13 @@
 
 ### v0.3.3 (2026-04-27)
 * adds "Material You" app themes (api31+).
-* adds widget reconfiguration (api28+) (drag widgets to reconfigure).
+* adds support for `show coordinates` option (requires Suntimes v0.17.0+).
 * adds exception handler and crash report notification; adds `android.permission.POST_NOTIFICATION` [permission].
 * adds full backup rules for Android 12+.
-* fixes bug where the wrong help mirror url is shown depending on locale.
-* refactor; replaces deprecated api (PreferenceManager, FragmentViewContainer).
-* build: adds nightly build flavor.
+* fixes widget reconfiguration (api28+) (drag widgets to reconfigure).
+* fixes bug where help mirror url is incorrect (locale specific).
+* refactors deprecated api (Preference, PreferenceFragment, PreferenceManager, FragmentContainer).
+* updates build: adds nightly build flavor.
 * updates translation to French (#43 by chfo-bidouille)
 
 ### v0.3.2 (2025-06-03)
