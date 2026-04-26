@@ -2,4 +2,5 @@
 <resources>
     <drawable name="monet_popupmenu_frame_ref">@drawable/monet_popupmenu_frame_dark</drawable>
     <drawable name="monet_tilecard_bg_ref">@drawable/monet_tilecard_bg_dark</drawable>
+    <drawable name="monet_alertdialog_bg_ref">@drawable/monet_alertdialog_bg_dark</drawable>
 </resources>
