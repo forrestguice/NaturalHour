@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
@@ -62,6 +63,9 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     public void onCreate(Bundle savedState)
     {
         super.onCreate(savedState);
+        if (info.appTheme != null) {
+            AppThemeInfo.setTheme(this, info);
+        }
         setContentView(R.layout.activity_daydream_config);
         initViews();
         handleIntent(getIntent());
