@@ -23,6 +23,7 @@
         <item name="fab_foregroundColor">@color/fab_foreground_monet</item>
         <item name="fab_backgroundColor">@color/fab_background_monet</item>
         <item name="fab_rippleColor">@color/fab_ripple_monet</item>
+        <item name="alertDialogTheme">@style/MonetAlertDialogTheme.System</item>
     </style>
     <style name="NaturalHourAppTheme.MonetSystem.Small" parent="NaturalHourAppTheme.MonetSystem">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -83,6 +84,7 @@
         <item name="fab_foregroundColor">@color/fab_foreground_monet_dark</item>
         <item name="fab_backgroundColor">@color/fab_background_monet_dark</item>
         <item name="fab_rippleColor">@color/fab_ripple_monet_dark</item>
+        <item name="alertDialogTheme">@style/MonetAlertDialogTheme.Dark</item>
     </style>
     <style name="NaturalHourAppTheme.MonetDark.Small" parent="NaturalHourAppTheme.MonetDark">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -143,6 +145,7 @@
         <item name="fab_foregroundColor">@color/fab_foreground_monet_light</item>
         <item name="fab_backgroundColor">@color/fab_background_monet_light</item>
         <item name="fab_rippleColor">@color/fab_ripple_monet_light</item>
+        <item name="alertDialogTheme">@style/MonetAlertDialogTheme.Light</item>
     </style>
     <style name="NaturalHourAppTheme.MonetLight.Small" parent="NaturalHourAppTheme.MonetLight">
         <item name="text_size_tiny">@dimen/smalltext_size_tiny</item>
@@ -230,6 +233,16 @@
     </style>
     <style name="MonetActionMode.Light" parent="Widget.AppCompat.ActionMode">
         <item name="background">@color/actionmode_bg_monet_light</item>
+    </style>
+
+    <style name="MonetAlertDialogTheme.System" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/dialog_bg_monet</item>
+    </style>
+    <style name="MonetAlertDialogTheme.Dark" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/dialog_bg_monet_dark</item>
+    </style>
+    <style name="MonetAlertDialogTheme.Light" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/dialog_bg_monet_light</item>
     </style>
 
     </resources>
