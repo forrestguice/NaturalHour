@@ -8,5 +8,13 @@
     <color name="colorDisabled_monet">@color/colorDisabled_monet_dark</color>
     <color name="colorBottomSheet_monet">@color/colorBottomSheet_monet_dark</color>
     <color name="window_bg_monet">@color/window_bg_monet_dark</color>
+    <color name="menu_bg_monet">@color/menu_bg_monet_dark</color>
+    <color name="actionmode_bg_monet">@color/actionmode_bg_monet_dark</color>
+    <color name="card_bg_monet">@color/card_bg_monet_dark</color>
+    <color name="dialog_bg_monet">@color/dialog_bg_monet_dark</color>
+    <color name="dialog_alt_bg_monet">@color/dialog_alt_bg_monet_dark</color>
+    <color name="fab_foreground_monet">@color/fab_foreground_monet_dark</color>
+    <color name="fab_background_monet">@color/fab_background_monet_dark</color>
+    <color name="fab_ripple_monet">@color/fab_ripple_monet_dark</color>
 
 </resources>

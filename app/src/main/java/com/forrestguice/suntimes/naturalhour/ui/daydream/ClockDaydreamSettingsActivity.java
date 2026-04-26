@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
@@ -62,6 +63,9 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     public void onCreate(Bundle savedState)
     {
         super.onCreate(savedState);
+        if (info.appTheme != null) {
+            AppThemeInfo.setTheme(this, info);
+        }
         setContentView(R.layout.activity_daydream_config);
         initViews();
         handleIntent(getIntent());
@@ -87,7 +91,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        flagFragment = (DaydreamPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (DaydreamPreferenceFragment) getSupportFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
             flagFragment.setAppWidgetId(appWidgetId, false);
@@ -103,7 +107,7 @@ public class ClockDaydreamSettingsActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
-        WidgetPreferenceFragment flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        WidgetPreferenceFragment flagFragment = (WidgetPreferenceFragment) getSupportFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(info);
         }

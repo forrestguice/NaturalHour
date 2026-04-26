@@ -19,15 +19,14 @@
 package com.forrestguice.suntimes.naturalhour.ui;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
-import android.preference.DialogPreference;
+
+import androidx.annotation.NonNull;
+import androidx.preference.DialogPreference;
+import androidx.preference.PreferenceViewHolder;
+
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.forrestguice.suntimes.addon.ui.SuntimesUtils;
 import com.forrestguice.suntimes.naturalhour.R;
@@ -40,17 +39,28 @@ import com.forrestguice.suntimes.naturalhour.R;
 public class TimeOffsetPickerPreference extends DialogPreference
 {
     private int value;
-    private int param_minMs = 1, param_maxMs = 10000;
 
-    private String param_zeroText = null;
-    private String param_resetText = null;
-    private Integer param_resetValue = null;
+    public static final class TimeOffsetPickerPreferenceParams
+    {
+        public int param_minMs = 1, param_maxMs = 10000;
 
-    private boolean param_showDirection = false;
-    private boolean param_showSeconds = true;
-    private boolean param_showMinutes = true;
-    private boolean param_showHours = true;
-    private boolean param_showDays = false;
+        public String param_zeroText = null;
+        public String param_resetText = null;
+        public Integer param_resetValue = null;
+
+        public boolean param_showDirection = false;
+        public boolean param_showSeconds = true;
+        public boolean param_showMinutes = true;
+        public boolean param_showHours = true;
+        public boolean param_showDays = false;
+    }
+    protected TimeOffsetPickerPreferenceParams params;
+    public TimeOffsetPickerPreferenceParams getParams() {
+        if (params == null) {
+            params = new TimeOffsetPickerPreferenceParams();
+        }
+        return params;
+    }
 
     @TargetApi(21)
     public TimeOffsetPickerPreference(Context context) {
@@ -74,78 +84,9 @@ public class TimeOffsetPickerPreference extends DialogPreference
         initParams(context, attrs);
     }
 
-    private TextView label;
-    private TimeOffsetPicker pickMillis;
-
     @Override
-    protected View onCreateDialogView()
-    {
-        SuntimesUtils.initDisplayStrings(getContext());
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View dialogView = inflater.inflate(R.layout.layout_dialog_timeoffset, null, false);
-
-        label = (TextView) dialogView.findViewById(R.id.text_label);
-        pickMillis = (TimeOffsetPicker) dialogView.findViewById(R.id.pick_offset_millis);
-        pickMillis.setParams(getContext(), param_minMs, param_maxMs, param_showSeconds, param_showMinutes, param_showHours, param_showDays, param_showDirection);
-        pickMillis.addViewListener(onValueChanged);
-
-        return dialogView;
-    }
-
-    private final TimeOffsetPicker.MillisecondPickerViewListener onValueChanged = new TimeOffsetPicker.MillisecondPickerViewListener()
-    {
-        @Override
-        public void onValueChanged() {
-            if (label != null && pickMillis != null) {
-                label.setText(createSummaryString((int) pickMillis.getSelectedValue()));
-            }
-        }
-    };
-
-    @Override
-    protected void onBindDialogView(View v)
-    {
-        super.onBindDialogView(v);
-        if (label != null) {
-            label.setText(createSummaryString(getValue()));
-        }
-        if (pickMillis != null) {
-            pickMillis.setSelectedValue(getValue());
-        }
-    }
-
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder)
-    {
-        super.onPrepareDialogBuilder(builder);
-        if (param_zeroText != null)
-        {
-            builder.setNeutralButton(param_zeroText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    setValue(0);
-                }
-            });
-
-        } else if (param_resetText != null) {
-            builder.setNeutralButton(param_resetText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    setValue(param_resetValue);
-                }
-            });
-        }
-    }
-
-    @Override
-    protected void onDialogClosed(boolean result)
-    {
-        if (result)
-        {
-            int changedValue = (int) pickMillis.getSelectedValue();
-            if (callChangeListener(changedValue)) {
-                setValue(changedValue);
-            }
-        }
+    public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
     }
 
     @Override
@@ -159,10 +100,12 @@ public class TimeOffsetPickerPreference extends DialogPreference
     }
 
     public int getMin() {
-        return param_minMs;
+        TimeOffsetPickerPreferenceParams params = getParams();
+        return params.param_minMs;
     }
     public int getMax() {
-        return param_maxMs;
+        TimeOffsetPickerPreferenceParams params = getParams();
+        return params.param_maxMs;
     }
 
     public void setValue(int value)
@@ -177,18 +120,19 @@ public class TimeOffsetPickerPreference extends DialogPreference
 
     public void initParams(Context context, AttributeSet attrs)
     {
+        TimeOffsetPickerPreferenceParams params = getParams();
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TimeOffsetPickerPreference, 0, 0);
         try {
-            param_minMs = a.getInt(R.styleable.TimeOffsetPickerPreference_minValue, param_minMs);
-            param_maxMs = a.getInt(R.styleable.TimeOffsetPickerPreference_maxValue, param_maxMs);
-            param_zeroText = a.getString(R.styleable.TimeOffsetPickerPreference_zeroValueText);
-            param_resetText = a.getString(R.styleable.TimeOffsetPickerPreference_resetDefaultsText);
-            param_resetValue = a.getInt(R.styleable.TimeOffsetPickerPreference_resetDefaultsValue, param_minMs);
-            param_showSeconds = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickSeconds, param_showSeconds);
-            param_showMinutes = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickMinutes, param_showMinutes);
-            param_showHours = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickHours, param_showHours);
-            param_showDays = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickDays, param_showDays);
-            param_showDirection = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickBeforeAfter, param_showDirection);
+            params.param_minMs = a.getInt(R.styleable.TimeOffsetPickerPreference_minValue, params.param_minMs);
+            params.param_maxMs = a.getInt(R.styleable.TimeOffsetPickerPreference_maxValue, params.param_maxMs);
+            params.param_zeroText = a.getString(R.styleable.TimeOffsetPickerPreference_zeroValueText);
+            params.param_resetText = a.getString(R.styleable.TimeOffsetPickerPreference_resetDefaultsText);
+            params.param_resetValue = a.getInt(R.styleable.TimeOffsetPickerPreference_resetDefaultsValue, params.param_minMs);
+            params.param_showSeconds = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickSeconds, params.param_showSeconds);
+            params.param_showMinutes = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickMinutes, params.param_showMinutes);
+            params.param_showHours = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickHours, params.param_showHours);
+            params.param_showDays = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickDays, params.param_showDays);
+            params.param_showDirection = a.getBoolean(R.styleable.TimeOffsetPickerPreference_allowPickBeforeAfter, params.param_showDirection);
 
         } finally {
             a.recycle();
@@ -197,8 +141,9 @@ public class TimeOffsetPickerPreference extends DialogPreference
     
     private String createSummaryString(int value)
     {
-        if (value == 0 && param_zeroText != null) {
-            return param_zeroText;
+        TimeOffsetPickerPreferenceParams params = getParams();
+        if (value == 0 && params.param_zeroText != null) {
+            return params.param_zeroText;
         } else {
             return new SuntimesUtils().timeDeltaLongDisplayString(0, value, true).getValue();
         }
@@ -207,4 +152,5 @@ public class TimeOffsetPickerPreference extends DialogPreference
     private void updateSummary() {
         setSummary(createSummaryString(getValue()));
     }
+
 }

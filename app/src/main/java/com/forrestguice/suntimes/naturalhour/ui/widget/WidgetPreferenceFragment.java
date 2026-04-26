@@ -19,14 +19,15 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
-import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+
+import androidx.annotation.Nullable;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -37,6 +38,8 @@ import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.SettingsActivity;
 import com.forrestguice.suntimes.naturalhour.ui.IntListPreference;
+import com.forrestguice.suntimes.naturalhour.ui.TimeOffsetPickerPreference;
+import com.forrestguice.suntimes.naturalhour.ui.TimeOffsetPickerPreferenceDialog;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValuesCollection;
 import com.forrestguice.suntimes.naturalhour.ui.clockview.NaturalHourClockBitmap;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
@@ -46,8 +49,7 @@ import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesSheetActivity;
 
 import static android.app.Activity.RESULT_OK;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class WidgetPreferenceFragment extends PreferenceFragment
+public class WidgetPreferenceFragment extends PreferenceFragmentCompat
 {
     public static final int REQUEST_PICKCOLORS = 100;
 
@@ -91,7 +93,11 @@ public class WidgetPreferenceFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(getPreferenceResources());
+    }
+
+    @Override
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        setPreferencesFromResource(getPreferenceResources(), rootKey);
         initWidgetDefaults();
         setHasOptionsMenu(false);
     }
@@ -330,6 +336,19 @@ public class WidgetPreferenceFragment extends PreferenceFragment
         this.info = info;
         if (this.info != null) {
             updateDynamicPrefs(getActivity(), this.info);
+        }
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(@NonNull Preference preference)
+    {
+        if (preference instanceof TimeOffsetPickerPreference) {
+            TimeOffsetPickerPreferenceDialog fragment = TimeOffsetPickerPreferenceDialog.newInstance(preference.getKey());
+            fragment.setTargetFragment(this, 0);
+            fragment.show(getParentFragmentManager(), "TimeOffsetPickerPreference");
+
+        } else {
+            super.onDisplayPreferenceDialog(preference);
         }
     }
 }

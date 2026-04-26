@@ -19,12 +19,16 @@
 package com.forrestguice.suntimes.naturalhour.ui.tiles;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
+import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.annotation.Nullable;
+import com.forrestguice.suntimes.naturalhour.AppThemes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,9 +41,18 @@ public abstract class SuntimesTileActivity extends AppCompatActivity
     @Nullable
     protected abstract SuntimesTileBase initTileBase();
     protected SuntimesTileBase tileBase;
+    protected SuntimesInfo suntimesInfo;
 
     public SuntimesTileActivity() {
         super();
+    }
+
+    @Override
+    protected void attachBaseContext(Context context)
+    {
+        super.attachBaseContext(context);
+        AppThemeInfo.setFactory(new AppThemes());
+        suntimesInfo = SuntimesInfo.queryInfo(context);
     }
 
     @Override
@@ -48,6 +61,10 @@ public abstract class SuntimesTileActivity extends AppCompatActivity
         super.onCreate(savedState);
         setShowWhenLocked();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
+
+        if (suntimesInfo != null && suntimesInfo.appTheme != null) {    // override the theme
+            AppThemeInfo.setTheme(this, suntimesInfo);
+        }
 
         tileBase = initTileBase();
         if (tileBase == null)

@@ -67,7 +67,10 @@ public class NaturalHourAlarmFragment extends Fragment
     public static final String ARG_TIMEZONE = "timezone";
     public static final String DEF_TIMEZONE = null;
 
+    public static final String ARG_ALARMID = "alarmid";
+
     protected TextView text_time;
+    @Nullable
     protected AlarmSelectFragment alarmSelect;
     protected Spinner modePicker;
 
@@ -80,24 +83,27 @@ public class NaturalHourAlarmFragment extends Fragment
         setLocation(0, 0, 0);
     }
 
+    @Nullable
     public String getAlarmID() {
-        return alarmSelect.getSelectedEventID();
+        return (alarmSelect != null ? alarmSelect.getSelectedEventID() : null);
     }
 
-    public void setAlarmID(String alarmID)
+    private String t_alarmID;
+    public void setAlarmID(@Nullable String alarmID)
     {
+        Bundle args = getArguments();
+        if (args != null) {
+            args.putString(ARG_ALARMID, alarmID);
+        }
+
         int[] params = NaturalHourProvider.getAlarmInfo(alarmID).fromAlarmID(alarmID);
         if (params != null) {
             setHourMode(params[0]);
         }
-        alarmSelect.setSelectedEventID(alarmID);
 
-        /*NaturalHourAlarmType alarmType = NaturalHourProvider.getAlarmInfo(alarmID);
-        switch (alarmType.getTypeID()) {
-            case NaturalHourAlarm1.TYPE_PREFIX:
-            case NaturalHourAlarm0.TYPE_PREFIX:
-            default: break;
-        }*/
+        if (alarmSelect != null) {
+            alarmSelect.setSelectedEventID(alarmID);
+        }
     }
 
     public int getHourMode() {
@@ -204,6 +210,12 @@ public class NaturalHourAlarmFragment extends Fragment
         {
             alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOURMODE, getHourMode());
             alarmSelect.setBoolArg(NaturalHourSelectFragment.ARG_MODE24, NaturalHourFragment.isMode24(getHourMode()));
+
+            Bundle args = getArguments();
+            String alarmID = (args != null ? args.getString(ARG_ALARMID) : null);
+            if (alarmID != null) {
+                alarmSelect.setSelectedEventID(alarmID);
+            }
 
             //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_HOUR, getHour());
             //alarmSelect.setIntArg(NaturalHourSelectFragment.ARG_MOMENT, getMoment());

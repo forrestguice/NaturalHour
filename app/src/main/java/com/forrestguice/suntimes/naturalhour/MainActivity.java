@@ -304,8 +304,11 @@ public class MainActivity extends AppCompatActivity
                 : context.getString(R.string.app_name);
     }
 
-    protected CharSequence createSubTitle(Context context, SuntimesInfo info) {
-        return (info != null) ? DisplayStrings.formatLocation(context, info) : "";
+    protected CharSequence createSubTitle(Context context, SuntimesInfo info)
+    {
+        SuntimesInfo.SuntimesOptions options = (info != null ? info.getOptions(this) : null);
+        boolean showCoordinates = (options == null || options.show_coordinates);
+        return ((info != null && showCoordinates) ? DisplayStrings.formatLocation(context, info) : "");
     }
 
     protected String[] getLocation() {
@@ -327,10 +330,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         View bottomBar = findViewById(R.id.bottombar);
 
-        if (actionBar != null) {
+        if (actionBar != null)
+        {
             actionBar.setTitle(createTitle(this, suntimesInfo));
             actionBar.setSubtitle(isLocked ? context.getString(R.string.app_name)
-                                           : DisplayStrings.formatLocation(this, suntimesInfo));
+                                           : createSubTitle(context, suntimesInfo));
             actionBar.setHomeButtonEnabled(!isLocked);
         }
         if (toolbar != null) {

@@ -596,7 +596,7 @@
         <item name="text_size_huge">@dimen/text_size_huge</item>
         <item name="text_size_enormous">@dimen/text_size_enormous</item>
     </style>
-    <style name="LockScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+    <style name="LockScreenDialogStyle" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/LockScreenDialogAnimation</item>
         <item name="android:windowBackground">?attr/tileCardBackground</item>

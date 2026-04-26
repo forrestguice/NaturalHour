@@ -27,6 +27,9 @@ import android.service.quicksettings.TileService;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 
+import com.forrestguice.suntimes.addon.AppThemeInfo;
+import com.forrestguice.suntimes.addon.SuntimesInfo;
+import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.R;
 
 /**
@@ -39,11 +42,14 @@ public abstract class SuntimesTileService extends TileService
     protected abstract int appWidgetId();
     protected abstract SuntimesTileBase initTileBase();
     protected SuntimesTileBase base = initTileBase();
+    protected SuntimesInfo suntimesInfo;
 
     public static final String TAG = "NaturalHourTile";
 
     protected void initLocale(Context context) {
         //SuntimesUtils.initDisplayStrings(context);
+        AppThemeInfo.setFactory(new AppThemes());
+        suntimesInfo = SuntimesInfo.queryInfo(getApplicationContext());
     }
 
     protected void updateTile(Context context) {
@@ -123,7 +129,9 @@ public abstract class SuntimesTileService extends TileService
     }
     protected void onClick_unlocked()
     {
-        ContextThemeWrapper context = new ContextThemeWrapper(getApplicationContext(), R.style.NaturalHourAppTheme_System);
+        String themeName = (suntimesInfo != null ? AppThemeInfo.themeNameFromInfo(suntimesInfo) : null);
+        int themeId = (themeName != null ? AppThemeInfo.themePrefToStyleId(getApplicationContext(), themeName) : new AppThemes().getDefaultThemeID());
+        ContextThemeWrapper context = new ContextThemeWrapper(getApplicationContext(), themeId);
         Dialog dialog = base.createDialog(context);
         if (dialog != null) {
             showDialog(dialog);

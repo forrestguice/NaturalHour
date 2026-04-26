@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="monet_popupmenu_frame_ref">@drawable/monet_popupmenu_frame_light</drawable>
+    <drawable name="monet_tilecard_bg_ref">@drawable/monet_tilecard_bg_light</drawable>
+
+</resources>

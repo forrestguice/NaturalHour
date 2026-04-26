@@ -138,7 +138,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (WidgetPreferenceFragment) getSupportFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
             flagFragment.setAppWidgetId(appWidgetId, reconfigure);
@@ -150,7 +150,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     {
         super.onResume();
 
-        flagFragment = (WidgetPreferenceFragment) getFragmentManager().findFragmentById(R.id.clockFlagsFragment);
+        flagFragment = (WidgetPreferenceFragment) getSupportFragmentManager().findFragmentById(R.id.clockFlagsFragment);
         if (flagFragment != null) {
             flagFragment.setSuntimesInfo(suntimesInfo);
         }
