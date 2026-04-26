@@ -39,6 +39,7 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
     private static final AppThemeInfo info_systemTheme_monet = new MonetSystemThemeInfo();
     private static final AppThemeInfo info_darkTheme_monet = new MonetDarkThemeInfo();
     private static final AppThemeInfo info_lightTheme_monet = new MonetLightThemeInfo();
+
     private static final AppThemeInfo info_defaultTheme;
     static {
         if (Build.VERSION.SDK_INT >= 31) {
@@ -46,6 +47,12 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
         } else {
             info_defaultTheme = info_systemTheme;
         }
+    }
+    @Override
+    public int getDefaultThemeID() {
+        if (Build.VERSION.SDK_INT >= 31) {
+            return R.style.NaturalHourAppTheme_MonetSystem;
+        } else return R.style.NaturalHourAppTheme_System;
     }
 
     @Override
@@ -78,11 +85,6 @@ public class AppThemes extends AppThemeInfo.AppThemeInfoFactory
         } else {
             return info_defaultTheme;
         }
-    }
-
-    @Override
-    public int getDefaultThemeID() {
-        return R.style.NaturalHourAppTheme_Dark;
     }
 
     @Override
