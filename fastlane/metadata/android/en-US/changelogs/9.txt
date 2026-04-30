@@ -1,0 +1,5 @@
+- adds "Material You" app themes.
+- adds support for `show coordinates` option.
+- adds exception handler and crash report notification.
+- fixes widget reconfiguration (drag widgets to reconfigure).
+- updates translation to French.
