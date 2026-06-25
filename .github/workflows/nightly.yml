@@ -42,11 +42,16 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleNightlyDebug
 
+    - name: Setup F-Droid Server (apt-get)
+      run: |
+        sudo add-apt-repository ppa:fdroid/fdroidserver
+        sudo apt-get update
+        sudo apt-get install apksigner fdroidserver --no-install-recommends
+
     - name: Publish nightly debug
       run: |
         python -m venv fdroidserver-env 
         . fdroidserver-env/bin/activate
-        pip install git+https://github.com/forrestguice/fdroidserver.git
         fdroid nightly --archive-older 10
       env:
         DEBUG_KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
