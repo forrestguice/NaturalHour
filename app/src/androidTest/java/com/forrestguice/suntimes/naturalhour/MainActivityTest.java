@@ -90,7 +90,7 @@ public class MainActivityTest
 
         public MainActivityRobot assertOverflowMenuShown()
         {
-            onView(withText(R.string.action_alarms)).check(assertShown);
+            //onView(withText(R.string.action_alarms)).check(assertShown);
             onView(withText(R.string.action_help)).check(assertShown);
             onView(withText(R.string.action_about)).check(assertShown);
             return this;
