@@ -7,9 +7,12 @@ permissions: {}
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
+      fail-fast: false
       matrix:
         api-level: [29]
+
     steps:
       - name: checkout
         uses:  actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  #6.0.2
@@ -73,14 +76,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedCheck
-
-      - name: Upload artifacts (nightly test report)
-        if: success() || failure()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
-        with:
-          name: nightly-test-report
-          path: app/build/reports/androidTests/connected/flavors/nightly/
+          script: ./gradlew connectedProductionDebugAndroidTest
 
       - name: Upload artifacts (production test report)
         if: success() || failure()
