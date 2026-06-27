@@ -77,7 +77,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: 
-            ./gradlew connectedProductionDebugAndroidTest &&
+            ./gradlew connectedProductionDebugAndroidTest ;
             mkdir -p app/build/test-screenshots &&
             adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/
 
@@ -88,15 +88,8 @@ jobs:
           name: production-test-report
           path: app/build/reports/androidTests/connected/flavors/production/
 
-          # - name: adb pull (screenshots)
-          # id: pull_screenshots
-          #if: always()
-          #run: |
-          # mkdir -p app/build/test-screenshots
-          # adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/
-
       - name: upload artifacts (screenshots)
-        if: steps.pull_screenshots.conclusion == 'success'
+        if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
         with:
           name: production-test-screenshots
