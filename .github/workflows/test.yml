@@ -77,8 +77,8 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: 
-            ./gradlew connectedProductionDebugAndroidTest
-            mkdir -p app/build/test-screenshots
+            ./gradlew connectedProductionDebugAndroidTest &&
+            mkdir -p app/build/test-screenshots &&
             adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/
 
       - name: upload artifacts (production test report)
