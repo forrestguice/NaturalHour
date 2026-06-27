@@ -47,12 +47,17 @@ public class ClockDaydreamSettingsActivityTest
     @Test
     public void test_daydreamSettingsActivity_about()
     {
-        activityRule.launchActivity(new Intent(context, ClockDaydreamSettingsActivity.class));
+        ClockDaydreamSettingsActivity activity = activityRule.launchActivity(new Intent(context, ClockDaydreamSettingsActivity.class));
         new DaydreamSettingsActivityRobot()
+                .captureScreenshot(activity, "ClockDaydreamSettingsActivity")
+
                 .showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, "ClockDaydreamSettingsActivity_menu")
                 .assertOverflowMenuShown()
+
                 .clickOverflowMenu_about()
-                .assertAboutShown();
+                .assertAboutShown()
+                .captureScreenshot(activity, "ClockDaydreamSettingsActivity_about");
     }
 
     /**

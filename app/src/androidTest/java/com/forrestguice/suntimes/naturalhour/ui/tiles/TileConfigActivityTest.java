@@ -45,12 +45,16 @@ public class TileConfigActivityTest
     @Test
     public void test_tileConfigActivity_about()
     {
-        activityRule.launchActivity(WidgetConfigActivityTest.getLaunchIntent(context, NaturalHourTileConfigActivity.class, -9000, null));
+        NaturalHourTileConfigActivity activity = activityRule.launchActivity(WidgetConfigActivityTest.getLaunchIntent(context, NaturalHourTileConfigActivity.class, -9000, null));
         new TileConfigActivityRobot()
+                .captureScreenshot(activity, "TileConfigActivity")
                 .showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, "TileConfigActivity_menu")
                 .assertOverflowMenuShown()
+
                 .clickOverflowMenu_about()
-                .assertAboutShown();
+                .assertAboutShown()
+                .captureScreenshot(activity, "TileConfigActivity_about");
     }
 
     /**

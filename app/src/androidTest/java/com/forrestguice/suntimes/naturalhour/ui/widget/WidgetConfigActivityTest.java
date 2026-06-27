@@ -1,5 +1,6 @@
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -40,11 +41,13 @@ public abstract class WidgetConfigActivityTest
         setAnimationsEnabled(true);
     }
 
-    public static void test_widgetConfigActivity_about(Context context, WidgetConfigActivityRobot robot)
+    public static void test_widgetConfigActivity_about(Activity context, WidgetConfigActivityRobot robot, String tag)
     {
+        robot.captureScreenshot(context, tag);
         robot.showOverflowMenu(context)
                 .assertOverflowMenuShown()
                 .clickOverflowMenu_about()
+                .captureScreenshot(context, tag + "_about")
                 .assertAboutShown();
     }
 

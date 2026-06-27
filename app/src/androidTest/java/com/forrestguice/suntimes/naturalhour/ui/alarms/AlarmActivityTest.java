@@ -49,23 +49,29 @@ public class AlarmActivityTest
     @Test
     public void test_alarmActivity_help()
     {
-        activityRule.launchActivity(new Intent(context, AlarmActivity.class));
+        AlarmActivity activity = activityRule.launchActivity(new Intent(context, AlarmActivity.class));
         new AlarmActivityRobot()
                 .cancelActionMode().sleep(500)
                 .showOverflowMenu(activityRule.getActivity())
                 .clickOverflowMenu_help()
+                .captureScreenshot(activity, "AlarmActivity_help")
                 .assertHelpShown();
     }
 
     @Test
     public void test_alarmActivity_about()
     {
-        activityRule.launchActivity(new Intent(context, AlarmActivity.class));
-        new AlarmActivityRobot()
+        AlarmActivity activity = activityRule.launchActivity(new Intent(context, AlarmActivity.class));
+        AlarmActivityRobot robot = new AlarmActivityRobot()
+                .captureScreenshot(activity, "AlarmActivity_0")
                 .cancelActionMode().sleep(500)
+                .captureScreenshot(activity, "AlarmActivity_1")
                 .showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, "AlarmActivity_menu")
                 .assertOverflowMenuShown()
+
                 .clickOverflowMenu_about()
+                .captureScreenshot(activity, "AlarmActivity_about")
                 .assertAboutShown();
     }
 

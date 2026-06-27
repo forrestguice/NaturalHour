@@ -3,6 +3,7 @@ package com.forrestguice.suntimes.naturalhour.ui.tiles;
 import android.content.Context;
 import android.content.Intent;
 
+import com.forrestguice.suntimes.naturalhour.MainActivity;
 import com.forrestguice.suntimes.naturalhour.TestRobot;
 
 import org.junit.After;
@@ -45,8 +46,9 @@ public class TileLockScreenActivityTest
     {
         Intent intent = new Intent(context, TileLockScreenActivity.class);
         intent.putExtra(TileLockScreenActivity.EXTRA_APPWIDGETID, NaturalHourTileBase.TILE_APPWIDGET_ID);
-        activityRule.launchActivity(intent);
+        TileLockScreenActivity activity = activityRule.launchActivity(intent);
         assertFalse(activityRule.getActivity().isFinishing());
+        new TileLockScreenActivityRobot().captureScreenshot(activity, "TileLockScreenActivity");
     }
 
     @Test

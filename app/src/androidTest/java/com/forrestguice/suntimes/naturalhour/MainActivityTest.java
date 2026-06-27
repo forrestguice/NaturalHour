@@ -39,8 +39,11 @@ public class MainActivityTest
      * test_mainActivity
      */
     @Test
-    public void test_mainActivity() {
+    public void test_mainActivity()
+    {
+        MainActivity activity = activityRule.getActivity();
         new MainActivityRobot()
+                .captureScreenshot(activity, "MainActivity")
                 .assertActionBar_homeButtonShown(true);
     }
 
@@ -51,6 +54,7 @@ public class MainActivityTest
                 .showOverflowMenu(activity)
                 .assertOverflowMenuShown()
                 .clickOverflowMenu_setAlarm()
+                .captureScreenshot(activity, "MainActivity_setAlarm")
                 .assertSetAlarmShown();
     }
 
@@ -61,6 +65,7 @@ public class MainActivityTest
                 .showOverflowMenu(activity)
                 .assertOverflowMenuShown()
                 .clickOverflowMenu_help()
+                .captureScreenshot(activity, "MainActivity_help")
                 .assertHelpShown();
     }
 
@@ -69,8 +74,10 @@ public class MainActivityTest
         MainActivity activity = activityRule.getActivity();
         new MainActivityRobot()
                 .showOverflowMenu(activity)
+                .captureScreenshot(activity, "MainActivity_menu")
                 .assertOverflowMenuShown()
                 .clickOverflowMenu_about()
+                .captureScreenshot(activity, "MainActivity_about")
                 .assertAboutShown();
     }
 

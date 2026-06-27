@@ -19,7 +19,8 @@ public class Widget5x3ConfigActivityTest extends WidgetConfigActivityTest
     public void test_widgetConfigActivity_about()
     {
         activityRule.launchActivity(getLaunchIntent(context, NaturalHourWidget_5x3_ConfigActivity.class, -9000, null));
-        test_widgetConfigActivity_about(context, new WidgetConfigActivityRobot());
+        WidgetConfigActivityRobot robot = new WidgetConfigActivityRobot();
+        test_widgetConfigActivity_about(activityRule.getActivity(), robot, "Widget5x3ConfigActivity");
     }
 
 }
