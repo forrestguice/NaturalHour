@@ -59,19 +59,59 @@ jobs:
       - name: Build with Gradle (lint)
         run: ./gradlew lintProductionDebug || true
 
-      - name: Run tests
+      - name: Run tests (w/out Suntimes)
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
           arch: x86_64
           profile: pixel_7_pro
-          script:
-            exit_code=0 ;
-            ./gradlew connectedProductionDebugAndroidTest || exit_code=$? ;
-            mkdir -p app/build/test-screenshots &&
-            adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
+          script: |
+            exit_code=0
+            ./gradlew connectedProductionDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=com.forrestguice.suntimes.naturalhour.TestAddonCategory || exit_code=$?
+            mkdir -p app/build/test-screenshots && adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/
             exit $exit_code
+
+
+      - name: Run tests (with Suntimes)
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: pixel_7_pro
+          script: |
+            exit_code=0
+            adb wait-for-device
+            wget https://github.com/forrestguice/SuntimesApps/blob/main/docs/repo/com.forrestguice.suntimeswidget_133.apk
+            adb install com.forrestguice.suntimeswidget_133.apk
+            ./gradlew connectedProductionDebugAndroidTest || exit_code=$?
+            mkdir -p app/build/test-screenshots1 && adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/* app/build/testscreenshots1/
+            exit $exit_code
+             
+
+      - name: Upload artifacts (test report)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: android-test-report-${{ matrix.api-level }}
+          path: app/build/reports/androidTests/connected/flavors/production/
+
+      - name: Upload artifacts (screenshots)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: android-test-screenshots-${{ matrix.api-level }}
+          path: app/build/test-screenshots/
+
+      - name: Upload artifacts (screenshots1)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: android-test-screenshots1-${{ matrix.api-level }}
+          path: app/build/test-screenshots1/
+
+
 
     # - name: AVD cache
     #   uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  #v5.0.4
@@ -107,33 +147,4 @@ jobs:
     #        mkdir -p app/build/test-screenshots &&
     #        adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
 
-  
-      - name: Upload artifacts (test report)
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
-        with:
-          name: android-test-report
-          path: app/build/reports/androidTests/connected/flavors/production/
-
-      - name: Upload artifacts (screenshots)
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
-        with:
-          name: android-test-screenshots
-          path: app/build/test-screenshots/
-
-
-      - name: Upload artifacts (lint results)
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
-        with:
-          name: lint-results.html
-          path: app/build/reports/lint-results-productionDebug.html
-
-      - name: Upload artifacts (unit tests)
-        if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
-        with:
-          name: unit-test-results
-          path: app/build/reports/tests/testProductionDebugUnitTest/
-
+ 
