@@ -49,7 +49,7 @@ public class MainActivityTest
     }
 
     @Test
-    @Category(TestAddonCategory.class)
+    @TestRequiresSuntimes
     public void test_mainActivity_setAlarm() {
         MainActivity activity = activityRule.getActivity();
         new MainActivityRobot()
