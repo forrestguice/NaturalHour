@@ -66,10 +66,11 @@ jobs:
           target: ${{ matrix.target }}
           arch: x86_64
           profile: pixel_7_pro
-          script: |
-            exit_code=0
-            ./gradlew connectedProductionDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=com.forrestguice.suntimes.naturalhour.TestAddonCategory || exit_code=$?
-            mkdir -p app/build/test-screenshots && adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/
+          script:
+            exit_code=0 ;
+            ./gradlew connectedProductionDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=com.forrestguice.suntimes.naturalhour.TestRequiresSuntimes || exit_code=$? ;
+            mkdir -p app/build/test-screenshots && 
+            adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
             exit $exit_code
 
 
@@ -80,13 +81,13 @@ jobs:
           target: ${{ matrix.target }}
           arch: x86_64
           profile: pixel_7_pro
-          script: |
-            exit_code=0
-            adb wait-for-device
-            wget https://github.com/forrestguice/SuntimesApps/blob/main/docs/repo/com.forrestguice.suntimeswidget_133.apk
-            adb install com.forrestguice.suntimeswidget_133.apk
-            ./gradlew connectedProductionDebugAndroidTest || exit_code=$?
-            mkdir -p app/build/test-screenshots1 && adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/* app/build/testscreenshots1/
+          script:
+            adb wait-for-device ;
+            curl -O https://github.com/forrestguice/SuntimesApps/blob/main/docs/repo/com.forrestguice.suntimeswidget_133.apk ;
+            adb install com.forrestguice.suntimeswidget_133.apk ;
+            ./gradlew connectedProductionDebugAndroidTest || exit_code=$? ;
+            mkdir -p app/build/test-screenshots1 && 
+            adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/* app/build/testscreenshots1/ ;
             exit $exit_code
              
 
