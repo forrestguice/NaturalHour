@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import androidx.test.rule.ActivityTestRule;
@@ -48,11 +49,12 @@ public class MainActivityTest
     }
 
     @Test
+    @Category(TestAddonCategory.class)
     public void test_mainActivity_setAlarm() {
         MainActivity activity = activityRule.getActivity();
         new MainActivityRobot()
                 .showOverflowMenu(activity)
-                .assertOverflowMenuShown()
+                .assertOverflowMenuShown_alarms()
                 .clickOverflowMenu_setAlarm()
                 .captureScreenshot(activity, "MainActivity_setAlarm")
                 .assertSetAlarmShown();
@@ -95,11 +97,13 @@ public class MainActivityTest
             return this;
         }
 
-        public MainActivityRobot assertOverflowMenuShown()
-        {
-            //onView(withText(R.string.action_alarms)).check(assertShown);
+        public MainActivityRobot assertOverflowMenuShown() {
             onView(withText(R.string.action_help)).check(assertShown);
             onView(withText(R.string.action_about)).check(assertShown);
+            return this;
+        }
+        public MainActivityRobot assertOverflowMenuShown_alarms() {
+            onView(withText(R.string.action_alarms)).check(assertShown);
             return this;
         }
 
