@@ -83,7 +83,7 @@ jobs:
           profile: pixel_7_pro
           script:
             adb wait-for-device ;
-            curl -O https://github.com/forrestguice/SuntimesApps/blob/main/docs/repo/com.forrestguice.suntimeswidget_133.apk ;
+            curl -O https://forrestguice.github.io/SuntimesApps/repo/com.forrestguice.suntimeswidget_133.apk &&
             adb install com.forrestguice.suntimeswidget_133.apk ;
             ./gradlew connectedProductionDebugAndroidTest || exit_code=$? ;
             mkdir -p app/build/test-screenshots1 && 
