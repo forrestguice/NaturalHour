@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        api-level: [29]
+        api-level: [29, 33]
         target: [default]
 
     steps:
@@ -49,42 +49,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+
       - name: Build with Gradle
         run: ./gradlew assembleProductionDebug
 
-            # - name: AVD cache
-            #   uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  #v5.0.4
-            #   id: avd-cache
-            #   with:
-            #   path: |
-            #     ~/.android/avd/*
-            #     ~/.android/adb*
-            #     key: avd-${{ matrix.api-level }}
+      - name: Build with Gradle
+        run: ./gradlew testProductionDebug || true
 
-            # - name: create AVD and generate snapshot for caching
-            #   if: steps.avd-cache.outputs.cache-hit != 'true'
-            #    uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
-            #    with:
-            #      arch: x86_64
-            #      api-level: ${{ matrix.api-level }}
-            #      force-avd-creation: false
-            #      emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-            #      disable-animations: true
-            #      script: echo "Generated AVD snapshot for caching."
-
-            # - name: run tests
-            #   uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
-            #    with:
-            #      arch: x86_64
-            #      api-level: ${{ matrix.api-level }}
-            #      force-avd-creation: false
-            #      emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-            #      disable-animations: true
-            #      script: 
-            #        exit_code=0 ;
-            #        ./gradlew connectedProductionDebugAndroidTest || exit_code=$? ;
-            #        mkdir -p app/build/test-screenshots &&
-            #        adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
+      - name: Build with Gradle (lint)
+        run: ./gradlew lintProductionDebug || true
 
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
@@ -100,17 +73,67 @@ jobs:
             adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
             exit $exit_code
 
+    # - name: AVD cache
+    #   uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  #v5.0.4
+    #   id: avd-cache
+    #   with:
+    #   path: |
+    #     ~/.android/avd/*
+    #     ~/.android/adb*
+    #     key: avd-${{ matrix.api-level }}
+
+    # - name: create AVD and generate snapshot for caching
+    #   if: steps.avd-cache.outputs.cache-hit != 'true'
+    #    uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
+    #    with:
+    #      arch: x86_64
+    #      api-level: ${{ matrix.api-level }}
+    #      force-avd-creation: false
+    #      emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+    #      disable-animations: true
+    #      script: echo "Generated AVD snapshot for caching."
+
+    # - name: run tests
+    #   uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
+    #    with:
+    #      arch: x86_64
+    #      api-level: ${{ matrix.api-level }}
+    #      force-avd-creation: false
+    #      emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+    #      disable-animations: true
+    #      script: 
+    #        exit_code=0 ;
+    #        ./gradlew connectedProductionDebugAndroidTest || exit_code=$? ;
+    #        mkdir -p app/build/test-screenshots &&
+    #        adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
+
+  
       - name: Upload artifacts (test report)
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
         with:
-          name: production-test-report
+          name: android-test-report
           path: app/build/reports/androidTests/connected/flavors/production/
 
       - name: Upload artifacts (screenshots)
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
         with:
-          name: production-test-screenshots
+          name: android-test-screenshots
           path: app/build/test-screenshots/
+
+
+      - name: Upload artifacts (lint results)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: lint-results.html
+          path: app/build/reports/lint-results-productionDebug.html
+
+      - name: Upload artifacts (unit tests)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: unit-test-results
+          path: app/build/reports/tests/testProductionDebugUnitTest/
 
