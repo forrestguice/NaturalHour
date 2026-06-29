@@ -1,6 +1,6 @@
 ~
 
-### v0.3.3 (2026-04-27)
+### v0.3.3 (2026-06-29)
 * adds "Material You" app themes (api31+).
 * adds support for `show coordinates` option (requires Suntimes v0.17.0+).
 * adds exception handler and crash report notification; adds `android.permission.POST_NOTIFICATION` [permission].
