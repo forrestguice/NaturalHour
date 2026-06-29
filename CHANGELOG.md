@@ -8,7 +8,7 @@
 * fixes widget reconfiguration (api28+) (drag widgets to reconfigure).
 * fixes bug where help mirror url is incorrect (locale specific).
 * refactors deprecated api (Preference, PreferenceFragment, PreferenceManager, FragmentContainer).
-* updates build: adds nightly build flavor.
+* updates build: updates SuntimesAddon dependency 0.4.2 -> 0.5.0; adds nightly build flavor.
 * updates translation to French (#43 by chfo-bidouille)
 
 ### v0.3.2 (2025-06-03)
