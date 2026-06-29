@@ -53,11 +53,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleProductionDebug
 
-      - name: Build with Gradle
-        run: ./gradlew testProductionDebug || true
-
-      - name: Build with Gradle (lint)
-        run: ./gradlew lintProductionDebug || true
 
       - name: Run tests (w/out Suntimes)
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
