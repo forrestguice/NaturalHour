@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.forrestguice.suntimes.naturalhour.MainActivityTest;
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.TestMissingSuntimes;
+import com.forrestguice.suntimes.naturalhour.TestRequiresSuntimes;
 import com.forrestguice.suntimes.naturalhour.TestRobot;
 
 import org.junit.After;
@@ -32,6 +34,9 @@ import static com.forrestguice.suntimes.naturalhour.espresso.matcher.ViewMatcher
 @RunWith(AndroidJUnit4.class)
 public class AlarmActivityTest
 {
+    public static final String TAG = "AlarmActivity";
+    public static final String TAG_MISSING_SUNTIMES = "missing_suntimes";
+
     @Rule
     public ActivityTestRule<AlarmActivity> activityRule = new ActivityTestRule<>(AlarmActivity.class, false, false);
     private Context context;
@@ -54,25 +59,50 @@ public class AlarmActivityTest
                 .cancelActionMode().sleep(500)
                 .showOverflowMenu(activityRule.getActivity())
                 .clickOverflowMenu_help()
-                .captureScreenshot(activity, "AlarmActivity_help")
+                .captureScreenshot(activity, TAG + "_help")
                 .assertHelpShown();
     }
 
     @Test
+    @TestRequiresSuntimes
     public void test_alarmActivity_about()
     {
         AlarmActivity activity = activityRule.launchActivity(new Intent(context, AlarmActivity.class));
         AlarmActivityRobot robot = new AlarmActivityRobot()
-                .captureScreenshot(activity, "AlarmActivity_0")
+                .captureScreenshot(activity, TAG + "_0")
                 .cancelActionMode().sleep(500)
-                .captureScreenshot(activity, "AlarmActivity_1")
-                .showOverflowMenu(activityRule.getActivity())
-                .captureScreenshot(activity, "AlarmActivity_menu")
-                .assertOverflowMenuShown()
+                .captureScreenshot(activity, TAG + "_1")
+                .assertSuntimesRequiredMessageNotShown(activity);
 
-                .clickOverflowMenu_about()
-                .captureScreenshot(activity, "AlarmActivity_about")
-                .assertAboutShown();
+        robot.showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, TAG + "_menu")
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about")
+                .assertAboutShown()
+                .assertAboutNotShown_missingSuntimes(activity);
+    }
+
+    @Test
+    @TestMissingSuntimes
+    public void test_alarmActivity_about_missingSuntimes()
+    {
+        AlarmActivity activity = activityRule.launchActivity(new Intent(context, AlarmActivity.class));
+        AlarmActivityRobot robot = new AlarmActivityRobot()
+                .captureScreenshot(activity, TAG + "_0", TAG_MISSING_SUNTIMES)
+                .cancelActionMode().sleep(500)
+                .captureScreenshot(activity, TAG + "_1", TAG_MISSING_SUNTIMES)
+                .assertSuntimesRequiredMessageShown(activity);
+
+        robot.showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, TAG + "_menu", TAG_MISSING_SUNTIMES)
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about", TAG_MISSING_SUNTIMES)
+                .assertAboutShown()
+                .assertAboutShown_missingSuntimes(activity);
     }
 
     /**

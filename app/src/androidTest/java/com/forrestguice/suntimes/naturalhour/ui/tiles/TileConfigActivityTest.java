@@ -3,6 +3,8 @@ package com.forrestguice.suntimes.naturalhour.ui.tiles;
 import android.content.Context;
 
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.TestMissingSuntimes;
+import com.forrestguice.suntimes.naturalhour.TestRequiresSuntimes;
 import com.forrestguice.suntimes.naturalhour.ui.widget.WidgetConfigActivityTest;
 
 import org.junit.After;
@@ -28,6 +30,9 @@ import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper
 @RunWith(AndroidJUnit4.class)
 public class TileConfigActivityTest
 {
+    public static final String TAG = "TileConfigActivity";
+    public static final String TAG_MISSING_SUNTIMES = "missing_suntimes";
+
     @Rule
     public ActivityTestRule<NaturalHourTileConfigActivity> activityRule = new ActivityTestRule<>(NaturalHourTileConfigActivity.class, false, false);
     private Context context;
@@ -43,18 +48,41 @@ public class TileConfigActivityTest
     }
 
     @Test
+    @TestRequiresSuntimes
     public void test_tileConfigActivity_about()
     {
         NaturalHourTileConfigActivity activity = activityRule.launchActivity(WidgetConfigActivityTest.getLaunchIntent(context, NaturalHourTileConfigActivity.class, -9000, null));
-        new TileConfigActivityRobot()
-                .captureScreenshot(activity, "TileConfigActivity")
-                .showOverflowMenu(activityRule.getActivity())
-                .captureScreenshot(activity, "TileConfigActivity_menu")
-                .assertOverflowMenuShown()
+        TileConfigActivityRobot robot = new TileConfigActivityRobot();
+        robot.captureScreenshot(activity, TAG)
+                .assertSuntimesRequiredMessageNotShown(activity);
 
-                .clickOverflowMenu_about()
+        robot.showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, TAG + "_menu")
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about")
                 .assertAboutShown()
-                .captureScreenshot(activity, "TileConfigActivity_about");
+                .assertAboutNotShown_missingSuntimes(activity);
+    }
+
+    @Test
+    @TestMissingSuntimes
+    public void test_tileConfigActivity_about_missingSuntimes()
+    {
+        NaturalHourTileConfigActivity activity = activityRule.launchActivity(WidgetConfigActivityTest.getLaunchIntent(context, NaturalHourTileConfigActivity.class, -9000, null));
+        TileConfigActivityRobot robot = new TileConfigActivityRobot();
+        robot.captureScreenshot(activity, TAG)
+                .assertSuntimesRequiredMessageShown(activity);
+
+        robot.showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, TAG + "_menu", TAG_MISSING_SUNTIMES)
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about", TAG_MISSING_SUNTIMES)
+                .assertAboutShown()
+                .assertAboutShown_missingSuntimes(activity);
     }
 
     /**

@@ -29,6 +29,8 @@ import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper
 @RunWith(AndroidJUnit4.class)
 public abstract class WidgetConfigActivityTest
 {
+    public static final String TAG_MISSING_SUNTIMES = "missing_suntimes";
+
     protected Context context;
 
     @Before
@@ -43,12 +45,32 @@ public abstract class WidgetConfigActivityTest
 
     public static void test_widgetConfigActivity_about(Activity context, WidgetConfigActivityRobot robot, String tag)
     {
-        robot.captureScreenshot(context, tag);
+        robot.captureScreenshot(context, tag)
+                .assertSuntimesRequiredMessageNotShown(context);
+
         robot.showOverflowMenu(context)
-                .assertOverflowMenuShown()
-                .clickOverflowMenu_about()
+                .captureScreenshot(context, tag + "_menu")
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
                 .captureScreenshot(context, tag + "_about")
-                .assertAboutShown();
+                .assertAboutShown()
+                .assertAboutNotShown_missingSuntimes(context);
+    }
+
+    public static void test_widgetConfigActivity_about_missingSuntimes(Activity context, WidgetConfigActivityRobot robot, String tag)
+    {
+        robot.captureScreenshot(context, tag, TAG_MISSING_SUNTIMES)
+                .assertSuntimesRequiredMessageShown(context);
+
+        robot.showOverflowMenu(context)
+                .captureScreenshot(context, tag + "_menu", TAG_MISSING_SUNTIMES)
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(context, tag + "_about", TAG_MISSING_SUNTIMES)
+                .assertAboutShown()
+                .assertAboutShown_missingSuntimes(context);
     }
 
     public static Intent getLaunchIntent(Context context, Class<?> widgetClass, int appWidgetID, Boolean reconfigure)

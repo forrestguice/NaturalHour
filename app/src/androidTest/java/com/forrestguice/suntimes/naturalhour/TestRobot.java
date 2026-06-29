@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.media.MediaScannerConnection;
 import android.os.SystemClock;
+import android.text.Html;
 import android.util.Log;
 
 import java.io.File;
@@ -21,6 +22,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper.assertHidden;
 import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper.assertShown;
 import static com.forrestguice.suntimes.naturalhour.espresso.matcher.ViewMatchersContrib.hasDrawable;
 import static com.forrestguice.suntimes.naturalhour.espresso.matcher.ViewMatchersContrib.navigationButton;
@@ -157,6 +159,34 @@ public abstract class TestRobot<T>
             onView(navigationButton()).check(shown ? assertShown : doesNotExist());
             return robot;
         }
+
+        public T assertSuntimesRequiredMessageShown(Context context)
+        {
+            String message = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(R.string.min_suntimes_version))).toString();
+            onView(withText(message)).check(assertShown);
+            return robot;
+        }
+        public T assertSuntimesRequiredMessageNotShown(Context context)
+        {
+            String message0 = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(R.string.min_suntimes_version))).toString();
+            onView(withText(message0)).check(doesNotExist());
+            return robot;
+        }
+
+        public T assertAboutShown_missingSuntimes(Context context) {
+            onView(withText(message_aboutMissingSuntimes(context))).check(assertShown);
+            return robot;
+        }
+        public T assertAboutNotShown_missingSuntimes(Context context) {
+            onView(withText(message_aboutMissingSuntimes(context))).check(doesNotExist());
+            return robot;
+        }
+        protected String message_aboutMissingSuntimes(Context context) {
+            String message = context.getString(R.string.app_provider_version_missing);
+            message = context.getString(R.string.app_provider_version, message);
+            return Html.fromHtml(message).toString();
+        }
+
     }
 
     public static void setAnimationsEnabled(boolean enabled) throws IOException
