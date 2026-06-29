@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.app.UiAutomation;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.media.MediaScannerConnection;
 import android.os.SystemClock;
+import android.text.Html;
+import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import static android.os.Environment.DIRECTORY_PICTURES;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -17,10 +22,13 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper.assertHidden;
 import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper.assertShown;
 import static com.forrestguice.suntimes.naturalhour.espresso.matcher.ViewMatchersContrib.hasDrawable;
 import static com.forrestguice.suntimes.naturalhour.espresso.matcher.ViewMatchersContrib.navigationButton;
 import static org.hamcrest.CoreMatchers.allOf;
+
+import com.jraska.falcon.Falcon;
 
 public abstract class TestRobot<T>
 {
@@ -46,12 +54,49 @@ public abstract class TestRobot<T>
         return robot;
     }
 
+    public static final String SCREENSHOT_DIR = "test-screenshots";
+
     public T captureScreenshot(Activity activity, String name) {
-        captureScreenshot(activity, "", name);
+        captureScreenshot(activity, name, "");
         return robot;
     }
-    public T captureScreenshot(Activity activity, String subdir, String name) {
-        //captureScreenshot(activity, subdir, name);   // TODO
+    public T captureScreenshot(Activity activity, String name, String subdir)
+    {
+        subdir = subdir.trim();
+        if (!subdir.isEmpty() && !subdir.startsWith("/")) {
+            subdir = "/" + subdir;
+        }
+
+        // saves to..
+        //     SD card\Android\data\com.forrestguice.naturalhour\files\Pictures\test-screenshots\subdir
+        File d = activity.getExternalFilesDir(DIRECTORY_PICTURES);
+        if (d != null)
+        {
+            String dirPath = d.getAbsolutePath() + "/" + SCREENSHOT_DIR + subdir;
+
+            File dir = new File(dirPath);
+            boolean dirCreated = dir.mkdirs();
+
+            String path = dirPath + "/" + name + ".png";
+            File file = new File(path);
+            if (file.exists())
+            {
+                boolean fileDeleted = file.delete();
+                if (!fileDeleted) {
+                    Log.w("captureScreenshot", "Failed to delete file! " + path);
+                }
+            }
+
+            try {
+                Falcon.takeScreenshot(activity, file);
+                MediaScannerConnection.scanFile(activity, new String[]{file.getAbsolutePath()}, null, null);
+
+            } catch (Exception e1) {
+                Log.e("captureScreenshot", "Failed to write file! " + e1);
+            }
+        } else {
+            Log.e("captureScreenshot", "Failed to write file! getExternalFilesDir() returns null..");
+        }
         return robot;
     }
 
@@ -114,6 +159,34 @@ public abstract class TestRobot<T>
             onView(navigationButton()).check(shown ? assertShown : doesNotExist());
             return robot;
         }
+
+        public T assertSuntimesRequiredMessageShown(Context context)
+        {
+            String message = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(R.string.min_suntimes_version))).toString();
+            onView(withText(message)).check(assertShown);
+            return robot;
+        }
+        public T assertSuntimesRequiredMessageNotShown(Context context)
+        {
+            String message0 = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(R.string.min_suntimes_version))).toString();
+            onView(withText(message0)).check(doesNotExist());
+            return robot;
+        }
+
+        public T assertAboutShown_missingSuntimes(Context context) {
+            onView(withText(message_aboutMissingSuntimes(context))).check(assertShown);
+            return robot;
+        }
+        public T assertAboutNotShown_missingSuntimes(Context context) {
+            onView(withText(message_aboutMissingSuntimes(context))).check(doesNotExist());
+            return robot;
+        }
+        protected String message_aboutMissingSuntimes(Context context) {
+            String message = context.getString(R.string.app_provider_version_missing);
+            message = context.getString(R.string.app_provider_version, message);
+            return Html.fromHtml(message).toString();
+        }
+
     }
 
     public static void setAnimationsEnabled(boolean enabled) throws IOException

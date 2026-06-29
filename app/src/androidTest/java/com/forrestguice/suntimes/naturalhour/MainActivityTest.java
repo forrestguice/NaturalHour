@@ -1,5 +1,8 @@
 package com.forrestguice.suntimes.naturalhour;
 
+import android.content.Context;
+import android.text.Html;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,11 +21,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.forrestguice.suntimes.naturalhour.TestRobot.setAnimationsEnabled;
 import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper.assertShown;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest
 {
+    public static final String TAG = "MainActivity";
+    public static final String TAG_MISSING_SUNTIMES = "missing_suntimes";
+
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -39,18 +48,42 @@ public class MainActivityTest
      * test_mainActivity
      */
     @Test
-    public void test_mainActivity() {
-        new MainActivityRobot()
-                .assertActionBar_homeButtonShown(true);
+    @TestMissingSuntimes
+    public void test_mainActivity_missingSuntimes()
+    {
+        MainActivity activity = activityRule.getActivity();
+        MainActivityRobot robot = new MainActivityRobot()
+                .captureScreenshot(activity, TAG, TAG_MISSING_SUNTIMES);
+        assertFalse(activity.suntimesInfo.isInstalled);
+        robot.assertSuntimesRequiredMessageShown(activity);
     }
 
     @Test
+    @TestRequiresSuntimes
+    public void test_mainActivity()
+    {
+        MainActivity activity = activityRule.getActivity();
+        MainActivityRobot robot = new MainActivityRobot()
+                .captureScreenshot(activity, TAG);
+
+        assertNotNull(activity.suntimesInfo);
+        assertTrue(activity.suntimesInfo.isInstalled);
+        assertTrue(activity.suntimesInfo.hasPermission);
+
+        robot.assertActionBar_homeButtonShown(true)
+                .assertSuntimesRequiredMessageNotShown(activity);
+    }
+
+    @Test
+    @TestRequiresSuntimes
     public void test_mainActivity_setAlarm() {
         MainActivity activity = activityRule.getActivity();
         new MainActivityRobot()
                 .showOverflowMenu(activity)
-                .assertOverflowMenuShown()
+                .captureScreenshot(activity, TAG + "_setAlarm_menu")
+                .assertOverflowMenuShown_alarms()
                 .clickOverflowMenu_setAlarm()
+                .captureScreenshot(activity, TAG + "_setAlarm")
                 .assertSetAlarmShown();
     }
 
@@ -61,6 +94,7 @@ public class MainActivityTest
                 .showOverflowMenu(activity)
                 .assertOverflowMenuShown()
                 .clickOverflowMenu_help()
+                .captureScreenshot(activity, TAG + "_help")
                 .assertHelpShown();
     }
 
@@ -69,9 +103,24 @@ public class MainActivityTest
         MainActivity activity = activityRule.getActivity();
         new MainActivityRobot()
                 .showOverflowMenu(activity)
+                .captureScreenshot(activity, TAG + "_menu")
                 .assertOverflowMenuShown()
                 .clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about")
                 .assertAboutShown();
+    }
+
+    @Test
+    @TestMissingSuntimes
+    public void test_mainActivity_about_missingSuntimes() {
+        MainActivity activity = activityRule.getActivity();
+        new MainActivityRobot()
+                .showOverflowMenu(activity)
+                .assertOverflowMenuShown()
+                .clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about", TAG_MISSING_SUNTIMES)
+                .assertAboutShown()
+                .assertAboutShown_missingSuntimes(activity);
     }
 
     /**
@@ -88,11 +137,13 @@ public class MainActivityTest
             return this;
         }
 
-        public MainActivityRobot assertOverflowMenuShown()
-        {
-            onView(withText(R.string.action_alarms)).check(assertShown);
+        public MainActivityRobot assertOverflowMenuShown() {
             onView(withText(R.string.action_help)).check(assertShown);
             onView(withText(R.string.action_about)).check(assertShown);
+            return this;
+        }
+        public MainActivityRobot assertOverflowMenuShown_alarms() {
+            onView(withText(R.string.action_alarms)).check(assertShown);
             return this;
         }
 
@@ -113,5 +164,6 @@ public class MainActivityTest
             onView(withId(R.id.txt_about_version)).check(assertShown);
             return this;
         }
+
     }
 }

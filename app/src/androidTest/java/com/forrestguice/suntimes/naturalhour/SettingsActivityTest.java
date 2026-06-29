@@ -34,8 +34,11 @@ public class SettingsActivityTest
     }
 
     @Test
-    public void test_settingsActivity() {
+    public void test_settingsActivity()
+    {
+        SettingsActivity activity = activityRule.getActivity();
         new SettingsActivityRobot()
+                .captureScreenshot(activity, "SettingsActivity")
                 .assertActivityShown();
     }
 
