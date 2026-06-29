@@ -36,11 +36,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleNightlyDebug
 
-    - name: Upload artifacts (nightly apk)
+    - name: Upload artifacts (debug apk)
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
       with:
         name: app
         path: app/build/outputs/apk/nightly/debug/app-nightly-debug.apk
+
 
     - name: Build with Gradle
       run: ./gradlew assembleProductionRelease
@@ -50,6 +51,7 @@ jobs:
     
     - name: Build with Gradle (lintVitalRelease)
       run: ./gradlew lintVitalProductionRelease
+
       
     - name: Upload artifacts (lint results)
       if: success() || failure()
@@ -57,3 +59,11 @@ jobs:
       with:
         name: lint-results.html
         path: app/build/reports/lint-results-productionRelease.html
+        
+    - name: Upload artifacts (unit tests)
+      if: success() || failure()
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+      with:
+        name: unit-test-results
+        path: app/build/reports/tests/testProductionReleaseDebugUnitTest/
+
