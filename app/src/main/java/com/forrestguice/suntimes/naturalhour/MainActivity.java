@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     public static final String DIALOG_HELP = "helpDialog";
     public static final String DIALOG_ABOUT = "aboutDialog";
 
-    private SuntimesInfo suntimesInfo = null;
+    protected SuntimesInfo suntimesInfo = null;
     private BottomSheetBehavior<View> bottomSheet;
     private ColorValuesSheetFragment sheetDialog;
 

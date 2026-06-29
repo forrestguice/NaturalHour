@@ -7,20 +7,39 @@ permissions: {}
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
+      fail-fast: false
       matrix:
         api-level: [29, 33]
+        target: [default]
+
     steps:
-      - name: checkout
+      - name: Checkout
         uses:  actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  #6.0.2
-        
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654  #5.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Gradle Wrapper Validation
+        uses: gradle/actions/wrapper-validation@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e  #6.1.0
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Gradle cache
+      - name: Gradle Cache
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  #v5.0.4
         with:
           path: |
@@ -29,31 +48,91 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-        
-      - name: AVD cache
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  #v5.0.4
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
 
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
+
+      - name: Build with Gradle
+        run: ./gradlew assembleProductionDebug
+
+
+      - name: Run tests (w/out Suntimes)
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
         with:
           api-level: ${{ matrix.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: pixel_7_pro
+          script:
+            exit_code=0 ;
+            ./gradlew connectedProductionDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.annotation=com.forrestguice.suntimes.naturalhour.TestMissingSuntimes || exit_code=$? ;
+            mkdir -p app/build/test-screenshots && 
+            adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
+            exit $exit_code
 
-      - name: run tests
+
+      - name: Run tests (with Suntimes)
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
         with:
           api-level: ${{ matrix.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: ./gradlew connectedCheck
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: pixel_7_pro
+          script:
+            adb wait-for-device ;
+            curl -O https://forrestguice.github.io/SuntimesApps/repo/com.forrestguice.suntimeswidget_133.apk &&
+            adb install com.forrestguice.suntimeswidget_133.apk ;
+            ./gradlew connectedProductionDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=com.forrestguice.suntimes.naturalhour.TestMissingSuntimes || exit_code=$? ;
+            mkdir -p app/build/test-screenshots &&
+            adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
+            exit $exit_code
+
+
+      - name: Upload artifacts (test report)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: android-test-report-${{ matrix.api-level }}
+          path: app/build/reports/androidTests/connected/flavors/production/
+
+      - name: Upload artifacts (screenshots)
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  #7.0.0
+        with:
+          name: android-test-screenshots-${{ matrix.api-level }}
+          path: app/build/test-screenshots/
+
+
+    # - name: AVD cache
+    #   uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  #v5.0.4
+    #   id: avd-cache
+    #   with:
+    #   path: |
+    #     ~/.android/avd/*
+    #     ~/.android/adb*
+    #     key: avd-${{ matrix.api-level }}
+
+    # - name: create AVD and generate snapshot for caching
+    #   if: steps.avd-cache.outputs.cache-hit != 'true'
+    #    uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
+    #    with:
+    #      arch: x86_64
+    #      api-level: ${{ matrix.api-level }}
+    #      force-avd-creation: false
+    #      emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+    #      disable-animations: true
+    #      script: echo "Generated AVD snapshot for caching."
+
+    # - name: run tests
+    #   uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a    # v2.37.0
+    #    with:
+    #      arch: x86_64
+    #      api-level: ${{ matrix.api-level }}
+    #      force-avd-creation: false
+    #      emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+    #      disable-animations: true
+    #      script: 
+    #        exit_code=0 ;
+    #        ./gradlew connectedProductionDebugAndroidTest || exit_code=$? ;
+    #        mkdir -p app/build/test-screenshots &&
+    #        adb pull /sdcard/Android/data/com.forrestguice.suntimes.naturalhour/files/Pictures/test-screenshots/ app/build/ ;
+
+ 

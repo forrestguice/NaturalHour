@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.forrestguice.suntimes.naturalhour.R;
+import com.forrestguice.suntimes.naturalhour.TestMissingSuntimes;
+import com.forrestguice.suntimes.naturalhour.TestRequiresSuntimes;
 import com.forrestguice.suntimes.naturalhour.TestRobot;
 import com.forrestguice.suntimes.naturalhour.ui.tiles.NaturalHourTileConfigActivity;
 
@@ -30,6 +32,9 @@ import static com.forrestguice.suntimes.naturalhour.espresso.ViewAssertionHelper
 @RunWith(AndroidJUnit4.class)
 public class ClockDaydreamSettingsActivityTest
 {
+    public static final String TAG = "ClockDaydreamSettingsActivity";
+    public static final String TAG_MISSING_SUNTIMES = "missing_suntimes";
+
     @Rule
     public ActivityTestRule<ClockDaydreamSettingsActivity> activityRule = new ActivityTestRule<>(ClockDaydreamSettingsActivity.class, false, false);
     private Context context;
@@ -45,14 +50,41 @@ public class ClockDaydreamSettingsActivityTest
     }
 
     @Test
+    @TestRequiresSuntimes
     public void test_daydreamSettingsActivity_about()
     {
-        activityRule.launchActivity(new Intent(context, ClockDaydreamSettingsActivity.class));
-        new DaydreamSettingsActivityRobot()
-                .showOverflowMenu(activityRule.getActivity())
-                .assertOverflowMenuShown()
-                .clickOverflowMenu_about()
-                .assertAboutShown();
+        ClockDaydreamSettingsActivity activity = activityRule.launchActivity(new Intent(context, ClockDaydreamSettingsActivity.class));
+        DaydreamSettingsActivityRobot robot = new DaydreamSettingsActivityRobot();
+        robot.captureScreenshot(activity, TAG)
+                .assertSuntimesRequiredMessageNotShown(activity);
+
+        robot.showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, TAG + "_menu")
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about")
+                .assertAboutShown()
+                .assertAboutNotShown_missingSuntimes(activity);
+    }
+
+    @Test
+    @TestMissingSuntimes
+    public void test_daydreamSettingsActivity_about_missingSuntimes()
+    {
+        ClockDaydreamSettingsActivity activity = activityRule.launchActivity(new Intent(context, ClockDaydreamSettingsActivity.class));
+        DaydreamSettingsActivityRobot robot = new DaydreamSettingsActivityRobot();
+        robot.captureScreenshot(activity, TAG, TAG_MISSING_SUNTIMES)
+                .assertSuntimesRequiredMessageShown(activity);
+
+        robot.showOverflowMenu(activityRule.getActivity())
+                .captureScreenshot(activity, TAG + "_menu", TAG_MISSING_SUNTIMES)
+                .assertOverflowMenuShown();
+
+        robot.clickOverflowMenu_about()
+                .captureScreenshot(activity, TAG + "_about", TAG_MISSING_SUNTIMES)
+                .assertAboutShown()
+                .assertAboutShown_missingSuntimes(activity);
     }
 
     /**

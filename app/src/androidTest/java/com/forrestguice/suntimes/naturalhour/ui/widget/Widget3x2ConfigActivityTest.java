@@ -1,5 +1,8 @@
 package com.forrestguice.suntimes.naturalhour.ui.widget;
 
+import com.forrestguice.suntimes.naturalhour.TestMissingSuntimes;
+import com.forrestguice.suntimes.naturalhour.TestRequiresSuntimes;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +19,21 @@ public class Widget3x2ConfigActivityTest extends WidgetConfigActivityTest
     public ActivityTestRule<NaturalHourWidget_3x2_ConfigActivity> activityRule = new ActivityTestRule<>(NaturalHourWidget_3x2_ConfigActivity.class, false, false);
 
     @Test
+    @TestRequiresSuntimes
     public void test_widgetConfigActivity_about()
     {
         activityRule.launchActivity(getLaunchIntent(context, NaturalHourWidget_3x2_ConfigActivity.class, -9000, null));
-        test_widgetConfigActivity_about(context, new WidgetConfigActivityRobot());
+        WidgetConfigActivityRobot robot = new WidgetConfigActivityRobot();
+        test_widgetConfigActivity_about(activityRule.getActivity(), robot, "Widget3x2ConfigActivity");
+    }
+
+    @Test
+    @TestMissingSuntimes
+    public void test_widgetConfigActivity_about_missingSuntimes()
+    {
+        activityRule.launchActivity(getLaunchIntent(context, NaturalHourWidget_3x2_ConfigActivity.class, -9000, null));
+        WidgetConfigActivityRobot robot = new WidgetConfigActivityRobot();
+        test_widgetConfigActivity_about_missingSuntimes(activityRule.getActivity(), robot, "Widget3x2ConfigActivity");
     }
 
 }
