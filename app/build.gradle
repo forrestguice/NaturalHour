@@ -82,6 +82,7 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'   // 3.6.0 requires minapi 19+
+    androidTestImplementation 'com.jraska:falcon:2.2.0'
 }
 
 def getGitHash()
