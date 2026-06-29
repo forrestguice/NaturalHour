@@ -57,10 +57,10 @@ public abstract class TestRobot<T>
     public static final String SCREENSHOT_DIR = "test-screenshots";
 
     public T captureScreenshot(Activity activity, String name) {
-        captureScreenshot(activity, "", name);
+        captureScreenshot(activity, name, "");
         return robot;
     }
-    public T captureScreenshot(Activity activity, String subdir, String name)
+    public T captureScreenshot(Activity activity, String name, String subdir)
     {
         subdir = subdir.trim();
         if (!subdir.isEmpty() && !subdir.startsWith("/")) {

@@ -74,7 +74,7 @@ public class ClockDaydreamSettingsActivityTest
     {
         ClockDaydreamSettingsActivity activity = activityRule.launchActivity(new Intent(context, ClockDaydreamSettingsActivity.class));
         DaydreamSettingsActivityRobot robot = new DaydreamSettingsActivityRobot();
-        robot.captureScreenshot(activity, TAG, "missing_suntimes")
+        robot.captureScreenshot(activity, TAG, TAG_MISSING_SUNTIMES)
                 .assertSuntimesRequiredMessageShown(activity);
 
         robot.showOverflowMenu(activityRule.getActivity())
