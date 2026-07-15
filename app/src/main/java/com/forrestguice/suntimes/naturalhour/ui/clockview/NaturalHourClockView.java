@@ -27,6 +27,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.forrestguice.suntimes.annotation.NonNull;
 import com.forrestguice.suntimes.naturalhour.BuildConfig;
 import com.forrestguice.suntimes.naturalhour.data.NaturalHourData;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
@@ -92,7 +93,7 @@ public class NaturalHourClockView extends View
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
+    protected void onDraw(@NonNull Canvas canvas)
     {
         if (bitmap == null) {
             initView(getContext());

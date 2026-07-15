@@ -53,7 +53,7 @@ public class TimeOffsetPickerPreferenceDialog extends PreferenceDialogFragmentCo
     }
 
     @Override
-    public View onCreateDialogView(Context context)
+    public View onCreateDialogView(@NonNull Context context)
     {
         SuntimesUtils.initDisplayStrings(getContext());
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -86,7 +86,7 @@ public class TimeOffsetPickerPreferenceDialog extends PreferenceDialogFragmentCo
     }
 
     @Override
-    public void onPrepareDialogBuilder(AlertDialog.Builder builder)
+    public void onPrepareDialogBuilder(@NonNull AlertDialog.Builder builder)
     {
         super.onPrepareDialogBuilder(builder);
         if (params.param_zeroText != null)

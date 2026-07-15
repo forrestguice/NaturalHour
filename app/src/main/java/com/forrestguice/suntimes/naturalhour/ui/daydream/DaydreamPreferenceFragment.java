@@ -45,13 +45,13 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
     public void onResume()
     {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(onDaydreamPrefChanged);
+        PreferenceManager.getDefaultSharedPreferences(requireActivity()).registerOnSharedPreferenceChangeListener(onDaydreamPrefChanged);
     }
 
     @Override
     public void onPause()
     {
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(onDaydreamPrefChanged);
+        PreferenceManager.getDefaultSharedPreferences(requireActivity()).unregisterOnSharedPreferenceChangeListener(onDaydreamPrefChanged);
         super.onPause();
     }
 
@@ -103,7 +103,7 @@ public class DaydreamPreferenceFragment extends WidgetPreferenceFragment
             String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
             String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
 
             for (int i = 0; i<DaydreamSettings.VALUES.length; i++) {

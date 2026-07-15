@@ -179,13 +179,13 @@ public class SettingsActivity extends AppCompatActivity
         public void onStart()
         {
             super.onStart();
-            PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(onChangedNeedsRestart);
+            PreferenceManager.getDefaultSharedPreferences(requireActivity()).registerOnSharedPreferenceChangeListener(onChangedNeedsRestart);
         }
 
         @Override
         public void onStop()
         {
-            PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(onChangedNeedsRestart);
+            PreferenceManager.getDefaultSharedPreferences(requireActivity()).unregisterOnSharedPreferenceChangeListener(onChangedNeedsRestart);
             super.onStop();
         }
 
@@ -229,7 +229,7 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
             {
-                if (key.equals(AppSettings.KEY_MODE_BACKGROUND)) {
+                if (AppSettings.KEY_MODE_BACKGROUND.equals(key)) {
                     Toast.makeText(getActivity(), getString(R.string.restart_required_message), Toast.LENGTH_SHORT).show();
                 }
             }

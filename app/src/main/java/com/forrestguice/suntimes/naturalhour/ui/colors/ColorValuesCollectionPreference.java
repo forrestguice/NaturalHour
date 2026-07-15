@@ -206,7 +206,7 @@ public class ColorValuesCollectionPreference extends Preference
         return new OnPreferenceClickListener()
         {
             @Override
-            public boolean onPreferenceClick(Preference preference)
+            public boolean onPreferenceClick(@NonNull Preference preference)
             {
                 if (activity != null)
                 {
@@ -223,7 +223,7 @@ public class ColorValuesCollectionPreference extends Preference
         return new OnPreferenceClickListener()
         {
             @Override
-            public boolean onPreferenceClick(Preference preference)
+            public boolean onPreferenceClick(@NonNull Preference preference)
             {
                 if (fragment != null)
                 {

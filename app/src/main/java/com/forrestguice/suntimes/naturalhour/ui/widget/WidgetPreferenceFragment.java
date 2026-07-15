@@ -112,7 +112,7 @@ public class WidgetPreferenceFragment extends PreferenceFragmentCompat
         {
             String widgetPrefix0 = WidgetSettings.widgetKeyPrefix(0);
             String widgetPrefix = WidgetSettings.widgetKeyPrefix(appWidgetId);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
 
             NaturalHourClockBitmap helper = getBitmapHelper(context);
@@ -197,13 +197,13 @@ public class WidgetPreferenceFragment extends PreferenceFragmentCompat
     public void onResume()
     {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(onWidgetPrefChanged);
+        PreferenceManager.getDefaultSharedPreferences(requireActivity()).registerOnSharedPreferenceChangeListener(onWidgetPrefChanged);
     }
 
     @Override
     public void onPause()
     {
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(onWidgetPrefChanged);
+        PreferenceManager.getDefaultSharedPreferences(requireActivity()).unregisterOnSharedPreferenceChangeListener(onWidgetPrefChanged);
         super.onPause();
     }
 
@@ -327,7 +327,7 @@ public class WidgetPreferenceFragment extends PreferenceFragmentCompat
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
