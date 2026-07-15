@@ -18,6 +18,7 @@
 
 package com.forrestguice.suntimes.naturalhour.ui.tiles;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -150,6 +151,7 @@ public abstract class SuntimesTileService extends TileService
         }
     }
 
+    @SuppressLint("StartActivityAndCollapseDeprecated")
     protected void startActivityAndCollapse(Context context, int requestCode, Intent intent)
     {
         if (Build.VERSION.SDK_INT >= 34) {

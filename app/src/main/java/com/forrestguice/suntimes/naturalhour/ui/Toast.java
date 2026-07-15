@@ -46,6 +46,7 @@ public class Toast
         {
             if (Build.VERSION.SDK_INT >= 33)
             {
+                //noinspection deprecation
                 View v = toast.getView();    // Toast.getView will return null for targetApi R+
                 if (v != null)
                 {

@@ -168,11 +168,13 @@ public class AppSettings
     @Deprecated    // replaced by "backgroundMode"
     public static boolean useWallpaper(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //noinspection deprecation
         return prefs.getBoolean(KEY_USE_WALLPAPER, DEF_USE_WALLPAPER);
     }
 
     public static int getBackgroundMode(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //noinspection deprecation
         return prefs.getInt(KEY_MODE_BACKGROUND, useWallpaper(context) ? BGMODE_WALLPAPER : BGMODE_DEFAULT);
     }
     public static void setBackgroundMode(Context context, int value) {
