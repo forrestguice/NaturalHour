@@ -73,6 +73,8 @@ public class AppSettings
     public static final int BGMODE_APPTHEME = 0, BGMODE_WALLPAPER = 1, BGMODE_COLOR = 2, BGMODE_BLACK = 3;
     public static final int BGMODE_DEFAULT = BGMODE_APPTHEME;
 
+    public static final String KEY_FULLSCREEN_KEEP_SCREEN_ON = "fullscreenKeepScreenOn";
+
     public static final String PREF_KEY_DIALOG = "dialog";
     public static final String PREF_KEY_DIALOG_DONOTSHOWAGAIN = "donotshowagain";
 
@@ -157,6 +159,10 @@ public class AppSettings
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(KEY_MODE_TIMEZONE, TZMODE_DEFAULT);
+    }
+
+    public static boolean fullscreenKeepScreenOn(Context context) {
+        return getClockFlag(context, KEY_FULLSCREEN_KEEP_SCREEN_ON, context.getResources().getBoolean(R.bool.def_fullscreen_keep_screen_on));
     }
 
     @Deprecated    // replaced by "backgroundMode"

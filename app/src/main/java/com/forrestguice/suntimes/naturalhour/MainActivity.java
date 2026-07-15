@@ -906,6 +906,9 @@ public class MainActivity extends AppCompatActivity
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+        if (AppSettings.fullscreenKeepScreenOn(this)) {
+            setKeepScreenOn(value);
+        }
         if (updateViews) {
             invalidateOptionsMenu();
             updateViews(this);
@@ -932,6 +935,15 @@ public class MainActivity extends AppCompatActivity
             }
         }
     };
+
+    public void setKeepScreenOn(boolean value)
+    {
+        if (value) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////

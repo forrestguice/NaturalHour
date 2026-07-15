@@ -28,6 +28,9 @@
         <CheckBoxPreference android:key="clockface_showSeconds"
             android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/clockface_show_seconds" />
 
+        <CheckBoxPreference android:key="fullscreenKeepScreenOn"
+            android:title="@string/pref_title_fullscreen_keep_screen_on" android:defaultValue="@bool/def_fullscreen_keep_screen_on" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
