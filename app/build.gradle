@@ -1,11 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace = "com.forrestguice.suntimes.naturalhour"
+
     defaultConfig {
         applicationId "com.forrestguice.suntimes.naturalhour"
         minSdkVersion 14
         //noinspection OldTargetApi
-        targetSdkVersion 33
+        targetSdkVersion 34
         compileSdk 34
 
         versionCode 9
@@ -23,7 +25,7 @@ android {
         buildConfigField "String", "AUTHORITY_ROOT", "\"$authorityRoot\""
 
         missingDimensionStrategy 'version', 'androidx'
-        missingDimensionStrategy 'api', 'api33'
+        missingDimensionStrategy 'api', 'api34'
     }
 
     buildTypes {
@@ -56,6 +58,10 @@ android {
 
     lintOptions {
         disable 'MissingTranslation'//,'WrongRegion','ObsoleteSdkInt'
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {
