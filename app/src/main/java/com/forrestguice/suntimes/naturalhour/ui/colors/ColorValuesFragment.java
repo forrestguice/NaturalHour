@@ -48,6 +48,8 @@ public class ColorValuesFragment extends Fragment
     /////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////
 
+    public static final int R_dialog_margin = com.forrestguice.suntimes.addon.R.dimen.dialog_margin;
+
     public interface ImportColorsDialogInterface {
         void onImportClicked(String input);
     }
@@ -60,7 +62,7 @@ public class ColorValuesFragment extends Fragment
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setHint(context.getString(R.string.colorsimport_dialog_hint));
 
-        int margin = context.getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+        int margin = context.getResources().getDimensionPixelSize(R_dialog_margin);
         LinearLayout layout = new LinearLayout(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT

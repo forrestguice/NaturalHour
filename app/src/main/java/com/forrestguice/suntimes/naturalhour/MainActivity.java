@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_suntimes);
+            actionBar.setHomeAsUpIndicator(com.forrestguice.suntimes.addon.R.drawable.ic_action_suntimes);
         }
 
         View bottomSheetView = findViewById(R.id.app_bottomsheet);
@@ -1037,7 +1037,7 @@ public class MainActivity extends AppCompatActivity
             dialog.show(getSupportFragmentManager(), DIALOG_ALARM);
 
         } else {
-            String notSupportedMessage = DisplayStrings.fromHtml(getString(R.string.missing_dependency, getString(R.string.min_suntimes_alarms_version))).toString();
+            String notSupportedMessage = DisplayStrings.fromHtml(getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, getString(R.string.min_suntimes_alarms_version))).toString();
             Toast.makeText(MainActivity.this, notSupportedMessage, Toast.LENGTH_LONG).show();
         }
     }

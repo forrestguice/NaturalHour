@@ -85,7 +85,7 @@ public class AboutDialog extends BottomSheetDialogFragment
 
         TextView url = (TextView)dialogContent.findViewById(R.id.txt_about_url);
         url.setMovementMethod(LinkMovementMethod.getInstance());
-        url.setText(DisplayStrings.fromHtml(getString(R.string.app_url)));
+        url.setText(DisplayStrings.fromHtml(getString(com.forrestguice.suntimes.addon.R.string.app_url)));
 
         return dialogContent;
     }
@@ -156,8 +156,8 @@ public class AboutDialog extends BottomSheetDialogFragment
 
     protected String providerVersionString()
     {
-        String denied = getString(R.string.app_provider_version_denied);
-        String missingVersion = getString(R.string.app_provider_version_missing);
+        String denied = getString(com.forrestguice.suntimes.addon.R.string.app_provider_version_denied);
+        String missingVersion = getString(com.forrestguice.suntimes.addon.R.string.app_provider_version_missing);
         String versionString = (appVersion == null) ? missingVersion
                 : (appVersion + " (" + ((providerVersion != null) ? providerVersion
                 : (providerPermissionsDenied ? denied : missingVersion)) + ")");

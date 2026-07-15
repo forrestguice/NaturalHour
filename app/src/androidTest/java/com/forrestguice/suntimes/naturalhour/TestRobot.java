@@ -152,7 +152,7 @@ public abstract class TestRobot<T>
             return robot;
         }
         public T assertActionBar_homeButtonShown(boolean shown) {
-            onView(allOf(navigationButton(), hasDrawable(R.drawable.ic_action_suntimes))).check(shown ? assertShown : doesNotExist());
+            onView(allOf(navigationButton(), hasDrawable(com.forrestguice.suntimes.addon.R.drawable.ic_action_suntimes))).check(shown ? assertShown : doesNotExist());
             return robot;
         }
         public T assertActionBar_navButtonShown(boolean shown) {
@@ -162,13 +162,13 @@ public abstract class TestRobot<T>
 
         public T assertSuntimesRequiredMessageShown(Context context)
         {
-            String message = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(R.string.min_suntimes_version))).toString();
+            String message = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(com.forrestguice.suntimes.addon.R.string.min_suntimes_version))).toString();
             onView(withText(message)).check(assertShown);
             return robot;
         }
         public T assertSuntimesRequiredMessageNotShown(Context context)
         {
-            String message0 = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(R.string.min_suntimes_version))).toString();
+            String message0 = Html.fromHtml(context.getString(com.forrestguice.suntimes.addon.R.string.missing_dependency, context.getString(com.forrestguice.suntimes.addon.R.string.min_suntimes_version))).toString();
             onView(withText(message0)).check(doesNotExist());
             return robot;
         }
@@ -182,7 +182,7 @@ public abstract class TestRobot<T>
             return robot;
         }
         protected String message_aboutMissingSuntimes(Context context) {
-            String message = context.getString(R.string.app_provider_version_missing);
+            String message = context.getString(com.forrestguice.suntimes.addon.R.string.app_provider_version_missing);
             message = context.getString(R.string.app_provider_version, message);
             return Html.fromHtml(message).toString();
         }

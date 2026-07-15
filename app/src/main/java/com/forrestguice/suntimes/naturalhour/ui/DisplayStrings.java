@@ -204,11 +204,16 @@ public class DisplayStrings
         return DisplayStrings.createRelativeSpan(null, label, tag, 0.65f);
     }
 
+    public static final int R_format_time12 = com.forrestguice.suntimes.addon.R.string.format_time12;
+    public static final int R_format_time12_withseconds = com.forrestguice.suntimes.addon.R.string.format_time12_withseconds;
+    public static final int R_format_time24 = com.forrestguice.suntimes.addon.R.string.format_time24;
+    public static final int R_format_time24_withseconds = com.forrestguice.suntimes.addon.R.string.format_time24_withseconds;
+
     public static String getTimeFormatPattern(Context context, int timeFormat, boolean showSeconds) {
         switch (timeFormat) {
             case 6: return context.getString(showSeconds ? R.string.format_time6_withseconds : R.string.format_time6);
-            case 12: return context.getString(showSeconds ? R.string.format_time12_withseconds : R.string.format_time12);
-            case 24: default: return context.getString(showSeconds ? R.string.format_time24_withseconds : R.string.format_time24);
+            case 12: return context.getString(showSeconds ? R_format_time12_withseconds : R_format_time12);
+            case 24: default: return context.getString(showSeconds ? R_format_time24_withseconds : R_format_time24);
         }
     }
 

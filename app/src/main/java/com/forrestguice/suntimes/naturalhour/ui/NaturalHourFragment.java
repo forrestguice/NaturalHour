@@ -351,7 +351,7 @@ public class NaturalHourFragment extends Fragment
         String naturalHourString = context.getString(R.string.format_announcement_naturalhour, numeralString, phrase[mode24 ? currentHourOf : currentHour]);
         String displayString = context.getString(R.string.format_announcement, clockTimeString, naturalHourString);
 
-        int[] attrs = new int[] {R.attr.colorAccent};
+        int[] attrs = new int[] { android.R.attr.colorAccent };
         TypedArray a = context.obtainStyledAttributes(attrs);
         int timeColor = ContextCompat.getColor(context, a.getResourceId(0, R.color.colorAccent_dark));
         a.recycle();
@@ -389,9 +389,9 @@ public class NaturalHourFragment extends Fragment
             TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);   // android.support.design.R.id.snackbar_text
             if (textView != null)
             {
-                int[] attrs = new int[] { R.attr.text_size_small };
+                int[] attrs = new int[] { com.forrestguice.suntimes.addon.R.attr.text_size_small };
                 TypedArray a = context.obtainStyledAttributes(attrs);
-                float textSizePx = context.getResources().getDimension(a.getResourceId(0, R.dimen.text_size_small));
+                float textSizePx = context.getResources().getDimension(a.getResourceId(0, com.forrestguice.suntimes.addon.R.dimen.text_size_small));
                 a.recycle();
 
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizePx);

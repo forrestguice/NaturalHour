@@ -68,6 +68,7 @@
     <color name="colorValue_dark">#3F51B5</color>
 
     <color name="grey_700">#616161</color>
+    <color name="transparent">#00000000</color>
 
 
     <!-- contrast theme colors -->
