@@ -84,6 +84,7 @@
     <string name="pref_title_show_ticks15m">Afficher les coches (15 minutes)</string>
     <string name="pref_title_show_plate">Afficher un arrière-plan</string>
     <string name="pref_title_show_seconds">Affiche l\'aiguille des secondes</string>
+    <string name="pref_title_fullscreen_keep_screen_on">Keep screen on when fullscreen</string>     <!-- TODO -->
 
     <string name="pref_title_bgmode">Arrière-plan</string>
     <string-array name="pref_bgmode_display">
