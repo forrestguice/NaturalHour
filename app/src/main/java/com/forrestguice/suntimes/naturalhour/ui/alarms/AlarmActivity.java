@@ -285,23 +285,19 @@ public class AlarmActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id)
-        {
-            case R.id.action_help:
-                showHelp();
-                return true;
+        if (id == R.id.action_help) {
+            showHelp();
+            return true;
 
-            case R.id.action_about:
-                showAbout();
-                return true;
+        } else if (id == R.id.action_about) {
+            showAbout();
+            return true;
 
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     protected void onDone(String alarmID)
@@ -380,12 +376,10 @@ public class AlarmActivity extends AppCompatActivity
         {
             if (alarmID != null)
             {
-                switch (item.getItemId())
-                {
-                    case R.id.action_select:
-                        onDone(alarmID);
-                        mode.finish();
-                        return true;
+                if (item.getItemId() == R.id.action_select) {
+                    onDone(alarmID);
+                    mode.finish();
+                    return true;
                 }
             }
             mode.finish();

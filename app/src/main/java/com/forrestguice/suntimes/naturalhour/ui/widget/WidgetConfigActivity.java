@@ -179,21 +179,17 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id)
-        {
-            case R.id.action_done:
-                return onDone();
+        if (id == R.id.action_done) {
+            return onDone();
 
-            case android.R.id.home:
-                return onCanceled();
+        } else if (id == android.R.id.home) {
+            return onCanceled();
 
-            case R.id.action_about:
-                showAbout();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (id == R.id.action_about) {
+            showAbout();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     protected boolean onDone()

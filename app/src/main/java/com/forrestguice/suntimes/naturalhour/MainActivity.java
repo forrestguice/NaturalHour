@@ -663,40 +663,35 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id)
-        {
-            case R.id.action_fullscreen:
-            case R.id.action_fullscreen_off:
-                toggleFullscreen();
-                return true;
+        if (id == R.id.action_fullscreen || id == R.id.action_fullscreen_off) {
+            toggleFullscreen();
+            return true;
 
-            case R.id.action_alarms:
-                showAlarmDialog();
-                return true;
+        } else if (id == R.id.action_alarms) {
+            showAlarmDialog();
+            return true;
 
-            case R.id.action_colors:
-                showBottomSheet();
-                return true;
+        } else if (id == R.id.action_colors) {
+            showBottomSheet();
+            return true;
 
-            case R.id.action_settings:
-                showSettings();
-                return true;
+        } else if (id == R.id.action_settings) {
+            showSettings();
+            return true;
 
-            case R.id.action_help:
-                showHelp();
-                return true;
+        } else if (id == R.id.action_help) {
+            showHelp();
+            return true;
 
-            case R.id.action_about:
-                showAbout();
-                return true;
+        } else if (id == R.id.action_about) {
+            showAbout();
+            return true;
 
-            case android.R.id.home:
-                onHomePressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (id == android.R.id.home) {
+            onHomePressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     protected void onHomePressed() {
@@ -768,17 +763,17 @@ public class MainActivity extends AppCompatActivity
         public boolean onMenuItemClick(MenuItem item)
         {
 
-            switch (item.getItemId())
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_timeformat_system
+                    || itemId == R.id.action_timeformat_suntimes
+                    || itemId == R.id.action_timeformat_6hr
+                    || itemId == R.id.action_timeformat_12hr
+                    || itemId == R.id.action_timeformat_24hr)
             {
-                case R.id.action_timeformat_system:
-                case R.id.action_timeformat_suntimes:
-                case R.id.action_timeformat_6hr:
-                case R.id.action_timeformat_12hr:
-                case R.id.action_timeformat_24hr:
-                    item.setChecked(true);
-                    AppSettings.setTimeFormatMode(MainActivity.this, menuItemToTimeFormatMode(item));
-                    updateViews(MainActivity.this);
-                    return true;
+                item.setChecked(true);
+                AppSettings.setTimeFormatMode(MainActivity.this, menuItemToTimeFormatMode(item));
+                updateViews(MainActivity.this);
+                return true;
             }
             return false;
         }
@@ -786,14 +781,20 @@ public class MainActivity extends AppCompatActivity
 
     public static int menuItemToTimeFormatMode(MenuItem item)
     {
-        switch (item.getItemId())
-        {
-            case R.id.action_timeformat_suntimes: return AppSettings.TIMEMODE_SUNTIMES;
-            case R.id.action_timeformat_12hr: return AppSettings.TIMEMODE_12HR;
-            case R.id.action_timeformat_system: return AppSettings.TIMEMODE_SYSTEM;
-            case R.id.action_timeformat_6hr: return AppSettings.TIMEMODE_6HR;
-            case R.id.action_timeformat_24hr: default: return AppSettings.TIMEMODE_24HR;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_timeformat_suntimes) {
+            return AppSettings.TIMEMODE_SUNTIMES;
+
+        } else if (itemId == R.id.action_timeformat_12hr) {
+            return AppSettings.TIMEMODE_12HR;
+
+        } else if (itemId == R.id.action_timeformat_system) {
+            return AppSettings.TIMEMODE_SYSTEM;
+
+        } else if (itemId == R.id.action_timeformat_6hr) {
+            return AppSettings.TIMEMODE_6HR;
         }
+        return AppSettings.TIMEMODE_24HR;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -836,40 +837,53 @@ public class MainActivity extends AppCompatActivity
         @Override
         public boolean onMenuItemClick(MenuItem item)
         {
-
-            switch (item.getItemId())
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_timezone_julian
+                    || itemId == R.id.action_timezone_italian
+                    || itemId == R.id.action_timezone_italian_civil
+                    || itemId == R.id.action_timezone_babylonian
+                    || itemId == R.id.action_timezone_utc
+                    || itemId == R.id.action_timezone_system
+                    || itemId == R.id.action_timezone_suntimes
+                    || itemId == R.id.action_timezone_localmean
+                    || itemId == R.id.action_timezone_apparentsolar)
             {
-                case R.id.action_timezone_julian:
-                case R.id.action_timezone_italian:
-                case R.id.action_timezone_italian_civil:
-                case R.id.action_timezone_babylonian:
-                case R.id.action_timezone_utc:
-                case R.id.action_timezone_system:
-                case R.id.action_timezone_suntimes:
-                case R.id.action_timezone_localmean:
-                case R.id.action_timezone_apparentsolar:
-                    item.setChecked(true);
-                    AppSettings.setTimeZoneMode(MainActivity.this, menuItemToTimeZoneMode(item));
-                    updateViews(MainActivity.this);
-                    return true;
+                item.setChecked(true);
+                AppSettings.setTimeZoneMode(MainActivity.this, menuItemToTimeZoneMode(item));
+                updateViews(MainActivity.this);
+                return true;
             }
             return false;
         }
     };
     public static int menuItemToTimeZoneMode(MenuItem item)
     {
-        switch (item.getItemId())
-        {
-            case R.id.action_timezone_suntimes: return AppSettings.TZMODE_SUNTIMES;
-            case R.id.action_timezone_localmean: return AppSettings.TZMODE_LOCALMEAN;
-            case R.id.action_timezone_system: return AppSettings.TZMODE_SYSTEM;
-            case R.id.action_timezone_utc: return AppSettings.TZMODE_UTC;
-            case R.id.action_timezone_julian: return AppSettings.TZMODE_JULIAN;
-            case R.id.action_timezone_italian: return AppSettings.TZMODE_ITALIAN;
-            case R.id.action_timezone_italian_civil: return AppSettings.TZMODE_ITALIAN_CIVIL;
-            case R.id.action_timezone_babylonian: return AppSettings.TZMODE_BABYLONIAN;
-            case R.id.action_timezone_apparentsolar: default: return AppSettings.TZMODE_APPARENTSOLAR;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_timezone_suntimes) {
+            return AppSettings.TZMODE_SUNTIMES;
+
+        } else if (itemId == R.id.action_timezone_localmean) {
+            return AppSettings.TZMODE_LOCALMEAN;
+
+        } else if (itemId == R.id.action_timezone_system) {
+            return AppSettings.TZMODE_SYSTEM;
+
+        } else if (itemId == R.id.action_timezone_utc) {
+            return AppSettings.TZMODE_UTC;
+
+        } else if (itemId == R.id.action_timezone_julian) {
+            return AppSettings.TZMODE_JULIAN;
+
+        } else if (itemId == R.id.action_timezone_italian) {
+            return AppSettings.TZMODE_ITALIAN;
+
+        } else if (itemId == R.id.action_timezone_italian_civil) {
+            return AppSettings.TZMODE_ITALIAN_CIVIL;
+
+        } else if (itemId == R.id.action_timezone_babylonian) {
+            return AppSettings.TZMODE_BABYLONIAN;
         }
+        return AppSettings.TZMODE_APPARENTSOLAR;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

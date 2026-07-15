@@ -259,32 +259,27 @@ public class NaturalHourFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id)
-        {
-            case R.id.action_today:
-                showToday(true);
-                return true;
+        if (id == R.id.action_today) {
+            showToday(true);
+            return true;
 
-            case R.id.action_date_equinox_spring:
-                showSpringEquinox();
-                return false;
+        } else if (id == R.id.action_date_equinox_spring) {
+            showSpringEquinox();
+            return false;
 
-            case R.id.action_date_solstice_summer:
-                showSummerSolstice();
-                return false;
+        } else if (id == R.id.action_date_solstice_summer) {
+            showSummerSolstice();
+            return false;
 
-            case R.id.action_date_equinox_autumnal:
-                showAutumnEquinox();
-                return false;
+        } else if (id == R.id.action_date_equinox_autumnal) {
+            showAutumnEquinox();
+            return false;
 
-            case R.id.action_date_solstice_winter:
-                showWinterSolstice();
-                return false;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (id == R.id.action_date_solstice_winter) {
+            showWinterSolstice();
+            return false;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
