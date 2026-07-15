@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
         bottomSheet = BottomSheetBehavior.from(bottomSheetView);
         bottomSheet.setHideable(true);
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
-        bottomSheet.setBottomSheetCallback(bottomSheetCallback);
+        bottomSheet.addBottomSheetCallback(bottomSheetCallback);
 
         sheetDialog = new ColorValuesSheetFragment();
         sheetDialog.setAppWidgetID(getResources().getBoolean(R.bool.is_nightmode) ? -1 : 0);
