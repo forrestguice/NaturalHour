@@ -37,6 +37,7 @@ import com.forrestguice.suntimes.addon.AppThemeInfo;
 import com.forrestguice.suntimes.addon.LocaleHelper;
 import com.forrestguice.suntimes.addon.SuntimesInfo;
 import com.forrestguice.suntimes.addon.ui.Messages;
+import com.forrestguice.suntimes.annotation.NonNull;
 import com.forrestguice.suntimes.naturalhour.AppSettings;
 import com.forrestguice.suntimes.naturalhour.AppThemes;
 import com.forrestguice.suntimes.naturalhour.MainActivity;
@@ -158,7 +159,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
 
     @SuppressWarnings("RestrictedApi")
     @Override
-    protected boolean onPrepareOptionsPanel(View view, Menu menu)
+    public boolean onPreparePanel(int featureId, View view, @NonNull Menu menu)
     {
         MenuItem doneAction = menu.findItem(R.id.action_done);
         if (doneAction != null) {
@@ -166,7 +167,7 @@ public abstract class WidgetConfigActivity extends AppCompatActivity
         }
 
         Messages.forceActionBarIcons(menu);
-        return super.onPrepareOptionsPanel(view, menu);
+        return super.onPreparePanel(featureId, view, menu);
     }
 
     @Override
