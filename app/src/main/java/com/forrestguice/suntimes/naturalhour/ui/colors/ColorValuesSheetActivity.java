@@ -91,7 +91,7 @@ public class ColorValuesSheetActivity extends AppCompatActivity
         setContentView(R.layout.activity_colorsheet);
 
         Intent intent = getIntent();
-        ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = ViewModelProviders.of(this).get(ColorValuesEditFragment.ColorValuesEditViewModel .class);
+        ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = new androidx.lifecycle.ViewModelProvider(this).get(ColorValuesEditFragment.ColorValuesEditViewModel .class);
         editViewModel.setShowAlpha(intent.getBooleanExtra(EXTRA_SHOW_ALPHA, false));
         editViewModel.setPreviewMode(intent.getIntExtra(EXTRA_PREVIEW_MODE, ColorValuesEditFragment.ColorValuesEditViewModel.PREVIEW_TEXT));
 

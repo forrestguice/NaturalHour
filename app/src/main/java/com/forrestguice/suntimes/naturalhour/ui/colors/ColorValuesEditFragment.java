@@ -83,7 +83,7 @@ public class ColorValuesEditFragment extends ColorValuesFragment
         //android.support.v7.view.ContextThemeWrapper contextWrapper = new android.support.v7.view.ContextThemeWrapper(getActivity(), getThemeResID());    // hack: contextWrapper required because base theme is not properly applied
         View content = inflater.cloneInContext(getActivity()).inflate(R.layout.fragment_colorvalues, container, false);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(ColorValuesEditViewModel.class);
+        viewModel = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(ColorValuesEditViewModel.class);
 
         ImageButton overflow = (ImageButton) content.findViewById(R.id.overflow);
         if (overflow != null) {

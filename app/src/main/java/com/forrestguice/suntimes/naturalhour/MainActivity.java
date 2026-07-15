@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         sheetDialog.setAppWidgetID(getResources().getBoolean(R.bool.is_nightmode) ? -1 : 0);
         //sheetDialog.setPreviewKeys(ClockColorValues.COLOR_FACE_NIGHT, ClockColorValues.COLOR_FRAME, ClockColorValues.COLOR_FACE_AM, ClockColorValues.COLOR_FACE_PM);
 
-        ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = ViewModelProviders.of(MainActivity.this).get(ColorValuesEditFragment.ColorValuesEditViewModel.class);
+        ColorValuesEditFragment.ColorValuesEditViewModel editViewModel = new androidx.lifecycle.ViewModelProvider(MainActivity.this).get(ColorValuesEditFragment.ColorValuesEditViewModel.class);
         editViewModel.setShowAlpha(true);
 
         if (suntimesInfo != null && suntimesInfo.appTheme != null) {    // override the theme
