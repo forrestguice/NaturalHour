@@ -20,8 +20,10 @@ package com.forrestguice.suntimes.naturalhour.ui.tiles;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
@@ -139,11 +141,21 @@ public abstract class SuntimesTileService extends TileService
         } else {
             Intent launchIntent = base.getLaunchIntent(context);
             Intent configIntent = base.getConfigIntent(context);
+
             if (launchIntent != null) {
-                startActivityAndCollapse(launchIntent);
+                startActivityAndCollapse(context, 0, launchIntent);
             } else if (configIntent != null) {
-                startActivityAndCollapse(configIntent);
+                startActivityAndCollapse(context, 0, configIntent);
             }
+        }
+    }
+
+    protected void startActivityAndCollapse(Context context, int requestCode, Intent intent)
+    {
+        if (Build.VERSION.SDK_INT >= 34) {
+            startActivityAndCollapse(PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE));
+        } else {
+            startActivityAndCollapse(intent);
         }
     }
 
