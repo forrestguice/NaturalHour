@@ -94,3 +94,14 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+.idea/migrations.xml
+.idea/deviceManager.xml
+.idea/deploymentTargetSelector.xml
+.idea/androidTestResultsUserPreferences.xml
+app/.idea/workspace.xml
+app/.idea/misc.xml
+.idea/other.xml
+app/.idea/gradle.xml
+.idea/misc.xml
+app/production/release/output-metadata.json
+app/release/output-metadata.json
