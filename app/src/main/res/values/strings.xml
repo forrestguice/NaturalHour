@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="action_add">Add</string>
     <string name="action_edit">Edit</string>
@@ -295,7 +295,7 @@
     </string-array>
     <string name="nightwatch_phrase2">Night watch %1$s of %2$s</string>
 
-    <string-array name="week_symbols">
+    <string-array name="week_symbols" tools:common="true">
         <item>☉</item>  <!-- sunday -->
         <item>☾</item>
         <item>♂</item>
@@ -538,16 +538,16 @@
     <string name="dialog_msg_donotshowagain">Do not show this message again</string>  <!-- checkbox text -->
     <string name="restart_required_message">A restart may be needed for changes to take full effect.</string>   <!-- toast; app restart may be required -->
 
-    <string name="app_support_url0">https://github.com/forrestguice/NaturalHour/issues</string>
+    <string name="app_support_url0" tools:common="true">https://github.com/forrestguice/NaturalHour/issues</string>
     <string name="app_support_url"><![CDATA[
         <b>Support:</b> visit the
         <a href="https://github.com/forrestguice/NaturalHour/issues">issue tracker</a> to submit a request.
     ]]></string>    <!-- formatted link -->
-    <string name="app_source_url"><![CDATA[
+    <string name="app_source_url" tools:common="true"><![CDATA[
         <a href="https://github.com/forrestguice/NaturalHour/">github.com/forrestguice/NaturalHour/</a>
     ]]></string>    <!-- formatted link -->
-    <string name="app_changelog_url">https://github.com/forrestguice/NaturalHour/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
-    <string name="app_commit_url">https://github.com/forrestguice/NaturalHour/commit/</string>   <!-- url only (no formatting) -->
+    <string name="app_changelog_url" tools:common="true">https://github.com/forrestguice/NaturalHour/blob/master/CHANGELOG.md</string>   <!-- url only (no formatting) -->
+    <string name="app_commit_url" tools:common="true">https://github.com/forrestguice/NaturalHour/commit/</string>   <!-- url only (no formatting) -->
 
     <string name="app_legal1"><![CDATA[
         <b>Source Code:</b><br />
