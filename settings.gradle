@@ -1,3 +1,4 @@
 rootProject.name='Natural Hour'
+includeBuild("SuntimesAddon/build-logic/localization")
 include ':SuntimesAddon', ':app'
 project(':SuntimesAddon').projectDir = new File(rootDir, 'SuntimesAddon/suntimesaddon/')
