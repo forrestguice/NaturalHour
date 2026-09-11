@@ -223,7 +223,7 @@ public class NaturalHourProvider extends ContentProvider
         Class<?>[] widgetClass = new Class[] { NaturalHourWidget_3x2.class, NaturalHourWidget_4x3.class, NaturalHourWidget_5x3.class };
         String[] summary = (context == null) ? new String[] {"Clock Widget (3x2)", "Clock Widget (4x3)", "Clock Widget (5x3)"}
                 : new String[] { context.getString(R.string.widget_summary, "3x2"), context.getString(R.string.widget_summary, "4x3"), context.getString(R.string.widget_summary, "5x3") };
-        int[] icons = new int[] { R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round, R.mipmap.ic_launcher_round };
+        int[] icons = new int[] { R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher };
         return createWidgetListCursor(getContext(), columns, widgetClass, summary, icons);
     }
 

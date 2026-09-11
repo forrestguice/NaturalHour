@@ -5,7 +5,7 @@
 
     android:updatePeriodMillis="@integer/widget_update_period_millis"
     android:widgetCategory="home_screen|keyguard"
-    android:previewImage="@mipmap/ic_launcher_round"
+    android:previewImage="@mipmap/ic_launcher"
 
     android:resizeMode="horizontal|vertical"
     android:minWidth="@dimen/widget_size_min_5x5" android:minHeight="@dimen/widget_size_min_3x3"
