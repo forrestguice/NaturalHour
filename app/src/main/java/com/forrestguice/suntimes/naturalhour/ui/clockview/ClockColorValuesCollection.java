@@ -21,6 +21,7 @@ package com.forrestguice.suntimes.naturalhour.ui.clockview;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Parcel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,9 @@ import androidx.annotation.Nullable;
 import com.forrestguice.suntimes.naturalhour.R;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValues;
 import com.forrestguice.suntimes.naturalhour.ui.colors.ColorValuesCollection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * ColorValuesCollection
@@ -79,12 +83,26 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
     }
 
     @Override
-    protected String[] getDefaultColorIDs() {
-        return new String[] {
-                ClockColorValues.COLOR_ID_DARK, ClockColorValues.COLOR_ID_LIGHT,
-                ClockColorValuesSky.COLOR_ID_SKY, ClockColorValuesSun.COLOR_ID_SUN,
-                ClockColorValuesMonet.COLOR_ID_MONET_DARK, ClockColorValuesMonet.COLOR_ID_MONET_LIGHT };
+    protected String[] getDefaultColorIDs()
+    {
+        if (defaultColorIDs == null)
+        {
+            defaultColorIDs = new ArrayList<>();
+            defaultColorIDs.addAll(Arrays.asList(
+                    ClockColorValues.COLOR_ID_DARK, ClockColorValues.COLOR_ID_LIGHT,
+                    ClockColorValuesSky.COLOR_ID_SKY,
+                    ClockColorValuesSun.COLOR_ID_SUN
+            ));
+
+            if (Build.VERSION.SDK_INT >= 31) {
+                defaultColorIDs.addAll(Arrays.asList(
+                        ClockColorValuesMonet.COLOR_ID_MONET_DARK, ClockColorValuesMonet.COLOR_ID_MONET_LIGHT
+                ));
+            }
+        }
+        return defaultColorIDs.toArray(new String[0]);
     }
+    private ArrayList<String> defaultColorIDs = null;
 
     @Override
     public ColorValues getDefaultColors(Context context) {
