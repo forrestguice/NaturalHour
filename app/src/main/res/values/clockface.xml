@@ -5,6 +5,7 @@
     <bool name="clockface_show_timezone">true</bool>
     <bool name="clockface_show_location">true</bool>
     <bool name="clockface_show_date">true</bool>
+    <bool name="clockface_show_datecard">true</bool>
     <bool name="clockface_show_vigilia">false</bool>
     <bool name="clockface_show_hand_simple">false</bool>
     <bool name="clockface_show_ticks_5m">true</bool>

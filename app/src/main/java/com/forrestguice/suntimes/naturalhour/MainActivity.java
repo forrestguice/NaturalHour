@@ -352,6 +352,7 @@ public class MainActivity extends AppCompatActivity
             fragment.setSuntimesInfo(suntimesInfo,
                     AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo),
                     AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));
+            fragment.setShowDate(AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_DATECARD));
         }
 
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);

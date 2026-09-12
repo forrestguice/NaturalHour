@@ -72,6 +72,7 @@
     <string name="pref_title_center_noon">Center on solar noon</string>
     <string name="pref_title_show_noon">Show solar noon</string>
     <string name="pref_title_show_date">Show date</string>
+    <string name="pref_title_show_datecard">Show date card</string>
     <string name="pref_title_show_timezone">Show time zone</string>
     <string name="pref_title_show_location">Show location</string>
     <string name="pref_title_show_night">Show night period</string>

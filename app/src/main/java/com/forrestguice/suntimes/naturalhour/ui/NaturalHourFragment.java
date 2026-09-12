@@ -81,12 +81,23 @@ public class NaturalHourFragment extends Fragment
     protected int timeFormat = AppSettings.TIMEMODE_24HR;
     protected ColorValues clockColors = null;
 
+    @NonNull
+    protected Bundle getArgs()
+    {
+        Bundle bundle = getArguments();
+        if (bundle == null) {
+            bundle = new Bundle();
+            setArguments(bundle);
+        }
+        return bundle;
+    }
+
     public void setSuntimesInfo(SuntimesInfo value, TimeZone tz, int timeFormat)
     {
         this.info = value;
         this.timezone = tz;
         this.timeFormat = timeFormat;
-        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors));
+        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors, getShowDate()));
     }
     public TimeZone getTimeZone() {
         return timezone;
@@ -95,14 +106,29 @@ public class NaturalHourFragment extends Fragment
         return timeFormat;
     }
 
+    public boolean getShowDate() {
+        return getArgs().getBoolean("showDate", true);
+    }
+    public void setShowDate(boolean value)
+    {
+        getArgs().putBoolean("showDate", value);
+        if (cardAdapter != null) {
+            cardAdapter.getOptions().showDate = value;
+            cardAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Nullable
     public ColorValues getClockColors() {
         return clockColors;
     }
-    public void setClockColors(ColorValues colors) {
+    public void setClockColors(ColorValues colors)
+    {
         clockColors = colors;
-        cardAdapter.getOptions().colors = clockColors;
-        cardAdapter.notifyDataSetChanged();
+        if (cardAdapter != null) {
+            cardAdapter.getOptions().colors = clockColors;
+            cardAdapter.notifyDataSetChanged();
+        }
     }
 
     private ColorValuesCollection<ColorValues> colorCollection;
@@ -221,7 +247,7 @@ public class NaturalHourFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors));
+            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors, getShowDate()));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -548,14 +574,19 @@ public class NaturalHourFragment extends Fragment
         public TimeZone timezone;
         public int timeFormat;
         public ColorValues colors;
-        public boolean showDate = true;
+        public boolean showDate;
 
         public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors) {
+            this(context, info, tz, timeFormat, colors, true);
+        }
+
+        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors, boolean showDate) {
             this.suntimes_info = info;
             this.suntimes_options = info.getOptions(context);
             this.timezone = tz;
             this.timeFormat = timeFormat;
             this.colors = colors;
+            this.showDate = showDate;
         }
     }
 

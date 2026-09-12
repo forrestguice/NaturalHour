@@ -25,6 +25,9 @@
             android:defaultValue="2"
             android:summary="%s" />
 
+        <CheckBoxPreference android:key="clockface_showDateCard"
+            android:title="@string/pref_title_show_datecard" android:defaultValue="@bool/clockface_show_datecard" />
+
         <CheckBoxPreference android:key="clockface_showSeconds"
             android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/clockface_show_seconds" />
 
