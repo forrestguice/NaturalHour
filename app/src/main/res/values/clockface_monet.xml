@@ -18,6 +18,9 @@
     <color name="monet_clockColorFace_light">@color/clockColorFace_light</color>
     <color name="monet_clockColorPlate_light">@color/clockColorPlate_light</color>
     <color name="monet_clockColorFrame_light">@color/clockColorFrame_light</color>
+    <color name="monet_clockColorSecondsStart_light">@color/clockColorFrame_light</color>
+    <color name="monet_clockColorSecondsMajor_light">@color/clockColorFrame_light</color>
+    <color name="monet_clockColorSecondsMinor_light">@color/clockColorFrame_light</color>
     <color name="monet_clockColorCenter_light">@color/clockColorCenter_light</color>
     <color name="monet_clockColorHand_light">@color/clockColorHand_light</color>
     <color name="monet_clockColorHand1_light">@color/clockColorHand1_light</color>
@@ -41,6 +44,9 @@
     <color name="monet_clockColorBackground_dark">@color/clockColorBackground_dark</color>
     <color name="monet_clockColorBackgroundAlt_dark">@color/clockColorBackgroundAlt_dark</color>
     <color name="monet_clockColorFace_dark">@color/clockColorFace_dark</color>
+    <color name="monet_clockColorSecondsStart_dark">@color/clockColorFrame_dark</color>
+    <color name="monet_clockColorSecondsMajor_dark">@color/clockColorFrame_dark</color>
+    <color name="monet_clockColorSecondsMinor_dark">@color/clockColorFrame_dark</color>
     <color name="monet_clockColorPlate_dark">@color/clockColorPlate_dark</color>
     <color name="monet_clockColorFrame_dark">@color/clockColorFrame_dark</color>
     <color name="monet_clockColorCenter_dark">@color/clockColorCenter_dark</color>
@@ -68,6 +74,9 @@
     <color name="monet_clockColorFace">@color/monet_clockColorFace_light</color>
     <color name="monet_clockColorPlate">@color/monet_clockColorPlate_light</color>
     <color name="monet_clockColorFrame">@color/monet_clockColorFrame_light</color>
+    <color name="monet_clockColorSecondsStart">@color/monet_clockColorSecondsStart_light</color>
+    <color name="monet_clockColorSecondsMajor">@color/monet_clockColorSecondsMajor_light</color>
+    <color name="monet_clockColorSecondsMinor">@color/monet_clockColorSecondsMinor_light</color>
     <color name="monet_clockColorCenter">@color/monet_clockColorCenter_light</color>
     <color name="monet_clockColorHand">@color/monet_clockColorHand_light</color>
     <color name="monet_clockColorHand1">@color/monet_clockColorHand1_light</color>

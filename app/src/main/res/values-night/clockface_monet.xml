@@ -18,6 +18,9 @@
     <color name="monet_clockColorFace">@color/monet_clockColorFace_dark</color>
     <color name="monet_clockColorPlate">@color/monet_clockColorPlate_dark</color>
     <color name="monet_clockColorFrame">@color/monet_clockColorFrame_dark</color>
+    <color name="monet_clockColorSecondsStart">@color/monet_clockColorSecondsStart_dark</color>
+    <color name="monet_clockColorSecondsMajor">@color/monet_clockColorSecondsMajor_dark</color>
+    <color name="monet_clockColorSecondsMinor">@color/monet_clockColorSecondsMinor_dark</color>
     <color name="monet_clockColorCenter">@color/monet_clockColorCenter_dark</color>
     <color name="monet_clockColorHand">@color/monet_clockColorHand_dark</color>
     <color name="monet_clockColorHand1">@color/monet_clockColorHand1_dark</color>
