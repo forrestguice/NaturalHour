@@ -83,7 +83,7 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
         return new String[] {
                 ClockColorValues.COLOR_ID_DARK, ClockColorValues.COLOR_ID_LIGHT,
                 ClockColorValuesSky.COLOR_ID_SKY, ClockColorValuesSun.COLOR_ID_SUN,
-                ClockColorValuesMonet.COLOR_ID_MONET };
+                ClockColorValuesMonet.COLOR_ID_MONET_DARK, ClockColorValuesMonet.COLOR_ID_MONET_LIGHT };
     }
 
     @Override
@@ -117,8 +117,12 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
                 v = new ClockColorValuesSky(context, true);
                 break;
 
-            case ClockColorValuesMonet.COLOR_ID_MONET:
+            case ClockColorValuesMonet.COLOR_ID_MONET_DARK:
                 v = new ClockColorValuesMonet(context, true);
+                break;
+
+            case ClockColorValuesMonet.COLOR_ID_MONET_LIGHT:
+                v = new ClockColorValuesMonet(context, false);
                 break;
 
             default:
@@ -140,7 +144,8 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
             case ClockColorValues.COLOR_ID_LIGHT: return context.getString(R.string.defaultColors_name_light);
             case ClockColorValuesSun.COLOR_ID_SUN: return context.getString(R.string.defaultColors_name_az);
             case ClockColorValuesSky.COLOR_ID_SKY: return context.getString(R.string.defaultColors_name_sky);
-            case ClockColorValuesMonet.COLOR_ID_MONET: return context.getString(R.string.defaultColors_name_monet);
+            case ClockColorValuesMonet.COLOR_ID_MONET_DARK: return context.getString(R.string.defaultColors_name_monet_dark);
+            case ClockColorValuesMonet.COLOR_ID_MONET_LIGHT: return context.getString(R.string.defaultColors_name_monet_light);
             default: return colorsID;
         }
     }

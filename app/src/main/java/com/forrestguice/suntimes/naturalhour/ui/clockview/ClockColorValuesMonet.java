@@ -28,7 +28,8 @@ import com.forrestguice.suntimes.naturalhour.R;
  */
 public class ClockColorValuesMonet extends ClockColorValues
 {
-    public static final String COLOR_ID_MONET = "monet";
+    public static final String COLOR_ID_MONET_DARK = "monet_dark";
+    public static final String COLOR_ID_MONET_LIGHT = "monet_light";
 
     protected static final int[] COLORS_RES_DARK = new int[] {
             R.color.monet_clockColorBackground_dark, R.color.monet_clockColorBackgroundAlt_dark, R.color.monet_clockColorPlate_dark, R.color.monet_clockColorFace_dark, R.color.monet_clockColorFrame_dark,

@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- light theme -->
+    <color name="monet_clockColorAstro_light">@android:color/system_accent2_500</color>
+    <color name="monet_clockColorNautical_light">@android:color/system_accent2_400</color>
+    <color name="monet_clockColorCivil_light">@android:color/system_accent2_300</color>
+    <color name="monet_clockColorAM_light">@android:color/system_neutral1_100</color>
+    <color name="monet_clockColorPM_light">@android:color/system_neutral1_200</color>
+    <color name="monet_clockColorDayBorder_light">@android:color/system_accent2_500</color>
+    <color name="monet_clockColorDay_light">@android:color/system_neutral1_100</color>
+    <color name="monet_clockColorDayLabel_light">@android:color/system_accent2_500</color>
+    <color name="monet_clockColorDayFace_light">@android:color/system_neutral2_900</color>
+    <color name="monet_clockColorNightBorder_light">@android:color/system_accent2_200</color>
+    <color name="monet_clockColorNight_light">@android:color/system_neutral2_500</color>
+    <color name="monet_clockColorNightLabel_light">@android:color/system_accent2_200</color>
+    <color name="monet_clockColorNightFace_light">@android:color/system_neutral2_300</color>
+    <color name="monet_clockColorBackground_light">@android:color/system_neutral1_900</color>
+    <color name="monet_clockColorBackgroundAlt_light">@android:color/system_neutral2_800</color>
+    <color name="monet_clockColorFace_light">@android:color/system_neutral2_300</color>
+    <color name="monet_clockColorPlate_light">@android:color/system_neutral2_100</color>
+    <color name="monet_clockColorFrame_light">@android:color/system_accent1_600</color>
+    <color name="monet_clockColorCenter_light">@android:color/system_accent1_200</color>
+    <color name="monet_clockColorHand_light">@android:color/system_accent2_100</color>
+    <color name="monet_clockColorHand1_light">@android:color/system_accent2_200</color>
+    <color name="monet_clockColorLabel1_light">@android:color/system_accent2_600</color>
+    <color name="monet_clockColorLabel2_light">@android:color/system_accent2_500</color>
+
     <!-- dark theme -->
     <color name="monet_clockColorAstro_dark">@android:color/system_accent2_900</color>
     <color name="monet_clockColorNautical_dark">@android:color/system_accent2_800</color>
