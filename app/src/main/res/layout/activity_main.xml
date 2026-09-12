@@ -16,6 +16,17 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_today"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" android:layout_margin="@dimen/fab_margin"
+        app:fabSize="mini"  android:scaleType="center"
+        android:src="?attr/icToday"
+        android:tint="?attr/fab_foregroundColor"
+        app:backgroundTint="?attr/fab_backgroundColor"
+        app:rippleColor="?attr/fab_rippleColor"
+        android:contentDescription="@string/action_today" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_togglefullscreen"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"

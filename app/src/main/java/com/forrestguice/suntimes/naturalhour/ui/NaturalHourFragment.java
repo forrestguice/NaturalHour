@@ -223,7 +223,13 @@ public class NaturalHourFragment extends Fragment
         cardView.setHasFixedSize(true);
         cardView.setLayoutManager(cardLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         cardView.addItemDecoration(cardDecoration);
-        //cardView.setOnScrollListener(onCardScrollChanged);
+        cardView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                cardListener.onCardScrolled(cardLayout.findFirstVisibleItemPosition());
+            }
+        });
 
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(cardView);
@@ -266,6 +272,7 @@ public class NaturalHourFragment extends Fragment
         public boolean onCardLongClick(int position) {
             return false;
         }
+        public void onCardScrolled(int position) {}
     };
     public void setCardListener(NaturalHourAdapterListener listener)
     {
@@ -433,6 +440,9 @@ public class NaturalHourFragment extends Fragment
 
     public void showToday(boolean skipAnimate) {
         scrollToPosition(NaturalHourCardAdapter.TODAY_POSITION, skipAnimate);
+    }
+    public boolean isShowingToday() {
+        return (cardLayout.findFirstVisibleItemPosition() == NaturalHourCardAdapter.TODAY_POSITION);
     }
 
     public void showSpringEquinox()
@@ -804,6 +814,7 @@ public class NaturalHourFragment extends Fragment
         public void onDateClick(int position) {}
         public void onCardClick(int position) {}
         public boolean onCardLongClick(int position) { return false; }
+        public void onCardScrolled(int position) {}
     }
 
     /**

@@ -184,6 +184,11 @@ public class MainActivity extends AppCompatActivity
             timezoneButton.setOnClickListener(onTimeZoneClick);
         }
 
+        FloatingActionButton fab_today = findViewById(R.id.fab_today);
+        if (fab_today != null) {
+            fab_today.setOnClickListener(onFabClick_resetToToday);
+        }
+
         FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
         if (fab_toggleFullscreen != null) {
             fab_toggleFullscreen.setOnClickListener(onFabClick_toggleFullscreen);
@@ -383,6 +388,10 @@ public class MainActivity extends AppCompatActivity
             timezoneView.setEnabled(!isLocked);
         }
 
+        FloatingActionButton fab_today = findViewById(R.id.fab_today);
+        setFabVisible(fab_today, (isFullscreen || isLocked)
+                && (fragment != null && !fragment.isShowingToday()));
+
         FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
         if (fab_toggleFullscreen != null)
         {
@@ -397,6 +406,11 @@ public class MainActivity extends AppCompatActivity
             if (fragment != null) {
                 fragment.setCardListener(new NaturalHourFragment.NaturalHourAdapterListener()
                 {
+                    public void onCardScrolled(int position)
+                    {
+                        setFabVisible(fab_today, (isFullscreen || isLocked)
+                                && !fragment.isShowingToday());
+                    }
                     public void onClockClick(int position) {
                         fragment.announceTime();
                     }
@@ -411,6 +425,17 @@ public class MainActivity extends AppCompatActivity
                         return false;
                     }
                 });
+            }
+        }
+    }
+
+    protected void setFabVisible(@Nullable FloatingActionButton button, boolean value)
+    {
+        if (button != null) {
+            if (value) {
+                button.show();
+            } else {
+                button.hide();
             }
         }
     }
@@ -711,6 +736,19 @@ public class MainActivity extends AppCompatActivity
             } else hideBottomSheet();
         } else super.onBackPressed();
     }
+
+    private final View.OnClickListener onFabClick_resetToToday = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            FragmentManager fragments = getSupportFragmentManager();
+            NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
+            if (fragment != null) {
+                fragment.showToday(true);
+            }
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
