@@ -1,0 +1,76 @@
+<resources>
+    <!-- light theme -->
+    <color name="monet_clockColorAstro_light">@color/clockColorAstro_light</color>
+    <color name="monet_clockColorNautical_light">@color/clockColorNautical_light</color>
+    <color name="monet_clockColorCivil_light">@color/clockColorCivil_light</color>
+    <color name="monet_clockColorAM_light">@color/clockColorAM_light</color>
+    <color name="monet_clockColorPM_light">@color/clockColorPM_light</color>
+    <color name="monet_clockColorDayBorder_light">@color/clockColorDayBorder_light</color>
+    <color name="monet_clockColorDay_light">@color/clockColorDay_light</color>
+    <color name="monet_clockColorDayLabel_light">@color/clockColorDayLabel_light</color>
+    <color name="monet_clockColorDayFace_light">@color/clockColorDayFace_light</color>
+    <color name="monet_clockColorNightBorder_light">@color/clockColorNightBorder_light</color>
+    <color name="monet_clockColorNight_light">@color/clockColorNight_light</color>
+    <color name="monet_clockColorNightLabel_light">@color/clockColorNightLabel_light</color>
+    <color name="monet_clockColorNightFace_light">@color/clockColorNightFace_light</color>
+    <color name="monet_clockColorBackground_light">@color/clockColorBackground_light</color>
+    <color name="monet_clockColorBackgroundAlt_light">@color/clockColorBackgroundAlt_light</color>
+    <color name="monet_clockColorFace_light">@color/clockColorFace_light</color>
+    <color name="monet_clockColorPlate_light">@color/clockColorPlate_light</color>
+    <color name="monet_clockColorFrame_light">@color/clockColorFrame_light</color>
+    <color name="monet_clockColorCenter_light">@color/clockColorCenter_light</color>
+    <color name="monet_clockColorHand_light">@color/clockColorHand_light</color>
+    <color name="monet_clockColorHand1_light">@color/clockColorHand1_light</color>
+    <color name="monet_clockColorLabel1_light">@color/clockColorLabel1_light</color>
+    <color name="monet_clockColorLabel2_light">@color/clockColorLabel2_light</color>
+
+    <!-- dark theme -->
+    <color name="monet_clockColorAstro_dark">@color/clockColorAstro_dark</color>
+    <color name="monet_clockColorNautical_dark">@color/clockColorNautical_dark</color>
+    <color name="monet_clockColorCivil_dark">@color/clockColorCivil_dark</color>
+    <color name="monet_clockColorAM_dark">@color/clockColorAM_dark</color>
+    <color name="monet_clockColorPM_dark">@color/clockColorPM_dark</color>
+    <color name="monet_clockColorDayBorder_dark">@color/clockColorDayBorder_dark</color>
+    <color name="monet_clockColorDay_dark">@color/clockColorDay_dark</color>
+    <color name="monet_clockColorDayLabel_dark">@color/clockColorDayLabel_dark</color>
+    <color name="monet_clockColorDayFace_dark">@color/clockColorDayFace_dark</color>
+    <color name="monet_clockColorNightBorder_dark">@color/clockColorNightBorder_dark</color>
+    <color name="monet_clockColorNight_dark">@color/clockColorNight_dark</color>
+    <color name="monet_clockColorNightLabel_dark">@color/clockColorNightLabel_dark</color>
+    <color name="monet_clockColorNightFace_dark">@color/clockColorNightFace_dark</color>
+    <color name="monet_clockColorBackground_dark">@color/clockColorBackground_dark</color>
+    <color name="monet_clockColorBackgroundAlt_dark">@color/clockColorBackgroundAlt_dark</color>
+    <color name="monet_clockColorFace_dark">@color/clockColorFace_dark</color>
+    <color name="monet_clockColorPlate_dark">@color/clockColorPlate_dark</color>
+    <color name="monet_clockColorFrame_dark">@color/clockColorFrame_dark</color>
+    <color name="monet_clockColorCenter_dark">@color/clockColorCenter_dark</color>
+    <color name="monet_clockColorHand_dark">@color/clockColorHand_dark</color>
+    <color name="monet_clockColorHand1_dark">@color/clockColorHand1_dark</color>
+    <color name="monet_clockColorLabel1_dark">@color/clockColorLabel1_dark</color>
+    <color name="monet_clockColorLabel2_dark">@color/clockColorLabel2_dark</color>
+
+    <!-- system theme -->
+    <color name="monet_clockColorAstro">@color/monet_clockColorAstro_light</color>
+    <color name="monet_clockColorNautical">@color/monet_clockColorNautical_light</color>
+    <color name="monet_clockColorCivil">@color/monet_clockColorCivil_light</color>
+    <color name="monet_clockColorAM">@color/monet_clockColorAM_light</color> <!-- aaffd500 -->
+    <color name="monet_clockColorPM">@color/monet_clockColorPM_light</color> <!-- #aaff9900 -->
+    <color name="monet_clockColorDayBorder">@color/monet_clockColorDayBorder_light</color>
+    <color name="monet_clockColorDay">@color/monet_clockColorDay_light</color>
+    <color name="monet_clockColorDayLabel">@color/monet_clockColorDayLabel_light</color>
+    <color name="monet_clockColorDayFace">@color/monet_clockColorDayFace_light</color>
+    <color name="monet_clockColorNightBorder">@color/monet_clockColorNightBorder_light</color>
+    <color name="monet_clockColorNight">@color/monet_clockColorNight_light</color>
+    <color name="monet_clockColorNightLabel">@color/monet_clockColorNightLabel_light</color>
+    <color name="monet_clockColorNightFace">@color/monet_clockColorNightFace_light</color>
+    <color name="monet_clockColorBackground">@color/monet_clockColorBackground_light</color>
+    <color name="monet_clockColorBackgroundAlt">@color/monet_clockColorBackgroundAlt_light</color>
+    <color name="monet_clockColorFace">@color/monet_clockColorFace_light</color>
+    <color name="monet_clockColorPlate">@color/monet_clockColorPlate_light</color>
+    <color name="monet_clockColorFrame">@color/monet_clockColorFrame_light</color>
+    <color name="monet_clockColorCenter">@color/monet_clockColorCenter_light</color>
+    <color name="monet_clockColorHand">@color/monet_clockColorHand_light</color>
+    <color name="monet_clockColorHand1">@color/monet_clockColorHand1_light</color>
+    <color name="monet_clockColorLabel1">@color/monet_clockColorLabel1_light</color>
+    <color name="monet_clockColorLabel2">@color/monet_clockColorLabel2_light</color>
+</resources>

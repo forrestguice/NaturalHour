@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="monet_clockColorAstro">@color/monet_clockColorAstro_dark</color>
+    <color name="monet_clockColorNautical">@color/monet_clockColorNautical_dark</color>
+    <color name="monet_clockColorCivil">@color/monet_clockColorCivil_dark</color>
+    <color name="monet_clockColorAM">@color/monet_clockColorAM_dark</color>
+    <color name="monet_clockColorPM">@color/monet_clockColorPM_dark</color>
+    <color name="monet_clockColorDayBorder">@color/monet_clockColorDayBorder_dark</color>
+    <color name="monet_clockColorDay">@color/monet_clockColorDay_dark</color>
+    <color name="monet_clockColorDayLabel">@color/monet_clockColorDayLabel_dark</color>
+    <color name="monet_clockColorDayFace">@color/monet_clockColorDayFace_dark</color>
+    <color name="monet_clockColorNightBorder">@color/monet_clockColorNightBorder_dark</color>
+    <color name="monet_clockColorNight">@color/monet_clockColorNight_dark</color>
+    <color name="monet_clockColorNightLabel">@color/monet_clockColorNightLabel_dark</color>
+    <color name="monet_clockColorNightFace">@color/monet_clockColorNightFace_dark</color>
+    <color name="monet_clockColorBackground">@color/monet_clockColorBackground_dark</color>
+    <color name="monet_clockColorBackgroundAlt">@color/monet_clockColorBackgroundAlt_dark</color>
+    <color name="monet_clockColorFace">@color/monet_clockColorFace_dark</color>
+    <color name="monet_clockColorPlate">@color/monet_clockColorPlate_dark</color>
+    <color name="monet_clockColorFrame">@color/monet_clockColorFrame_dark</color>
+    <color name="monet_clockColorCenter">@color/monet_clockColorCenter_dark</color>
+    <color name="monet_clockColorHand">@color/monet_clockColorHand_dark</color>
+    <color name="monet_clockColorHand1">@color/monet_clockColorHand1_dark</color>
+    <color name="monet_clockColorLabel1">@color/monet_clockColorLabel1_dark</color>
+    <color name="monet_clockColorLabel2">@color/monet_clockColorLabel2_dark</color>
+</resources>
