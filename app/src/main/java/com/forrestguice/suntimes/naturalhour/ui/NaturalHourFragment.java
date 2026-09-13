@@ -233,7 +233,31 @@ public class NaturalHourFragment extends Fragment
             }
         });
 
-        SnapHelper snapHelper = new LinearSnapHelper();
+        SnapHelper snapHelper = new LinearSnapHelper()
+        {
+            public static final int ITEM_FLING_LIMIT = 7;
+
+            @Override
+            public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY)
+            {
+                int snapToPosition = super.findTargetSnapPosition(layoutManager, velocityX, velocityY);
+                if (snapToPosition == RecyclerView.NO_POSITION) {
+                    return snapToPosition;
+                }
+
+                View currentView = findSnapView(layoutManager);
+                int currentPosition = (currentView != null) ? layoutManager.getPosition(currentView) : RecyclerView.NO_POSITION;
+                if (currentPosition == RecyclerView.NO_POSITION) {
+                    return currentPosition;
+                }
+
+                int d = snapToPosition - currentPosition;
+                if (Math.abs(d) > ITEM_FLING_LIMIT) {
+                    snapToPosition += ((d > 0 ? 1 : -1) * ITEM_FLING_LIMIT) - d;
+                }
+                return snapToPosition;
+            }
+        };
         snapHelper.attachToRecyclerView(recyclerView);
 
         cardView = new RecyclerViewCard(recyclerView)
