@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
+//import androidx.viewpager2.widget.ViewPager2;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -72,8 +73,7 @@ import java.util.TimeZone;
 @SuppressWarnings("RedundantCast")
 public class NaturalHourFragment extends Fragment
 {
-    protected RecyclerView cardView;
-    protected LinearLayoutManager cardLayout;
+    protected CardInterface cardView;
     protected NaturalHourCardAdapter cardAdapter;
 
     protected SuntimesInfo info;
@@ -177,7 +177,7 @@ public class NaturalHourFragment extends Fragment
         }
 
         initData(getActivity());
-        cardView.scrollToPosition(NaturalHourCardAdapter.TODAY_POSITION);
+        cardView.setPosition(NaturalHourCardAdapter.TODAY_POSITION);
 
         return view;
     }
@@ -190,18 +190,18 @@ public class NaturalHourFragment extends Fragment
 
     protected void startClockRunnable() {
         Log.d("DEBUG", "clockRunnable: starting..");
-        cardView.post(clockUpdateRunnable);
+        cardView.getView().post(clockUpdateRunnable);
     }
     protected void stopClockRunnable() {
         Log.d("DEBUG", "clockRunnable: stopping..");
-        cardView.removeCallbacks(clockUpdateRunnable);
+        cardView.getView().removeCallbacks(clockUpdateRunnable);
     }
     private final Runnable clockUpdateRunnable = new Runnable() {
         @Override
         public void run() {
             Log.d("DEBUG", "clockRunnable: update clock");
             cardAdapter.notifyDataSetChanged();
-            cardView.postDelayed(clockUpdateRunnable, CLOCK_UPDATE_INTERVAL);
+            cardView.getView().postDelayed(clockUpdateRunnable, CLOCK_UPDATE_INTERVAL);
         }
     };
     public static final long CLOCK_UPDATE_INTERVAL = 15 * 1000;
@@ -219,11 +219,13 @@ public class NaturalHourFragment extends Fragment
 
     protected void initViews(View content)
     {
-        cardView = (RecyclerView) content.findViewById(R.id.cardView);
-        cardView.setHasFixedSize(true);
-        cardView.setLayoutManager(cardLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        cardView.addItemDecoration(cardDecoration);
-        cardView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        LinearLayoutManager cardLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+
+        RecyclerView recyclerView = (RecyclerView) content.findViewById(R.id.cardView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(cardLayout);
+        recyclerView.addItemDecoration(cardDecoration);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -232,7 +234,22 @@ public class NaturalHourFragment extends Fragment
         });
 
         SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(cardView);
+        snapHelper.attachToRecyclerView(recyclerView);
+
+        cardView = new RecyclerViewCard(recyclerView)
+        {
+            @Override
+            public int getPosition() {
+                return cardLayout.findFirstVisibleItemPosition();
+            }
+        };
+
+       /*ViewPager2 viewPager = (ViewPager2) content.findViewById(R.id.cardView);
+        viewPager.setOffscreenPageLimit(1);
+        viewPager.addItemDecoration(cardDecoration);
+        viewPager.setPageTransformer(cardPageTransformer);
+        viewPager.registerOnPageChangeCallback(cardPageListener);
+        cardView = new ViewPagerCard(viewPager);*/
     }
 
     private final RecyclerView.ItemDecoration cardDecoration = new RecyclerView.ItemDecoration()
@@ -410,14 +427,14 @@ public class NaturalHourFragment extends Fragment
         if (context != null)
         {
             Calendar now = Calendar.getInstance(timezone);
-            int position = cardLayout.findFirstVisibleItemPosition();
+            int position = cardView.getPosition();
             NaturalHourData data = cardAdapter.initData(position);
 
             int currentHour = NaturalHourData.findNaturalHour(now, data);    // [1,24]
             boolean showSeconds = AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_SECONDS);
             SpannableString announcement = announceTime(context, now, currentHour, timeFormat, showSeconds, data);
 
-            Snackbar snackbar = Snackbar.make(cardView, announcement, Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(cardView.getView(), announcement, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
             TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);   // android.support.design.R.id.snackbar_text
             if (textView != null)
@@ -442,7 +459,7 @@ public class NaturalHourFragment extends Fragment
         scrollToPosition(NaturalHourCardAdapter.TODAY_POSITION, skipAnimate);
     }
     public boolean isShowingToday() {
-        return (cardLayout.findFirstVisibleItemPosition() == NaturalHourCardAdapter.TODAY_POSITION);
+        return (cardView.getPosition() == NaturalHourCardAdapter.TODAY_POSITION);
     }
 
     public void showSpringEquinox()
@@ -473,23 +490,11 @@ public class NaturalHourFragment extends Fragment
         scrollToPosition(cardAdapter.positionForDate(datemillis)-1);
     }
 
-    public static final int SMOOTHSCROLL_ITEMLIMIT = 28;
     public void scrollToPosition(int position) {
         scrollToPosition(position, true);
     }
-    public void scrollToPosition(int position, boolean skipAnimation)
-    {
-        int current = cardLayout.findFirstVisibleItemPosition();
-        if (skipAnimation) {
-            cardView.scrollToPosition(position);
-
-        } else if (Math.abs(position - current) >= SMOOTHSCROLL_ITEMLIMIT) {
-            cardView.scrollToPosition(position < current ? position + SMOOTHSCROLL_ITEMLIMIT : position - SMOOTHSCROLL_ITEMLIMIT);
-            cardView.smoothScrollToPosition(position);
-
-        } else {
-            cardView.smoothScrollToPosition(position);
-        }
+    public void scrollToPosition(int position, boolean skipAnimation) {
+        cardView.setPosition(position, skipAnimation);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -887,5 +892,148 @@ public class NaturalHourFragment extends Fragment
     public static TimeZone getApparentSolarTZ(Context context, String longitude) {
         return new TimeZoneHelper.ApparentSolarTime(Double.parseDouble(longitude), context.getString(R.string.solartime_apparent));
     }
+
+    /**
+     * CardInterface
+     */
+    public interface CardInterface
+    {
+        View getView();
+        int getPosition();
+
+        void setAdapter(RecyclerView.Adapter<?> adapter);
+
+        int SMOOTHSCROLL_ITEMLIMIT = 28;
+        void setPosition(int position);
+        void setPosition(int position, boolean skipAnimation);
+    }
+
+    /**
+     * RecyclerViewCard
+     */
+    public abstract static class RecyclerViewCard implements CardInterface
+    {
+        private final RecyclerView recyclerView;
+        public RecyclerViewCard(RecyclerView view) {
+            recyclerView = view;
+        }
+
+        @Override
+        public View getView() {
+            return recyclerView;
+        }
+
+        @Override
+        public abstract int getPosition();
+
+        @Override
+        public void setPosition(int position) {
+            setPosition(position, true);
+        }
+        @Override
+        public void setPosition(int position, boolean skipAnimation)
+        {
+            int current = getPosition();
+            if (skipAnimation) {
+                recyclerView.scrollToPosition(position);
+
+            } else if (Math.abs(position - current) >= SMOOTHSCROLL_ITEMLIMIT) {
+                recyclerView.scrollToPosition(position < current ? position + SMOOTHSCROLL_ITEMLIMIT : position - SMOOTHSCROLL_ITEMLIMIT);
+                recyclerView.smoothScrollToPosition(position);
+
+            } else {
+                recyclerView.smoothScrollToPosition(position);
+            }
+        }
+
+        @Override
+        public void setAdapter(RecyclerView.Adapter<?> adapter) {
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
+    /**
+     * ViewPagerCard
+     */
+    /*public static class ViewPagerCard implements CardInterface
+    {
+        private final ViewPager2 viewPager;
+        public ViewPagerCard(ViewPager2 view) {
+            this.viewPager = view;
+        }
+
+        @Override
+        public void setPosition(int position) {
+            setPosition(position, true);
+        }
+        @Override
+        public void setPosition(int position, boolean skipAnimation)
+        {
+            int current = getPosition();
+            if (skipAnimation) {
+                viewPager.setCurrentItem(position, false);
+            } else if (Math.abs(position - current) >= SMOOTHSCROLL_ITEMLIMIT) {
+                viewPager.setCurrentItem(position, true);
+            } else {
+                viewPager.setCurrentItem(position, true);
+            }
+        }
+
+        @Override
+        public int getPosition() {
+            return viewPager.getCurrentItem();
+        }
+
+        @Override
+        public View getView() {
+            return viewPager;
+        }
+
+        @Override
+        public void setAdapter(RecyclerView.Adapter<?> adapter) {
+            viewPager.setAdapter(adapter);
+        }
+    }
+
+    private final ViewPager2.OnPageChangeCallback cardPageListener = new ViewPager2.OnPageChangeCallback()
+    {
+        @Override
+        public void onPageSelected(int position) {
+            super.onPageSelected(position);
+            cardListener.onCardScrolled(position);
+        }
+    };
+
+    private final ViewPager2.PageTransformer cardPageTransformer = new ViewPager2.PageTransformer()
+    {
+        @Override
+        public void transformPage(@NonNull View page, float position)
+        {
+            // wheel transform
+            //float d = Math.abs(position);
+            //page.setRotation((position >= 0 ? 1 : -1) * d * 360f);
+
+            // stacked transform
+            //final float s = 0.25f;
+            //page.setTranslationX((float)((-position * page.getWidth()) + (s * position * page.getWidth())));
+            //if (Build.VERSION.SDK_INT >= 21) {
+            //    page.setElevation(10 - Math.abs(position));
+            //}
+
+            // clock transform
+            page.setTranslationX(-position * page.getWidth());
+
+            float d = Math.abs(position);
+            page.setRotation((position >= 0 ? 1 : -1) * d * 360f);
+
+            //float s = (d > 0.5) ? 0.25f : 1;
+            //page.setScaleX(s);
+            //page.setScaleY(s);
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                page.setElevation(10 - d);
+            }
+        }
+    };*/
 
 }
