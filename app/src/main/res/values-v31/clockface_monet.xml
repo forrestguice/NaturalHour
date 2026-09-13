@@ -23,8 +23,8 @@
     <color name="monet_clockColorSecondsMajor_light">@android:color/system_accent1_600</color>
     <color name="monet_clockColorSecondsMinor_light">@android:color/system_accent1_600</color>
     <color name="monet_clockColorCenter_light">@android:color/system_accent1_200</color>
-    <color name="monet_clockColorHand_light">@android:color/system_accent2_100</color>
-    <color name="monet_clockColorHand1_light">@android:color/system_accent2_200</color>
+    <color name="monet_clockColorHand_light">@android:color/system_accent2_500</color>
+    <color name="monet_clockColorHand1_light">@android:color/system_accent2_600</color>
     <color name="monet_clockColorLabel1_light">@android:color/system_accent2_600</color>
     <color name="monet_clockColorLabel2_light">@android:color/system_accent2_500</color>
 
