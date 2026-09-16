@@ -85,6 +85,10 @@ public class DisplayStrings
         return numerals[hour];
     }
 
+    public static String cyrillicNumeral(@NonNull Context context, int hour, boolean lowerCase) {
+        String[] numerals = context.getResources().getStringArray(lowerCase ? R.array.cyrillic_lower_numeral : R.array.cyrillic_lower_numeral);
+        return numerals[hour];
+    }
     public static String atticNumeral(@NonNull Context context, int hour) {
         return numeral(context, hour, context.getResources().getStringArray(R.array.attic_numeral));
     }

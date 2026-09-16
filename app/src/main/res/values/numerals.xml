@@ -112,6 +112,61 @@
         <item>κγ</item>
         <item>κδ</item>
     </string-array>
+
+    <string-array name="cyrillic_upper_numeral" translatable="false">
+        <item />
+        <item>А</item>
+        <item>В</item>
+        <item>Г</item>
+        <item>Д</item>
+        <item>Е</item>
+        <item>Ж</item>
+        <item>З</item>
+        <item>И</item>
+        <item>Ѳ</item>
+        <item>І</item>        <!-- 10 -->
+        <item>АІ</item>
+        <item>ВІ</item>
+        <item>ГІ</item>
+        <item>ДІ</item>
+        <item>ЕІ</item>
+        <item>ЖІ</item>
+        <item>ЗІ</item>
+        <item>ИІ</item>
+        <item>ѲІ</item>
+        <item>К</item>        <!-- 20 -->
+        <item>КА</item>
+        <item>КВ</item>
+        <item>КГ</item>
+        <item>КД</item>
+    </string-array>
+
+    <string-array name="cyrillic_lower_numeral" translatable="false">
+        <item />
+        <item>а</item>
+        <item>в</item>
+        <item>г</item>
+        <item>д</item>
+        <item>е</item>
+        <item>ж</item>
+        <item>з</item>
+        <item>и</item>
+        <item>ѳ</item>
+        <item>і</item>        <!-- 10 -->
+        <item>аі</item>
+        <item>ві</item>
+        <item>гі</item>
+        <item>ді</item>
+        <item>еі</item>
+        <item>жі</item>
+        <item>зі</item>
+        <item>иі</item>
+        <item>ѳі</item>
+        <item>к</item>        <!-- 20 -->
+        <item>ка</item>
+        <item>кв</item>
+        <item>кг</item>
+        <item>кд</item>
     </string-array>
 
     <string-array name="hebrew_numeral" translatable="false">

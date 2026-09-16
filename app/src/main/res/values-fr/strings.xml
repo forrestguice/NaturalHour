@@ -150,6 +150,8 @@
     <string name="numerals_armenian">Arménien</string>
     <string name="numerals_bramhi">Brahmi</string>    <!-- TODO -->
     <string name="numerals_cuneiform">Cuneiform</string>    <!-- TODO -->
+    <string name="numerals_cyrillic_uppercase">Cyrillic (majuscule)</string>    <!-- TODO -->
+    <string name="numerals_cyrillic_lowercase">Cyrillic (minuscule)</string>    <!-- TODO -->
     <string name="numerals_etruscan">Étrusque</string>
     <string name="numerals_greek_uppercase">Grec (majuscule)</string>
     <string name="numerals_greek_lowercase">Grec (minuscule)</string>

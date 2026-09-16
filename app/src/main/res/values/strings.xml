@@ -207,6 +207,8 @@
     <string name="numerals_attic">Attic</string>
     <string name="numerals_armenian">Armenian</string>
     <string name="numerals_cuneiform">Cuneiform</string>
+    <string name="numerals_cyrillic_uppercase">Cyrillic (uppercase)</string>
+    <string name="numerals_cyrillic_lowercase">Cyrillic (lowercase)</string>
     <string name="numerals_etruscan">Etruscan</string>
     <string name="numerals_greek_uppercase">Greek (uppercase)</string>
     <string name="numerals_greek_lowercase">Greek (lowercase)</string>
@@ -219,6 +221,8 @@
         <item>@string/numerals_attic</item>
         <item>@string/numerals_armenian</item>
         <item>@string/numerals_cuneiform</item>
+        <item>@string/numerals_cyrillic_uppercase</item>
+        <item>@string/numerals_cyrillic_lowercase</item>
         <item>@string/numerals_etruscan</item>
         <item>@string/numerals_greek_uppercase</item>
         <item>@string/numerals_greek_lowercase</item>
@@ -231,6 +235,8 @@
         <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>7</item>
         <item>8</item>
+        <item>10</item>
+        <item>11</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>
