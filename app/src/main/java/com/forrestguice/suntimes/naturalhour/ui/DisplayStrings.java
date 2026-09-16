@@ -76,7 +76,8 @@ public class DisplayStrings
     }
 
     public static String greekNumeral(@NonNull Context context, int hour, boolean lowerCase) {
-        return numeral(context, hour, context.getResources().getStringArray((lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral)));
+        String[] numerals = context.getResources().getStringArray(lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral);
+        return numerals[hour];
     }
 
     public static String cuneiformNumeral(@NonNull Context context, int hour) {
