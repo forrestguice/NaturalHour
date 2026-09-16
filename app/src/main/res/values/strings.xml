@@ -207,6 +207,7 @@
     <string-array name="pref_numerals_display">
         <item>Attic</item>
         <item>Armenian</item>
+        <item>Cuneiform</item>
         <item>Etruscan</item>
         <item>Greek (uppercase)</item>
         <item>Greek (lowercase)</item>
@@ -218,6 +219,7 @@
     <string-array name="pref_numerals_values" translatable="false">  <!-- one-to-one with pref_numerals_display -->
         <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>7</item>
+        <item>8</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>

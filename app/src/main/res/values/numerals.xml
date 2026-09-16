@@ -114,4 +114,32 @@
         <item>ךה</item>   <!-- 25 -->
     </string-array>
 
+    <string-array name="cuneiform_numeral" translatable="false">
+        <item />
+        <item>𒁹</item>
+        <item>𒈫</item>
+        <item>𒐈</item>
+        <item>𒐉</item>
+        <item>𒐊</item>
+        <item>𒐋</item>
+        <item>𒐌</item>
+        <item>𒐍</item>
+        <item>𒐎</item>
+        <item>𒌋</item>
+        <item>𒌋𒁹</item>
+        <item>𒌋𒈫</item>
+        <item>𒌋𒐈</item>
+        <item>𒌋𒐉</item>
+        <item>𒌋𒐊</item>
+        <item>𒌋𒐋</item>
+        <item>𒌋𒐌</item>
+        <item>𒌋𒐍</item>
+        <item>𒌋𒐎</item>
+        <item>𒌋𒌋</item>
+        <item>𒑱𒁹</item>
+        <item>𒑱𒈫</item>
+        <item>𒑱𒐈</item>
+        <item>𒑱𒐉</item>
+    </string-array>
+
 </resources>

@@ -82,6 +82,7 @@ public class NaturalHourClockBitmap
     public static final int NUMERALS_GREEK_UPPER = 5;
     public static final int NUMERALS_GREEK_LOWER = 6;
     public static final int NUMERALS_ARMENIAN = 7;
+    public static final int NUMERALS_CUNEIFORM = 8;
     public static final int NUMERALS_LOCALE = 100;
     public static final int NUMERALS_DEFAULT = NUMERALS_ROMAN;
 
@@ -1081,6 +1082,7 @@ public class NaturalHourClockBitmap
             case NUMERALS_ARABIC: return DisplayStrings.arabicNumeral(context, i);
             case NUMERALS_ATTIC: return DisplayStrings.atticNumeral(context, i);
             case NUMERALS_ARMENIAN: return DisplayStrings.armenianNumeral(context, i);
+            case NUMERALS_CUNEIFORM: return DisplayStrings.cuneiformNumeral(context, i);
             case NUMERALS_ETRUSCAN: return DisplayStrings.etruscanNumeral(context, i);
             case NUMERALS_HEBREW: return DisplayStrings.hebrewNumeral(context, i);
             case NUMERALS_GREEK_UPPER: return DisplayStrings.greekNumeral(context, i, false);

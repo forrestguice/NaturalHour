@@ -149,6 +149,7 @@
     <string-array name="pref_numerals_display">
         <item>Attic (Grec ancien)</item>
         <item>Arménien</item>
+        <item>Cuneiform</item>    <!-- TODO -->
         <item>Étrusque</item>
         <item>Grec (majuscule)</item>
         <item>Grec (minuscule)</item>
