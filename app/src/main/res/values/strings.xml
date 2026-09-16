@@ -204,17 +204,28 @@
     </string-array>
 
     <string name="pref_title_numerals">Numerals</string>
+    <string name="numerals_attic">Attic</string>
+    <string name="numerals_armenian">Armenian</string>
+    <string name="numerals_cuneiform">Cuneiform</string>
+    <string name="numerals_etruscan">Etruscan</string>
+    <string name="numerals_greek_uppercase">Greek (uppercase)</string>
+    <string name="numerals_greek_lowercase">Greek (lowercase)</string>
+    <string name="numerals_hebrew">Hebrew</string>
+    <string name="numerals_localized">Localized</string>
+    <string name="numerals_roman">Roman</string>
+    <string name="numerals_arabic">Western Arabic</string>
+
     <string-array name="pref_numerals_display">
-        <item>Attic</item>
-        <item>Armenian</item>
-        <item>Cuneiform</item>
-        <item>Etruscan</item>
-        <item>Greek (uppercase)</item>
-        <item>Greek (lowercase)</item>
-        <item>Hebrew</item>
-        <item>Localized</item>
-        <item>Roman</item>
-        <item>Western Arabic</item>
+        <item>@string/numerals_attic</item>
+        <item>@string/numerals_armenian</item>
+        <item>@string/numerals_cuneiform</item>
+        <item>@string/numerals_etruscan</item>
+        <item>@string/numerals_greek_uppercase</item>
+        <item>@string/numerals_greek_lowercase</item>
+        <item>@string/numerals_hebrew</item>
+        <item>@string/numerals_localized</item>
+        <item>@string/numerals_roman</item>
+        <item>@string/numerals_arabic</item>
     </string-array>
     <string-array name="pref_numerals_values" translatable="false">  <!-- one-to-one with pref_numerals_display -->
         <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->

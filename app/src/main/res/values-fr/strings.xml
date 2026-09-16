@@ -146,18 +146,17 @@
     </string-array>
 
     <string name="pref_title_numerals">Chiffres</string>
-    <string-array name="pref_numerals_display">
-        <item>Attic (Grec ancien)</item>
-        <item>Arménien</item>
-        <item>Cuneiform</item>    <!-- TODO -->
-        <item>Étrusque</item>
-        <item>Grec (majuscule)</item>
-        <item>Grec (minuscule)</item>
-        <item>Hébreu</item>
-        <item>Local</item>
-        <item>Romain</item>
-        <item>Arabe</item>
-    </string-array>
+    <string name="numerals_attic">Attic (Grec ancien)</string>
+    <string name="numerals_armenian">Arménien</string>
+    <string name="numerals_bramhi">Brahmi</string>    <!-- TODO -->
+    <string name="numerals_cuneiform">Cuneiform</string>    <!-- TODO -->
+    <string name="numerals_etruscan">Étrusque</string>
+    <string name="numerals_greek_uppercase">Grec (majuscule)</string>
+    <string name="numerals_greek_lowercase">Grec (minuscule)</string>
+    <string name="numerals_hebrew">Hébreu</string>
+    <string name="numerals_localized">Local</string>
+    <string name="numerals_roman">Romain</string>
+    <string name="numerals_arabic">Arabe</string>
 
     <string name="pref_title_action">Au toucher</string>
     <string-array name="pref_action_display">
