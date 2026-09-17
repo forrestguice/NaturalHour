@@ -200,4 +200,18 @@
         <item>𒑱𒐉</item>
     </string-array>
 
+    <string-array name="egyptian_numeral" translatable="false">
+        <item />
+        <item>𓏺</item>
+        <item>𓏻</item>
+        <item>𓏼</item>
+        <item>𓏽</item>
+        <item>𓏾</item>
+        <item>𓏿</item>
+        <item>𓐀</item>
+        <item>𓐁</item>
+        <item>𓐂</item>
+        <item>𓎆</item>
+    </string-array>
+
 </resources>
