@@ -68,21 +68,8 @@
         <item>Z</item>
         <item>H</item>
         <item>Θ</item>
-        <item>Ι</item>
-        <item>ΙA</item>
-        <item>ΙB</item>
-        <item>ΙΓ</item>
-        <item>ΙΔ</item>
-        <item>ΙΕ</item>
-        <item>ΙF</item>
-        <item>ΙZ</item>
-        <item>ΙH</item>
-        <item>ΙΘ</item>
-        <item>Κ</item>
-        <item>KA</item>
-        <item>KB</item>
-        <item>KΓ</item>
-        <item>KΔ</item>
+        <item>Ι</item>        <!-- 10 -->
+        <item>Κ</item>        <!-- 20 -->
     </string-array>
 
     <string-array name="greek_lower_numeral" translatable="false">
@@ -96,21 +83,8 @@
         <item>ζ</item>
         <item>η</item>
         <item>θ</item>
-        <item>ι</item>
-        <item>ια</item>
-        <item>ιβ</item>
-        <item>ιγ</item>
-        <item>ιδ</item>
-        <item>ιε</item>
-        <item>ις</item>
-        <item>ιζ</item>
-        <item>ιη</item>
-        <item>ιθ</item>
-        <item>κ</item>
-        <item>κα</item>
-        <item>κβ</item>
-        <item>κγ</item>
-        <item>κδ</item>
+        <item>ι</item>        <!-- 10 -->
+        <item>κ</item>        <!-- 20 -->
     </string-array>
 
     <string-array name="cyrillic_upper_numeral" translatable="false">

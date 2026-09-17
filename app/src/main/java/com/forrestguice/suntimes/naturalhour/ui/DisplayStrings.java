@@ -25,6 +25,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.Html;
@@ -52,13 +53,27 @@ public class DisplayStrings
     public static String numeral(@NonNull Context context, int hour, String[] numerals)
     {
         StringBuilder result = new StringBuilder();
-        String ten = numerals[10];
-
         int tens = hour / 10;
         int ones = hour % 10;
-        for (int i=0; i<tens; i++) {
-            result.append(ten);
+
+        if (tens > 0)
+        {
+            if (numerals.length > 11)
+            {
+                int i = 10 + (tens - 1);         // numerals: 0-10, 20, ...
+                if (i >= numerals.length) {
+                    throw new UnsupportedOperationException("Numeral `" + hour + "` is out of range! The array supports up to " + numerals[numerals.length-1] + "9.");
+                }
+                result.append(numerals[i]);          // e.g. 21 is KI
+
+            } else {
+                String ten = numerals[10];       // numerals: 0-10
+                for (int i=0; i<tens; i++) {
+                    result.append(ten);              // e.g. 21 is XXI
+                }
+            }
         }
+
         result.append(numerals[ones]);
         return result.toString();
     }
@@ -76,8 +91,7 @@ public class DisplayStrings
     }
 
     public static String greekNumeral(@NonNull Context context, int hour, boolean lowerCase) {
-        String[] numerals = context.getResources().getStringArray(lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral);
-        return numerals[hour];
+        return numeral(context, hour, context.getResources().getStringArray(lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral));
     }
 
     public static String cuneiformNumeral(@NonNull Context context, int hour) {
@@ -93,6 +107,7 @@ public class DisplayStrings
         return numeral(context, hour, context.getResources().getStringArray(R.array.attic_numeral));
     }
 
+    @Deprecated
     public static String armenianNumeral(@NonNull Context context, int hour)
     {
         StringBuilder result = new StringBuilder();
