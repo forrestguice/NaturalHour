@@ -107,8 +107,12 @@ public class DisplayStrings
         return numeral(context, hour, context.getResources().getStringArray(R.array.attic_numeral));
     }
 
+    public static String armenianNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, context.getResources().getStringArray(R.array.armenian_numeral));
+    }
+
     @Deprecated
-    public static String armenianNumeral(@NonNull Context context, int hour)
+    public static String armenianNumeral0(@NonNull Context context, int hour)
     {
         StringBuilder result = new StringBuilder();
         String[] numerals = context.getResources().getStringArray(R.array.armenian_numeral);

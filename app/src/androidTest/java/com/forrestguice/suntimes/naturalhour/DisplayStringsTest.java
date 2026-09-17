@@ -83,7 +83,7 @@ public class DisplayStringsTest
     {
         Context context = getContext();
         for (int hour=0; hour<30; hour++) {
-            assertEquals(DisplayStrings.armenianNumeral(context, hour),
+            assertEquals(DisplayStrings.armenianNumeral0(context, hour),
                     DisplayStrings.numeral(context, hour, context.getResources().getStringArray(R.array.armenian_numeral)));
         }
     }
