@@ -86,6 +86,8 @@ public class NaturalHourClockBitmap
     public static final int NUMERALS_EGYPTIAN = 9;
     public static final int NUMERALS_CYRILLIC_UPPER = 10;
     public static final int NUMERALS_CYRILLIC_LOWER = 11;
+    public static final int NUMERALS_COPTIC_UPPER = 12;
+    public static final int NUMERALS_COPTIC_LOWER = 13;
     public static final int NUMERALS_LOCALE = 100;
     public static final int NUMERALS_DEFAULT = NUMERALS_ROMAN;
 
@@ -1086,6 +1088,8 @@ public class NaturalHourClockBitmap
             case NUMERALS_ATTIC: return DisplayStrings.atticNumeral(context, i);
             case NUMERALS_ARMENIAN: return DisplayStrings.armenianNumeral(context, i);
             case NUMERALS_CUNEIFORM: return DisplayStrings.cuneiformNumeral(context, i);
+            case NUMERALS_COPTIC_UPPER: return DisplayStrings.copticNumeral(context, i, false);
+            case NUMERALS_COPTIC_LOWER: return DisplayStrings.copticNumeral(context, i, true);
             case NUMERALS_CYRILLIC_UPPER: return DisplayStrings.cyrillicNumeral(context, i, false);
             case NUMERALS_CYRILLIC_LOWER: return DisplayStrings.cyrillicNumeral(context, i, true);
             case NUMERALS_EGYPTIAN: return DisplayStrings.egyptianNumeral(context, i);

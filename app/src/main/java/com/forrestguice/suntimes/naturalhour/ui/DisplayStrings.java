@@ -94,6 +94,10 @@ public class DisplayStrings
         return numeral(context, hour, context.getResources().getStringArray(lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral));
     }
 
+    public static String copticNumeral(@NonNull Context context, int hour, boolean lowerCase) {
+        return numeral(context, hour, context.getResources().getStringArray(lowerCase ? R.array.coptic_lower_numeral : R.array.coptic_upper_numeral));
+    }
+
     public static String egyptianNumeral(@NonNull Context context, int hour) {
         return numeral(context, hour, context.getResources().getStringArray(R.array.egyptian_numeral));
     }

@@ -71,7 +71,6 @@
         <item>Ι</item>        <!-- 10 -->
         <item>Κ</item>        <!-- 20 -->
     </string-array>
-
     <string-array name="greek_lower_numeral" translatable="false">
         <item />
         <item>α</item>
@@ -85,6 +84,35 @@
         <item>θ</item>
         <item>ι</item>        <!-- 10 -->
         <item>κ</item>        <!-- 20 -->
+    </string-array>
+
+    <string-array name="coptic_upper_numeral" translatable="false">
+        <item />
+        <item>Ⲁ</item>
+        <item>Ⲃ</item>
+        <item>Ⲅ</item>
+        <item>Ⲇ</item>
+        <item>Ⲉ</item>
+        <item>Ⲋ</item>
+        <item>Ⲍ</item>
+        <item>Ⲏ</item>
+        <item>Ⲑ</item>
+        <item>Ⲓ</item>        <!-- 10 -->
+        <item>Ⲕ</item>        <!-- 20 -->
+    </string-array>
+    <string-array name="coptic_lower_numeral" translatable="false">
+        <item />
+        <item>ⲁ</item>
+        <item>ⲃ</item>
+        <item>ⲅ</item>
+        <item>ⲇ</item>
+        <item>ⲉ</item>
+        <item>ⲋ</item>
+        <item>ⲍ</item>
+        <item>ⲏ</item>
+        <item>ⲑ</item>
+        <item>ⲓ</item>        <!-- 10 -->
+        <item>ⲕ</item>        <!-- 20 -->
     </string-array>
 
     <string-array name="cyrillic_upper_numeral" translatable="false">
@@ -114,7 +142,6 @@
         <item>КГ</item>
         <item>КД</item>
     </string-array>
-
     <string-array name="cyrillic_lower_numeral" translatable="false">
         <item />
         <item>а</item>
