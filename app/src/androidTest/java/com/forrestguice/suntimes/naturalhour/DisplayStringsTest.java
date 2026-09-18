@@ -79,6 +79,28 @@ public class DisplayStringsTest
     }
 
     @Test
+    public void test_numerals_cyrllic_upper()
+    {
+        Context context = getContext();
+        assertEquals("Д", DisplayStrings.cyrillicNumeral(context, 4, false));
+        assertEquals("Ж", DisplayStrings.cyrillicNumeral(context, 6, false));
+        assertEquals("Ѳ", DisplayStrings.cyrillicNumeral(context, 9, false));
+        assertEquals("ВІ", DisplayStrings.cyrillicNumeral(context, 12, false));
+        assertEquals("КА", DisplayStrings.cyrillicNumeral(context, 21, false));
+    }
+
+    @Test
+    public void test_numerals_cyrllic_lower()
+    {
+        Context context = getContext();
+        assertEquals("д", DisplayStrings.cyrillicNumeral(context, 4, true));
+        assertEquals("ж", DisplayStrings.cyrillicNumeral(context, 6, true));
+        assertEquals("ѳ", DisplayStrings.cyrillicNumeral(context, 9, true));
+        assertEquals("ві", DisplayStrings.cyrillicNumeral(context, 12, true));
+        assertEquals("ка", DisplayStrings.cyrillicNumeral(context, 21, true));
+    }
+
+    @Test
     public void test_numerals_armenian()
     {
         Context context = getContext();
