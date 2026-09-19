@@ -390,8 +390,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         FloatingActionButton fab_today = findViewById(R.id.fab_today);
-        setFabVisible(fab_today, (isFullscreen || isLocked)
-                && (fragment != null && !fragment.isShowingToday()));
+        setFabVisible(fab_today, (fragment != null && !fragment.isShowingToday()));
 
         FloatingActionButton fab_toggleFullscreen = findViewById(R.id.fab_togglefullscreen);
         if (fab_toggleFullscreen != null)
@@ -407,10 +406,8 @@ public class MainActivity extends AppCompatActivity
             if (fragment != null) {
                 fragment.setCardListener(new NaturalHourFragment.NaturalHourAdapterListener()
                 {
-                    public void onCardScrolled(int position)
-                    {
-                        setFabVisible(fab_today, (isFullscreen || isLocked)
-                                && !fragment.isShowingToday());
+                    public void onCardScrolled(int position) {
+                        setFabVisible(fab_today, !fragment.isShowingToday());
                     }
                     public void onClockClick(int position) {
                         fragment.announceTime();

@@ -8,6 +8,7 @@
         android:orderInCategory="100"
         android:icon="?attr/icToday"
         android:title="@string/action_today"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_seasons"
