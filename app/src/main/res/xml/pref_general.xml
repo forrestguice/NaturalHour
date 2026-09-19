@@ -96,6 +96,14 @@
             android:defaultValue="@integer/clockface_numerals"
             android:summary="%s" />
 
+        <com.forrestguice.suntimes.naturalhour.ui.IntListPreference
+            android:key="clockface_numerals1"
+            android:title="@string/pref_title_numerals1"
+            android:entries="@array/pref_numerals_display"
+            android:entryValues="@array/pref_numerals_values"
+            android:defaultValue="@integer/clockface_numerals1"
+            android:summary="%s" />
+
         <CheckBoxPreference android:key="clockface_showBackgroundPlate"
             android:title="@string/pref_title_show_plate" android:defaultValue="@bool/clockface_show_background_plate" />
 

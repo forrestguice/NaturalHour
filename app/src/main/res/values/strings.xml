@@ -203,7 +203,8 @@
         <item>11</item>
     </string-array>
 
-    <string name="pref_title_numerals">Numerals</string>
+    <string name="pref_title_numerals">Numerals (Outer Dial)</string>
+    <string name="pref_title_numerals1">Numerals (Inner Dial)</string>    <!-- TODO -->
     <string name="numerals_attic">Attic</string>
     <string name="numerals_armenian">Armenian</string>
     <string name="numerals_cuneiform">Cuneiform</string>

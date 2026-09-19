@@ -91,6 +91,9 @@ public class NaturalHourClockBitmap
     public static final int NUMERALS_LOCALE = 100;
     public static final int NUMERALS_DEFAULT = NUMERALS_ROMAN;
 
+    public static final String VALUE_NUMERALS1 = "clockface_numerals1";
+    public static final int NUMERALS1_DEFAULT = NUMERALS_ARABIC;
+
     public static final String FLAG_START_AT_TOP = "clockface_startAtTop";
     public static final String FLAG_CENTER_NOON = "clockface_centerNoon";
     public static final String FLAG_SHOW_NIGHTWATCH = "clockface_showVigilia";
@@ -116,13 +119,14 @@ public class NaturalHourClockBitmap
             FLAG_SHOW_BACKGROUND_NIGHT, FLAG_SHOW_BACKGROUND_AMPM, FLAG_SHOW_BACKGROUND_TWILIGHTS, FLAG_SHOW_TICKS_15M, FLAG_SHOW_TICKS_5M,
             FLAG_SHOW_BACKGROUND_MIDNIGHT, FLAG_SHOW_BACKGROUND_NOON, FLAG_SHOW_SECONDS
     };
-    public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NIGHTWATCH_TYPE };
+    public static final String[] VALUES = new String[] { VALUE_HOURMODE, VALUE_NUMERALS, VALUE_NUMERALS1, VALUE_NIGHTWATCH_TYPE };
 
     protected ContentValues flags = new ContentValues();
     protected void initFlags(Context context)
     {
         setValueIfUnset(VALUE_HOURMODE, context.getResources().getInteger(R.integer.clockface_hourmode));
         setValueIfUnset(VALUE_NUMERALS, context.getResources().getInteger(R.integer.clockface_numerals));
+        setValueIfUnset(VALUE_NUMERALS1, context.getResources().getInteger(R.integer.clockface_numerals1));
         setValueIfUnset(VALUE_NIGHTWATCH_TYPE, context.getResources().getInteger(R.integer.clockface_nightwatch_type));
 
         setFlagIfUnset(FLAG_SHOW_TIMEZONE, context.getResources().getBoolean(R.bool.clockface_show_timezone));
@@ -211,6 +215,7 @@ public class NaturalHourClockBitmap
         {
             case VALUE_HOURMODE: return HOURMODE_DEFAULT;
             case VALUE_NUMERALS: return NUMERALS_DEFAULT;
+            case VALUE_NUMERALS1: return NUMERALS1_DEFAULT;
             case VALUE_NIGHTWATCH_TYPE: return NIGHTWATCH_DEFAULT;
             default: return -1;
         }
@@ -286,7 +291,7 @@ public class NaturalHourClockBitmap
         if (getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS)) {
             drawTicksSeconds(data, canvas, cX, cY, timeFormat);
         }
-        drawTickLabels(data, canvas, cX, cY, timeFormat);
+        drawTickLabels(context, data, canvas, cX, cY, timeFormat);
 
         paintTickLarge.setColor(colors.getColor(ClockColorValues.COLOR_FRAME));
         canvas.drawCircle(cX, cY, radiusInner(cX), paintTickLarge);
@@ -759,7 +764,7 @@ public class NaturalHourClockBitmap
         }
     }
 
-    protected void drawTickLabels(NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
+    protected void drawTickLabels(Context context, NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
         paint.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
 
@@ -798,18 +803,22 @@ public class NaturalHourClockBitmap
             {
                 case TIMEFORMAT_6:
                     j = (i == 24 || i == 18 || i == 12 || i == 6 ? 6 : (i % 6));
-                    label = "" + j;
+                    label = getNumeral1(context, j);
                     break;
 
                 case TIMEFORMAT_12:
                     j = (i == 24 || i == 12 ? 12 : (i % 12));
-                    label = "" + j;
+                    label = getNumeral1(context, j);
                     break;
 
                 case TIMEFORMAT_24:
                 default:
                     j = i;
-                    label = (i < 10) ? "0" + j : "" + j;
+                    if (getValue(VALUE_NUMERALS1) == NUMERALS_ARABIC) {
+                        label = (i < 10) ? "0" + j : "" + j;
+                    } else {
+                        label = getNumeral1(context, j);
+                    }
                     break;
             }
             //int j = is24 ? i : (i == 24 || i == 12 ? 12 : (i % 12));
@@ -1078,6 +1087,9 @@ public class NaturalHourClockBitmap
 
     public String getNumeral(Context context, int i) {
         return getNumeral(context, getValue(VALUE_NUMERALS), i);
+    }
+    public String getNumeral1(Context context, int i) {
+        return getNumeral(context, getValue(VALUE_NUMERALS1), i);
     }
 
     public static String getNumeral(Context context, int type, int i)

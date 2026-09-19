@@ -21,7 +21,8 @@
 
     <!-- values -->
     <integer name="clockface_hourmode">0</integer>
-    <integer name="clockface_numerals">0</integer>
+    <integer name="clockface_numerals">0</integer>     <!-- 0; roman numerals -->
+    <integer name="clockface_numerals1">1</integer>    <!-- 1; western arabic -->
     <integer name="clockface_nightwatch_type">4</integer>
 
     <!-- dimensions -->
