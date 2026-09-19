@@ -97,7 +97,7 @@ public class NaturalHourFragment extends Fragment
         this.info = value;
         this.timezone = tz;
         this.timeFormat = timeFormat;
-        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors, getShowDate()));
+        cardAdapter.setCardOptions(new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors, getShowDate(), isFullscreen()));
     }
     public TimeZone getTimeZone() {
         return timezone;
@@ -109,13 +109,15 @@ public class NaturalHourFragment extends Fragment
     public boolean getShowDate() {
         return getArgs().getBoolean("showDate", true);
     }
-    public void setShowDate(boolean value)
-    {
+    public void setShowDate(boolean value) {
         getArgs().putBoolean("showDate", value);
-        if (cardAdapter != null) {
-            cardAdapter.getOptions().showDate = value;
-            cardAdapter.notifyDataSetChanged();
-        }
+    }
+
+    public boolean isFullscreen() {
+        return getArgs().getBoolean("fullscreen", false);
+    }
+    public void setFullscreen(boolean value) {
+        getArgs().putBoolean("fullscreen", value);
     }
 
     @Nullable
@@ -294,7 +296,7 @@ public class NaturalHourFragment extends Fragment
     {
         if (context != null)
         {
-            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors, getShowDate()));
+            cardAdapter = new NaturalHourCardAdapter(getActivity(), new NaturalHourAdapterOptions(getActivity(), info, timezone, timeFormat, clockColors, getShowDate(), isFullscreen()));
             cardAdapter.setCardAdapterListener(cardListener);
             cardAdapter.initData();
             cardView.setAdapter(cardAdapter);
@@ -549,7 +551,7 @@ public class NaturalHourFragment extends Fragment
         @SuppressLint("SetTextI18n")
         public void onBindViewHolder(@NonNull Context context, int position, NaturalHourData data, NaturalHourAdapterOptions options)
         {
-            card_date.setVisibility(options.showDate ? View.VISIBLE : View.GONE);
+            card_date.setVisibility(options.showDate || !options.isFullscreen ? View.VISIBLE : View.GONE);
             if (data != null)
             {
                 if (text_debug != null && text_debug.getVisibility() == View.VISIBLE)
@@ -614,18 +616,20 @@ public class NaturalHourFragment extends Fragment
         public int timeFormat;
         public ColorValues colors;
         public boolean showDate;
+        public boolean isFullscreen;
 
         public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors) {
-            this(context, info, tz, timeFormat, colors, true);
+            this(context, info, tz, timeFormat, colors, true, false);
         }
 
-        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors, boolean showDate) {
+        public NaturalHourAdapterOptions(Context context, SuntimesInfo info, TimeZone tz, int timeFormat, ColorValues colors, boolean showDate, boolean isFullscreen) {
             this.suntimes_info = info;
             this.suntimes_options = info.getOptions(context);
             this.timezone = tz;
             this.timeFormat = timeFormat;
             this.colors = colors;
             this.showDate = showDate;
+            this.isFullscreen = isFullscreen;
         }
     }
 

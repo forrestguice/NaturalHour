@@ -354,10 +354,11 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragments = getSupportFragmentManager();
         NaturalHourFragment fragment = (NaturalHourFragment) fragments.findFragmentById(R.id.naturalhour_fragment);
         if (fragment != null) {
+            fragment.setFullscreen(isFullscreen());
+            fragment.setShowDate(AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_DATECARD));
             fragment.setSuntimesInfo(suntimesInfo,
                     AppSettings.fromTimeZoneMode(context, AppSettings.getTimeZoneMode(context), suntimesInfo),
-                    AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));
-            fragment.setShowDate(AppSettings.getClockFlag(context, NaturalHourClockBitmap.FLAG_SHOW_DATECARD));
+                    AppSettings.fromTimeFormatMode(context, AppSettings.getTimeFormatMode(context), suntimesInfo));    // calls adapter.notifyDatasetChanged
         }
 
         TextView timeformatText = (TextView) findViewById(R.id.bottombar_button0);
