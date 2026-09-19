@@ -25,14 +25,8 @@
             android:defaultValue="2"
             android:summary="%s" />
 
-        <CheckBoxPreference android:key="clockface_showDateCard"
-            android:title="@string/pref_title_show_datecard" android:defaultValue="@bool/clockface_show_datecard" />
-
         <CheckBoxPreference android:key="clockface_showSeconds"
             android:title="@string/pref_title_show_seconds" android:defaultValue="@bool/clockface_show_seconds" />
-
-        <CheckBoxPreference android:key="fullscreenKeepScreenOn"
-            android:title="@string/pref_title_fullscreen_keep_screen_on" android:defaultValue="@bool/def_fullscreen_keep_screen_on" />
 
     </PreferenceCategory>
 
@@ -57,6 +51,17 @@
             android:title="@string/action_colors_dark" app:appWidgetID="-1"
             android:summary="%s"
             app:showAlpha="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_fullscreen">
+
+        <CheckBoxPreference android:key="clockface_showDateCard"
+            android:title="@string/pref_title_show_datecard" android:defaultValue="@bool/clockface_show_datecard" />
+
+        <CheckBoxPreference android:key="fullscreenKeepScreenOn"
+            android:title="@string/pref_title_fullscreen_keep_screen_on" android:defaultValue="@bool/def_fullscreen_keep_screen_on" />
 
     </PreferenceCategory>
 
