@@ -45,11 +45,23 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class DisplayStrings
 {
+    private static final Map<Integer, String[]> arrays = new HashMap<>();
+    protected static String[] getStringArray(@NonNull Context context, int arrayID)
+    {
+        String[] array = arrays.get(arrayID);
+        if (array == null) {
+            arrays.put(arrayID, array = context.getResources().getStringArray(arrayID));
+        }
+        return array;
+    }
+
     public static String numeral(@NonNull Context context, int hour, String[] numerals)
     {
         StringBuilder result = new StringBuilder();
@@ -87,36 +99,36 @@ public class DisplayStrings
     }
 
     public static String romanNumeral(@NonNull Context context, int hour) {
-        return numeral(context, hour, context.getResources().getStringArray(R.array.roman_numeral));
+        return numeral(context, hour, getStringArray(context, R.array.roman_numeral));
     }
 
     public static String greekNumeral(@NonNull Context context, int hour, boolean lowerCase) {
-        return numeral(context, hour, context.getResources().getStringArray(lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral));
+        return numeral(context, hour, getStringArray(context, lowerCase ? R.array.greek_lower_numeral : R.array.greek_upper_numeral));
     }
 
     public static String copticNumeral(@NonNull Context context, int hour, boolean lowerCase) {
-        return numeral(context, hour, context.getResources().getStringArray(lowerCase ? R.array.coptic_lower_numeral : R.array.coptic_upper_numeral));
+        return numeral(context, hour, getStringArray(context, lowerCase ? R.array.coptic_lower_numeral : R.array.coptic_upper_numeral));
     }
 
     public static String egyptianNumeral(@NonNull Context context, int hour) {
-        return numeral(context, hour, context.getResources().getStringArray(R.array.egyptian_numeral));
+        return numeral(context, hour, getStringArray(context, R.array.egyptian_numeral));
     }
 
     public static String cuneiformNumeral(@NonNull Context context, int hour) {
-        String[] numerals = context.getResources().getStringArray(R.array.cuneiform_numeral);
+        String[] numerals = getStringArray(context, R.array.cuneiform_numeral);
         return numerals[hour];
     }
 
     public static String cyrillicNumeral(@NonNull Context context, int hour, boolean lowerCase) {
-        String[] numerals = context.getResources().getStringArray(lowerCase ? R.array.cyrillic_lower_numeral : R.array.cyrillic_upper_numeral);
+        String[] numerals = getStringArray(context, lowerCase ? R.array.cyrillic_lower_numeral : R.array.cyrillic_upper_numeral);
         return numerals[hour];
     }
     public static String atticNumeral(@NonNull Context context, int hour) {
-        return numeral(context, hour, context.getResources().getStringArray(R.array.attic_numeral));
+        return numeral(context, hour, getStringArray(context, R.array.attic_numeral));
     }
 
     public static String armenianNumeral(@NonNull Context context, int hour) {
-        return numeral(context, hour, context.getResources().getStringArray(R.array.armenian_numeral));
+        return numeral(context, hour, getStringArray(context, R.array.armenian_numeral));
     }
 
     @Deprecated
@@ -144,12 +156,12 @@ public class DisplayStrings
     }
 
     public static String etruscanNumeral(@NonNull Context context, int hour) {
-        return numeral(context, hour, context.getResources().getStringArray(R.array.etruscan_numeral));
+        return numeral(context, hour, getStringArray(context, R.array.etruscan_numeral));
     }
 
     public static String hebrewNumeral(@NonNull Context context, int hour)
     {
-        String[] numerals = context.getResources().getStringArray(R.array.hebrew_numeral);
+        String[] numerals = getStringArray(context, R.array.hebrew_numeral);
         return numerals[hour];
     }
 
