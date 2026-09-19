@@ -3,28 +3,46 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar" style="@style/AppToolbarStyle"
-            app:title="@string/app_name" />
+            app:title="@string/app_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
-        <include layout="@layout/content_main" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp" android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" app:layout_constraintBottom_toTopOf="@+id/bottombar">
 
-        <include layout="@layout/content_bottombar" />
+            <include layout="@layout/content_main" />
 
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_today"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start" android:layout_margin="@dimen/fab_margin"
-        app:fabSize="mini"  android:scaleType="center"
-        android:src="?attr/icToday"
-        android:tint="?attr/fab_foregroundColor"
-        app:backgroundTint="?attr/fab_backgroundColor"
-        app:rippleColor="?attr/fab_rippleColor"
-        android:contentDescription="@string/action_today" />
+        <LinearLayout
+            android:id="@+id/bottombar"
+            android:layout_width="0dp" android:layout_height="?attr/bottomBarSize"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <include layout="@layout/content_bottombar" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_today"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/fab_margin"
+            app:fabSize="mini"  android:scaleType="center"
+            android:src="?attr/icToday"
+            android:tint="?attr/fab_foregroundColor"
+            app:backgroundTint="?attr/fab_backgroundColor"
+            app:rippleColor="?attr/fab_rippleColor"
+            android:contentDescription="@string/action_today" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_togglefullscreen"
