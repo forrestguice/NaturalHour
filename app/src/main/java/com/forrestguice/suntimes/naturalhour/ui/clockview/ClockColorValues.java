@@ -82,7 +82,7 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     protected static final int[] COLORS_ATTR = new int[] {
             R.attr.clockColorBackground, R.attr.clockColorBackgroundAlt, R.attr.clockColorPlate, R.attr.clockColorFace, R.attr.clockColorFrame,
             R.attr.clockColorCenter, R.attr.clockColorHand, R.attr.clockColorHand1,
-            R.attr.clockColorLabel1, R.attr.clockColorLabel2, R.attr.clockColorLabel1, R.attr.clockColorLabel2,   // TODO
+            R.attr.clockColorLabel1, R.attr.clockColorLabel2, R.attr.clockColorLabel3, R.attr.clockColorLabel4,
             R.attr.clockColorFrame, R.attr.clockColorFrame, R.attr.clockColorFrame,
             R.attr.clockColorDayFill, R.attr.clockColorDayText, R.attr.clockColorDayBorder, R.attr.clockColorDay,
             R.attr.clockColorNightFill, R.attr.clockColorNightText, R.attr.clockColorNightBorder, R.attr.clockColorNight,

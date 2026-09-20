@@ -35,6 +35,8 @@
     <attr name="clockColorHand1" format="reference" />
     <attr name="clockColorLabel1" format="reference" />
     <attr name="clockColorLabel2" format="reference" />
+    <attr name="clockColorLabel3" format="reference" />
+    <attr name="clockColorLabel4" format="reference" />
 
     <attr name="clockColorDay" format="reference" />
     <attr name="clockColorDayBorder" format="reference" />
