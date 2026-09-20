@@ -933,7 +933,7 @@ public class NaturalHourClockBitmap
                 //String[] weekSymbols = getContext().getResources().getStringArray(R.array.week_symbols);
                 //String weekSymbol = weekSymbols[date.get(Calendar.DAY_OF_WEEK)-1];
                 CharSequence dateString = formatDate(context, data.getDateMillis());
-                canvas.drawTextOnPath(dateString.toString(),  path, 0, textMedium/3f, paintLabel);
+                canvas.drawTextOnPath(dateString.toString(),  path, 0, textMedium/3f, paintLabelBold);
             }
 
             if (flags.getAsBoolean(FLAG_SHOW_LOCATION))
