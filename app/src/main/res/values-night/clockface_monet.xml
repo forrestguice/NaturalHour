@@ -26,4 +26,6 @@
     <color name="monet_clockColorHand1">@color/monet_clockColorHand1_dark</color>
     <color name="monet_clockColorLabel1">@color/monet_clockColorLabel1_dark</color>
     <color name="monet_clockColorLabel2">@color/monet_clockColorLabel2_dark</color>
+    <color name="monet_clockColorLabel3">@color/monet_clockColorLabel3_dark</color>
+    <color name="monet_clockColorLabel4">@color/monet_clockColorLabel4_dark</color>
 </resources>

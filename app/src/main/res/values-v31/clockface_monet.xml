@@ -27,6 +27,8 @@
     <color name="monet_clockColorHand1_light">@android:color/system_accent2_600</color>
     <color name="monet_clockColorLabel1_light">@android:color/system_accent2_600</color>
     <color name="monet_clockColorLabel2_light">@android:color/system_accent2_500</color>
+    <color name="monet_clockColorLabel3_light">@android:color/system_accent2_600</color>
+    <color name="monet_clockColorLabel4_light">@android:color/system_accent2_500</color>
 
     <!-- dark theme -->
     <color name="monet_clockColorAstro_dark">@android:color/system_accent2_900</color>
@@ -55,4 +57,6 @@
     <color name="monet_clockColorHand1_dark">@android:color/system_accent2_200</color>
     <color name="monet_clockColorLabel1_dark">@android:color/system_accent2_100</color>
     <color name="monet_clockColorLabel2_dark">@android:color/system_accent2_200</color>
+    <color name="monet_clockColorLabel3_dark">@android:color/system_accent2_100</color>
+    <color name="monet_clockColorLabel4_dark">@android:color/system_accent2_200</color>
 </resources>

@@ -23,4 +23,6 @@
     <color name="clockColorHand1">@color/clockColorHand1_dark</color>
     <color name="clockColorLabel1">@color/clockColorLabel1_dark</color>
     <color name="clockColorLabel2">@color/clockColorLabel2_dark</color>
+    <color name="clockColorLabel3">@color/clockColorLabel3_dark</color>
+    <color name="clockColorLabel4">@color/clockColorLabel4_dark</color>
 </resources>

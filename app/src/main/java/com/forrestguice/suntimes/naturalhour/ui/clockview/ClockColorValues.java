@@ -91,7 +91,7 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     protected static final int[] COLORS_RES_DARK = new int[] {
             R.color.clockColorBackground_dark, R.color.clockColorBackgroundAlt_dark, R.color.clockColorPlate_dark, R.color.clockColorFace_dark, R.color.clockColorFrame_dark,
             R.color.clockColorCenter_dark, R.color.clockColorHand_dark, R.color.clockColorHand1_dark,
-            R.color.clockColorLabel1_dark, R.color.clockColorLabel2_dark, R.color.clockColorLabel1_dark, R.color.clockColorLabel2_dark,  // TODO
+            R.color.clockColorLabel1_dark, R.color.clockColorLabel2_dark, R.color.clockColorLabel3_dark, R.color.clockColorLabel4_dark,
             R.color.clockColorFrame_dark, R.color.clockColorFrame_dark, R.color.clockColorFrame_dark,
             R.color.clockColorDay_dark, R.color.clockColorDayLabel_dark, R.color.clockColorDayBorder_dark, R.color.clockColorDayFace_dark,
             R.color.clockColorNight_dark, R.color.clockColorNightLabel_dark, R.color.clockColorNightBorder_dark, R.color.clockColorNightFace_dark,
@@ -100,7 +100,7 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     protected static final int[] COLORS_RES_LIGHT = new int[] {
             R.color.clockColorBackground_light, R.color.clockColorBackgroundAlt_light, R.color.clockColorPlate_light, R.color.clockColorFace_light, R.color.clockColorFrame_light,
             R.color.clockColorCenter_light, R.color.clockColorHand_light, R.color.clockColorHand1_light,
-            R.color.clockColorLabel1_light, R.color.clockColorLabel2_light, R.color.clockColorLabel1_light, R.color.clockColorLabel2_light,  // TODO
+            R.color.clockColorLabel1_light, R.color.clockColorLabel2_light, R.color.clockColorLabel3_light, R.color.clockColorLabel4_light,
             R.color.clockColorFrame_light, R.color.clockColorFrame_light, R.color.clockColorFrame_light,
             R.color.clockColorDay_light, R.color.clockColorDayLabel_light, R.color.clockColorDayBorder_light, R.color.clockColorDayFace_light,
             R.color.clockColorNight_light, R.color.clockColorNightLabel_light, R.color.clockColorNightBorder_light, R.color.clockColorNightFace_light,
