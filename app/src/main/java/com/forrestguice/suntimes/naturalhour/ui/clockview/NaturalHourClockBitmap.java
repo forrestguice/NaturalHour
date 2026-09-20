@@ -916,14 +916,15 @@ public class NaturalHourClockBitmap
                 double arcAngle = (alongBottom ? nightAngle : dayAngle);
                 double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
                 path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-                paint.setTextSize(textMedium);
+                paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL2));
+                paintLabel.setTextSize(textMedium);
 
                 //Calendar date = Calendar.getInstance(timezone);
                 //date.setTimeInMillis(data.getDateMillis());
                 //String[] weekSymbols = getContext().getResources().getStringArray(R.array.week_symbols);
                 //String weekSymbol = weekSymbols[date.get(Calendar.DAY_OF_WEEK)-1];
                 CharSequence dateString = formatDate(context, data.getDateMillis());
-                canvas.drawTextOnPath(dateString.toString(),  path, 0, textMedium/3f, paint);
+                canvas.drawTextOnPath(dateString.toString(),  path, 0, textMedium/3f, paintLabel);
             }
 
             if (flags.getAsBoolean(FLAG_SHOW_LOCATION))
@@ -932,7 +933,7 @@ public class NaturalHourClockBitmap
                 final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
                 Path path = new Path();
                 path.addArc(circle, (float) Math.toDegrees(-Math.PI/2d + Math.PI/4d), (float) Math.toDegrees(Math.PI/8));
-                paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL1));
+                paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL3));
                 paintLabel.setTextSize(textTiny);
                 CharSequence location = DisplayStrings.formatLocation(context, data.getLatitude(), data.getLongitude(), 2);
                 canvas.drawTextOnPath(location.toString(), path, 0, textSmall/3f, paintLabel);

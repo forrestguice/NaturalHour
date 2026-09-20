@@ -33,7 +33,8 @@ public class ClockColorValuesMonet extends ClockColorValues
 
     protected static final int[] COLORS_RES_DARK = new int[] {
             R.color.monet_clockColorBackground_dark, R.color.monet_clockColorBackgroundAlt_dark, R.color.monet_clockColorPlate_dark, R.color.monet_clockColorFace_dark, R.color.monet_clockColorFrame_dark,
-            R.color.monet_clockColorCenter_dark, R.color.monet_clockColorHand_dark, R.color.monet_clockColorHand1_dark, R.color.monet_clockColorLabel1_dark, R.color.monet_clockColorLabel2_dark,
+            R.color.monet_clockColorCenter_dark, R.color.monet_clockColorHand_dark, R.color.monet_clockColorHand1_dark,
+            R.color.monet_clockColorLabel1_dark, R.color.monet_clockColorLabel2_dark, R.color.monet_clockColorLabel1_dark, R.color.monet_clockColorLabel2_dark,  // TODO
             R.color.monet_clockColorSecondsStart_dark, R.color.monet_clockColorSecondsMajor_dark, R.color.monet_clockColorSecondsMinor_dark,
             R.color.monet_clockColorDay_dark, R.color.monet_clockColorDayLabel_dark, R.color.monet_clockColorDayBorder_dark, R.color.monet_clockColorDayFace_dark,
             R.color.monet_clockColorNight_dark, R.color.monet_clockColorNightLabel_dark, R.color.monet_clockColorNightBorder_dark, R.color.monet_clockColorNightFace_dark,
@@ -42,7 +43,8 @@ public class ClockColorValuesMonet extends ClockColorValues
 
     protected static final int[] COLORS_RES_LIGHT = new int[] {
             R.color.monet_clockColorBackground_light, R.color.monet_clockColorBackgroundAlt_light, R.color.monet_clockColorPlate_light, R.color.monet_clockColorFace_light, R.color.monet_clockColorFrame_light,
-            R.color.monet_clockColorCenter_light, R.color.monet_clockColorHand_light, R.color.monet_clockColorHand1_light, R.color.monet_clockColorLabel1_light, R.color.monet_clockColorLabel2_light,
+            R.color.monet_clockColorCenter_light, R.color.monet_clockColorHand_light, R.color.monet_clockColorHand1_light,
+            R.color.monet_clockColorLabel1_light, R.color.monet_clockColorLabel2_light, R.color.monet_clockColorLabel1_light, R.color.monet_clockColorLabel2_light,  // TODO
             R.color.monet_clockColorSecondsStart_light, R.color.monet_clockColorSecondsMajor_light, R.color.monet_clockColorSecondsMinor_light,
             R.color.monet_clockColorDay_light, R.color.monet_clockColorDayLabel_light, R.color.monet_clockColorDayBorder_light, R.color.monet_clockColorDayFace_light,
             R.color.monet_clockColorNight_light, R.color.monet_clockColorNightLabel_light, R.color.monet_clockColorNightBorder_light, R.color.monet_clockColorNightFace_light,

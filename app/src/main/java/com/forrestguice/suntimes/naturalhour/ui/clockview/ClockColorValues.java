@@ -49,8 +49,10 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     public static final String COLOR_SECONDS_MINOR = "color_seconds_minor";
     public static final String COLOR_START = "color_start";
     public static final String COLOR_CENTER = "color_center";
-    public static final String COLOR_LABEL = "color_label0";
-    public static final String COLOR_LABEL1 = "color_label1";
+    public static final String COLOR_LABEL = "color_label0";              // face; numerals
+    public static final String COLOR_LABEL1 = "color_label1";             // face; time zone
+    public static final String COLOR_LABEL2 = "color_label2";             // plate; date
+    public static final String COLOR_LABEL3 = "color_label3";             // plate; location
 
     public static final String COLOR_FACE = "color_face";
     public static final String COLOR_FACE_AM = "color_face_am";
@@ -70,7 +72,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
 
     public static final String[] COLORS = new String[] {
             COLOR_BACKGROUND, COLOR_BACKGROUND_ALT, COLOR_PLATE, COLOR_FACE, COLOR_FRAME,
-            COLOR_CENTER, COLOR_HAND, COLOR_HAND1, COLOR_LABEL, COLOR_LABEL1,
+            COLOR_CENTER, COLOR_HAND, COLOR_HAND1,
+            COLOR_LABEL, COLOR_LABEL1, COLOR_LABEL2, COLOR_LABEL3,
             COLOR_START, COLOR_SECONDS_MAJOR, COLOR_SECONDS_MINOR,
             COLOR_RING_DAY, COLOR_RING_DAY_LABEL, COLOR_RING_DAY_STROKE, COLOR_FACE_DAY,
             COLOR_RING_NIGHT, COLOR_RING_NIGHT_LABEL, COLOR_RING_NIGHT_STROKE, COLOR_FACE_NIGHT,
@@ -78,7 +81,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     };
     protected static final int[] COLORS_ATTR = new int[] {
             R.attr.clockColorBackground, R.attr.clockColorBackgroundAlt, R.attr.clockColorPlate, R.attr.clockColorFace, R.attr.clockColorFrame,
-            R.attr.clockColorCenter, R.attr.clockColorHand, R.attr.clockColorHand1, R.attr.clockColorLabel1, R.attr.clockColorLabel2,
+            R.attr.clockColorCenter, R.attr.clockColorHand, R.attr.clockColorHand1,
+            R.attr.clockColorLabel1, R.attr.clockColorLabel2, R.attr.clockColorLabel1, R.attr.clockColorLabel2,   // TODO
             R.attr.clockColorFrame, R.attr.clockColorFrame, R.attr.clockColorFrame,
             R.attr.clockColorDayFill, R.attr.clockColorDayText, R.attr.clockColorDayBorder, R.attr.clockColorDay,
             R.attr.clockColorNightFill, R.attr.clockColorNightText, R.attr.clockColorNightBorder, R.attr.clockColorNight,
@@ -86,7 +90,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     };
     protected static final int[] COLORS_RES_DARK = new int[] {
             R.color.clockColorBackground_dark, R.color.clockColorBackgroundAlt_dark, R.color.clockColorPlate_dark, R.color.clockColorFace_dark, R.color.clockColorFrame_dark,
-            R.color.clockColorCenter_dark, R.color.clockColorHand_dark, R.color.clockColorHand1_dark, R.color.clockColorLabel1_dark, R.color.clockColorLabel2_dark,
+            R.color.clockColorCenter_dark, R.color.clockColorHand_dark, R.color.clockColorHand1_dark,
+            R.color.clockColorLabel1_dark, R.color.clockColorLabel2_dark, R.color.clockColorLabel1_dark, R.color.clockColorLabel2_dark,  // TODO
             R.color.clockColorFrame_dark, R.color.clockColorFrame_dark, R.color.clockColorFrame_dark,
             R.color.clockColorDay_dark, R.color.clockColorDayLabel_dark, R.color.clockColorDayBorder_dark, R.color.clockColorDayFace_dark,
             R.color.clockColorNight_dark, R.color.clockColorNightLabel_dark, R.color.clockColorNightBorder_dark, R.color.clockColorNightFace_dark,
@@ -94,7 +99,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     };
     protected static final int[] COLORS_RES_LIGHT = new int[] {
             R.color.clockColorBackground_light, R.color.clockColorBackgroundAlt_light, R.color.clockColorPlate_light, R.color.clockColorFace_light, R.color.clockColorFrame_light,
-            R.color.clockColorCenter_light, R.color.clockColorHand_light, R.color.clockColorHand1_light, R.color.clockColorLabel1_light, R.color.clockColorLabel2_light,
+            R.color.clockColorCenter_light, R.color.clockColorHand_light, R.color.clockColorHand1_light,
+            R.color.clockColorLabel1_light, R.color.clockColorLabel2_light, R.color.clockColorLabel1_light, R.color.clockColorLabel2_light,  // TODO
             R.color.clockColorFrame_light, R.color.clockColorFrame_light, R.color.clockColorFrame_light,
             R.color.clockColorDay_light, R.color.clockColorDayLabel_light, R.color.clockColorDayBorder_light, R.color.clockColorDayFace_light,
             R.color.clockColorNight_light, R.color.clockColorNightLabel_light, R.color.clockColorNightBorder_light, R.color.clockColorNightFace_light,
@@ -102,7 +108,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     };
     public static final int[] LABELS_RESID = new int[] {
             R.string.clockface_background, R.string.clockface_backgroundAlt, R.string.clockface_plate, R.string.clockface_face, R.string.clockface_frame,
-            R.string.clockface_center, R.string.clockface_hand, R.string.clockface_hand1, R.string.clockface_label, R.string.clockface_label1,
+            R.string.clockface_center, R.string.clockface_hand, R.string.clockface_hand1,
+            R.string.clockface_label, R.string.clockface_label1, R.string.clockface_label2, R.string.clockface_label3,
             R.string.clockface_start, R.string.clockface_seconds_major, R.string.clockface_seconds_minor,
             R.string.clockface_ring_day, R.string.clockface_ring_day_label, R.string.clockface_ring_day_stroke, R.string.clockface_face_day,
             R.string.clockface_ring_night, R.string.clockface_ring_night_label, R.string.clockface_ring_night_stroke, R.string.clockface_face_night,
@@ -111,7 +118,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
 
     public static final int[] COLOR_ROLES = new int[] {
             ROLE_BACKGROUND, ROLE_BACKGROUND, ROLE_BACKGROUND, ROLE_BACKGROUND_PRIMARY, ROLE_FOREGROUND,
-            ROLE_FOREGROUND, ROLE_FOREGROUND, ROLE_FOREGROUND, ROLE_TEXT, ROLE_TEXT,
+            ROLE_FOREGROUND, ROLE_FOREGROUND, ROLE_FOREGROUND,
+            ROLE_TEXT, ROLE_TEXT, ROLE_TEXT, ROLE_TEXT,
             ROLE_FOREGROUND, ROLE_FOREGROUND, ROLE_FOREGROUND,
             ROLE_BACKGROUND, ROLE_TEXT, ROLE_FOREGROUND, ROLE_BACKGROUND,
             ROLE_BACKGROUND, ROLE_TEXT, ROLE_FOREGROUND, ROLE_BACKGROUND,
@@ -120,7 +128,8 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
 
     protected static final int[] COLORS_FALLBACK = new int[] {
             Color.BLACK, Color.DKGRAY, Color.BLACK, Color.DKGRAY, Color.WHITE,
-            Color.WHITE, Color.MAGENTA, Color.GREEN, Color.WHITE, Color.LTGRAY,
+            Color.WHITE, Color.MAGENTA, Color.GREEN,
+            Color.WHITE, Color.LTGRAY, Color.WHITE, Color.LTGRAY,
             Color.WHITE, Color.WHITE, Color.WHITE,
             Color.DKGRAY, Color.WHITE, Color.WHITE, ColorUtils.setAlphaComponent(Color.WHITE, 128),
             Color.BLUE, Color.YELLOW, Color.DKGRAY, ColorUtils.setAlphaComponent(Color.BLUE, 128),
