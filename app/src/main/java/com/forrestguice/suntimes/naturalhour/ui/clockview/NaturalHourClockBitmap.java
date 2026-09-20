@@ -326,7 +326,7 @@ public class NaturalHourClockBitmap
     private int textSmall;
     private int textTiny;
 
-    protected Paint paint, paintLabel, paintHand,
+    protected Paint paint, paintLabel, paintLabelBold, paintHand,
             paintTickHuge, paintTickLarge, paintTickMedium, paintTickSmall, paintTickTiny,
             paintArcDayFill, paintArcDayBorder, paintFillDay,
             paintArcNightFill, paintArcNightBorder, paintFillNight,
@@ -375,6 +375,15 @@ public class NaturalHourClockBitmap
         paintLabel.setAntiAlias(true);
         paintLabel.setTextAlign(Paint.Align.CENTER);
         paintLabel.setTextSize(textSmall);
+
+        paintLabelBold = new Paint();
+        paintLabelBold.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
+        paintLabelBold.setStyle(Paint.Style.FILL);
+        paintLabelBold.setStrokeWidth(context.getResources().getDimension(R.dimen.clockface_stroke_width));
+        paintLabelBold.setAntiAlias(true);
+        paintLabelBold.setTextAlign(Paint.Align.CENTER);
+        paintLabelBold.setTextSize(textSmall);
+        paintLabelBold.setTypeface(Typeface.create(paint.getTypeface(), Typeface.BOLD));
 
         paintHand = new Paint();
         paintHand.setColor(colors.getColor(ClockColorValues.COLOR_HAND));
@@ -916,8 +925,8 @@ public class NaturalHourClockBitmap
                 double arcAngle = (alongBottom ? nightAngle : dayAngle);
                 double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
                 path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-                paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL2));
-                paintLabel.setTextSize(textMedium);
+                paintLabelBold.setColor(colors.getColor(ClockColorValues.COLOR_LABEL2));
+                paintLabelBold.setTextSize(textMedium);
 
                 //Calendar date = Calendar.getInstance(timezone);
                 //date.setTimeInMillis(data.getDateMillis());
