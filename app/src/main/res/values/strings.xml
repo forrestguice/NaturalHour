@@ -208,6 +208,7 @@
     <string name="pref_title_numerals1">Numerals (Inner Dial)</string>    <!-- TODO -->
     <string name="numerals_attic">Attic</string>
     <string name="numerals_armenian">Armenian</string>
+    <string name="numerals_bramhi">Brahmi</string>
     <string name="numerals_braille">Braille</string>
     <string name="numerals_cuneiform">Cuneiform</string>
     <string name="numerals_coptic_uppercase">Coptic (uppercase)</string>
@@ -226,6 +227,7 @@
     <string-array name="pref_numerals_display">
         <item>@string/numerals_attic</item>
         <item>@string/numerals_armenian</item>
+        <item>@string/numerals_bramhi</item>
         <item>@string/numerals_braille</item>
         <item>@string/numerals_cuneiform</item>
         <item>@string/numerals_coptic_uppercase</item>
@@ -244,6 +246,7 @@
     <string-array name="pref_numerals_values" translatable="false">  <!-- one-to-one with pref_numerals_display -->
         <item>2</item>   <!-- items must be "int" (parsed to int when saved) -->
         <item>7</item>
+        <item>15</item>
         <item>14</item>
         <item>8</item>
         <item>12</item>

@@ -241,6 +241,20 @@
         <item>𓎆</item>
     </string-array>
 
+    <string-array name="brahmi_numeral" translatable="false">
+        <item />
+        <item>𑁒</item>
+        <item>𑁓</item>
+        <item>𑁔</item>
+        <item>𑁕</item>
+        <item>𑁖</item>
+        <item>𑁗</item>
+        <item>𑁘</item>
+        <item>𑁙</item>
+        <item>𑁚</item>
+        <item>𑁛</item>        <!-- 10 -->
+        <item>𑁜</item>        <!-- 20 -->
+    </string-array>
 
     <string-array name="braille_numeral" translatable="false">
         <item>⠚</item>
