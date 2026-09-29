@@ -241,4 +241,33 @@
         <item>𓎆</item>
     </string-array>
 
+
+    <string-array name="braille_numeral" translatable="false">
+        <item>⠚</item>
+        <item>⠁</item>    <!-- ⠼⠁-->
+        <item>⠃</item>
+        <item>⠉</item>
+        <item>⠙</item>
+        <item>⠑</item>
+        <item>⠋</item>
+        <item>⠛</item>
+        <item>⠓</item>
+        <item>⠊</item>
+        <item>⠁⠚</item>   <!-- 10 -->
+        <item>⠁⠁</item>
+        <item>⠁⠃</item>
+        <item>⠁⠉</item>
+        <item>⠁⠙</item>
+        <item>⠁⠑</item>
+        <item>⠁⠋</item>
+        <item>⠁⠛</item>
+        <item>⠁⠓</item>
+        <item>⠁⠊</item>
+        <item>⠃⠚</item>   <!-- 20 -->
+        <item>⠃⠁</item>
+        <item>⠃⠃</item>
+        <item>⠃⠉</item>
+        <item>⠃⠙</item>
+    </string-array>
+
 </resources>

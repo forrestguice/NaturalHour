@@ -123,6 +123,12 @@ public class DisplayStrings
         String[] numerals = getStringArray(context, lowerCase ? R.array.cyrillic_lower_numeral : R.array.cyrillic_upper_numeral);
         return numerals[hour];
     }
+
+    public static String brailleNumeral(@NonNull Context context, int hour) {
+        String[] numerals = getStringArray(context, R.array.braille_numeral);
+        return numerals[hour];
+    }
+
     public static String atticNumeral(@NonNull Context context, int hour) {
         return numeral(context, hour, getStringArray(context, R.array.attic_numeral));
     }
