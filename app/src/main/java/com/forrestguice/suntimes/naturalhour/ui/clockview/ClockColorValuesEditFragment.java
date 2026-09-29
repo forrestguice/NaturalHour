@@ -93,9 +93,9 @@ public class ClockColorValuesEditFragment extends ColorValuesEditFragment
             setColor(ClockColorValues.COLOR_CENTER, themeValues.getAsInteger(SuntimesThemeContract.THEME_ACCENTCOLOR));
             setColor(ClockColorValues.COLOR_FRAME, themeValues.getAsInteger(SuntimesThemeContract.THEME_TITLECOLOR));
             setColor(ClockColorValues.COLOR_LABEL, themeValues.getAsInteger(SuntimesThemeContract.THEME_TIMECOLOR));
-            setColor(ClockColorValues.COLOR_LABEL1, themeValues.getAsInteger(SuntimesThemeContract.THEME_TEXTCOLOR));
-            setColor(ClockColorValues.COLOR_LABEL2, themeValues.getAsInteger(SuntimesThemeContract.THEME_TIMECOLOR));
-            setColor(ClockColorValues.COLOR_LABEL3, themeValues.getAsInteger(SuntimesThemeContract.THEME_TEXTCOLOR));
+            setColor(ClockColorValues.COLOR_LABEL_TZ, themeValues.getAsInteger(SuntimesThemeContract.THEME_TEXTCOLOR));
+            setColor(ClockColorValues.COLOR_LABEL_DATE, themeValues.getAsInteger(SuntimesThemeContract.THEME_TIMECOLOR));
+            setColor(ClockColorValues.COLOR_LABEL_LOC, themeValues.getAsInteger(SuntimesThemeContract.THEME_TEXTCOLOR));
 
             setColor(ClockColorValues.COLOR_FACE, themeValues.getAsInteger(SuntimesThemeContract.THEME_BACKGROUND_COLOR));
             setColor(ClockColorValues.COLOR_FACE_NIGHT, themeValues.getAsInteger(SuntimesThemeContract.THEME_BACKGROUND_COLOR));

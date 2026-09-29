@@ -925,7 +925,7 @@ public class NaturalHourClockBitmap
                 double arcAngle = (alongBottom ? nightAngle : dayAngle);
                 double sweepAngle = (alongBottom ? -1 : 1) * dayHourAngle * 12;
                 path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-                paintLabelBold.setColor(colors.getColor(ClockColorValues.COLOR_LABEL2));
+                paintLabelBold.setColor(colors.getColor(ClockColorValues.COLOR_LABEL_DATE));
                 paintLabelBold.setTextSize(textMedium);
 
                 //Calendar date = Calendar.getInstance(timezone);
@@ -942,7 +942,7 @@ public class NaturalHourClockBitmap
                 final RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
                 Path path = new Path();
                 path.addArc(circle, (float) Math.toDegrees(-Math.PI/2d + Math.PI/4d), (float) Math.toDegrees(Math.PI/8));
-                paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL3));
+                paintLabel.setColor(colors.getColor(ClockColorValues.COLOR_LABEL_LOC));
                 paintLabel.setTextSize(textTiny);
                 CharSequence location = DisplayStrings.formatLocation(context, data.getLatitude(), data.getLongitude(), 2);
                 canvas.drawTextOnPath(location.toString(), path, 0, textSmall/3f, paintLabel);
@@ -1078,7 +1078,7 @@ public class NaturalHourClockBitmap
         double arcAngle = NaturalHourData.simplifyAngle(startAngle + (alongBottom ? Math.PI/2d - arcAngleOffset : -Math.PI/2 + arcAngleOffset));
         double sweepAngle = alongBottom ? -Math.PI : Math.PI;
         path.addArc(circle, (float) Math.toDegrees(arcAngle), (float) Math.toDegrees(sweepAngle));
-        p.setColor(colors.getColor(ClockColorValues.COLOR_LABEL1));
+        p.setColor(colors.getColor(ClockColorValues.COLOR_LABEL_TZ));
         p.setTextSize(textSmall);
         canvas.drawTextOnPath(text, path, 0, 0, p);
     }

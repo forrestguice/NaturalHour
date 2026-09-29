@@ -456,9 +456,9 @@
     <string name="clockface_seconds_major">Seconds (major)</string>
     <string name="clockface_seconds_minor">Seconds (minor)</string>
     <string name="clockface_label">Label (inner dial)</string>    <!-- TODO -->
-    <string name="clockface_label1">Label (time zone)</string>    <!-- TODO -->
-    <string name="clockface_label2">Label (date)</string>    <!-- TODO -->
-    <string name="clockface_label3">Label (location)</string>    <!-- TODO -->
+    <string name="clockface_label_tz">Label (time zone)</string>    <!-- TODO -->
+    <string name="clockface_label_date">Label (date)</string>    <!-- TODO -->
+    <string name="clockface_label_loc">Label (location)</string>    <!-- TODO -->
     <string name="clockface_ring_day">Day Hours</string>
     <string name="clockface_ring_night">Night Hours</string>
     <string name="clockface_face_day">Day (Face)</string>

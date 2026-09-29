@@ -49,10 +49,10 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     public static final String COLOR_SECONDS_MINOR = "color_seconds_minor";
     public static final String COLOR_START = "color_start";
     public static final String COLOR_CENTER = "color_center";
-    public static final String COLOR_LABEL = "color_label0";              // face; numerals
-    public static final String COLOR_LABEL1 = "color_label1";             // face; time zone
-    public static final String COLOR_LABEL2 = "color_label2";             // plate; date
-    public static final String COLOR_LABEL3 = "color_label3";             // plate; location
+    public static final String COLOR_LABEL = "color_label0";                   // face; numerals
+    public static final String COLOR_LABEL_TZ = "color_label_tz";             // face; time zone
+    public static final String COLOR_LABEL_DATE = "color_label_date";         // plate; date
+    public static final String COLOR_LABEL_LOC = "color_label_loc";           // plate; location
 
     public static final String COLOR_FACE = "color_face";
     public static final String COLOR_FACE_AM = "color_face_am";
@@ -73,7 +73,7 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     public static final String[] COLORS = new String[] {
             COLOR_BACKGROUND, COLOR_BACKGROUND_ALT, COLOR_PLATE, COLOR_FACE, COLOR_FRAME,
             COLOR_CENTER, COLOR_HAND, COLOR_HAND1,
-            COLOR_LABEL, COLOR_LABEL1, COLOR_LABEL2, COLOR_LABEL3,
+            COLOR_LABEL, COLOR_LABEL_TZ, COLOR_LABEL_DATE, COLOR_LABEL_LOC,
             COLOR_START, COLOR_SECONDS_MAJOR, COLOR_SECONDS_MINOR,
             COLOR_RING_DAY, COLOR_RING_DAY_LABEL, COLOR_RING_DAY_STROKE, COLOR_FACE_DAY,
             COLOR_RING_NIGHT, COLOR_RING_NIGHT_LABEL, COLOR_RING_NIGHT_STROKE, COLOR_FACE_NIGHT,
@@ -109,7 +109,7 @@ public class ClockColorValues extends ResourceColorValues implements Parcelable
     public static final int[] LABELS_RESID = new int[] {
             R.string.clockface_background, R.string.clockface_backgroundAlt, R.string.clockface_plate, R.string.clockface_face, R.string.clockface_frame,
             R.string.clockface_center, R.string.clockface_hand, R.string.clockface_hand1,
-            R.string.clockface_label, R.string.clockface_label1, R.string.clockface_label2, R.string.clockface_label3,
+            R.string.clockface_label_dial, R.string.clockface_label_tz, R.string.clockface_label_date, R.string.clockface_label_loc,
             R.string.clockface_start, R.string.clockface_seconds_major, R.string.clockface_seconds_minor,
             R.string.clockface_ring_day, R.string.clockface_ring_day_label, R.string.clockface_ring_day_stroke, R.string.clockface_face_day,
             R.string.clockface_ring_night, R.string.clockface_ring_night_label, R.string.clockface_ring_night_stroke, R.string.clockface_face_night,

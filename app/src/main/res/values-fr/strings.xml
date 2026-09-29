@@ -342,8 +342,8 @@
     <string name="clockface_start">Départ</string>
     <string name="clockface_seconds_major">Secondes (principales)</string>
     <string name="clockface_seconds_minor">Secondes (secondaires)</string>
-    <string name="clockface_label">Nombres1</string>
-    <string name="clockface_label1">Nombres2</string>
+    <string name="clockface_label_dial">Nombres1</string>
+    <string name="clockface_label_tz">Nombres2</string>
     <string name="clockface_ring_day">Heures diurnes</string>
     <string name="clockface_ring_night">Heures nocturnes</string>
     <string name="clockface_face_day">Jour (cadran)</string>
