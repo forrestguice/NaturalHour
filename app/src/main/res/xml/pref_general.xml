@@ -57,11 +57,11 @@
     <PreferenceCategory
         android:title="@string/pref_category_fullscreen">
 
-        <CheckBoxPreference android:key="clockface_showDateCard"
-            android:title="@string/pref_title_show_datecard" android:defaultValue="@bool/clockface_show_datecard" />
-
         <CheckBoxPreference android:key="fullscreenKeepScreenOn"
             android:title="@string/pref_title_fullscreen_keep_screen_on" android:defaultValue="@bool/def_fullscreen_keep_screen_on" />
+
+        <CheckBoxPreference android:key="clockface_showDateCard"
+            android:title="@string/pref_title_show_datecard" android:defaultValue="@bool/clockface_show_datecard" />
 
     </PreferenceCategory>
 
