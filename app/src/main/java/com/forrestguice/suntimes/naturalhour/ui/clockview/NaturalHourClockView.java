@@ -22,6 +22,7 @@ package com.forrestguice.suntimes.naturalhour.ui.clockview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -101,10 +102,21 @@ public class NaturalHourClockView extends View
         if (baseBitmap == null) {
             baseBitmap = bitmap.makeBitmap(getContext(), data);
         }
-        canvas.drawBitmap(baseBitmap, 0, 0, bitmap.paint);
+        if (paint == null) {
+            initPaint();
+        }
+        canvas.drawBitmap(baseBitmap, 0, 0, paint);
         if (bitmap.getFlag(NaturalHourClockBitmap.FLAG_SHOW_SECONDS)) {
             bitmap.drawSecondsHand(canvas, data);
         }
+    }
+
+    private Paint paint = null;
+    private void initPaint()
+    {
+        paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
     }
 
     private Bitmap baseBitmap;
