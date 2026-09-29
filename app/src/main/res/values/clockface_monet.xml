@@ -24,6 +24,7 @@
     <color name="monet_clockColorCenter_light">@color/clockColorCenter_light</color>
     <color name="monet_clockColorHand_light">@color/clockColorHand_light</color>
     <color name="monet_clockColorHand1_light">@color/clockColorHand1_light</color>
+    <color name="monet_clockColorLabel0_light">@color/clockColorLabel0_light</color>
     <color name="monet_clockColorLabel1_light">@color/clockColorLabel1_light</color>
     <color name="monet_clockColorLabel2_light">@color/clockColorLabel2_light</color>
     <color name="monet_clockColorLabel3_light">@color/clockColorLabel3_light</color>
@@ -54,6 +55,7 @@
     <color name="monet_clockColorCenter_dark">@color/clockColorCenter_dark</color>
     <color name="monet_clockColorHand_dark">@color/clockColorHand_dark</color>
     <color name="monet_clockColorHand1_dark">@color/clockColorHand1_dark</color>
+    <color name="monet_clockColorLabel0_dark">@color/clockColorLabel0_dark</color>
     <color name="monet_clockColorLabel1_dark">@color/clockColorLabel1_dark</color>
     <color name="monet_clockColorLabel2_dark">@color/clockColorLabel2_dark</color>
     <color name="monet_clockColorLabel3_dark">@color/clockColorLabel3_dark</color>
@@ -84,6 +86,7 @@
     <color name="monet_clockColorCenter">@color/monet_clockColorCenter_light</color>
     <color name="monet_clockColorHand">@color/monet_clockColorHand_light</color>
     <color name="monet_clockColorHand1">@color/monet_clockColorHand1_light</color>
+    <color name="monet_clockColorLabel0">@color/monet_clockColorLabel0_light</color>
     <color name="monet_clockColorLabel1">@color/monet_clockColorLabel1_light</color>
     <color name="monet_clockColorLabel2">@color/monet_clockColorLabel2_light</color>
     <color name="monet_clockColorLabel3">@color/monet_clockColorLabel3_light</color>

@@ -33,6 +33,7 @@
     <attr name="clockColorCenter" format="reference" />
     <attr name="clockColorHand" format="reference" />
     <attr name="clockColorHand1" format="reference" />
+    <attr name="clockColorLabel0" format="reference" />
     <attr name="clockColorLabel1" format="reference" />
     <attr name="clockColorLabel2" format="reference" />
     <attr name="clockColorLabel3" format="reference" />

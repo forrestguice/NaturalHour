@@ -775,8 +775,6 @@ public class NaturalHourClockBitmap
 
     protected void drawTickLabels(Context context, NaturalHourData data, Canvas canvas, float cX, float cY, int timeFormat)
     {
-        paint.setColor(colors.getColor(ClockColorValues.COLOR_LABEL));
-
         float r0 = radiusInner(cX);
         float rHugeTick = r0 - tickLength_huge;
         float rLargeTick = r0 - tickLength_large;
@@ -805,6 +803,7 @@ public class NaturalHourClockBitmap
             int textSize = isMajorTick ? textLarge :
                     i % 3 == 0 ? textMedium : textSmall;
             paint.setTextSize(textSize);
+            paint.setColor(colors.getColor(isMajorTick ? ClockColorValues.COLOR_LABEL : ClockColorValues.COLOR_LABEL1));
 
             int j;
             String label;

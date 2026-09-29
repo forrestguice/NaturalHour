@@ -51,6 +51,7 @@
         <item name="clockColorCenter">@color/clockColorCenter</item>
         <item name="clockColorHand">@color/clockColorHand</item>
         <item name="clockColorHand1">@color/clockColorHand1</item>
+        <item name="clockColorLabel0">@color/clockColorLabel0</item>
         <item name="clockColorLabel1">@color/clockColorLabel1</item>
         <item name="clockColorLabel2">@color/clockColorLabel2</item>
         <item name="clockColorLabel3">@color/clockColorLabel3</item>
@@ -231,6 +232,7 @@
         <item name="clockColorCenter">@color/clockColorCenter_light</item>
         <item name="clockColorHand">@color/clockColorHand_light</item>
         <item name="clockColorHand1">@color/clockColorHand1_light</item>
+        <item name="clockColorLabel0">@color/clockColorLabel0_light</item>
         <item name="clockColorLabel1">@color/clockColorLabel1_light</item>
         <item name="clockColorLabel2">@color/clockColorLabel2_light</item>
         <item name="clockColorLabel3">@color/clockColorLabel3_light</item>
@@ -410,6 +412,7 @@
         <item name="clockColorCenter">@color/clockColorCenter_dark</item>
         <item name="clockColorHand">@color/clockColorHand_dark</item>
         <item name="clockColorHand1">@color/clockColorHand1_dark</item>
+        <item name="clockColorLabel0">@color/clockColorLabel0_dark</item>
         <item name="clockColorLabel1">@color/clockColorLabel1_dark</item>
         <item name="clockColorLabel2">@color/clockColorLabel2_dark</item>
         <item name="clockColorLabel3">@color/clockColorLabel3_dark</item>
