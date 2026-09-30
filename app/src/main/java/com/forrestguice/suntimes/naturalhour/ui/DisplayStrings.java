@@ -134,6 +134,11 @@ public class DisplayStrings
         return numerals[hour];
     }
 
+    public static String chuvashNumeral(@NonNull Context context, int hour) {
+        String[] numerals = getStringArray(context, R.array.chuvash_numeral);
+        return numerals[hour];
+    }
+
     public static String atticNumeral(@NonNull Context context, int hour) {
         return numeral(context, hour, getStringArray(context, R.array.attic_numeral));
     }

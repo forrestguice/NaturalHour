@@ -284,4 +284,33 @@
         <item>⠃⠙</item>
     </string-array>
 
+
+    <string-array name="chuvash_numeral" translatable="false">
+        <item />
+        <item>I</item>
+        <item>II</item>
+        <item>III</item>
+        <item>IIII</item>
+        <item>/</item>
+        <item>I/</item>
+        <item>II/</item>
+        <item>III/</item>
+        <item>IIII/</item>
+        <item>X</item>        <!-- 10 -->
+        <item>IX</item>
+        <item>IIX</item>
+        <item>IIIX</item>
+        <item>IIIIX</item>
+        <item>/X</item>
+        <item>I/X</item>
+        <item>II/X</item>
+        <item>III/X</item>
+        <item>IIII/X</item>
+        <item>XX</item>       <!-- 20 -->
+        <item>IXX</item>
+        <item>IIXX</item>
+        <item>IIIXX</item>
+        <item>IIIIXX</item>
+    </string-array>
+
 </resources>
