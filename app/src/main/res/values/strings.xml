@@ -221,6 +221,7 @@
     <string name="numerals_greek_uppercase">Greek (uppercase)</string>
     <string name="numerals_greek_lowercase">Greek (lowercase)</string>
     <string name="numerals_hebrew">Hebrew</string>
+    <string name="numerals_kanji">Kanji</string>
     <string name="numerals_localized">Localized</string>
     <string name="numerals_roman">Roman</string>
     <string name="numerals_arabic">Western Arabic</string>
@@ -241,6 +242,7 @@
         <item>@string/numerals_greek_uppercase</item>
         <item>@string/numerals_greek_lowercase</item>
         <item>@string/numerals_hebrew</item>
+        <item>@string/numerals_kanji</item>
         <item>@string/numerals_localized</item>
         <item>@string/numerals_roman</item>
         <item>@string/numerals_arabic</item>
@@ -261,6 +263,7 @@
         <item>5</item>
         <item>6</item>
         <item>3</item>
+        <item>17</item>
         <item>100</item>
         <item>0</item>
         <item>1</item>

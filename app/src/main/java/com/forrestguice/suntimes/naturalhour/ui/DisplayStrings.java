@@ -124,6 +124,9 @@ public class DisplayStrings
         return numerals[hour];
     }
 
+    public static String kanjiNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, getStringArray(context, R.array.kanji_numeral));
+    }
 
     public static String brahmiNumeral(@NonNull Context context, int hour) {
         return numeral(context, hour, getStringArray(context, R.array.brahmi_numeral  ));

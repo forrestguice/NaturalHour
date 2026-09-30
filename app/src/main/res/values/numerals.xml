@@ -284,6 +284,21 @@
         <item>⠃⠙</item>
     </string-array>
 
+    <string-array name="kanji_numeral" translatable="false">
+        <item />
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>七</item>
+        <item>八</item>
+        <item>九</item>
+        <item>十</item>       <!-- 10 -->
+        <item>二十</item>      <!-- 20 -->
+    </string-array>
+
 
     <string-array name="chuvash_numeral" translatable="false">
         <item />
