@@ -158,7 +158,7 @@
     <string name="numerals_hebrew">Hébreu</string>
     <string name="numerals_localized">Local</string>
     <string name="numerals_roman">Romain</string>
-    <string name="numerals_arabic">Arabe</string>
+    <string name="numerals_western_arabic">Arabe</string>
 
     <string name="pref_title_action">Au toucher</string>
     <string-array name="pref_action_display">

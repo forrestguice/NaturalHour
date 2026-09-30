@@ -78,11 +78,17 @@ public class DisplayStrings
                 }
                 result.append(numerals[i]);          // e.g. 21 is KI
 
-            } else {
+            } else if (numerals.length == 11) {
                 String ten = numerals[10];       // numerals: 0-10
                 for (int i=0; i<tens; i++) {
                     result.append(ten);              // e.g. 21 is XXI
                 }
+
+            } else if (numerals.length == 10) {
+                result.append(numerals[tens % 10]);  // numerals: 0-9
+
+            } else {
+                throw new IllegalArgumentException("Numeral arrays must have a length of 10, 11, or more, but the provided array has " + numerals.length + " elements.");
             }
         }
 
@@ -90,8 +96,17 @@ public class DisplayStrings
         return result.toString();
     }
 
+    @Deprecated
     public static String arabicNumeral(@NonNull Context context, int hour) {
         return Integer.toString(hour);
+    }
+
+    public static String easternArabicNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, getStringArray(context, R.array.eastern_arabic_numeral));
+    }
+
+    public static String westernArabicNumeral(@NonNull Context context, int hour) {
+        return numeral(context, hour, getStringArray(context, R.array.western_arabic_numeral));
     }
 
     public static String localizedNumeral(@NonNull Context context, @NonNull Locale locale, int hour) {

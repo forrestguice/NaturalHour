@@ -110,4 +110,22 @@ public class DisplayStringsTest
         }
     }
 
+    @Test
+    public void test_numerals_western_arabic() {
+        for (int i=0; i<=99; i++) {
+            assertEquals(Integer.toString(i),
+                    DisplayStrings.westernArabicNumeral(getContext(), i));
+        }
+    }
+
+    @Test
+    public void test_numerals_eastern_arabic() {
+        Context context = getContext();
+        assertEquals("٤", DisplayStrings.easternArabicNumeral(context, 4));
+        assertEquals("٦", DisplayStrings.easternArabicNumeral(context, 6));
+        assertEquals("٩", DisplayStrings.easternArabicNumeral(context, 9));
+        assertEquals("١٢", DisplayStrings.easternArabicNumeral(context, 12));
+        assertEquals("٢١", DisplayStrings.easternArabicNumeral(context, 21));
+    }
+
 }
