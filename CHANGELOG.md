@@ -1,5 +1,14 @@
 ~
 
+### v0.3.4 (2026-09-12)
+* adds option to "keep screen on" when in fullscreen mode (#48).
+* build: updates `targetSdkVersion` and `compileSdk` to `34` (Android 14).
+* build: updates gradle version to 8.7; updates agp version to 8.5.2.
+* build: updates SuntimesAddon to 0.5.1; adds dependency on `SuntimesAddon/build-logic/localization`.
+* refactors deprecated api (ViewModelProviders.of, onPrepareOptionsPanel, startActivityAndCollapse).
+* mirrors source to Codeberg (https://codeberg.org/forrestguice/NaturalHour).
+* rotates the apk signing key.
+
 ### v0.3.3 (2026-06-29)
 * adds "Material You" app themes (api31+).
 * adds support for `show coordinates` option (requires Suntimes v0.17.0+).

@@ -1,0 +1,3 @@
+- adds option to "keep screen on" when in fullscreen mode (#48).
+- updates targetSdkVersion to Android 14.
+
