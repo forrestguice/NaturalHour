@@ -67,8 +67,6 @@
     <color name="colorTime_dark">#FFFFFF</color>
     <color name="colorValue_dark">#3F51B5</color>
 
-    <color name="grey_700">#616161</color>
-    <color name="transparent">#00000000</color>
 
 
     <!-- contrast theme colors -->
@@ -142,8 +140,5 @@
     <color name="window_bg_contrast_dark">@color/grey_999</color>
 
 
-    <color name="teal_a200">#FF64FFDA</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
 
 </resources>
