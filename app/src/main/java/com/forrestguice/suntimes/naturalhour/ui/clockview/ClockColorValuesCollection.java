@@ -94,7 +94,8 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
                     ClockColorValuesSun.COLOR_ID_SUN
             ));
             defaultColorIDs.addAll(Arrays.asList(
-                    ClockColorValuesMaterial.COLOR_ID_MATERIAL_ORANGE_DARK, ClockColorValuesMaterial.COLOR_ID_MATERIAL_ORANGE_LIGHT
+                    ClockColorValuesMaterialOrange.COLOR_ID_MATERIAL_ORANGE_DARK, ClockColorValuesMaterialOrange.COLOR_ID_MATERIAL_ORANGE_LIGHT,
+                    ClockColorValuesMaterialCyan.COLOR_ID_MATERIAL_CYAN_DARK, ClockColorValuesMaterialCyan.COLOR_ID_MATERIAL_CYAN_LIGHT
             ));
 
             if (Build.VERSION.SDK_INT >= 31) {
@@ -125,7 +126,6 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
             case ClockColorValues.COLOR_ID_DARK:
                 v = new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context, true);
                 break;
-
             case ClockColorValues.COLOR_ID_LIGHT:
                 v = new com.forrestguice.suntimes.naturalhour.ui.clockview.ClockColorValues(context, false);
                 break;
@@ -141,17 +141,23 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
             case ClockColorValuesMonet.COLOR_ID_MONET_DARK:
                 v = new ClockColorValuesMonet(context, true);
                 break;
-
             case ClockColorValuesMonet.COLOR_ID_MONET_LIGHT:
                 v = new ClockColorValuesMonet(context, false);
                 break;
 
-            case ClockColorValuesMaterial.COLOR_ID_MATERIAL_ORANGE_DARK:
-                v = new ClockColorValuesMaterial(context, true);
+            case ClockColorValuesMaterialOrange.COLOR_ID_MATERIAL_ORANGE_DARK:
+                v = new ClockColorValuesMaterialOrange(context, true);
+                break;
+            case ClockColorValuesMaterialOrange.COLOR_ID_MATERIAL_ORANGE_LIGHT:
+                v = new ClockColorValuesMaterialOrange(context, false);
                 break;
 
-            case ClockColorValuesMaterial.COLOR_ID_MATERIAL_ORANGE_LIGHT:
-                v = new ClockColorValuesMaterial(context, false);
+            case ClockColorValuesMaterialCyan.COLOR_ID_MATERIAL_CYAN_DARK:
+                v = new ClockColorValuesMaterialCyan(context, true);
+                break;
+
+            case ClockColorValuesMaterialCyan.COLOR_ID_MATERIAL_CYAN_LIGHT:
+                v = new ClockColorValuesMaterialCyan(context, false);
                 break;
 
             default:
@@ -175,8 +181,10 @@ public class ClockColorValuesCollection<T> extends ColorValuesCollection<ColorVa
             case ClockColorValuesSky.COLOR_ID_SKY: return context.getString(R.string.defaultColors_name_sky);
             case ClockColorValuesMonet.COLOR_ID_MONET_DARK: return context.getString(R.string.defaultColors_name_monet_dark);
             case ClockColorValuesMonet.COLOR_ID_MONET_LIGHT: return context.getString(R.string.defaultColors_name_monet_light);
-            case ClockColorValuesMaterial.COLOR_ID_MATERIAL_ORANGE_DARK: return "Material (Orange) (Dark) (LABEL TODO)";
-            case ClockColorValuesMaterial.COLOR_ID_MATERIAL_ORANGE_LIGHT: return "Material (Orange) (Light) (LABEL TODO)";
+            case ClockColorValuesMaterialOrange.COLOR_ID_MATERIAL_ORANGE_DARK: return "Material (Orange) (Dark) (LABEL TODO)";
+            case ClockColorValuesMaterialOrange.COLOR_ID_MATERIAL_ORANGE_LIGHT: return "Material (Orange) (Light) (LABEL TODO)";
+            case ClockColorValuesMaterialCyan.COLOR_ID_MATERIAL_CYAN_DARK: return "Material (Cyan) (Dark) (LABEL TODO)";
+            case ClockColorValuesMaterialCyan.COLOR_ID_MATERIAL_CYAN_LIGHT: return "Material (Cyan) (Light) (LABEL TODO)";
             default: return colorsID;
         }
     }

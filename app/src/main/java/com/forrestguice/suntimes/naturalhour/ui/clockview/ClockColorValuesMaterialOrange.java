@@ -24,12 +24,12 @@ import android.content.Context;
 import com.forrestguice.suntimes.naturalhour.ui.colors.MaterialPalette;
 import static com.forrestguice.suntimes.naturalhour.ui.colors.MaterialPalette.Shade.*;
 
-public class ClockColorValuesMaterial extends ClockColorValues
+public class ClockColorValuesMaterialOrange extends ClockColorValues
 {
     public static final String COLOR_ID_MATERIAL_ORANGE_DARK = "material_orange_dark";
     public static final String COLOR_ID_MATERIAL_ORANGE_LIGHT = "material_orange_light";
 
-    public ClockColorValuesMaterial(Context context, boolean fallbackDarkTheme) {
+    public ClockColorValuesMaterialOrange(Context context, boolean fallbackDarkTheme) {
         super(context, fallbackDarkTheme);
     }
 
